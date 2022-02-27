@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/DiegoPinto357/finance-bot/issues"
   },
-  "homepage": "https://github.com/DiegoPinto357/finance-bot#readme"
+  "homepage": "https://github.com/DiegoPinto357/finance-bot#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "google-spreadsheet": "^3.2.0"
+  }
 }
