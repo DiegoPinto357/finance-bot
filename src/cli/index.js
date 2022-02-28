@@ -1,22 +1,25 @@
 #!/usr/bin/env node
+import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import cryptoContext from './crypto.js';
 import stockContext from './stock.js';
 
-const argv = yargs(hideBin(process.argv)).argv;
-const [context, command] = argv._;
+(async () => {
+  const argv = yargs(hideBin(process.argv)).argv;
+  const [context, command] = argv._;
 
-switch (context) {
-  case 'crypto':
-    cryptoContext(command);
-    break;
+  switch (context) {
+    case 'crypto':
+      await cryptoContext(command);
+      break;
 
-  case 'stock':
-    stockContext(command);
-    break;
+    case 'stock':
+      await stockContext(command);
+      break;
 
-  default:
-    console.error('Invalid context');
-    break;
-}
+    default:
+      console.error('Invalid context');
+      break;
+  }
+})();
