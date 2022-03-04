@@ -1,6 +1,31 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { formatPercentage, formatCurrency } from '../libs/stringFormat.js';
 
+const numOfCols = 13;
+
+const buildTableHeader = sheet =>
+  new Array(numOfCols)
+    .fill()
+    .map((_cell, colIndex) => sheet.getCell(0, colIndex).value);
+
+const buildTableRow = (sheet, header, index) =>
+  new Array(numOfCols).fill().reduce((obj, _cell, colIndex) => {
+    const value = sheet.getCell(index + 1, colIndex).value;
+
+    const formatFunc = formatter[colIndex];
+    obj[header[colIndex]] = formatFunc ? formatFunc(value) : value;
+
+    return obj;
+  }, {});
+
+const buildTable = sheet => {
+  const header = buildTableHeader(sheet);
+
+  return new Array(15)
+    .fill()
+    .map((_row, rowIndex) => buildTableRow(sheet, header, rowIndex));
+};
+
 const formatter = [
   null,
   formatPercentage,
@@ -31,18 +56,10 @@ const getBalance = async () => {
   const sheet = doc.sheetsById['27972757'];
   await sheet.loadCells('A1:M16');
 
-  const table = new Array(16).fill().map((_row, rowIndex) =>
-    new Array(13).fill().map((_cell, colIndex) => {
-      const value = sheet.getCell(rowIndex, colIndex).value;
-
-      if (rowIndex === 0) return value;
-
-      const formatFunc = formatter[colIndex];
-      return formatFunc ? formatFunc(value) : value;
-    })
-  );
+  const table = buildTable(sheet);
 
   console.table(table);
+  console.log(table);
 };
 
 export default {
