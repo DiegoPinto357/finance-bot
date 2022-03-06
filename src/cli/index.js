@@ -22,4 +22,6 @@ import stockContext from './stock.js';
       console.error('Invalid context');
       break;
   }
+
+  process.exit(0);
 })();

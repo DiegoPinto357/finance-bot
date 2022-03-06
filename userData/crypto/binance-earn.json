@@ -1,0 +1,23 @@
+{
+  "MATIC": {
+    "amount": [5, 13, 2]
+  },
+  "ADA": {
+    "amount": [23, 20, 29]
+  },
+  "SOL": {
+    "amount": [0.2]
+  },
+  "DOT": {
+    "amount": [2]
+  },
+  "LUNA": {
+    "amount": [0.666]
+  },
+  "ATOM": {
+    "amount": [2]
+  },
+  "AVAX": {
+    "amount": [0.18]
+  }
+}

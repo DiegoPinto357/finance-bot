@@ -3,7 +3,8 @@ import cryptoService from '../services/crypto.js';
 export default async (command, args) => {
   switch (command) {
     case 'balance':
-      await cryptoService.getBalance();
+      const balance = await cryptoService.getBalance();
+      console.log(balance);
       break;
 
     default:
