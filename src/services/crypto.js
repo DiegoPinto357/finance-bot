@@ -6,7 +6,12 @@ const exchangeClient = new MainClient({
   api_secret: process.env.BINANCE_API_SECRET,
 });
 
-const mapEarnValue = (asset, binanceEarn) => {
+const mapEarnValue = async asset => {
+  // TODO create load file lib
+  const binanceEarn = JSON.parse(
+    await fs.readFile('./userData/crypto/binance-earn.json', 'utf-8')
+  );
+
   const earnItem = Object.entries(binanceEarn).find(([key]) => key === asset);
 
   if (!earnItem) return 0;
@@ -17,7 +22,12 @@ const mapEarnValue = (asset, binanceEarn) => {
     : amount;
 };
 
-const mapPortfolioScore = (asset, portfolio) => {
+const mapPortfolioScore = async asset => {
+  // TODO create load file lib
+  const portfolio = JSON.parse(
+    await fs.readFile('./userData/crypto/portfolio.json', 'utf-8')
+  );
+
   const portfolioItem = Object.entries(portfolio).find(
     ([key]) => key === asset
   );
@@ -28,27 +38,21 @@ const getBalance = async () => {
   const { balances } = await exchangeClient.getAccountInformation();
   const binanceSpot = balances.filter(item => parseFloat(item.free) !== 0);
 
-  // TODO create load file lib
-  const binanceEarn = JSON.parse(
-    await fs.readFile('./userData/crypto/binance-earn.json', 'utf-8')
-  );
-  const portfolio = JSON.parse(
-    await fs.readFile('./userData/crypto/portfolio.json', 'utf-8')
-  );
+  const balance = await Promise.all(
+    binanceSpot.map(async item => {
+      const earn = await mapEarnValue(item.asset);
+      const portfolioScore = await mapPortfolioScore(item.asset);
 
-  const balance = binanceSpot.map(item => {
-    const earn = mapEarnValue(item.asset, binanceEarn);
-    const portfolioScore = mapPortfolioScore(item.asset, portfolio);
-
-    const spot = parseFloat(item.free);
-    return {
-      asset: item.asset,
-      spot,
-      earn,
-      total: spot + earn,
-      portfolioScore,
-    };
-  });
+      const spot = parseFloat(item.free);
+      return {
+        asset: item.asset,
+        spot,
+        earn,
+        total: spot + earn,
+        portfolioScore,
+      };
+    })
+  );
 
   return balance.filter(
     item => item.portfolioScore !== 0 || item.asset === 'BRL'
