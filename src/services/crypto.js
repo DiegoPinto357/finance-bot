@@ -35,8 +35,11 @@ const mapPortfolioScore = async asset => {
 };
 
 const getBalance = async () => {
-  const { balances } = await exchangeClient.getAccountInformation();
-  const binanceSpot = balances.filter(item => parseFloat(item.free) !== 0);
+  const { balances: binanceBalance } =
+    await exchangeClient.getAccountInformation();
+  const binanceSpot = binanceBalance.filter(
+    item => parseFloat(item.free) !== 0
+  );
 
   const balance = await Promise.all(
     binanceSpot.map(async item => {
@@ -54,9 +57,39 @@ const getBalance = async () => {
     })
   );
 
-  return balance.filter(
+  const portfolioBalance = balance.filter(
     item => item.portfolioScore !== 0 || item.asset === 'BRL'
   );
+
+  const baseAsset = 'USDT';
+  const targetAsset = 'BRL';
+  const symbols = portfolioBalance
+    .map(({ asset }) => `${asset}${baseAsset}`)
+    .filter(symbol => !['BRLUSDT'].includes(symbol));
+
+  const symbolPrices = await Promise.all(
+    symbols.map(async symbol => {
+      return await exchangeClient.getSymbolPriceTicker({ symbol });
+    })
+  );
+
+  const targetBasePrice = await exchangeClient.getSymbolPriceTicker({
+    symbol: `${baseAsset}${targetAsset}`,
+  });
+
+  const assetPrices = symbolPrices.map(({ symbol, price }) => ({
+    asset: symbol.replace(baseAsset, ''),
+    price: price * targetBasePrice.price,
+  }));
+
+  return portfolioBalance.map(item => {
+    if (item.asset === targetAsset) return { ...item, priceBRL: 1 };
+
+    const priceBRL = assetPrices.find(
+      ({ asset }) => asset === item.asset
+    ).price;
+    return { ...item, priceBRL };
+  });
 };
 
 export default {

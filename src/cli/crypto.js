@@ -4,7 +4,11 @@ export default async (command, args) => {
   switch (command) {
     case 'balance':
       const balance = await cryptoService.getBalance();
-      console.log(balance);
+      const total = balance.reduce(
+        (acc, current) => acc + current.total * current.priceBRL,
+        0
+      );
+      console.log(balance, { total });
       break;
 
     default:
