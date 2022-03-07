@@ -108,12 +108,24 @@ const getBalance = async () => {
     0
   );
 
-  return balanceWithPrices.map(item => {
-    const positionTarget = item.portfolioScore / totalScore;
-    const position = item.positionBRL / totalPosition;
-    const positionDiff = position - positionTarget;
-    return { ...item, positionTarget, position, positionDiff };
-  });
+  return balanceWithPrices
+    .map(item => {
+      const positionTarget = item.portfolioScore / totalScore;
+      const position = item.positionBRL / totalPosition;
+      const positionDiff = position - positionTarget;
+      const diffBRL = positionTarget * totalPosition - item.positionBRL;
+      const diffTokens = diffBRL / item.priceBRL;
+
+      return {
+        ...item,
+        positionTarget,
+        position,
+        positionDiff,
+        diffBRL,
+        diffTokens,
+      };
+    })
+    .sort((a, b) => b.diffBRL - a.diffBRL);
 };
 
 export default {
