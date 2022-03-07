@@ -87,16 +87,32 @@ const getBalance = async () => {
 
   const assetPrices = await getAssetPrices(portfolioBalance, targetAsset);
 
-  return portfolioBalance.map(item => {
+  let totalPosition = 0;
+
+  const balanceWithPrices = portfolioBalance.map(item => {
     const isTargetAsset = item.asset === targetAsset;
 
     const priceBRL = isTargetAsset
       ? 1
       : assetPrices.find(({ asset }) => asset === item.asset).price;
 
-    const position = item.total * priceBRL;
+    const positionBRL = item.total * priceBRL;
 
-    return { ...item, priceBRL, position };
+    totalPosition += positionBRL;
+
+    return { ...item, priceBRL, positionBRL };
+  });
+
+  const totalScore = balanceWithPrices.reduce(
+    (total, current) => total + current.portfolioScore,
+    0
+  );
+
+  return balanceWithPrices.map(item => {
+    const positionTarget = item.portfolioScore / totalScore;
+    const position = item.positionBRL / totalPosition;
+    const positionDiff = position - positionTarget;
+    return { ...item, positionTarget, position, positionDiff };
   });
 };
 
