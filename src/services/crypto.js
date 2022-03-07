@@ -34,6 +34,28 @@ const mapPortfolioScore = async asset => {
   return portfolioItem ? portfolioItem[1].score : 0;
 };
 
+const getAssetPrices = async (portfolioBalance, targetAsset) => {
+  const baseAsset = 'USDT';
+  const symbols = portfolioBalance
+    .map(({ asset }) => `${asset}${baseAsset}`)
+    .filter(symbol => !['BRLUSDT'].includes(symbol));
+
+  const symbolPrices = await Promise.all(
+    symbols.map(async symbol => {
+      return await exchangeClient.getSymbolPriceTicker({ symbol });
+    })
+  );
+
+  const targetBasePrice = await exchangeClient.getSymbolPriceTicker({
+    symbol: `${baseAsset}${targetAsset}`,
+  });
+
+  return symbolPrices.map(({ symbol, price }) => ({
+    asset: symbol.replace(baseAsset, ''),
+    price: price * targetBasePrice.price,
+  }));
+};
+
 const getBalance = async () => {
   const { balances: binanceBalance } =
     await exchangeClient.getAccountInformation();
@@ -57,38 +79,24 @@ const getBalance = async () => {
     })
   );
 
-  const portfolioBalance = balance.filter(
-    item => item.portfolioScore !== 0 || item.asset === 'BRL'
-  );
-
-  const baseAsset = 'USDT';
   const targetAsset = 'BRL';
-  const symbols = portfolioBalance
-    .map(({ asset }) => `${asset}${baseAsset}`)
-    .filter(symbol => !['BRLUSDT'].includes(symbol));
 
-  const symbolPrices = await Promise.all(
-    symbols.map(async symbol => {
-      return await exchangeClient.getSymbolPriceTicker({ symbol });
-    })
+  const portfolioBalance = balance.filter(
+    item => item.portfolioScore !== 0 || item.asset === targetAsset
   );
 
-  const targetBasePrice = await exchangeClient.getSymbolPriceTicker({
-    symbol: `${baseAsset}${targetAsset}`,
-  });
-
-  const assetPrices = symbolPrices.map(({ symbol, price }) => ({
-    asset: symbol.replace(baseAsset, ''),
-    price: price * targetBasePrice.price,
-  }));
+  const assetPrices = await getAssetPrices(portfolioBalance, targetAsset);
 
   return portfolioBalance.map(item => {
-    if (item.asset === targetAsset) return { ...item, priceBRL: 1 };
+    const isTargetAsset = item.asset === targetAsset;
 
-    const priceBRL = assetPrices.find(
-      ({ asset }) => asset === item.asset
-    ).price;
-    return { ...item, priceBRL };
+    const priceBRL = isTargetAsset
+      ? 1
+      : assetPrices.find(({ asset }) => asset === item.asset).price;
+
+    const position = item.total * priceBRL;
+
+    return { ...item, priceBRL, position };
   });
 };
 
