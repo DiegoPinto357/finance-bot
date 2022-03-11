@@ -1,6 +1,13 @@
 import { promises as fs } from 'fs';
 import { MainClient } from 'binance';
 
+// TODO create load file lib
+const portfolio = JSON.parse(
+  await fs.readFile('./userData/crypto/portfolio.json', 'utf-8')
+);
+
+const targetAsset = 'BRL';
+
 const exchangeClient = new MainClient({
   api_key: process.env.BINANCE_API_KEY,
   api_secret: process.env.BINANCE_API_SECRET,
@@ -23,11 +30,6 @@ const mapEarnValue = async asset => {
 };
 
 const mapPortfolioScore = async asset => {
-  // TODO create load file lib
-  const portfolio = JSON.parse(
-    await fs.readFile('./userData/crypto/portfolio.json', 'utf-8')
-  );
-
   const portfolioItem = Object.entries(portfolio).find(
     ([key]) => key === asset
   );
@@ -56,11 +58,14 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
   }));
 };
 
+const getTotalFromPortfolio = portfolio =>
+  portfolio.reduce((total, current) => total + current.positionBRL, 0);
+
 const getBalance = async () => {
   const { balances: binanceBalance } =
     await exchangeClient.getAccountInformation();
-  const binanceSpot = binanceBalance.filter(
-    item => parseFloat(item.free) !== 0
+  const binanceSpot = binanceBalance.filter(item =>
+    Object.keys(portfolio).includes(item.asset)
   );
 
   const balance = await Promise.all(
@@ -68,7 +73,7 @@ const getBalance = async () => {
       const earn = await mapEarnValue(item.asset);
       const portfolioScore = await mapPortfolioScore(item.asset);
 
-      const spot = parseFloat(item.free);
+      const spot = parseFloat(item.free) + parseFloat(item.locked);
       return {
         asset: item.asset,
         spot,
@@ -79,15 +84,11 @@ const getBalance = async () => {
     })
   );
 
-  const targetAsset = 'BRL';
-
   const portfolioBalance = balance.filter(
     item => item.portfolioScore !== 0 || item.asset === targetAsset
   );
 
   const assetPrices = await getAssetPrices(portfolioBalance, targetAsset);
-
-  let totalPosition = 0;
 
   const balanceWithPrices = portfolioBalance.map(item => {
     const isTargetAsset = item.asset === targetAsset;
@@ -98,10 +99,10 @@ const getBalance = async () => {
 
     const positionBRL = item.total * priceBRL;
 
-    totalPosition += positionBRL;
-
     return { ...item, priceBRL, positionBRL };
   });
+
+  const totalPosition = getTotalFromPortfolio(balanceWithPrices);
 
   const totalScore = balanceWithPrices.reduce(
     (total, current) => total + current.portfolioScore,
@@ -128,6 +129,13 @@ const getBalance = async () => {
     .sort((a, b) => b.diffBRL - a.diffBRL);
 };
 
+const getTotalPosition = async () => {
+  let totalPosition = 0;
+
+  return totalPosition;
+};
+
 export default {
   getBalance,
+  getTotalPosition,
 };
