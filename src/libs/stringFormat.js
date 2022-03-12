@@ -3,7 +3,6 @@ export const formatPercentage = value =>
 
 export const formatCurrency = value => {
   if (typeof value !== 'number') return;
-  return value < 0
-    ? `-R$${Math.abs(value).toFixed(2)}`
-    : `R$${value.toFixed(2)}`;
+
+  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 };
