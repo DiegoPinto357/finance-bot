@@ -21,7 +21,7 @@ import defaultContext from './default';
         break;
 
       default:
-        console.error('Invalid context');
+        await defaultContext(command);
         break;
     }
 
