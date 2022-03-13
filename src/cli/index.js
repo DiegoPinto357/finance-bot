@@ -2,8 +2,9 @@
 import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import cryptoContext from './crypto.js';
-import stockContext from './stock.js';
+import cryptoContext from './crypto';
+import stockContext from './stock';
+import defaultContext from './default';
 
 (async () => {
   try {

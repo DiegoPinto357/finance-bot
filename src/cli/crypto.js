@@ -1,5 +1,5 @@
-import cryptoService from '../services/crypto.js';
-import { formatCurrency, formatPercentage } from '../libs/stringFormat.js';
+import cryptoService from '../services/crypto';
+import { formatCurrency, formatPercentage } from '../libs/stringFormat';
 
 export default async (command, args) => {
   switch (command) {
