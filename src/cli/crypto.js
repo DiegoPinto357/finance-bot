@@ -39,6 +39,11 @@ export default async (command, args) => {
       console.log({ total: totalBRL });
       break;
 
+    case 'total':
+      const totalPosition = await cryptoService.getTotalPosition();
+      console.log({ totalPosition });
+      break;
+
     default:
       console.error('Invalid command');
       break;

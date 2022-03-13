@@ -58,10 +58,7 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
   }));
 };
 
-const getTotalFromPortfolio = portfolio =>
-  portfolio.reduce((total, current) => total + current.positionBRL, 0);
-
-const getBalance = async () => {
+const getPortfolioWithPrices = async () => {
   const { balances: binanceBalance } =
     await exchangeClient.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
@@ -90,7 +87,7 @@ const getBalance = async () => {
 
   const assetPrices = await getAssetPrices(portfolioBalance, targetAsset);
 
-  const balanceWithPrices = portfolioBalance.map(item => {
+  return portfolioBalance.map(item => {
     const isTargetAsset = item.asset === targetAsset;
 
     const priceBRL = isTargetAsset
@@ -101,15 +98,22 @@ const getBalance = async () => {
 
     return { ...item, priceBRL, positionBRL };
   });
+};
 
-  const totalPosition = getTotalFromPortfolio(balanceWithPrices);
+const getTotalFromPortfolio = portfolio =>
+  portfolio.reduce((total, current) => total + current.positionBRL, 0);
 
-  const totalScore = balanceWithPrices.reduce(
+const getBalance = async () => {
+  const portfolioWithPrices = await getPortfolioWithPrices();
+
+  const totalPosition = getTotalFromPortfolio(portfolioWithPrices);
+
+  const totalScore = portfolioWithPrices.reduce(
     (total, current) => total + current.portfolioScore,
     0
   );
 
-  return balanceWithPrices
+  return portfolioWithPrices
     .map(item => {
       const positionTarget = item.portfolioScore / totalScore;
       const position = item.positionBRL / totalPosition;
@@ -130,9 +134,8 @@ const getBalance = async () => {
 };
 
 const getTotalPosition = async () => {
-  let totalPosition = 0;
-
-  return totalPosition;
+  const portfolioWithPrices = await getPortfolioWithPrices();
+  return getTotalFromPortfolio(portfolioWithPrices);
 };
 
 export default {
