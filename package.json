@@ -22,6 +22,7 @@
     "binance": "^2.0.27",
     "dotenv": "^16.0.0",
     "google-spreadsheet": "^3.2.0",
+    "tradingview-scraper": "^0.3.0",
     "yargs": "^17.3.1"
   }
 }
