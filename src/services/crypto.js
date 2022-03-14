@@ -1,10 +1,7 @@
-import { promises as fs } from 'fs';
 import { MainClient } from 'binance';
+import { loadFile } from '../libs/storage';
 
-// TODO create load file lib
-const portfolio = JSON.parse(
-  await fs.readFile('./userData/crypto/portfolio.json', 'utf-8')
-);
+const portfolio = await loadFile('./userData/crypto/portfolio.json');
 
 const targetAsset = 'BRL';
 
@@ -14,10 +11,7 @@ const exchangeClient = new MainClient({
 });
 
 const mapEarnValue = async asset => {
-  // TODO create load file lib
-  const binanceEarn = JSON.parse(
-    await fs.readFile('./userData/crypto/binance-earn.json', 'utf-8')
-  );
+  const binanceEarn = await loadFile('./userData/crypto/binance-earn.json');
 
   const earnItem = Object.entries(binanceEarn).find(([key]) => key === asset);
 
