@@ -13,11 +13,17 @@ const getBalance = async portfolioType => {
   const balanceWithPrices = await Promise.all(
     portfolio.map(async item => {
       const { asset, amount, score } = item;
-      const price = await tradingView.getTickerValue(asset);
+      const { lp: price, chp: change } = await tradingView.getTicker(asset);
       const positionBRL = amount * price;
       const positionTarget = score / totalScore;
 
-      return { ...item, price, positionBRL, positionTarget };
+      return {
+        ...item,
+        change: change / 100,
+        price,
+        positionBRL,
+        positionTarget,
+      };
     })
   );
 

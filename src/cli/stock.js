@@ -10,6 +10,7 @@ export default async (command, args) => {
         null,
         null,
         null,
+        formatPercentage,
         formatCurrency,
         formatCurrency,
         formatPercentage,
