@@ -38,7 +38,7 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 
   const symbolPrices = await Promise.all(
     symbols.map(async symbol => {
-      return await exchangeClient.getSymbolPriceTicker({ symbol });
+      return await exchangeClient.get24hrChangeStatististics({ symbol });
     })
   );
 
@@ -46,9 +46,9 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
     symbol: `${baseAsset}${targetAsset}`,
   });
 
-  return symbolPrices.map(({ symbol, price }) => ({
+  return symbolPrices.map(({ symbol, lastPrice }) => ({
     asset: symbol.replace(baseAsset, ''),
-    price: price * targetBasePrice.price,
+    price: lastPrice * targetBasePrice.price,
   }));
 };
 
@@ -84,9 +84,9 @@ const getPortfolioWithPrices = async () => {
   return portfolioBalance.map(item => {
     const isTargetAsset = item.asset === targetAsset;
 
-    const priceBRL = isTargetAsset
-      ? 1
-      : assetPrices.find(({ asset }) => asset === item.asset).price;
+    const { price: priceBRL } = isTargetAsset
+      ? { price: 1 }
+      : assetPrices.find(({ asset }) => asset === item.asset);
 
     const positionBRL = item.total * priceBRL;
 
