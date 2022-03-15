@@ -17,7 +17,7 @@ import defaultContext from './default';
         break;
 
       case 'stock':
-        await stockContext(command);
+        await stockContext(command, argv);
         break;
 
       default:

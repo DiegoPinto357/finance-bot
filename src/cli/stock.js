@@ -4,7 +4,7 @@ import { formatCurrency, formatPercentage } from '../libs/stringFormat';
 export default async (command, args) => {
   switch (command) {
     case 'balance':
-      const balance = await stockService.getBalance();
+      const balance = await stockService.getBalance(args.type);
 
       const formatter = [
         null,

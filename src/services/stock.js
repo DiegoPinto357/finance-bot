@@ -4,8 +4,9 @@ import { loadFile } from '../libs/storage';
 const getTotalFromPortfolio = portfolio =>
   portfolio.reduce((total, current) => total + current.positionBRL, 0);
 
-const getBalance = async () => {
-  const portfolio = await loadFile('./userData/stock/br-portfolio.json');
+const getBalance = async portfolioType => {
+  const filename = `./userData/stock/${portfolioType}-portfolio.json`;
+  const portfolio = await loadFile(filename);
 
   const totalScore = portfolio.reduce((total, { score }) => total + score, 0);
 
