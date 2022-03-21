@@ -3,7 +3,7 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
 
 const toNumberIfPossible = value => {
-  const num = +value;
+  const num = +value.replace(/\./g, '').replace(',', '.');
   return isNaN(num) ? value : num;
 };
 

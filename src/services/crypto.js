@@ -1,8 +1,8 @@
 import { MainClient } from 'binance';
-import { loadFile } from '../libs/storage';
+import googleSheets from '../providers/googleSheets';
 
-const portfolio = await loadFile('./userData/crypto/portfolio.json');
-const binanceEarn = await loadFile('./userData/crypto/binance-earn.json');
+const portfolio = await googleSheets.loadSheet('crypto-spot');
+const binanceEarn = await googleSheets.loadSheet('crypto-earn');
 
 const targetAsset = 'BRL';
 
