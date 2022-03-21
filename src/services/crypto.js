@@ -2,6 +2,7 @@ import { MainClient } from 'binance';
 import { loadFile } from '../libs/storage';
 
 const portfolio = await loadFile('./userData/crypto/portfolio.json');
+const binanceEarn = await loadFile('./userData/crypto/binance-earn.json');
 
 const targetAsset = 'BRL';
 
@@ -11,23 +12,19 @@ const exchangeClient = new MainClient({
 });
 
 const mapEarnValue = async asset => {
-  const binanceEarn = await loadFile('./userData/crypto/binance-earn.json');
-
-  const earnItem = Object.entries(binanceEarn).find(([key]) => key === asset);
+  const earnItem = binanceEarn.find(item => item.asset === asset);
 
   if (!earnItem) return 0;
 
-  const { amount } = earnItem[1];
+  const { amount } = earnItem;
   return Array.isArray(amount)
     ? amount.reduce((acc, current) => (acc += current), 0)
     : amount;
 };
 
 const mapPortfolioScore = async asset => {
-  const portfolioItem = Object.entries(portfolio).find(
-    ([key]) => key === asset
-  );
-  return portfolioItem ? portfolioItem[1].score : 0;
+  const portfolioItem = portfolio.find(item => item.asset === asset);
+  return portfolioItem ? portfolioItem.score : 0;
 };
 
 const getAssetPrices = async (portfolioBalance, targetAsset) => {
@@ -56,7 +53,7 @@ const getPortfolioWithPrices = async () => {
   const { balances: binanceBalance } =
     await exchangeClient.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
-    Object.keys(portfolio).includes(item.asset)
+    portfolio.map(({ asset }) => asset).includes(item.asset)
   );
 
   const balance = await Promise.all(
