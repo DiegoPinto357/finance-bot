@@ -1,12 +1,12 @@
+import googleSheets from '../providers/googleSheets';
 import tradingView from '../providers/tradingView';
-import { loadFile } from '../libs/storage';
 
 const getTotalFromPortfolio = portfolio =>
   portfolio.reduce((total, current) => total + current.positionBRL, 0);
 
 const getBalance = async portfolioType => {
-  const filename = `./userData/stock/${portfolioType}-portfolio.json`;
-  const portfolio = await loadFile(filename);
+  const sheetTitle = `stock-${portfolioType}`;
+  const portfolio = await googleSheets.loadSheet(sheetTitle);
 
   const totalScore = portfolio.reduce((total, { score }) => total + score, 0);
 
