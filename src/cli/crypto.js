@@ -4,13 +4,7 @@ import { formatCurrency, formatPercentage } from '../libs/stringFormat';
 export default async (command, args) => {
   switch (command) {
     case 'balance':
-      const balance = await cryptoService.getBalance();
-
-      // TODO add service to get the total
-      const totalBRL = balance.reduce(
-        (acc, current) => acc + current.total * current.priceBRL,
-        0
-      );
+      const { balance, total } = await cryptoService.getBalance();
 
       const formatter = [
         null,
@@ -36,7 +30,7 @@ export default async (command, args) => {
       );
 
       console.table(formattedBalance);
-      console.log({ total: totalBRL });
+      console.log({ total });
       break;
 
     case 'total':
