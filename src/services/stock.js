@@ -29,7 +29,7 @@ const getBalance = async portfolioType => {
 
   const totalPosition = getTotalFromPortfolio(balanceWithPrices);
 
-  return balanceWithPrices
+  const balance = balanceWithPrices
     .map(item => {
       const { positionBRL, positionTarget, price } = item;
       const position = positionBRL / totalPosition;
@@ -41,6 +41,8 @@ const getBalance = async portfolioType => {
       return { ...item, position, positionDiff, diffBRL, diffAmount };
     })
     .sort((a, b) => b.diffBRL - a.diffBRL);
+
+  return { balance, total: totalPosition };
 };
 
 export default {
