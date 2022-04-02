@@ -8,6 +8,7 @@ const toNumberIfPossible = value => {
 };
 
 const loadSheet = async sheetTitle => {
+  // TODO  move doc and common code to global scope
   const doc = new GoogleSpreadsheet(spreadsheetId);
 
   await doc.useServiceAccountAuth({

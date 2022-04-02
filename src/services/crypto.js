@@ -3,6 +3,7 @@ import googleSheets from '../providers/googleSheets';
 
 const portfolio = await googleSheets.loadSheet('crypto-spot');
 const binanceEarn = await googleSheets.loadSheet('crypto-earn');
+const binanceSpotBuffer = await googleSheets.loadSheet('crypto-spot-buffer');
 
 const targetAsset = 'BRL';
 
@@ -17,9 +18,17 @@ const mapEarnValue = async asset => {
   if (!earnItem) return 0;
 
   const { amount } = earnItem;
+
+  // TODO no need to deal with arrays anymore
   return Array.isArray(amount)
     ? amount.reduce((acc, current) => (acc += current), 0)
     : amount;
+};
+
+const mapBufferValues = async asset => {
+  const item = binanceSpotBuffer.find(item => item.asset === asset);
+  if (!item) return { spot: 0 };
+  return { spot: item.amount };
 };
 
 const mapPortfolioScore = async asset => {
@@ -57,13 +66,14 @@ const getPortfolioWithPrices = async () => {
   );
 
   const balance = await Promise.all(
-    binanceSpot.map(async item => {
-      const earn = await mapEarnValue(item.asset);
-      const portfolioScore = await mapPortfolioScore(item.asset);
+    binanceSpot.map(async ({ asset, free, locked }) => {
+      const earn = await mapEarnValue(asset);
+      const { spot: spotBufferValue } = await mapBufferValues(asset);
+      const portfolioScore = await mapPortfolioScore(asset);
 
-      const spot = parseFloat(item.free) + parseFloat(item.locked);
+      const spot = parseFloat(free) + parseFloat(locked) - spotBufferValue;
       return {
-        asset: item.asset,
+        asset,
         spot,
         earn,
         total: spot + earn,
