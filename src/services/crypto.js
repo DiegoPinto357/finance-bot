@@ -145,7 +145,8 @@ const getTotalPosition = async () => {
 };
 
 const getHistory = async () => {
-  return {};
+  const historyData = await googleSheets.loadSheet('crypto-history');
+  return historyData;
 };
 
 export default {
