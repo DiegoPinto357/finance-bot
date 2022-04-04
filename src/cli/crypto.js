@@ -38,6 +38,11 @@ export default async (command, args) => {
       console.log({ totalPosition });
       break;
 
+    case 'history':
+      const history = await cryptoService.getHistory();
+      console.table(history);
+      break;
+
     default:
       console.error('Invalid command');
       break;

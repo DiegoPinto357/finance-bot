@@ -1,10 +1,6 @@
 import { MainClient } from 'binance';
 import googleSheets from '../providers/googleSheets';
 
-const portfolio = await googleSheets.loadSheet('crypto-spot');
-const binanceEarn = await googleSheets.loadSheet('crypto-earn');
-const binanceSpotBuffer = await googleSheets.loadSheet('crypto-spot-buffer');
-
 const targetAsset = 'BRL';
 
 const exchangeClient = new MainClient({
@@ -12,8 +8,8 @@ const exchangeClient = new MainClient({
   api_secret: process.env.BINANCE_API_SECRET,
 });
 
-const mapEarnValue = async asset => {
-  const earnItem = binanceEarn.find(item => item.asset === asset);
+const mapEarnValue = async (asset, earnPortfolio) => {
+  const earnItem = earnPortfolio.find(item => item.asset === asset);
 
   if (!earnItem) return 0;
 
@@ -25,13 +21,13 @@ const mapEarnValue = async asset => {
     : amount;
 };
 
-const mapBufferValues = async asset => {
-  const item = binanceSpotBuffer.find(item => item.asset === asset);
+const mapBufferValues = async (asset, spotBufferPortfolio) => {
+  const item = spotBufferPortfolio.find(item => item.asset === asset);
   if (!item) return { spot: 0 };
   return { spot: item.amount };
 };
 
-const mapPortfolioScore = async asset => {
+const mapPortfolioScore = async (asset, portfolio) => {
   const portfolioItem = portfolio.find(item => item.asset === asset);
   return portfolioItem ? portfolioItem.score : 0;
 };
@@ -59,6 +55,10 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 };
 
 const getPortfolioWithPrices = async () => {
+  const portfolio = await googleSheets.loadSheet('crypto-spot');
+  const binanceEarn = await googleSheets.loadSheet('crypto-earn');
+  const binanceSpotBuffer = await googleSheets.loadSheet('crypto-spot-buffer');
+
   const { balances: binanceBalance } =
     await exchangeClient.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
@@ -67,9 +67,12 @@ const getPortfolioWithPrices = async () => {
 
   const balance = await Promise.all(
     binanceSpot.map(async ({ asset, free, locked }) => {
-      const earn = await mapEarnValue(asset);
-      const { spot: spotBufferValue } = await mapBufferValues(asset);
-      const portfolioScore = await mapPortfolioScore(asset);
+      const earn = await mapEarnValue(asset, binanceEarn);
+      const { spot: spotBufferValue } = await mapBufferValues(
+        asset,
+        binanceSpotBuffer
+      );
+      const portfolioScore = await mapPortfolioScore(asset, portfolio);
 
       const spot = parseFloat(free) + parseFloat(locked) - spotBufferValue;
       return {
@@ -141,7 +144,12 @@ const getTotalPosition = async () => {
   return getTotalFromPortfolio(portfolioWithPrices);
 };
 
+const getHistory = async () => {
+  return {};
+};
+
 export default {
   getBalance,
   getTotalPosition,
+  getHistory,
 };
