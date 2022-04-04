@@ -20,6 +20,7 @@ export default async (command, args) => {
         null,
       ];
 
+      // TODO create a help format function
       const formattedBalance = balance.map(item =>
         Object.entries(item).reduce((obj, [key, value], index) => {
           const formatFunc = formatter[index];

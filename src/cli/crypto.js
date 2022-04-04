@@ -6,7 +6,7 @@ export default async (command, args) => {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance();
 
-      const formatter = [
+      const balanceFormatter = [
         null,
         null,
         null,
@@ -21,9 +21,10 @@ export default async (command, args) => {
         null,
       ];
 
+      // TODO create a help format function
       const formattedBalance = balance.map(item =>
         Object.entries(item).reduce((obj, [key, value], index) => {
-          const formatFunc = formatter[index];
+          const formatFunc = balanceFormatter[index];
           obj[key] = formatFunc ? formatFunc(value) : value;
           return obj;
         }, {})
@@ -40,7 +41,25 @@ export default async (command, args) => {
 
     case 'history':
       const history = await cryptoService.getHistory();
-      console.table(history);
+
+      const historyFormatter = [
+        null,
+        formatCurrency,
+        formatCurrency,
+        formatCurrency,
+        formatPercentage,
+      ];
+
+      // TODO create a help format function
+      const formattedHistory = history.map(item =>
+        Object.entries(item).reduce((obj, [key, value], index) => {
+          const formatFunc = historyFormatter[index];
+          obj[key] = formatFunc ? formatFunc(value) : value;
+          return obj;
+        }, {})
+      );
+
+      console.table(formattedHistory);
       break;
 
     default:
