@@ -1,12 +1,13 @@
 import cryptoService from '../services/crypto';
 import { formatCurrency, formatPercentage } from '../libs/stringFormat';
+import { formatTable } from '../libs/cliFormat';
 
 export default async (command, args) => {
   switch (command) {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance();
 
-      const balanceFormatter = [
+      const formattedBalance = formatTable(balance, [
         null,
         null,
         null,
@@ -19,16 +20,7 @@ export default async (command, args) => {
         formatPercentage,
         formatCurrency,
         null,
-      ];
-
-      // TODO create a help format function
-      const formattedBalance = balance.map(item =>
-        Object.entries(item).reduce((obj, [key, value], index) => {
-          const formatFunc = balanceFormatter[index];
-          obj[key] = formatFunc ? formatFunc(value) : value;
-          return obj;
-        }, {})
-      );
+      ]);
 
       console.table(formattedBalance);
       console.log({ total });
@@ -42,22 +34,13 @@ export default async (command, args) => {
     case 'history':
       const history = await cryptoService.getHistory();
 
-      const historyFormatter = [
+      const formattedHistory = formatTable(history, [
         null,
         formatCurrency,
         formatCurrency,
         formatCurrency,
         formatPercentage,
-      ];
-
-      // TODO create a help format function
-      const formattedHistory = history.map(item =>
-        Object.entries(item).reduce((obj, [key, value], index) => {
-          const formatFunc = historyFormatter[index];
-          obj[key] = formatFunc ? formatFunc(value) : value;
-          return obj;
-        }, {})
-      );
+      ]);
 
       console.table(formattedHistory);
       break;
