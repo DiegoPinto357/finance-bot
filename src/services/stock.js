@@ -1,16 +1,15 @@
 import googleSheets from '../providers/googleSheets';
 import tradingView from '../providers/tradingView';
 
-const getTotalFromPortfolio = portfolio =>
-  portfolio.reduce((total, current) => total + current.positionBRL, 0);
+const types = ['br', 'us', 'fii'];
 
-const getBalance = async portfolioType => {
+const getBalanceWithPrices = async portfolioType => {
   const sheetTitle = `stock-${portfolioType}`;
   const portfolio = await googleSheets.loadSheet(sheetTitle);
 
   const totalScore = portfolio.reduce((total, { score }) => total + score, 0);
 
-  const balanceWithPrices = await Promise.all(
+  return await Promise.all(
     portfolio.map(async item => {
       const { asset, amount, score } = item;
       const { lp: price, chp: change } = await tradingView.getTicker(asset);
@@ -26,7 +25,13 @@ const getBalance = async portfolioType => {
       };
     })
   );
+};
 
+const getTotalFromPortfolio = portfolio =>
+  portfolio.reduce((total, current) => total + current.positionBRL, 0);
+
+const getBalance = async portfolioType => {
+  const balanceWithPrices = await getBalanceWithPrices(portfolioType);
   const totalPosition = getTotalFromPortfolio(balanceWithPrices);
 
   const balance = balanceWithPrices
@@ -45,6 +50,21 @@ const getBalance = async portfolioType => {
   return { balance, total: totalPosition };
 };
 
+const getTotalPosition = async () => {
+  const totals = await Promise.all(
+    types.map(async type => {
+      const balanceWithPrices = await getBalanceWithPrices(type);
+      return getTotalFromPortfolio(balanceWithPrices);
+    })
+  );
+
+  return totals.reduce((obj, current, index) => {
+    obj[types[index]] = current;
+    return obj;
+  }, {});
+};
+
 export default {
   getBalance,
+  getTotalPosition,
 };
