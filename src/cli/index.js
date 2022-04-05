@@ -4,6 +4,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import cryptoContext from './crypto';
 import stockContext from './stock';
+import fixedContext from './fixed';
 import defaultContext from './default';
 
 (async () => {
@@ -18,6 +19,10 @@ import defaultContext from './default';
 
       case 'stock':
         await stockContext(command, argv);
+        break;
+
+      case 'fixed':
+        await fixedContext(command, argv);
         break;
 
       default:
