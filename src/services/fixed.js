@@ -9,6 +9,9 @@ const getBalance = async () => {
   return { balance, total };
 };
 
+const getTotalPosition = async () => await (await getBalance()).total;
+
 export default {
   getBalance,
+  getTotalPosition,
 };
