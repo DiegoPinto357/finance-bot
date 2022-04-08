@@ -1,9 +1,10 @@
-require('dotenv').config();
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+import 'dotenv/config';
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 
 (async () => {
   const doc = new GoogleSpreadsheet(
-    '1MuWkH84pJhQFxe07CHxPBGQTiSz6FDYCuPAB_DMbgNY'
+    // '1MuWkH84pJhQFxe07CHxPBGQTiSz6FDYCuPAB_DMbgNY'
+    '1NWnX0_c7K7aq3lM7DmWO3WOoh9RmPVRxpQF7vuHJRGc'
   );
 
   await doc.useServiceAccountAuth({
@@ -12,5 +13,14 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
   });
 
   await doc.loadInfo();
-  console.log(doc.title);
+  const sheet = doc.sheetsByTitle['previdencia'];
+  const rows = await sheet.getRows();
+  console.log(
+    rows.map(row => {
+      return row._sheet.headerValues.reduce((obj, key) => {
+        obj[key] = row[key];
+        return obj;
+      }, {});
+    })
+  );
 })();

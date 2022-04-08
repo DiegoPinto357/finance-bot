@@ -1,33 +1,31 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 
-const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
-
 const toNumberIfPossible = value => {
   const num = +value.replace(/\./g, '').replace(',', '.');
   return isNaN(num) || value === '' ? value : num;
 };
 
-const loadSheet = async sheetTitle => {
-  // TODO  move doc and common code to global scope
-  const doc = new GoogleSpreadsheet(spreadsheetId);
+export default class GoogleSheets {
+  async loadDocument(spreadsheetId) {
+    this.doc = new GoogleSpreadsheet(spreadsheetId);
 
-  await doc.useServiceAccountAuth({
-    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
-  });
+    await this.doc.useServiceAccountAuth({
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+      private_key: process.env.GOOGLE_PRIVATE_KEY,
+    });
 
-  await doc.loadInfo();
-  const sheet = doc.sheetsByTitle[sheetTitle];
-  const rows = await sheet.getRows();
+    await this.doc.loadInfo();
+  }
 
-  return rows.map(row => {
-    return row._sheet.headerValues.reduce((obj, key) => {
-      obj[key] = toNumberIfPossible(row[key]);
-      return obj;
-    }, {});
-  });
-};
+  async loadSheet(sheetTitle) {
+    const sheet = this.doc.sheetsByTitle[sheetTitle];
+    const rows = await sheet.getRows();
 
-export default {
-  loadSheet,
-};
+    return rows.map(row => {
+      return row._sheet.headerValues.reduce((obj, key) => {
+        obj[key] = toNumberIfPossible(row[key]);
+        return obj;
+      }, {});
+    });
+  }
+}

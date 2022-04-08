@@ -1,9 +1,13 @@
-import googleSheets from '../providers/googleSheets';
+import GoogleSheets from '../providers/GoogleSheets';
 import tradingView from '../providers/tradingView';
+import config from '../config';
+
+const googleSheets = new GoogleSheets();
 
 const types = ['br', 'us', 'fii'];
 
 const getBalanceWithPrices = async portfolioType => {
+  await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const sheetTitle = `stock-${portfolioType}`;
   const portfolio = await googleSheets.loadSheet(sheetTitle);
 
