@@ -45,6 +45,9 @@ const getCryptoValues = async assets => {
   return mapValuesByShares(totalAssetValues, assets);
 };
 
+const getTotalValue = assetValues =>
+  assetValues.reduce((total, current) => total + current.value, 0);
+
 const getBalance = async portfolioName => {
   await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const portfolios = await googleSheets.loadSheet('portfolio');
@@ -57,6 +60,7 @@ const getBalance = async portfolioName => {
     }))
     .filter(item => item.share);
 
+  // TODO move to function
   const assets = portfolio.reduce((obj, asset) => {
     let assetClass = obj[asset.class];
     if (!assetClass) {
@@ -67,15 +71,18 @@ const getBalance = async portfolioName => {
     return obj;
   }, {});
 
-  console.log(assets);
-
   const fixedValues = await getFixedValues(assets.fixed);
   const stockValues = await getStockValues(assets.stock);
   const cryptoValues = await getCryptoValues(assets.crypto);
 
+  const total =
+    getTotalValue(fixedValues) +
+    getTotalValue(stockValues) +
+    getTotalValue(cryptoValues);
+
   return {
     balance: { fixed: fixedValues, stock: stockValues, crypto: cryptoValues },
-    total: 0,
+    total,
   };
 };
 

@@ -5,6 +5,7 @@ export default async (command, args) => {
     case 'balance':
       const { balance, total } = await portfolioService.getBalance(args.name);
       console.log(balance);
+      console.log({ total });
       break;
 
     case 'total':
