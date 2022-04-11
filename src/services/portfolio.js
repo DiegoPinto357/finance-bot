@@ -2,6 +2,7 @@ import GoogleSheets from '../providers/GoogleSheets';
 import config from '../config';
 import fixedService from './fixed';
 import stockService from './stock';
+import cryptoService from './crypto';
 
 const googleSheets = new GoogleSheets();
 
@@ -37,6 +38,13 @@ const getStockValues = async assets => {
   return mapValuesByShares(totalAssetValues, assets);
 };
 
+const getCryptoValues = async assets => {
+  const total = await cryptoService.getTotalPosition();
+  const balance = [{ asset: 'hodl', value: total }];
+  const totalAssetValues = filterAssets(balance, assets);
+  return mapValuesByShares(totalAssetValues, assets);
+};
+
 const getBalance = async portfolioName => {
   await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const portfolios = await googleSheets.loadSheet('portfolio');
@@ -63,8 +71,12 @@ const getBalance = async portfolioName => {
 
   const fixedValues = await getFixedValues(assets.fixed);
   const stockValues = await getStockValues(assets.stock);
+  const cryptoValues = await getCryptoValues(assets.crypto);
 
-  return { balance: { fixed: fixedValues, stock: stockValues }, total: 0 };
+  return {
+    balance: { fixed: fixedValues, stock: stockValues, crypto: cryptoValues },
+    total: 0,
+  };
 };
 
 export default {
