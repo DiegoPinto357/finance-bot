@@ -21,8 +21,18 @@ const mapValuesByShares = (assetsWithTotalValues, assetsWithShares) =>
     value: item.value * getAssetShare(assetsWithShares, item.asset),
   }));
 
-const getValuesFromAssets = async (assets, getBalanceFunc) => {
-  const { balance } = await getBalanceFunc();
+const getFixedValues = async assets => {
+  const { balance } = await fixedService.getBalance();
+  const totalAssetValues = filterAssets(balance, assets);
+  return mapValuesByShares(totalAssetValues, assets);
+};
+
+const getStockValues = async assets => {
+  const totals = await stockService.getTotalPosition();
+  const balance = Object.entries(totals).map(([asset, value]) => ({
+    asset,
+    value,
+  }));
   const totalAssetValues = filterAssets(balance, assets);
   return mapValuesByShares(totalAssetValues, assets);
 };
@@ -49,15 +59,10 @@ const getBalance = async portfolioName => {
     return obj;
   }, {});
 
-  const fixedValues = await getValuesFromAssets(
-    assets.fixed,
-    fixedService.getBalance
-  );
+  console.log(assets);
 
-  const stockValues = {}; // await getValuesFromAssets(
-  //   assets.stock,
-  //   stockService.getBalance
-  // );
+  const fixedValues = await getFixedValues(assets.fixed);
+  const stockValues = await getStockValues(assets.stock);
 
   return { balance: { fixed: fixedValues, stock: stockValues }, total: 0 };
 };
