@@ -1,15 +1,10 @@
-import { MainClient } from 'binance';
+import binance from '../providers/binance';
 import GoogleSheets from '../providers/GoogleSheets';
 import config from '../config';
 
 const googleSheets = new GoogleSheets();
 
 const targetAsset = 'BRL';
-
-const exchangeClient = new MainClient({
-  api_key: process.env.BINANCE_API_KEY,
-  api_secret: process.env.BINANCE_API_SECRET,
-});
 
 const mapEarnValue = async (asset, earnPortfolio) => {
   const earnItem = earnPortfolio.find(item => item.asset === asset);
@@ -43,11 +38,11 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 
   const symbolPrices = await Promise.all(
     symbols.map(async symbol => {
-      return await exchangeClient.get24hrChangeStatististics({ symbol });
+      return await binance.get24hrChangeStatististics({ symbol });
     })
   );
 
-  const targetBasePrice = await exchangeClient.getSymbolPriceTicker({
+  const targetBasePrice = await binance.getSymbolPriceTicker({
     symbol: `${baseAsset}${targetAsset}`,
   });
 
@@ -63,8 +58,7 @@ const getPortfolioWithPrices = async () => {
   const binanceEarn = await googleSheets.loadSheet('crypto-earn');
   const binanceSpotBuffer = await googleSheets.loadSheet('crypto-spot-buffer');
 
-  const { balances: binanceBalance } =
-    await exchangeClient.getAccountInformation();
+  const { balances: binanceBalance } = await binance.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
     portfolio.map(({ asset }) => asset).includes(item.asset)
   );
