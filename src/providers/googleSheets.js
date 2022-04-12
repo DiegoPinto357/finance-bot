@@ -1,4 +1,7 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { buildLogger } from '../libs/logger';
+
+const log = buildLogger('GoogleSheets');
 
 const toNumberIfPossible = value => {
   const num = +value.replace(/\./g, '').replace(',', '.');
@@ -18,6 +21,7 @@ export default class GoogleSheets {
   }
 
   async loadSheet(sheetTitle) {
+    log(`Loadind sheet ${sheetTitle}`);
     const sheet = this.doc.sheetsByTitle[sheetTitle];
     const rows = await sheet.getRows();
 
