@@ -1,12 +1,16 @@
 import hodlService from './hodl';
+import defiService from './defi';
 import binanceBufferService from './binanceBuffer';
 
-const types = ['hodl', 'binanceBuffer'];
+const types = ['hodl', 'defi', 'binanceBuffer'];
 
 const getServiceByportfolioType = portfolioType => {
   switch (portfolioType) {
     case 'hodl':
       return hodlService;
+
+    case 'defi':
+      return defiService;
 
     case 'binanceBuffer':
       return binanceBufferService;
