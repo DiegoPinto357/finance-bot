@@ -1,6 +1,6 @@
-import binance from '../providers/binance';
-import GoogleSheets from '../providers/GoogleSheets';
-import config from '../config';
+import binance from '../../providers/binance';
+import GoogleSheets from '../../providers/GoogleSheets';
+import config from '../../config';
 
 const googleSheets = new GoogleSheets();
 
