@@ -3,9 +3,15 @@ import stockService from './stock';
 import cryptoService from './crypto';
 
 const getSummary = async () => {
-  const fixed = { total: await fixeService.getTotalPosition() };
-  const stock = { total: await stockService.getTotalPosition() };
-  const crypto = { total: await cryptoService.getTotalPosition() };
+  const [fixedTotal, stockTotal, cryptoTotal] = await Promise.all([
+    fixeService.getTotalPosition(),
+    stockService.getTotalPosition(),
+    cryptoService.getTotalPosition(),
+  ]);
+
+  const fixed = { total: fixedTotal };
+  const stock = { total: stockTotal };
+  const crypto = { total: cryptoTotal };
   return { fixed, stock, crypto };
 };
 
