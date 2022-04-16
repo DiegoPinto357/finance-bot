@@ -15,7 +15,7 @@ import defaultContext from './default';
 
     switch (context) {
       case 'crypto':
-        await cryptoContext(command);
+        await cryptoContext(command, argv);
         break;
 
       case 'stock':
