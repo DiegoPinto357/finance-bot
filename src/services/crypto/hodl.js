@@ -5,6 +5,7 @@ import config from '../../config';
 const googleSheets = new GoogleSheets();
 
 const targetAsset = 'BRL';
+const bridgeAsset = 'USDT';
 
 const mapEarnValue = async (asset, earnPortfolio) => {
   const earnItem = earnPortfolio.find(item => item.asset === asset);
@@ -31,24 +32,21 @@ const mapPortfolioScore = async (asset, portfolio) => {
 };
 
 const getAssetPrices = async (portfolioBalance, targetAsset) => {
-  const baseAsset = 'USDT';
-  const symbols = portfolioBalance
-    .map(({ asset }) => `${asset}${baseAsset}`)
-    .filter(symbol => !['BRLUSDT'].includes(symbol));
+  const assets = portfolioBalance.map(({ asset }) => asset);
 
-  const symbolPrices = await Promise.all(
-    symbols.map(async symbol => {
-      return await binance.get24hrChangeStatististics({ symbol });
+  const prices = await Promise.all(
+    assets.map(async asset => {
+      return await binance.getAssetPriceWithBridge({
+        asset,
+        targetAsset,
+        bridgeAsset,
+      });
     })
   );
 
-  const targetBasePrice = await binance.getSymbolPriceTicker({
-    symbol: `${baseAsset}${targetAsset}`,
-  });
-
-  return symbolPrices.map(({ symbol, lastPrice }) => ({
-    asset: symbol.replace(baseAsset, ''),
-    price: lastPrice * targetBasePrice.price,
+  return assets.map((asset, index) => ({
+    asset,
+    price: prices[index],
   }));
 };
 
