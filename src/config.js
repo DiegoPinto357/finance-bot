@@ -5,8 +5,16 @@ export default {
   },
   crypto: {
     tokens: {
-      titano: '0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f',
-      sphere: '0x8d546026012bf75073d8a586f24a5d5ff75b9716',
+      titano: {
+        name: 'titano',
+        network: 'bsc',
+        contract: '0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f',
+      },
+      sphere: {
+        name: 'sphere',
+        network: 'polygon',
+        contract: '0x8d546026012bf75073d8a586f24a5d5ff75b9716',
+      },
     },
   },
 };

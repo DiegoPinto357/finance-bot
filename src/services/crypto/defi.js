@@ -1,15 +1,11 @@
 import blockchainScan from '../../providers/blockchainScan';
+import config from '../../config';
 
 const getTotalPosition = async () => {
-  const titanoAmount = await blockchainScan.getTokenBalance({
-    network: 'bsc',
-    token: 'titano',
-  });
-
-  const sphereAmount = await blockchainScan.getTokenBalance({
-    network: 'polygon',
-    token: 'sphere',
-  });
+  const [titanoAmount, sphereAmount] = await Promise.all([
+    blockchainScan.getTokenBalance(config.crypto.tokens.titano),
+    await blockchainScan.getTokenBalance(config.crypto.tokens.sphere),
+  ]);
 
   return { titanoAmount, sphereAmount };
 };
