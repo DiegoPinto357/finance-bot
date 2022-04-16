@@ -1,11 +1,15 @@
 import hodlService from './hodl';
+import binanceBufferService from './binanceBuffer';
 
-const types = ['hodl'];
+const types = ['hodl', 'binanceBuffer'];
 
 const getServiceByportfolioType = portfolioType => {
   switch (portfolioType) {
     case 'hodl':
       return hodlService;
+
+    case 'binanceBuffer':
+      return binanceBufferService;
 
     default:
       console.error('Invalid portfolio type.');
@@ -17,7 +21,12 @@ const getBalance = async portfolioType => {
   return service.getBalance();
 };
 
-const getTotalPosition = async () => {
+const getTotalPosition = async portfolioType => {
+  if (portfolioType) {
+    const service = getServiceByportfolioType(portfolioType);
+    return service.getTotalPosition();
+  }
+
   const totals = await Promise.all(
     types.map(async type => {
       const service = getServiceByportfolioType(type);
