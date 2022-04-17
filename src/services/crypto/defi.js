@@ -1,13 +1,24 @@
 import blockchainScan from '../../providers/blockchainScan';
+import coinMarketCap from '../../providers/coinMarketCap';
 import config from '../../config';
 
-const getTotalPosition = async () => {
-  const [titanoAmount, sphereAmount] = await Promise.all([
-    blockchainScan.getTokenBalance(config.crypto.tokens.titano),
-    await blockchainScan.getTokenBalance(config.crypto.tokens.sphere),
-  ]);
+const { tokens } = config.crypto;
 
-  return { titanoAmount, sphereAmount };
+const getTotalPosition = async () => {
+  const [titanoAmount, sphereAmount, titanoPrice, spherePrice] =
+    await Promise.all([
+      blockchainScan.getTokenBalance(tokens.titano),
+      blockchainScan.getTokenBalance(tokens.sphere),
+      coinMarketCap.getSymbolPrice(tokens.titano.name),
+      coinMarketCap.getSymbolPrice(tokens.sphere.name),
+    ]);
+
+  const titanoPosition =
+    titanoAmount * titanoPrice * (1 - tokens.titano.sellFee);
+  const spherePosition =
+    sphereAmount * spherePrice * (1 - tokens.sphere.sellFee);
+
+  return titanoPosition + spherePosition;
 };
 
 export default {

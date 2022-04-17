@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DiegoPinto357/finance-bot#readme",
   "dependencies": {
     "binance": "^2.0.27",
+    "coinmarketcap-api": "^3.1.1",
     "dotenv": "^16.0.0",
     "google-spreadsheet": "^3.2.0",
     "tradingview-scraper": "^0.3.0",
