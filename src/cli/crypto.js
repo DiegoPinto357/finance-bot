@@ -8,7 +8,6 @@ export default async (command, args) => {
   switch (command) {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance(type);
-      console.log({ balance, total });
 
       const formattedBalance = formatTable(balance, [
         null,
