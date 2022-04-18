@@ -9,20 +9,25 @@ export default async (command, args) => {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance(type);
 
-      const formattedBalance = formatTable(balance, [
-        null,
-        null,
-        null,
-        null,
-        null,
-        formatCurrency,
-        formatCurrency,
-        formatPercentage,
-        formatPercentage,
-        formatPercentage,
-        formatCurrency,
-        null,
-      ]);
+      const formatter =
+        type === 'hodl'
+          ? [
+              null,
+              null,
+              null,
+              null,
+              null,
+              formatCurrency,
+              formatCurrency,
+              formatPercentage,
+              formatPercentage,
+              formatPercentage,
+              formatCurrency,
+              null,
+            ]
+          : [];
+
+      const formattedBalance = formatTable(balance, formatter);
 
       console.table(formattedBalance);
       console.log({ total });

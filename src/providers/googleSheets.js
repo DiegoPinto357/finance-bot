@@ -4,6 +4,7 @@ import { buildLogger } from '../libs/logger';
 const log = buildLogger('GoogleSheets');
 
 const toNumberIfPossible = value => {
+  if (value === undefined) return value;
   const num = +value.replace(/\./g, '').replace(',', '.');
   return isNaN(num) || value === '' ? value : num;
 };
