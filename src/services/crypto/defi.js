@@ -4,23 +4,37 @@ import config from '../../config';
 
 const { tokens } = config.crypto;
 
-const getTotalPosition = async () => {
-  const [titanoAmount, sphereAmount, titanoPrice, spherePrice] =
-    await Promise.all([
-      blockchainScan.getTokenBalance(tokens.titano),
-      blockchainScan.getTokenBalance(tokens.sphere),
-      coinMarketCap.getSymbolPrice(tokens.titano.name),
-      coinMarketCap.getSymbolPrice(tokens.sphere.name),
-    ]);
+const assetList = [tokens.titano, tokens.sphere];
 
-  const titanoPosition =
-    titanoAmount * titanoPrice * (1 - tokens.titano.sellFee);
-  const spherePosition =
-    sphereAmount * spherePrice * (1 - tokens.sphere.sellFee);
+const getTokenBalance = async tokenData => {
+  const [amount, priceBRL] = await Promise.all([
+    blockchainScan.getTokenBalance(tokenData),
+    coinMarketCap.getSymbolPrice(tokenData.name),
+  ]);
 
-  return titanoPosition + spherePosition;
+  const positionBRL = amount * priceBRL * (1 - tokenData.sellFee);
+
+  return {
+    asset: tokenData.name,
+    amount,
+    priceBRL,
+    positionBRL,
+  };
 };
 
+const getBalance = async () => {
+  const balance = await Promise.all(
+    assetList.map(async asset => getTokenBalance(asset))
+  );
+
+  const total = balance.reduce((total, item) => total + item.positionBRL, 0);
+
+  return { balance, total };
+};
+
+const getTotalPosition = async () => (await getBalance()).total;
+
 export default {
+  getBalance,
   getTotalPosition,
 };
