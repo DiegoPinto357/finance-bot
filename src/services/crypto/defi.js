@@ -29,7 +29,7 @@ const getTokenBalance = async tokenData => {
 
 const getBalanceFromSheet = async () => {
   await googleSheets.loadDocument(config.googleSheets.assetsDocId);
-  const balance = await googleSheets.loadSheet('crypto-defi');
+  const balance = await googleSheets.loadSheet('crypto-defi-staking');
 
   const assets = balance.map(({ asset }) => asset);
   const prices = await Promise.all(
@@ -43,16 +43,19 @@ const getBalanceFromSheet = async () => {
   }));
 };
 
-const getBalanceFromBlockchain = async () =>
-  await Promise.all(assetList.map(async asset => getTokenBalance(asset)));
+const getAutoStakingBalance = async () => {
+  return await Promise.all(
+    assetList.map(async asset => getTokenBalance(asset))
+  );
+};
 
 const getBalance = async () => {
-  const [sheetBalance, blockchainBalance] = await Promise.all([
+  const [sheetBalance, autoStakingBalance] = await Promise.all([
     getBalanceFromSheet(),
-    getBalanceFromBlockchain(),
+    getAutoStakingBalance(),
   ]);
 
-  const balance = [...sheetBalance, ...blockchainBalance];
+  const balance = [...sheetBalance, ...autoStakingBalance];
 
   const total = balance.reduce((total, item) => total + item.positionBRL, 0);
 
