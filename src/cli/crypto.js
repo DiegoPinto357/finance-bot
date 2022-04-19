@@ -2,6 +2,43 @@ import cryptoService from '../services/crypto';
 import { formatCurrency, formatPercentage } from '../libs/stringFormat';
 import { formatTable } from '../libs/cliFormat';
 
+const getBalanceFormatter = type => {
+  switch (type) {
+    case 'hodl':
+      return [
+        null,
+        null,
+        null,
+        null,
+        null,
+        formatCurrency,
+        formatCurrency,
+        formatPercentage,
+        formatPercentage,
+        formatPercentage,
+        formatCurrency,
+        null,
+      ];
+
+    case 'defi':
+      return [
+        null,
+        null,
+        null,
+        formatCurrency,
+        null,
+        null,
+        formatPercentage,
+        null,
+        formatCurrency,
+        formatCurrency,
+      ];
+
+    default:
+      return [];
+  }
+};
+
 export default async (command, args) => {
   const { type } = args;
 
@@ -9,24 +46,7 @@ export default async (command, args) => {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance(type);
 
-      const formatter =
-        type === 'hodl'
-          ? [
-              null,
-              null,
-              null,
-              null,
-              null,
-              formatCurrency,
-              formatCurrency,
-              formatPercentage,
-              formatPercentage,
-              formatPercentage,
-              formatCurrency,
-              null,
-            ]
-          : [];
-
+      const formatter = getBalanceFormatter(type);
       const formattedBalance = formatTable(balance, formatter);
 
       console.table(formattedBalance);

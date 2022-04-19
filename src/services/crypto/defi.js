@@ -51,6 +51,7 @@ const getAutoStakingBalance = async () => {
       depositAmount,
       currentAmount,
       sellFee,
+      endDate: undefined,
       priceBRL,
       positionBRL,
     };
