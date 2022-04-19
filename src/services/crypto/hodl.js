@@ -144,7 +144,7 @@ const getTotalPosition = async () => {
 
 const getHistory = async () => {
   await googleSheets.loadDocument(config.googleSheets.assetsDocId);
-  const historyData = await googleSheets.loadSheet('crypto-history');
+  const historyData = await googleSheets.loadSheet('crypto-hodl-history');
   const currentTotal = await getTotalPosition();
 
   const current = historyData[historyData.length - 1];
