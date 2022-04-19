@@ -1,9 +1,7 @@
 import blockchainScan from '../../providers/blockchainScan';
 import coinMarketCap from '../../providers/coinMarketCap';
-import GoogleSheets from '../../providers/GoogleSheets';
+import googleSheets from '../../providers/GoogleSheets';
 import config from '../../config';
-
-const googleSheets = new GoogleSheets();
 
 const { tokens } = config.crypto;
 
@@ -28,7 +26,6 @@ const getTokenBalance = async tokenData => {
 };
 
 const getBalanceFromSheet = async () => {
-  await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const balance = await googleSheets.loadSheet('crypto-defi-staking');
 
   const assets = balance.map(({ asset }) => asset);

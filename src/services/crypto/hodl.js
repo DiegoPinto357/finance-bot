@@ -1,8 +1,5 @@
 import binance from '../../providers/binance';
-import GoogleSheets from '../../providers/GoogleSheets';
-import config from '../../config';
-
-const googleSheets = new GoogleSheets();
+import googleSheets from '../../providers/GoogleSheets';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
@@ -51,7 +48,6 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 };
 
 const getPortfolioWithPrices = async () => {
-  await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const [portfolio, binanceEarn, binanceSpotBuffer] = await Promise.all([
     googleSheets.loadSheet('crypto-spot'),
     googleSheets.loadSheet('crypto-earn'),
@@ -143,7 +139,6 @@ const getTotalPosition = async () => {
 };
 
 const getHistory = async () => {
-  await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const historyData = await googleSheets.loadSheet('crypto-hodl-history');
   const currentTotal = await getTotalPosition();
 

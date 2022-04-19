@@ -1,10 +1,7 @@
-import GoogleSheets from '../providers/GoogleSheets';
-import config from '../config';
+import googleSheets from '../providers/GoogleSheets';
 import fixedService from './fixed';
 import stockService from './stock';
 import cryptoService from './crypto';
-
-const googleSheets = new GoogleSheets();
 
 const getAssetsList = assets => assets.map(({ asset }) => asset);
 
@@ -49,7 +46,6 @@ const getTotalValue = assetValues =>
   assetValues.reduce((total, current) => total + current.value, 0);
 
 const getBalance = async portfolioName => {
-  await googleSheets.loadDocument(config.googleSheets.assetsDocId);
   const portfolios = await googleSheets.loadSheet('portfolio');
 
   const portfolio = portfolios
