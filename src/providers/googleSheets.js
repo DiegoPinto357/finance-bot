@@ -6,7 +6,7 @@ const log = buildLogger('GoogleSheets');
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
 
 const toNumberIfPossible = value => {
-  if (value === undefined) return value;
+  if (value === undefined || value.slice(0, 2) === '0x') return value;
   const num = +value.replace(/\./g, '').replace(',', '.');
   return isNaN(num) || value === '' ? value : num;
 };

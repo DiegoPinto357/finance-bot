@@ -12,7 +12,7 @@ const getApiKey = network => {
 const buildUrl = (network, { params }) =>
   `https://api.${network}scan.com/api?${params}`;
 
-const getTokenBalance = async ({ name, network, contract }) => {
+const getTokenBalance = async ({ asset, network, contract }) => {
   const params = new URLSearchParams({
     module: 'account',
     action: 'tokenbalance',
@@ -24,7 +24,7 @@ const getTokenBalance = async ({ name, network, contract }) => {
 
   const url = buildUrl(network, { params });
 
-  log(`Loading ${name} token balance on ${network} network`);
+  log(`Loading ${asset} token balance on ${network} network`);
   const response = await fetch(url);
   const { result } = await response.json();
   const tokenScale = 1e-18;
