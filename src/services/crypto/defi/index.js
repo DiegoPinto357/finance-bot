@@ -1,6 +1,6 @@
-import blockchainScan from '../../providers/blockchainScan';
-import coinMarketCap from '../../providers/coinMarketCap';
-import googleSheets from '../../providers/GoogleSheets';
+import blockchainScan from '../../../providers/blockchainScan';
+import coinMarketCap from '../../../providers/coinMarketCap';
+import googleSheets from '../../../providers/GoogleSheets';
 
 const getTokenBalanceFromBlockchain = async tokenData => {
   const { asset, network, contract, sellFee } = tokenData;
