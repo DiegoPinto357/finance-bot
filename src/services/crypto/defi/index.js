@@ -1,11 +1,11 @@
-import blockchainScan from '../../../providers/blockchainScan';
+import blockchain from '../../../providers/blockchain';
 import coinMarketCap from '../../../providers/coinMarketCap';
 import googleSheets from '../../../providers/GoogleSheets';
 
 const getTokenBalanceFromBlockchain = async tokenData => {
   const { asset, network, contract, sellFee } = tokenData;
   const [currentAmount, priceBRL] = await Promise.all([
-    blockchainScan.getTokenBalance({ asset, network, contract }),
+    blockchain.getTokenBalance({ asset, network, contract }),
     coinMarketCap.getSymbolPrice(asset),
   ]);
 

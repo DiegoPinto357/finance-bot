@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import { buildLogger } from '../libs/logger';
+import config from '../config';
 
 const log = buildLogger('BlockchainScan');
 
@@ -9,8 +10,10 @@ const getApiKey = network => {
   return process.env[envKey];
 };
 
-const buildUrl = (network, { params }) =>
-  `https://api.${network}scan.com/api?${params}`;
+const buildUrl = (network, { params }) => {
+  const { host } = config.crypto.networks[network];
+  return `${host}/api?${params}`;
+};
 
 const getTokenBalance = async ({ asset, network, contract }) => {
   const params = new URLSearchParams({
