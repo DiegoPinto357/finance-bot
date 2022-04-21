@@ -64,42 +64,42 @@ const getAutoStakingBalance = async () => {
 const getLiquidityPoolBalance = async () => {
   const pools = await googleSheets.loadSheet('crypto-defi-liquiditypool');
 
-  const pool = pools[0];
+  return await Promise.all(
+    pools.map(async pool => {
+      const {
+        asset,
+        network,
+        contractAddress,
+        currentAmount,
+        depositBRL,
+        depositAmount,
+        withdrawalFee,
+        performanceFee,
+      } = pool;
 
-  const {
-    asset,
-    network,
-    contractAddress,
-    currentAmount,
-    depositBRL,
-    depositAmount,
-    withdrawalFee,
-    performanceFee,
-  } = pool;
+      const priceBRL = await liquidityPool.getLPTokenPrice({
+        lpToken: asset,
+        network,
+        contractAddress,
+      });
 
-  const priceBRL = await liquidityPool.getLPTokenPrice({
-    lpToken: asset,
-    network,
-    contractAddress,
-  });
+      const positionBRL = priceBRL * currentAmount;
 
-  const positionBRL = priceBRL * currentAmount;
-
-  return [
-    {
-      type: 'liquiditypool',
-      asset,
-      description: undefined,
-      depositBRL,
-      depositAmount,
-      currentAmount,
-      sellFee: withdrawalFee,
-      performanceFee,
-      endDate: undefined,
-      priceBRL,
-      positionBRL,
-    },
-  ];
+      return {
+        type: 'liquiditypool',
+        asset,
+        description: `${asset.split('-').slice(0, 2).join('/')} liquidity pool`,
+        depositBRL,
+        depositAmount,
+        currentAmount,
+        sellFee: withdrawalFee,
+        performanceFee,
+        endDate: undefined,
+        priceBRL,
+        positionBRL,
+      };
+    })
+  );
 };
 
 const getBalance = async () => {
