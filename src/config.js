@@ -12,6 +12,7 @@ export default {
       },
       bsc: {
         BNB: { contract: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' },
+        BUSD: { contract: '0xe9e7cea3dedca5984780bafc599bd69add087d56' },
         DOGS: { contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e' },
         TITANO: { contract: '0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f' },
       },

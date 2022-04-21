@@ -102,18 +102,53 @@ const getLiquidityPoolBalance = async () => {
   );
 };
 
+const getFloatBalance = async () => {
+  const balance = await googleSheets.loadSheet('crypto-defi-float');
+  return await Promise.all(
+    balance.map(async ({ asset, network, amount }) => {
+      const priceBRL = await coinMarketCap.getSymbolPrice(asset);
+
+      const currentAmount =
+        amount === undefined
+          ? await blockchain.getTokenBalance({ asset, network })
+          : amount;
+      const positionBRL = currentAmount * priceBRL;
+
+      return {
+        type: 'float',
+        asset,
+        description: `${asset} token`,
+        depositBRL: 0,
+        depositAmount: 0,
+        currentAmount,
+        sellFee: undefined,
+        performanceFee: undefined,
+        endDate: undefined,
+        priceBRL,
+        positionBRL,
+      };
+    })
+  );
+};
+
 const getBalance = async () => {
-  const [stakingBalance, autoStakingBalance, liquidityPoolBalance] =
-    await Promise.all([
-      getStakingBalance(),
-      getAutoStakingBalance(),
-      getLiquidityPoolBalance(),
-    ]);
+  const [
+    stakingBalance,
+    autoStakingBalance,
+    liquidityPoolBalance,
+    floatBalance,
+  ] = await Promise.all([
+    getStakingBalance(),
+    getAutoStakingBalance(),
+    getLiquidityPoolBalance(),
+    getFloatBalance(),
+  ]);
 
   const balance = [
     ...stakingBalance,
     ...autoStakingBalance,
     ...liquidityPoolBalance,
+    ...floatBalance,
   ];
 
   const total = balance.reduce((total, item) => total + item.positionBRL, 0);
