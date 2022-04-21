@@ -5,12 +5,13 @@ import config from '../config';
 
 const log = buildLogger('Blockchain');
 
-// FIXME not working
-// const apiKeyMapper = [
-//   { network: 'bsc', varName: 'BSCSCAN_API_KEY' },
-//   { network: 'polygon', varName: 'POLYGONSCAN_API_KEY' },
-//   { network: 'avalanche', varname: 'SNOWTRACE_API_KEY' },
-// ];
+const apiKeyMapper = {
+  avalanche: 'SNOWTRACE_API_KEY',
+  bsc: 'BSCSCAN_API_KEY',
+  polygon: 'POLYGONSCAN_API_KEY',
+};
+
+const getApiKey = network => process.env[apiKeyMapper[network]];
 
 const buildUrl = (network, { params }) => {
   const { host } = config.crypto.networks[network];
@@ -24,7 +25,7 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
     contractaddress: config.crypto.tokens[network][asset].contract,
     address: wallet || process.env.CRYPTO_WALLET_ADDRESS,
     tag: 'latest',
-    // apikey: apiKeyMapper[network],
+    apikey: getApiKey(network),
   });
 
   const url = buildUrl(network, { params });
@@ -41,7 +42,7 @@ const getContractTokenTotalSupply = async ({ network, contractAddress }) => {
     module: 'stats',
     action: 'tokensupply',
     contractaddress: contractAddress,
-    // apikey: apiKeyMapper[network],
+    apikey: getApiKey(network),
   });
 
   log(
