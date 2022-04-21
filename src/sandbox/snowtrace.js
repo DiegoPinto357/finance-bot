@@ -2,7 +2,7 @@ import 'dotenv/config';
 import fetch from 'node-fetch';
 
 const apikey = process.env.SNOWTRACE_API_KEY;
-const contractaddress = '0xcdfd91eea657cc2701117fe9711c9a4f61feed23';
+const contractaddress = '0xcdfd91eea657cc2701117fe9711c9a4f61feed23'; // AVAX-PTP pool address
 
 const totalSupplyParams = new URLSearchParams({
   module: 'stats',

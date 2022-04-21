@@ -29,6 +29,7 @@ const getBalanceFormatter = type => {
         null,
         null,
         formatPercentage,
+        formatPercentage,
         null,
         formatCurrency,
         formatCurrency,
