@@ -5,7 +5,7 @@
   "main": "./src/cli/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "cli": "node --experimental-specifier-resolution=node ./src/cli/index.js "
   },
   "repository": {
@@ -25,5 +25,8 @@
     "google-spreadsheet": "^3.2.0",
     "tradingview-scraper": "^0.3.0",
     "yargs": "^17.3.1"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
   }
 }
