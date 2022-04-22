@@ -36,8 +36,11 @@ const getStockValues = async assets => {
 };
 
 const getCryptoValues = async assets => {
-  const total = await cryptoService.getTotalPosition();
-  const balance = [{ asset: 'hodl', value: total }];
+  const totals = await cryptoService.getTotalPosition();
+  const balance = Object.entries(totals).map(([asset, value]) => ({
+    asset,
+    value,
+  }));
   const totalAssetValues = filterAssets(balance, assets);
   return mapValuesByShares(totalAssetValues, assets);
 };

@@ -4,7 +4,7 @@ import binanceBufferService from './binanceBuffer';
 
 const types = ['hodl', 'defi', 'binanceBuffer'];
 
-const getServiceByportfolioType = portfolioType => {
+const getServiceByPortfolioType = portfolioType => {
   switch (portfolioType) {
     case 'hodl':
       return hodlService;
@@ -21,19 +21,19 @@ const getServiceByportfolioType = portfolioType => {
 };
 
 const getBalance = async portfolioType => {
-  const service = getServiceByportfolioType(portfolioType);
+  const service = getServiceByPortfolioType(portfolioType);
   return service.getBalance();
 };
 
 const getTotalPosition = async portfolioType => {
   if (portfolioType) {
-    const service = getServiceByportfolioType(portfolioType);
+    const service = getServiceByPortfolioType(portfolioType);
     return service.getTotalPosition();
   }
 
   const totals = await Promise.all(
     types.map(async type => {
-      const service = getServiceByportfolioType(type);
+      const service = getServiceByPortfolioType(type);
       return await service.getTotalPosition();
     })
   );
@@ -45,7 +45,7 @@ const getTotalPosition = async portfolioType => {
 };
 
 const getHistory = async portfolioType => {
-  const service = getServiceByportfolioType(portfolioType);
+  const service = getServiceByPortfolioType(portfolioType);
   return service.getHistory();
 };
 
