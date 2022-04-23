@@ -1,4 +1,4 @@
-import googleSheets from '../providers/GoogleSheets';
+import googleSheets from '../providers/googleSheets';
 import fixedService from './fixed';
 import stockService from './stock';
 import cryptoService from './crypto';
