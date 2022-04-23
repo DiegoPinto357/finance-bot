@@ -3,7 +3,8 @@ import fixedService from './fixed';
 import stockService from './stock';
 import cryptoService from './crypto';
 
-const getAssetsList = assets => assets.map(({ asset }) => asset);
+const getAssetsList = assets =>
+  assets ? assets.map(({ asset }) => asset) : [];
 
 const filterAssets = (balance, assets) => {
   const assetList = getAssetsList(assets);
