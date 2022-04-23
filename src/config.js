@@ -14,7 +14,7 @@ export default {
         BNB: { contract: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' },
         BUSD: { contract: '0xe9e7cea3dedca5984780bafc599bd69add087d56' },
         DOGS: { contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e' },
-        TITANO: { contract: '0xBA96731324dE188ebC1eD87ca74544dDEbC07D7f' },
+        TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },
       },
       polygon: {
         SPHERE: { contract: '0x8d546026012bf75073d8a586f24a5d5ff75b9716' },
