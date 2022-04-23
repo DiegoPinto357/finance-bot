@@ -1,0 +1,42 @@
+[
+  {
+    "asset": "MXRF11",
+    "score": 7,
+    "amount": 10
+  },
+  {
+    "asset": "XPLG11",
+    "score": 7,
+    "amount": 5
+  },
+  {
+    "asset": "VISC11",
+    "score": 5,
+    "amount": 3
+  },
+  {
+    "asset": "BCFF11",
+    "score": 7,
+    "amount": 9
+  },
+  {
+    "asset": "ALZR11",
+    "score": 6,
+    "amount": 5
+  },
+  {
+    "asset": "CPTS11",
+    "score": 7,
+    "amount": 7
+  },
+  {
+    "asset": "KNRI11",
+    "score": 9,
+    "amount": 6
+  },
+  {
+    "asset": "HGLG11",
+    "score": 9,
+    "amount": 6
+  }
+]

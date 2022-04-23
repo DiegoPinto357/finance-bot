@@ -1,0 +1,22 @@
+[
+  {
+    "asset": "DOGS-BNB-LP",
+    "depositBRL": 250,
+    "depositAmount": 0.078,
+    "currentAmount": 0.078,
+    "withdrawalFee": 0,
+    "performanceFee": 0,
+    "network": "bsc",
+    "contractAddress": "0x761C695d5EF6e8eFBCF5FaE00035a589eD164774"
+  },
+  {
+    "asset": "PTP-AVAX-LP",
+    "depositBRL": 500,
+    "depositAmount": 2.074109086,
+    "currentAmount": 2.6214689,
+    "withdrawalFee": 0.001,
+    "performanceFee": 0.045,
+    "network": "avalanche",
+    "contractAddress": "0xcdfd91eea657cc2701117fe9711c9a4f61feed23"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  { "asset": "BTC", "price": 191558 },
+  { "asset": "ETH", "price": 14262.47 },
+  { "asset": "BNB", "price": 1964 },
+  { "asset": "LINK", "price": 65.7 },
+  { "asset": "XRP", "price": 3.473 },
+  { "asset": "ADA", "price": 4.373 },
+  { "asset": "VET", "price": 0.2789808 },
+  { "asset": "MATIC", "price": 6.73 },
+  { "asset": "ATOM", "price": 110.8 },
+  { "asset": "FTM", "price": 5.36 },
+  { "asset": "BUSD", "price": 4.829 },
+  { "asset": "BRL", "price": 1 },
+  { "asset": "SOL", "price": 486.3 },
+  { "asset": "DOT", "price": 88.34 },
+  { "asset": "RUNE", "price": 41.014016 },
+  { "asset": "LUNA", "price": 447.8 },
+  { "asset": "AVAX", "price": 358 },
+  { "asset": "USDT", "price": 4.829 },
+  { "asset": "USDC", "price": 4.829 }
+]

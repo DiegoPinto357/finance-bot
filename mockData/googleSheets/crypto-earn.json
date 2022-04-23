@@ -1,0 +1,58 @@
+[
+  {
+    "asset": "ADA",
+    "amount": 64
+  },
+  {
+    "asset": "ATOM",
+    "amount": 2
+  },
+  {
+    "asset": "AVAX",
+    "amount": 0.48276506
+  },
+  {
+    "asset": "BNB",
+    "amount": 0.009
+  },
+  {
+    "asset": "BRL",
+    "amount": 60
+  },
+  {
+    "asset": "BTC",
+    "amount": 0.00505753
+  },
+  {
+    "asset": "BUSD",
+    "amount": 62.49087059
+  },
+  {
+    "asset": "DOT",
+    "amount": 1.97780312
+  },
+  {
+    "asset": "ETH",
+    "amount": 0.04092952
+  },
+  {
+    "asset": "FTM",
+    "amount": 24.69181
+  },
+  {
+    "asset": "LUNA",
+    "amount": 0.666
+  },
+  {
+    "asset": "MATIC",
+    "amount": 22
+  },
+  {
+    "asset": "SOL",
+    "amount": 0.2
+  },
+  {
+    "asset": "VET",
+    "amount": 589
+  }
+]

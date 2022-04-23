@@ -1,0 +1,19 @@
+[
+  { "asset": "BTC", "free": "0.00206574", "locked": "0.00000000" },
+  { "asset": "ETH", "free": "0.00547033", "locked": "0.00000000" },
+  { "asset": "BNB", "free": "0.03069372", "locked": "0.00000000" },
+  { "asset": "LINK", "free": "3.66580785", "locked": "0.00000000" },
+  { "asset": "XRP", "free": "96.02037104", "locked": "0.00000000" },
+  { "asset": "ADA", "free": "46.18278395", "locked": "0.00000000" },
+  { "asset": "VET", "free": "289.66647000", "locked": "0.00000000" },
+  { "asset": "MATIC", "free": "15.18175497", "locked": "0.00000000" },
+  { "asset": "ATOM", "free": "1.56724836", "locked": "0.00000000" },
+  { "asset": "FTM", "free": "4.51791910", "locked": "0.00000000" },
+  { "asset": "BUSD", "free": "4.02673573", "locked": "0.00000000" },
+  { "asset": "BRL", "free": "16.20811709", "locked": "0.00000000" },
+  { "asset": "SOL", "free": "0.12758797", "locked": "0.00000000" },
+  { "asset": "DOT", "free": "1.40269252", "locked": "0.00000000" },
+  { "asset": "RUNE", "free": "4.49919000", "locked": "0.00000000" },
+  { "asset": "LUNA", "free": "0.20267003", "locked": "0.00000000" },
+  { "asset": "AVAX", "free": "0.28820580", "locked": "0.00000000" }
+]
