@@ -5,7 +5,7 @@
   "main": "./src/cli/index.js",
   "type": "module",
   "scripts": {
-    "test": "jest --watch",
+    "test": "NODE_ENV='test' jest --watch",
     "cli": "node --experimental-specifier-resolution=node ./src/cli/index.js "
   },
   "repository": {
