@@ -1,20 +1,6 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { GoogleSpreadsheet, testDataBuffer } from 'google-spreadsheet';
 import googleSheets from './googleSheets';
 import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
-
-jest.mock('google-spreadsheet');
-
-const mockGoogleSpreadsheetInstance = GoogleSpreadsheet.mock.instances[0];
-mockGoogleSpreadsheetInstance.sheetsByTitle = {
-  'test-sheet': {
-    getRows: jest.fn(() =>
-      mockSheetData.map(row => ({
-        ...row,
-        _sheet: { headerValues: Object.keys(row) },
-      }))
-    ),
-  },
-};
 
 describe('googleSheets provider', () => {
   it('loads a sheet', async () => {
@@ -22,5 +8,15 @@ describe('googleSheets provider', () => {
     expect(sheetData).toEqual(mockSheetData);
   });
 
-  it('writes a value in a cell', () => {});
+  it('writes a value in a cell', async () => {
+    await googleSheets.writeValue('test-sheet', {
+      index: { key: 'asset', value: 'BTC' },
+      target: { key: 'score', value: 20 },
+    });
+
+    const changedRow = testDataBuffer.find(row => row.asset === 'BTC');
+
+    expect(changedRow.save).toBeCalledTimes(1);
+    expect(changedRow.score).toEqual(20);
+  });
 });
