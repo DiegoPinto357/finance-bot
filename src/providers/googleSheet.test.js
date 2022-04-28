@@ -1,4 +1,4 @@
-import { GoogleSpreadsheet, testDataBuffer } from 'google-spreadsheet';
+import { testDataBuffer } from 'google-spreadsheet';
 import googleSheets from './googleSheets';
 import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
 

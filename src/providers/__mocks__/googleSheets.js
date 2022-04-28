@@ -3,11 +3,30 @@ import path from 'path';
 
 const mockDir = `${path.resolve()}/mockData/googleSheets/`;
 
+let dataBuffer = {};
+
 const loadSheet = jest.fn(async sheetTitle => {
   const filename = `${mockDir}${sheetTitle}.json`;
-  return JSON.parse(await fs.readFile(filename, 'utf-8'));
+
+  if (!dataBuffer[sheetTitle]) {
+    dataBuffer[sheetTitle] = JSON.parse(await fs.readFile(filename, 'utf-8'));
+    dataBuffer[sheetTitle] = dataBuffer[sheetTitle].map(row => ({
+      ...row,
+      save: jest.fn(),
+    }));
+  }
+
+  return dataBuffer[sheetTitle];
 });
+
+const writeValue = async (sheetTitle, { index, target }) => {
+  const rows = dataBuffer[sheetTitle];
+  const rowIndex = rows.findIndex(row => row[index.key] === index.value);
+  rows[rowIndex][target.key] = target.value;
+  await rows[rowIndex].save();
+};
 
 export default {
   loadSheet,
+  writeValue,
 };
