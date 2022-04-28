@@ -86,6 +86,25 @@ const getBalance = async portfolioName => {
   };
 };
 
+const deposit = async ({ value, portfolio, assetClass, assetName }) => {
+  const portfolioList = await googleSheets.loadSheet('portfolio');
+  const portfolioItem = portfolioList.find(
+    item => item.class === assetClass && item.asset === assetName
+  );
+
+  const totalAssetValue = await fixedService.getValueByAsset(assetName); // TODO make it for every class/service
+
+  const currentValue = totalAssetValue * portfolioItem[portfolio];
+  const newValue = currentValue + value;
+  const newRatio = newValue / totalAssetValue;
+
+  await googleSheets.writeValue('portfolio', {
+    index: { key: 'asset', value: assetName }, // TODO consider assetClass also
+    target: { key: portfolio, value: newRatio },
+  });
+};
+
 export default {
   getBalance,
+  deposit,
 };

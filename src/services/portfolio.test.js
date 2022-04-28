@@ -1,4 +1,4 @@
-import portfolio from './portfolio';
+import portfolioService from './portfolio';
 
 jest.mock('../providers/googleSheets');
 jest.mock('../providers/tradingView');
@@ -6,10 +6,13 @@ jest.mock('../providers/binance');
 jest.mock('../providers/coinMarketCap');
 jest.mock('../providers/blockchain');
 
+const getAssetValeuFromBalance = (balance, assetClass, assetName) =>
+  balance.balance[assetClass].find(item => item.asset === assetName).value;
+
 describe('portfolio service', () => {
   describe('getBalance', () => {
     it('gets the balance for portfolio "previdencia"', async () => {
-      const balance = await portfolio.getBalance('previdencia');
+      const balance = await portfolioService.getBalance('previdencia');
       expect(balance).toEqual({
         balance: {
           crypto: [
@@ -32,8 +35,23 @@ describe('portfolio service', () => {
       });
     });
 
+    it('gets the balance for portfolio "suricat"', async () => {
+      const balance = await portfolioService.getBalance('suricat');
+      expect(balance).toEqual({
+        balance: {
+          crypto: [
+            { asset: 'hodl', value: 244.33867596477316 },
+            { asset: 'defi', value: 252.12802232899193 },
+          ],
+          fixed: [{ asset: 'nubank', value: 4370.80325478285 }],
+          stock: [],
+        },
+        total: 4867.269953076615,
+      });
+    });
+
     it('gets the balance for portfolio "temp"', async () => {
-      const balance = await portfolio.getBalance('temp');
+      const balance = await portfolioService.getBalance('temp');
       expect(balance).toEqual({
         balance: {
           crypto: [],
@@ -43,5 +61,81 @@ describe('portfolio service', () => {
         total: 0,
       });
     });
+  });
+
+  describe('deposit', () => {
+    const deposits = [
+      {
+        depositValue: 1000,
+        portfolioName: 'suricat',
+        assetClass: 'fixed',
+        assetName: 'nubank',
+        sidePortfolioName: 'congelamentoSuricats',
+      },
+      {
+        depositValue: 99.99,
+        portfolioName: 'suricat',
+        assetClass: 'fixed',
+        assetName: 'nubank',
+        sidePortfolioName: 'congelamentoSuricats',
+      },
+      {
+        depositValue: 10,
+        portfolioName: 'suricat',
+        assetClass: 'fixed',
+        assetName: 'nubank',
+        sidePortfolioName: 'reformaCasa',
+      },
+      {
+        depositValue: 150,
+        portfolioName: 'suricat',
+        assetClass: 'fixed',
+        assetName: 'nubank',
+        sidePortfolioName: 'previdencia',
+      },
+    ];
+
+    it.each(deposits)(
+      'deposits $depositValue on $portfolioName ($assetClass/$assetName) - also checks $sidePortfolioName',
+      async () => {
+        const depositValue = 1000;
+        const portfolioName = 'suricat';
+        const assetClass = 'fixed';
+        const assetName = 'nubank';
+        const sidePortfolioName = 'congelamentoSuricats';
+
+        const currentBalance = await portfolioService.getBalance(portfolioName);
+        const currentAssetValue = getAssetValeuFromBalance(
+          currentBalance,
+          assetClass,
+          assetName
+        );
+
+        const curentSideBalance = await portfolioService.getBalance(
+          sidePortfolioName
+        );
+
+        await portfolioService.deposit({
+          value: depositValue,
+          portfolio: portfolioName,
+          assetClass,
+          assetName,
+        });
+
+        const newBalance = await portfolioService.getBalance(portfolioName);
+        const newAssetValue = getAssetValeuFromBalance(
+          newBalance,
+          assetClass,
+          assetName
+        );
+
+        const newSideBalance = await portfolioService.getBalance(
+          sidePortfolioName
+        );
+
+        expect(newAssetValue).toBe(currentAssetValue + depositValue);
+        expect(newSideBalance).toEqual(curentSideBalance);
+      }
+    );
   });
 });
