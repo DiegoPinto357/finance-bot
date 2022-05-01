@@ -17,7 +17,7 @@ export default {
         TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },
       },
       polygon: {
-        SPHERE: { contract: '0x8d546026012bf75073d8a586f24a5d5ff75b9716' },
+        SPHERE: { contract: '0x17e9C5b37283ac5fBE527011CeC257b832f03eb3' },
       },
     },
   },
