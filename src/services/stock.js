@@ -50,7 +50,12 @@ const getBalance = async portfolioType => {
   return { balance, total: totalPosition };
 };
 
-const getTotalPosition = async () => {
+const getTotalPosition = async portfolioType => {
+  if (portfolioType) {
+    const balanceWithPrices = await getBalanceWithPrices(portfolioType);
+    return getTotalFromPortfolio(balanceWithPrices);
+  }
+
   const totals = await Promise.all(
     types.map(async type => {
       const balanceWithPrices = await getBalanceWithPrices(type);
