@@ -3,9 +3,11 @@ import { formatCurrency } from '../libs/stringFormat';
 import { formatTable } from '../libs/cliFormat';
 
 export default async (command, args) => {
+  const { type } = args;
+
   switch (command) {
     case 'balance':
-      const { balance, total } = await fixedService.getBalance(args.type);
+      const { balance, total } = await fixedService.getBalance(type);
 
       const formattedBalance = formatTable(balance, [null, formatCurrency]);
 
@@ -14,7 +16,8 @@ export default async (command, args) => {
       break;
 
     case 'total':
-      console.error('Invalid command');
+      const totalPosition = await fixedService.getTotalPosition(type);
+      console.log({ totalPosition });
       break;
 
     default:

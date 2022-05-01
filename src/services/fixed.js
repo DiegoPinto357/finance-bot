@@ -9,15 +9,16 @@ const getBalance = async () => {
   return { balance, total };
 };
 
-const getTotalPosition = async () => await (await getBalance()).total;
+const getTotalPosition = async assetName => {
+  const { balance, total } = await getBalance();
+  if (!assetName) {
+    return total;
+  }
 
-const getValueByAsset = async assetName => {
-  const balance = await googleSheets.loadSheet('fixed');
   return balance.find(({ asset }) => asset === assetName).value;
 };
 
 export default {
   getBalance,
   getTotalPosition,
-  getValueByAsset,
 };
