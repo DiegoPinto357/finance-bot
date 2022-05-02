@@ -7,11 +7,17 @@ export default {
     },
     tokens: {
       avalanche: {
-        AVAX: { contract: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' },
+        AVAX: {
+          contract: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
+          native: true,
+        },
         PTP: { contract: '0x22d4002028f537599be9f666d1c4fa138522f9c8' },
       },
       bsc: {
-        BNB: { contract: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' },
+        BNB: {
+          contract: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+          native: true,
+        },
         BUSD: { contract: '0xe9e7cea3dedca5984780bafc599bd69add087d56' },
         DOGS: { contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e' },
         TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },

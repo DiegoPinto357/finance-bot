@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import { buildLogger } from '../libs/logger';
+import delay from '../libs/delay';
 import config from '../config';
+
+// TODO move to a util lib
 
 const log = buildLogger('Blockchain');
 
@@ -19,10 +22,16 @@ const buildUrl = (network, { params }) => {
 };
 
 const getTokenBalance = async ({ asset, network, wallet }) => {
+  // TODO build a better rate limit system
+  await delay(500);
+
+  const { contract, native } = config.crypto.tokens[network][asset];
+  const action = native ? 'balance' : 'tokenbalance';
+
   const params = new URLSearchParams({
     module: 'account',
-    action: 'tokenbalance',
-    contractaddress: config.crypto.tokens[network][asset].contract,
+    action,
+    contractaddress: contract,
     address: wallet || process.env.CRYPTO_WALLET_ADDRESS,
     tag: 'latest',
     apikey: getApiKey(network),
@@ -32,7 +41,12 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
 
   log(`Loading ${asset} token balance on ${network} network`);
   const response = await fetch(url);
-  const { result } = await response.json();
+  const { status, result } = await response.json();
+
+  if (status === '0') {
+    log(`Failed to load ${asset} balance on ${network} network: ${result}`);
+  }
+
   const tokenScale = 1e-18;
   return result * tokenScale;
 };
