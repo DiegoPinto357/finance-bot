@@ -7,7 +7,7 @@ const getTokenBalanceFromBlockchain = async tokenData => {
   const { asset, network, sellFee } = tokenData;
   const [currentAmount, priceBRL] = await Promise.all([
     blockchain.getTokenBalance({ asset, network }),
-    coinMarketCap.getSymbolPrice(asset),
+    coinMarketCap.getSymbolPrice(asset, network),
   ]);
 
   const positionBRL = currentAmount * priceBRL * (1 - sellFee);
@@ -21,10 +21,10 @@ const getTokenBalanceFromBlockchain = async tokenData => {
 
 const getStakingBalance = async () => {
   const balance = await googleSheets.loadSheet('crypto-defi-staking');
-
-  const assets = balance.map(({ asset }) => asset);
   const prices = await Promise.all(
-    assets.map(asset => coinMarketCap.getSymbolPrice(asset))
+    balance.map(({ asset, network }) =>
+      coinMarketCap.getSymbolPrice(asset, network)
+    )
   );
 
   return balance.map((item, index) => ({
@@ -107,7 +107,7 @@ const getFloatBalance = async () => {
   return await Promise.all(
     balance.map(
       async ({ asset, depositBRL, depositAmount, network, amount }) => {
-        const priceBRL = await coinMarketCap.getSymbolPrice(asset);
+        const priceBRL = await coinMarketCap.getSymbolPrice(asset, network);
 
         const currentAmount =
           amount === undefined

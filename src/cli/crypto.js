@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import cryptoService from '../services/crypto';
 import { formatCurrency, formatPercentage } from '../libs/stringFormat';
 import { formatTable } from '../libs/cliFormat';
@@ -48,7 +49,10 @@ export default async (command, args) => {
       const { balance, total } = await cryptoService.getBalance(type);
 
       const formatter = getBalanceFormatter(type);
-      const formattedBalance = formatTable(balance, formatter);
+      const formattedBalance = formatTable(
+        balance.map(item => _.omit(item, 'network')),
+        formatter
+      );
 
       console.table(formattedBalance);
       console.log({ total });

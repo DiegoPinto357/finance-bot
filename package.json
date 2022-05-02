@@ -23,6 +23,7 @@
     "coinmarketcap-api": "^3.1.1",
     "dotenv": "^16.0.0",
     "google-spreadsheet": "^3.2.0",
+    "lodash": "^4.17.21",
     "tradingview-scraper": "^0.3.0",
     "yargs": "^17.3.1"
   },

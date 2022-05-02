@@ -9,7 +9,7 @@ const getTokenTotalValue = async ({ token, network, wallet }) => {
     network,
     wallet,
   });
-  const price = await coinMarketCap.getSymbolPrice(token);
+  const price = await coinMarketCap.getSymbolPrice(token, network);
   return balance * price;
 };
 
