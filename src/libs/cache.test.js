@@ -1,29 +1,46 @@
 import { withCache, clearCache } from './cache';
 
 describe('cache', () => {
-  it('caches a function call', async () => {
+  beforeEach(() => clearCache());
+
+  it('caches a function call with params', async () => {
     let iteration = 0;
-    const func = async param => {
+    const func = async (a, b) => {
       return new Promise(resolve => {
         const result =
           iteration === 0
-            ? `firstResult - ${param}`
-            : `secondResult - ${param}`;
+            ? `firstResult - ${a}, ${b}`
+            : `secondResult - ${a}, ${b}`;
         iteration++;
-        resolve(result);
+        resolve({ data: result });
       });
     };
 
-    const param = 'param';
-    const firstResult = await withCache(param, () => func(param));
-    const cachedResult = await withCache(param, () => func(param));
+    const funcCached = withCache(func);
+
+    const { data: firstResult } = await funcCached('param1', 'param2');
+    const { data: cachedResult } = await funcCached('param1', 'param2');
 
     clearCache();
 
-    const secondResult = await withCache(param, () => func(param));
+    const { data: secondResult } = await funcCached('param1', 'param2');
 
-    expect(firstResult).toBe('firstResult - param');
-    expect(cachedResult).toBe('firstResult - param');
-    expect(secondResult).toBe('secondResult - param');
+    expect(firstResult).toBe('firstResult - param1, param2');
+    expect(cachedResult).toBe('firstResult - param1, param2');
+    expect(secondResult).toBe('secondResult - param1, param2');
+  });
+
+  it('caches multiple function calls without params', async () => {
+    const func1 = async () => Promise.resolve({ data: 'func1Result' });
+    const func2 = async () => Promise.resolve({ data: 'func2Result' });
+
+    const func1Cached = withCache(func1);
+    const func2Cached = withCache(func2);
+
+    const { data: result1 } = await func1Cached();
+    const { data: result2 } = await func2Cached();
+
+    expect(result1).toBe('func1Result');
+    expect(result2).toBe('func2Result');
   });
 });

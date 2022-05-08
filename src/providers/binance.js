@@ -1,4 +1,5 @@
 import { Spot } from '@binance/connector';
+import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
 
 const log = buildLogger('Binance');
@@ -8,15 +9,18 @@ const client = new Spot(
   process.env.BINANCE_API_SECRET
 );
 
+const getAccountInformationCached = withCache(params => client.account(params));
+const getTickerPriceCached = withCache(params => client.tickerPrice(params));
+
 const getAccountInformation = async () => {
   log('Loading account information');
-  const { data } = await client.account();
+  const { data } = await getAccountInformationCached();
   return data;
 };
 
 const getSymbolPriceTicker = async ({ symbol }) => {
   log(`Loading price ticker for ${symbol}`);
-  const { data } = await client.tickerPrice(symbol);
+  const { data } = await getTickerPriceCached(symbol);
   return data;
 };
 
