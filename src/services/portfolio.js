@@ -71,18 +71,25 @@ const getBalance = async portfolioName => {
     return obj;
   }, {});
 
-  const fixedValues = await getFixedValues(assets.fixed);
-  const stockValues = await getStockValues(assets.stock);
-  const cryptoValues = await getCryptoValues(assets.crypto);
+  const [fixedBalance, stockBalance, cryptoBalance] = await Promise.all([
+    getFixedValues(assets.fixed),
+    getStockValues(assets.stock),
+    getCryptoValues(assets.crypto),
+  ]);
 
-  const total =
-    getTotalValue(fixedValues) +
-    getTotalValue(stockValues) +
-    getTotalValue(cryptoValues);
+  const totals = {
+    fixed: getTotalValue(fixedBalance),
+    stock: getTotalValue(stockBalance),
+    crypto: getTotalValue(cryptoBalance),
+  };
 
   return {
-    balance: { fixed: fixedValues, stock: stockValues, crypto: cryptoValues },
-    total,
+    balance: {
+      fixed: { balance: fixedBalance, total: totals.fixed },
+      stock: { balance: stockBalance, total: totals.stock },
+      crypto: { balance: cryptoBalance, total: totals.crypto },
+    },
+    total: totals.fixed + totals.stock + totals.crypto,
   };
 };
 

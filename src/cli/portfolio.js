@@ -4,7 +4,7 @@ export default async (command, args) => {
   switch (command) {
     case 'balance':
       const { balance, total } = await portfolioService.getBalance(args.name);
-      console.log(balance);
+      console.log(JSON.stringify(balance, null, 2));
       console.log({ total });
       break;
 

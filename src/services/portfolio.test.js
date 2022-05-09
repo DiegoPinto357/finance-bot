@@ -6,7 +6,7 @@ jest.mock('../providers/binance');
 jest.mock('../providers/coinMarketCap');
 jest.mock('../providers/blockchain');
 
-const getAssetValeuFromBalance = (balance, assetClass, assetName) =>
+const getAssetValueFromBalance = (balance, assetClass, assetName) =>
   balance.balance[assetClass].find(item => item.asset === assetName).value;
 
 describe('portfolio service', () => {
@@ -15,21 +15,30 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('previdencia');
       expect(balance).toEqual({
         balance: {
-          crypto: [
-            { asset: 'hodl', value: 1434.671471380134 },
-            { asset: 'defi', value: 626.706709661356 },
-          ],
-          fixed: [
-            { asset: 'nubank', value: 1295.807356032464 },
-            { asset: 'nuInvestCDB12_5', value: 1128.63 },
-            { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
-            { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
-          ],
-          stock: [
-            { asset: 'br', value: 3935.519970999999 },
-            { asset: 'us', value: 5407.97 },
-            { asset: 'fii', value: 4550.180026999999 },
-          ],
+          crypto: {
+            balance: [
+              { asset: 'hodl', value: 1434.671471380134 },
+              { asset: 'defi', value: 626.706709661356 },
+            ],
+            total: 1434.671471380134 + 626.706709661356,
+          },
+          fixed: {
+            balance: [
+              { asset: 'nubank', value: 1295.807356032464 },
+              { asset: 'nuInvestCDB12_5', value: 1128.63 },
+              { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
+              { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
+            ],
+            total: 1295.807356032464 + 1128.63 + 1128.9 + 1489.11,
+          },
+          stock: {
+            balance: [
+              { asset: 'br', value: 3935.519970999999 },
+              { asset: 'us', value: 5407.97 },
+              { asset: 'fii', value: 4550.180026999999 },
+            ],
+            total: 3935.519970999999 + 5407.97 + 4550.180026999999,
+          },
         },
         total: 20997.49553507395,
       });
@@ -39,12 +48,18 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('suricat');
       expect(balance).toEqual({
         balance: {
-          crypto: [
-            { asset: 'hodl', value: 244.33867596477316 },
-            { asset: 'defi', value: 252.12802232899193 },
-          ],
-          fixed: [{ asset: 'nubank', value: 4370.80325478285 }],
-          stock: [],
+          crypto: {
+            balance: [
+              { asset: 'hodl', value: 244.33867596477316 },
+              { asset: 'defi', value: 252.12802232899193 },
+            ],
+            total: 244.33867596477316 + 252.12802232899193,
+          },
+          fixed: {
+            balance: [{ asset: 'nubank', value: 4370.80325478285 }],
+            total: 4370.80325478285,
+          },
+          stock: { balance: [], total: 0 },
         },
         total: 4867.269953076615,
       });
@@ -54,9 +69,9 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('temp');
       expect(balance).toEqual({
         balance: {
-          crypto: [],
-          fixed: [],
-          stock: [],
+          crypto: { balance: [], total: 0 },
+          fixed: { balance: [], total: 0 },
+          stock: { balance: [], total: 0 },
         },
         total: 0,
       });
