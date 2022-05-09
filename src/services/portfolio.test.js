@@ -6,8 +6,8 @@ jest.mock('../providers/binance');
 jest.mock('../providers/coinMarketCap');
 jest.mock('../providers/blockchain');
 
-const getAssetValueFromBalance = (balance, assetClass, assetName) =>
-  balance.balance[assetClass].find(item => item.asset === assetName).value;
+const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
+  balance[assetClass].balance.find(item => item.asset === assetName).value;
 
 describe('portfolio service', () => {
   describe('getBalance', () => {
@@ -108,27 +108,48 @@ describe('portfolio service', () => {
         assetName: 'nubank',
         sidePortfolioName: 'previdencia',
       },
+      {
+        depositValue: 100,
+        portfolioName: 'previdencia',
+        assetClass: 'stock',
+        assetName: 'br',
+        sidePortfolioName: null,
+      },
+      {
+        depositValue: 100,
+        portfolioName: 'previdencia',
+        assetClass: 'crypto',
+        assetName: 'hodl',
+        sidePortfolioName: 'financiamento',
+      },
+      {
+        depositValue: 100,
+        portfolioName: 'carro',
+        assetClass: 'crypto',
+        assetName: 'binanceBuffer',
+        sidePortfolioName: 'amortecedor',
+      },
     ];
 
     it.each(deposits)(
-      'deposits $depositValue on $portfolioName ($assetClass/$assetName) - also checks $sidePortfolioName',
-      async () => {
-        const depositValue = 1000;
-        const portfolioName = 'suricat';
-        const assetClass = 'fixed';
-        const assetName = 'nubank';
-        const sidePortfolioName = 'congelamentoSuricats';
-
+      'deposits $depositValue on "$portfolioName" ($assetClass/$assetName) - also checks "$sidePortfolioName"',
+      async ({
+        depositValue,
+        portfolioName,
+        assetClass,
+        assetName,
+        sidePortfolioName,
+      }) => {
         const currentBalance = await portfolioService.getBalance(portfolioName);
-        const currentAssetValue = getAssetValeuFromBalance(
+        const currentAssetValue = getAssetValueFromBalance(
           currentBalance,
           assetClass,
           assetName
         );
 
-        const curentSideBalance = await portfolioService.getBalance(
-          sidePortfolioName
-        );
+        const curentSideBalance = sidePortfolioName
+          ? await portfolioService.getBalance(sidePortfolioName)
+          : null;
 
         await portfolioService.deposit({
           value: depositValue,
@@ -138,15 +159,15 @@ describe('portfolio service', () => {
         });
 
         const newBalance = await portfolioService.getBalance(portfolioName);
-        const newAssetValue = getAssetValeuFromBalance(
+        const newAssetValue = getAssetValueFromBalance(
           newBalance,
           assetClass,
           assetName
         );
 
-        const newSideBalance = await portfolioService.getBalance(
-          sidePortfolioName
-        );
+        const newSideBalance = sidePortfolioName
+          ? await portfolioService.getBalance(sidePortfolioName)
+          : null;
 
         expect(newAssetValue).toBe(currentAssetValue + depositValue);
         expect(newSideBalance).toEqual(curentSideBalance);

@@ -3,6 +3,12 @@ import fixedService from './fixed';
 import stockService from './stock';
 import cryptoService from './crypto';
 
+const services = {
+  fixed: fixedService,
+  stock: stockService,
+  crypto: cryptoService,
+};
+
 const getAssetsList = assets =>
   assets ? assets.map(({ asset }) => asset) : [];
 
@@ -99,7 +105,8 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
     item => item.class === assetClass && item.asset === assetName
   );
 
-  const totalAssetValue = await fixedService.getValueByAsset(assetName); // TODO make it for every class/service
+  const service = services[assetClass];
+  const totalAssetValue = await service.getTotalPosition(assetName);
 
   const currentValue = totalAssetValue * portfolioItem[portfolio];
   const newValue = currentValue + value;

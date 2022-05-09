@@ -286,7 +286,7 @@
   },
   {
     "class": "crypto",
-    "asset": "float",
+    "asset": "binanceBuffer",
     "temp": 0,
     "amortecedor": 0.629069297,
     "financiamento": 0,
