@@ -63,10 +63,14 @@ const getTotalPosition = async portfolioType => {
     })
   );
 
-  return totals.reduce((obj, current, index) => {
-    obj[types[index]] = current;
-    return obj;
-  }, {});
+  return totals.reduce(
+    (obj, current, index) => {
+      obj[types[index]] = current;
+      obj.total = obj.total + current;
+      return obj;
+    },
+    { total: 0 }
+  );
 };
 
 export default {
