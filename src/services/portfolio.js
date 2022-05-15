@@ -52,6 +52,17 @@ const getCryptoValues = async assets => {
   return mapValuesByShares(totalAssetValues, assets);
 };
 
+const getAssetsDataFromPortfolio = portfolio =>
+  portfolio.reduce((obj, item) => {
+    let assetClass = obj[item.class];
+    if (!assetClass) {
+      assetClass = [];
+      obj[item.class] = assetClass;
+    }
+    assetClass.push({ asset: item.asset, share: item.share });
+    return obj;
+  }, {});
+
 const getTotalValue = assetValues =>
   assetValues.reduce((total, current) => total + current.value, 0);
 
@@ -66,16 +77,7 @@ const getBalance = async portfolioName => {
     }))
     .filter(item => item.share);
 
-  // TODO move to function
-  const assets = portfolio.reduce((obj, asset) => {
-    let assetClass = obj[asset.class];
-    if (!assetClass) {
-      assetClass = [];
-      obj[asset.class] = assetClass;
-    }
-    assetClass.push({ asset: asset.asset, share: asset.share });
-    return obj;
-  }, {});
+  const assets = getAssetsDataFromPortfolio(portfolio);
 
   const [fixedBalance, stockBalance, cryptoBalance] = await Promise.all([
     getFixedValues(assets.fixed),
@@ -89,13 +91,66 @@ const getBalance = async portfolioName => {
     crypto: getTotalValue(cryptoBalance),
   };
 
+  const balance = {
+    fixed: { balance: fixedBalance, total: totals.fixed },
+    stock: { balance: stockBalance, total: totals.stock },
+    crypto: { balance: cryptoBalance, total: totals.crypto },
+  };
+
   return {
-    balance: {
-      fixed: { balance: fixedBalance, total: totals.fixed },
-      stock: { balance: stockBalance, total: totals.stock },
-      crypto: { balance: cryptoBalance, total: totals.crypto },
-    },
+    balance,
     total: totals.fixed + totals.stock + totals.crypto,
+  };
+};
+
+const getShares = async portfolioName => {
+  const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
+  const [{ balance, total }, portfolioShares] = await Promise.all([
+    getBalance(portfolioName),
+    googleSheets.loadSheet(sharesSheetTitle),
+  ]);
+
+  const balanceFlat = [
+    ...balance.fixed.balance.map(item => ({ assetClass: 'fixed', ...item })),
+    ...balance.stock.balance.map(item => ({ assetClass: 'stock', ...item })),
+    ...balance.crypto.balance.map(item => ({ assetClass: 'crypto', ...item })),
+  ];
+
+  const shares = portfolioShares.reduce((r, shareItem) => {
+    let asset;
+
+    if (!shareItem.asset) {
+      const assetsByClass = balanceFlat.filter(
+        item => shareItem.assetClass === item.assetClass
+      );
+      const value = getTotalValue(assetsByClass);
+      asset = {
+        assetClass: shareItem.assetClass,
+        asset: shareItem.assetClass,
+        value,
+        targetShare: shareItem.targetShare,
+      };
+    } else {
+      asset = {
+        ...balanceFlat.find(
+          item =>
+            shareItem.assetClass === item.assetClass &&
+            shareItem.asset === item.asset
+        ),
+        targetShare: shareItem.targetShare,
+      };
+    }
+
+    const currentShare = asset.value / total;
+    const diffBRL = asset.targetShare * total - asset.value;
+
+    r.push({ ...asset, currentShare, diffBRL });
+    return r;
+  }, []);
+
+  return {
+    shares: shares.sort((a, b) => b.diffBRL - a.diffBRL),
+    total,
   };
 };
 
@@ -120,5 +175,6 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
 
 export default {
   getBalance,
+  getShares,
   deposit,
 };

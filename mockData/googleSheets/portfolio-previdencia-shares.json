@@ -1,0 +1,32 @@
+[
+  {
+    "assetClass": "fixed",
+    "asset": "",
+    "targetShare": 0.23
+  },
+  {
+    "assetClass": "stock",
+    "asset": "br",
+    "targetShare": 0.19
+  },
+  {
+    "assetClass": "stock",
+    "asset": "fii",
+    "targetShare": 0.22
+  },
+  {
+    "assetClass": "stock",
+    "asset": "us",
+    "targetShare": 0.26
+  },
+  {
+    "assetClass": "crypto",
+    "asset": "hodl",
+    "targetShare": 0.07
+  },
+  {
+    "assetClass": "crypto",
+    "asset": "defi",
+    "targetShare": 0.03
+  }
+]

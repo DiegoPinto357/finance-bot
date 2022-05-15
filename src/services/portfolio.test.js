@@ -13,6 +13,7 @@ describe('portfolio service', () => {
   describe('getBalance', () => {
     it('gets the balance for portfolio "previdencia"', async () => {
       const balance = await portfolioService.getBalance('previdencia');
+
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -74,6 +75,66 @@ describe('portfolio service', () => {
           stock: { balance: [], total: 0 },
         },
         total: 0,
+      });
+    });
+  });
+
+  describe('getShares', () => {
+    it('gets shares for portfolio "previdencia"', async () => {
+      const shares = await portfolioService.getShares('previdencia');
+
+      expect(shares).toEqual({
+        shares: [
+          {
+            assetClass: 'stock',
+            asset: 'fii',
+            value: 4550.180026999999,
+            targetShare: 0.22,
+            currentShare: 0.21670108320296752,
+            diffBRL: 69.2689907162694,
+          },
+          {
+            assetClass: 'stock',
+            asset: 'br',
+            value: 3935.519970999999,
+            targetShare: 0.19,
+            currentShare: 0.18742806561983338,
+            diffBRL: 54.004180664052,
+          },
+          {
+            assetClass: 'stock',
+            asset: 'us',
+            value: 5407.97,
+            targetShare: 0.26,
+            currentShare: 0.25755309679511995,
+            diffBRL: 51.37883911922745,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'hodl',
+            value: 1434.671471380134,
+            targetShare: 0.07,
+            currentShare: 0.06832583766876754,
+            diffBRL: 35.153216075042565,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'defi',
+            value: 626.706709661356,
+            targetShare: 0.03,
+            currentShare: 0.029846736179298762,
+            diffBRL: 3.218156390862532,
+          },
+          {
+            assetClass: 'fixed',
+            asset: 'fixed',
+            value: 5042.447356032464,
+            targetShare: 0.23,
+            currentShare: 0.2401451805340129,
+            diffBRL: -213.0233829654553,
+          },
+        ],
+        total: 20997.49553507395,
       });
     });
   });
