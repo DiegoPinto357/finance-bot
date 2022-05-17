@@ -1,15 +1,10 @@
 [
   {
     "asset": "PIGS",
-    "depositBRL": 250,
-    "depositAmount": 0.129,
-    "network": "bsc",
-    "amount": 0.176
+    "network": "bsc"
   },
   {
     "asset": "BUSD",
-    "depositBRL": 0,
-    "depositAmount": 0,
     "network": "bsc"
   }
 ]

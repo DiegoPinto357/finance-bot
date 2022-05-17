@@ -19,9 +19,9 @@ describe('portfolio service', () => {
           crypto: {
             balance: [
               { asset: 'hodl', value: 1434.671471380134 },
-              { asset: 'defi', value: 626.706709661356 },
+              { asset: 'defi', value: 609.1621219710817 },
             ],
-            total: 1434.671471380134 + 626.706709661356,
+            total: 1434.671471380134 + 609.1621219710817,
           },
           fixed: {
             balance: [
@@ -41,7 +41,7 @@ describe('portfolio service', () => {
             total: 3935.519970999999 + 5407.97 + 4550.180026999999,
           },
         },
-        total: 20997.49553507395,
+        total: 20979.950947383677,
       });
     });
 
@@ -52,9 +52,9 @@ describe('portfolio service', () => {
           crypto: {
             balance: [
               { asset: 'hodl', value: 244.33867596477316 },
-              { asset: 'defi', value: 252.12802232899193 },
+              { asset: 'defi', value: 245.06972515627345 },
             ],
-            total: 244.33867596477316 + 252.12802232899193,
+            total: 244.33867596477316 + 245.06972515627345,
           },
           fixed: {
             balance: [{ asset: 'nubank', value: 4370.80325478285 }],
@@ -62,7 +62,7 @@ describe('portfolio service', () => {
           },
           stock: { balance: [], total: 0 },
         },
-        total: 4867.269953076615,
+        total: 4860.211655903897,
       });
     });
 
@@ -90,51 +90,51 @@ describe('portfolio service', () => {
             asset: 'fii',
             value: 4550.180026999999,
             targetShare: 0.22,
-            currentShare: 0.21670108320296752,
-            diffBRL: 69.2689907162694,
+            currentShare: 0.21688230055501792,
+            diffBRL: 65.40918142440933,
           },
           {
             assetClass: 'stock',
             asset: 'br',
             value: 3935.519970999999,
             targetShare: 0.19,
-            currentShare: 0.18742806561983338,
-            diffBRL: 54.004180664052,
+            currentShare: 0.1875848032662241,
+            diffBRL: 50.67070900289991,
           },
           {
             assetClass: 'stock',
             asset: 'us',
             value: 5407.97,
             targetShare: 0.26,
-            currentShare: 0.25755309679511995,
-            diffBRL: 51.37883911922745,
+            currentShare: 0.25776847684548115,
+            diffBRL: 46.81724631975612,
           },
           {
             assetClass: 'crypto',
             asset: 'hodl',
             value: 1434.671471380134,
             targetShare: 0.07,
-            currentShare: 0.06832583766876754,
-            diffBRL: 35.153216075042565,
+            currentShare: 0.06838297548827425,
+            diffBRL: 33.925094936723326,
           },
           {
             assetClass: 'crypto',
             asset: 'defi',
-            value: 626.706709661356,
+            value: 609.1621219710817,
             targetShare: 0.03,
-            currentShare: 0.029846736179298762,
-            diffBRL: 3.218156390862532,
+            currentShare: 0.029035440716654665,
+            diffBRL: 20.236406450428603,
           },
           {
             assetClass: 'fixed',
             asset: 'fixed',
             value: 5042.447356032464,
             targetShare: 0.23,
-            currentShare: 0.2401451805340129,
-            diffBRL: -213.0233829654553,
+            currentShare: 0.24034600312834797,
+            diffBRL: -217.0586381342182,
           },
         ],
-        total: 20997.49553507395,
+        total: 20979.950947383677,
       });
     });
   });
