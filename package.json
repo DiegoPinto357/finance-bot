@@ -2,11 +2,11 @@
   "name": "finance-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/cli/index.js",
+  "main": "./src/cli.js",
   "type": "module",
   "scripts": {
     "test": "NODE_ENV='test' jest --watch",
-    "cli": "node --experimental-specifier-resolution=node ./src/cli/index.js "
+    "cli": "node --experimental-specifier-resolution=node ./src/cli.js "
   },
   "repository": {
     "type": "git",

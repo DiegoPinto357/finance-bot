@@ -1,4 +1,4 @@
-import portfolioService from '../services/portfolio';
+import portfolioService from './portfolio.service';
 
 export default async (command, args) => {
   switch (command) {

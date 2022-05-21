@@ -1,5 +1,5 @@
-import blockchain from '../../../providers/blockchain';
-import coinMarketCap from '../../../providers/coinMarketCap';
+import blockchain from '../../../../providers/blockchain';
+import coinMarketCap from '../../../../providers/coinMarketCap';
 
 const getTokens = lpToken => lpToken.split('-').slice(0, 2);
 

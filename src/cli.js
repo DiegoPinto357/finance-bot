@@ -2,11 +2,10 @@
 import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import cryptoContext from './crypto';
-import stockContext from './stock';
-import fixedContext from './fixed';
-import portfolioContext from './portfolio';
-import defaultContext from './default';
+import cryptoContext from './modules/crypto/crypto.cli';
+import stockContext from './modules/stock/stock.cli';
+import fixedContext from './modules/fixed/fixed.cli';
+import portfolioContext from './modules/portfolio/portfolio.cli';
 
 (async () => {
   try {
@@ -31,7 +30,7 @@ import defaultContext from './default';
         break;
 
       default:
-        await defaultContext(command);
+        console.error('Invalid command');
         break;
     }
 

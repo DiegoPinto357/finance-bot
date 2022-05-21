@@ -1,6 +1,6 @@
-import stockService from '../services/stock';
-import { formatCurrency, formatPercentage } from '../libs/stringFormat';
-import { formatTable } from '../libs/cliFormat';
+import stockService from './stock.service';
+import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 export default async (command, args) => {
   const { type } = args;

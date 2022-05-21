@@ -1,5 +1,5 @@
-import googleSheets from '../providers/GoogleSheets';
-import tradingView from '../providers/tradingView';
+import googleSheets from '../../providers/GoogleSheets';
+import tradingView from '../../providers/tradingView';
 
 const types = ['br', 'us', 'fii'];
 

@@ -1,5 +1,5 @@
-import binance from '../../providers/binance';
-import googleSheets from '../../providers/GoogleSheets';
+import binance from '../../../providers/binance';
+import googleSheets from '../../../providers/GoogleSheets';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';

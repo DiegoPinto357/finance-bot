@@ -1,10 +1,10 @@
-import portfolioService from './portfolio';
+import portfolioService from './portfolio.service';
 
-jest.mock('../providers/googleSheets');
-jest.mock('../providers/tradingView');
-jest.mock('../providers/binance');
-jest.mock('../providers/coinMarketCap');
-jest.mock('../providers/blockchain');
+jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/tradingView');
+jest.mock('../../providers/binance');
+jest.mock('../../providers/coinMarketCap');
+jest.mock('../../providers/blockchain');
 
 const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
   balance[assetClass].balance.find(item => item.asset === assetName).value;

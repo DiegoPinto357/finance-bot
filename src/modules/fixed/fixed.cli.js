@@ -1,6 +1,6 @@
-import fixedService from '../services/fixed';
-import { formatCurrency } from '../libs/stringFormat';
-import { formatTable } from '../libs/cliFormat';
+import fixedService from './fixed.service';
+import { formatCurrency } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 export default async (command, args) => {
   const { type } = args;

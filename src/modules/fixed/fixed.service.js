@@ -1,4 +1,4 @@
-import googleSheets from '../providers/GoogleSheets';
+import googleSheets from '../../providers/GoogleSheets';
 
 const getTotal = balance =>
   balance.reduce((total, { value }) => total + value, 0);

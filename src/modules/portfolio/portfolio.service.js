@@ -1,7 +1,7 @@
-import googleSheets from '../providers/googleSheets';
-import fixedService from './fixed';
-import stockService from './stock';
-import cryptoService from './crypto';
+import googleSheets from '../../providers/googleSheets';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service';
 
 const services = {
   fixed: fixedService,

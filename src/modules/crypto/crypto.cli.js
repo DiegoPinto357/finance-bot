@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import cryptoService from '../services/crypto';
-import { formatCurrency, formatPercentage } from '../libs/stringFormat';
-import { formatTable } from '../libs/cliFormat';
+import cryptoService from './crypto.service';
+import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 const getBalanceFormatter = type => {
   switch (type) {

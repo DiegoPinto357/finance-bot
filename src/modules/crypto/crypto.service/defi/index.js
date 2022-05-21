@@ -1,6 +1,6 @@
-import blockchain from '../../../providers/blockchain';
-import coinMarketCap from '../../../providers/coinMarketCap';
-import googleSheets from '../../../providers/GoogleSheets';
+import blockchain from '../../../../providers/blockchain';
+import coinMarketCap from '../../../../providers/coinMarketCap';
+import googleSheets from '../../../../providers/GoogleSheets';
 import liquidityPool from './liquidityPool';
 
 const getTokenBalanceFromBlockchain = async tokenData => {

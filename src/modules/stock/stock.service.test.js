@@ -1,7 +1,7 @@
-import stock from './stock';
+import stock from './stock.service';
 
-jest.mock('../providers/googleSheets');
-jest.mock('../providers/tradingView');
+jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/tradingView');
 
 describe('stock service', () => {
   describe('getTotalPosition', () => {
