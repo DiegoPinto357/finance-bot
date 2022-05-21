@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "NODE_ENV='test' jest --watch",
-    "cli": "node --experimental-specifier-resolution=node ./src/cli.js "
+    "cli": "node --experimental-specifier-resolution=node ./src/cli.js",
+    "server": "node --experimental-specifier-resolution=node ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "@binance/connector": "^1.8.1",
     "coinmarketcap-api": "^3.1.1",
     "dotenv": "^16.0.0",
+    "express": "^4.18.1",
     "google-spreadsheet": "^3.2.0",
     "lodash": "^4.17.21",
     "object-hash": "^3.0.0",
