@@ -6,7 +6,13 @@ export default async (command, args) => {
       const { balance, total: balanceTotal } =
         await portfolioService.getBalance(args.name);
 
-      console.table(balance);
+      const flatBalance = [
+        ...balance.fixed.balance,
+        ...balance.stock.balance,
+        ...balance.crypto.balance,
+      ];
+
+      console.table(flatBalance);
       console.log({ balanceTotal });
       break;
 
