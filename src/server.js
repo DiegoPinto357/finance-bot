@@ -6,7 +6,7 @@ import { buildLogger } from './libs/logger';
 import cryptoRouter from './modules/crypto/crypto.router';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 const log = buildLogger('HTTP Server');
 
