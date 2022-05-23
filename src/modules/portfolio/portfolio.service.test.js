@@ -95,7 +95,7 @@ describe('portfolio service', () => {
         stock: { balance: expect.any(Array), total: expect.any(Number) },
       });
 
-      // expect(googleSheets.loadSheet).toBeCalledTimes(13);
+      expect(googleSheets.loadSheet).toBeCalledTimes(13);
 
       expect(balance).toEqual({
         balance: {
