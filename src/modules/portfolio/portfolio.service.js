@@ -78,9 +78,9 @@ const getBalanceByPortfolioName = async (portfolios, portfolioName) => {
   const assets = getAssetsDataFromPortfolio(portfolio);
 
   const [fixedBalance, stockBalance, cryptoBalance] = await Promise.all([
-    getFixedValues(assets.fixed),
-    getStockValues(assets.stock),
-    getCryptoValues(assets.crypto),
+    assets.fixed ? getFixedValues(assets.fixed) : [],
+    assets.stock ? getStockValues(assets.stock) : [],
+    assets.crypto ? getCryptoValues(assets.crypto) : [],
   ]);
 
   const totals = {

@@ -1,3 +1,4 @@
+import googleSheets from '../../providers/googleSheets';
 import portfolioService from './portfolio.service';
 
 jest.mock('../../providers/googleSheets');
@@ -10,10 +11,13 @@ const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
   balance[assetClass].balance.find(item => item.asset === assetName).value;
 
 describe('portfolio service', () => {
+  beforeEach(() => jest.clearAllMocks());
+
   describe('getBalance', () => {
     it('gets the balance for portfolio "previdencia"', async () => {
       const balance = await portfolioService.getBalance('previdencia');
 
+      expect(googleSheets.loadSheet).toBeCalledTimes(13);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -47,6 +51,8 @@ describe('portfolio service', () => {
 
     it('gets the balance for portfolio "suricat"', async () => {
       const balance = await portfolioService.getBalance('suricat');
+
+      expect(googleSheets.loadSheet).toBeCalledTimes(10);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -68,6 +74,8 @@ describe('portfolio service', () => {
 
     it('gets the balance for portfolio "temp"', async () => {
       const balance = await portfolioService.getBalance('temp');
+
+      expect(googleSheets.loadSheet).toBeCalledTimes(1);
       expect(balance).toEqual({
         balance: {
           crypto: { balance: [], total: 0 },
@@ -86,6 +94,8 @@ describe('portfolio service', () => {
         fixed: { balance: expect.any(Array), total: expect.any(Number) },
         stock: { balance: expect.any(Array), total: expect.any(Number) },
       });
+
+      // expect(googleSheets.loadSheet).toBeCalledTimes(13);
 
       expect(balance).toEqual({
         balance: {
