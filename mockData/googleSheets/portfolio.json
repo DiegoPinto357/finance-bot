@@ -58,7 +58,7 @@
   },
   {
     "class": "fixed",
-    "asset": "XPWesternAsset ",
+    "asset": "xpWesternAsset",
     "temp": 0,
     "amortecedor": 0,
     "financiamento": 0,

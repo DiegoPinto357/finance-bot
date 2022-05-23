@@ -1,10 +1,18 @@
 import portfolioService from './portfolio.service';
 
 export default async (command, args) => {
+  const { name } = args;
+
   switch (command) {
     case 'balance':
       const { balance, total: balanceTotal } =
-        await portfolioService.getBalance(args.name);
+        await portfolioService.getBalance(name);
+
+      if (!name) {
+        console.log(JSON.stringify(balance, null, 2));
+        console.log(balanceTotal);
+        break;
+      }
 
       const flatBalance = [
         ...balance.fixed.balance,
@@ -17,7 +25,7 @@ export default async (command, args) => {
       break;
 
     case 'shares':
-      const { shares, total } = await portfolioService.getShares(args.name);
+      const { shares, total } = await portfolioService.getShares(name);
 
       console.table(shares);
       console.log({ total });
