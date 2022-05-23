@@ -77,6 +77,46 @@ describe('portfolio service', () => {
         total: 0,
       });
     });
+
+    it('gets the balance of all portfolios when no portfolio name is provided', async () => {
+      const balance = await portfolioService.getBalance();
+
+      const expectedBalance = expect.objectContaining({
+        crypto: { balance: expect.any(Array), total: expect.any(Number) },
+        fixed: { balance: expect.any(Array), total: expect.any(Number) },
+        stock: { balance: expect.any(Array), total: expect.any(Number) },
+      });
+
+      expect(balance).toEqual({
+        balance: {
+          temp: { balance: expectedBalance, total: expect.any(Number) },
+          amortecedor: { balance: expectedBalance, total: expect.any(Number) },
+          financiamento: {
+            balance: expectedBalance,
+            total: expect.any(Number),
+          },
+          viagem: { balance: expectedBalance, total: expect.any(Number) },
+          reformaCasa: { balance: expectedBalance, total: expect.any(Number) },
+          previdencia: { balance: expectedBalance, total: expect.any(Number) },
+          leni: { balance: expectedBalance, total: expect.any(Number) },
+          mae: { balance: expectedBalance, total: expect.any(Number) },
+          seguroCarro: { balance: expectedBalance, total: expect.any(Number) },
+          manutencaoCarro: {
+            balance: expectedBalance,
+            total: expect.any(Number),
+          },
+          impostos: { balance: expectedBalance, total: expect.any(Number) },
+          suricat: { balance: expectedBalance, total: expect.any(Number) },
+          congelamentoSuricats: {
+            balance: expectedBalance,
+            total: expect.any(Number),
+          },
+          carro: { balance: expectedBalance, total: expect.any(Number) },
+          rendaPassiva: { balance: expectedBalance, total: expect.any(Number) },
+        },
+        total: expect.any(Number),
+      });
+    });
   });
 
   describe('getShares', () => {

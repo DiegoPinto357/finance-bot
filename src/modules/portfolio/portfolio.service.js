@@ -66,9 +66,7 @@ const getAssetsDataFromPortfolio = portfolio =>
 const getTotalValue = assetValues =>
   assetValues.reduce((total, current) => total + current.value, 0);
 
-const getBalance = async portfolioName => {
-  const portfolios = await googleSheets.loadSheet('portfolio');
-
+const getBalanceByPortfolioName = async (portfolios, portfolioName) => {
   const portfolio = portfolios
     .map(item => ({
       class: item.class,
@@ -101,6 +99,38 @@ const getBalance = async portfolioName => {
     balance,
     total: totals.fixed + totals.stock + totals.crypto,
   };
+};
+
+const getBalance = async portfolioName => {
+  const portfolios = await googleSheets.loadSheet('portfolio');
+
+  const reservedKeys = ['class', 'asset', 'save'];
+  const names = Object.keys(portfolios[0]).filter(
+    item => !reservedKeys.includes(item)
+  );
+
+  if (!portfolioName) {
+    const balanceArray = await Promise.all(
+      names.map(async name => ({
+        [name]: await getBalanceByPortfolioName(portfolios, name),
+      }))
+    );
+
+    const { balance, total } = balanceArray.reduce(
+      ({ balance, total }, item) => ({
+        balance: { ...balance, ...item },
+        total: total + Object.values(item)[0].total,
+      }),
+      { balance: {}, total: 0 }
+    );
+
+    return {
+      balance,
+      total,
+    };
+  }
+
+  return await getBalanceByPortfolioName(portfolios, portfolioName);
 };
 
 const getShares = async portfolioName => {
