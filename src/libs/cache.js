@@ -3,17 +3,24 @@ import hash from 'object-hash';
 let cache = {};
 
 export const withCache =
-  func =>
+  (func, options = {}) =>
   async (...params) => {
     const key = hash({ func, params });
-    const cacheData = cache[key];
+    const cacheEntry = cache[key];
 
-    if (cacheData) {
-      return Promise.resolve({ data: cacheData });
+    if (cacheEntry) {
+      const now = Date.now();
+      const { timestamp } = cacheEntry;
+      const { timeToLive } = options;
+
+      const expired = Boolean(timeToLive) && timestamp + timeToLive < now;
+      if (!expired) {
+        return { data: cacheEntry.data };
+      }
     }
 
     const result = await func(...params);
-    cache[key] = result.data;
+    cache[key] = { data: result.data, timestamp: Date.now() };
     return result;
   };
 
