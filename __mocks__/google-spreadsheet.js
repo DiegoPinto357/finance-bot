@@ -6,14 +6,14 @@ export const testDataBuffer = mockSheetData.map(row => ({
   save: jest.fn(),
 }));
 
-export const GoogleSpreadsheet = jest.fn().mockImplementation(() => {
-  return {
-    useServiceAccountAuth: jest.fn(),
-    loadInfo: jest.fn(),
-    sheetsByTitle: {
-      'test-sheet': {
-        getRows: jest.fn(() => testDataBuffer),
-      },
+export const instance = {
+  useServiceAccountAuth: jest.fn(),
+  loadInfo: jest.fn(),
+  sheetsByTitle: {
+    'test-sheet': {
+      getRows: jest.fn(() => testDataBuffer),
     },
-  };
-});
+  },
+};
+
+export const GoogleSpreadsheet = jest.fn().mockImplementation(() => instance);
