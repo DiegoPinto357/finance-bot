@@ -9,8 +9,13 @@ const client = new Spot(
   process.env.BINANCE_API_SECRET
 );
 
-const getAccountInformationCached = withCache(params => client.account(params));
-const getTickerPriceCached = withCache(params => client.tickerPrice(params));
+const getAccountInformationCached = withCache(
+  params => client.account(params),
+  { dataNode: 'data' }
+);
+const getTickerPriceCached = withCache(params => client.tickerPrice(params), {
+  dataNode: 'data',
+});
 
 const getAccountInformation = async () => {
   log('Loading account information');

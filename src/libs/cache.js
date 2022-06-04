@@ -7,6 +7,7 @@ export const withCache =
   async (...params) => {
     const key = hash({ func, params });
     const cacheEntry = cache[key];
+    const { dataNode } = options;
 
     if (cacheEntry) {
       const now = Date.now();
@@ -15,12 +16,13 @@ export const withCache =
 
       const expired = Boolean(timeToLive) && timestamp + timeToLive < now;
       if (!expired) {
-        return { data: cacheEntry.data };
+        return dataNode ? { [dataNode]: cacheEntry.data } : cacheEntry.data;
       }
     }
 
     const result = await func(...params);
-    cache[key] = { data: result.data, timestamp: Date.now() };
+    const data = dataNode ? result[dataNode] : result;
+    cache[key] = { data, timestamp: Date.now() };
     return result;
   };
 

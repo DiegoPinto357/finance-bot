@@ -8,7 +8,9 @@ const client = new CoinMarketCap(process.env.COIMARKETCAP_API_KEY);
 
 const log = buildLogger('CoinMarketCap');
 
-const getQuotesCached = withCache(params => client.getQuotes(params));
+const getQuotesCached = withCache(params => client.getQuotes(params), {
+  dataNode: 'data',
+});
 
 const getSymbolPrice = async (symbol, network) => {
   const id = network && config.crypto.tokens[network]?.[symbol]?.cmcId;
