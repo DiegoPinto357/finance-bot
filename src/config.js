@@ -19,7 +19,10 @@ export default {
           native: true,
         },
         BUSD: { contract: '0xe9e7cea3dedca5984780bafc599bd69add087d56' },
-        DOGS: { contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e' },
+        DOGS: {
+          contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e',
+          cmcId: 17965,
+        },
         TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },
       },
       polygon: {
