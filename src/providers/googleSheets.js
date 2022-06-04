@@ -51,7 +51,7 @@ const getSheet = async sheetTitle => {
 };
 
 const loadSheet = async sheetTitle => {
-  log(`Loadind sheet ${sheetTitle}`);
+  log(`Loadindg sheet ${sheetTitle}`);
   const rows = await getSheetCached(sheetTitle);
 
   return rows.map(row => {
