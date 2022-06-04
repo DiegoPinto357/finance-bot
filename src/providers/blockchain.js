@@ -1,12 +1,15 @@
 import 'dotenv/config';
-import fetch from 'node-fetch';
 import { buildLogger } from '../libs/logger';
+import httpClient from '../libs/httpClient';
+import { withCache } from '../libs/cache';
 import delay from '../libs/delay';
 import config from '../config';
 
-// TODO move to a util lib
-
 const log = buildLogger('Blockchain');
+
+const getCached = withCache(params => httpClient.get(params), {
+  dataNode: 'result',
+});
 
 const apiKeyMapper = {
   avalanche: 'SNOWTRACE_API_KEY',
@@ -40,8 +43,7 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
   const url = buildUrl(network, { params });
 
   log(`Loading ${asset} token balance on ${network} network`);
-  const response = await fetch(url);
-  const { status, result } = await response.json();
+  const { status, result } = await getCached(url);
 
   if (status === '0') {
     log(`Failed to load ${asset} balance on ${network} network: ${result}`);
@@ -62,10 +64,9 @@ const getContractTokenTotalSupply = async ({ network, contractAddress }) => {
   log(
     `Loading total supply of contract ${contractAddress} on ${network} network`
   );
-  const response = await fetch(
+  const { result } = await getCached(
     buildUrl(network, { params: totalSupplyParams })
   );
-  const { result } = await response.json();
 
   return result * 1e-18;
 };
