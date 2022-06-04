@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import 'express-async-errors';
 import express from 'express';
+import cors from 'cors';
 import { buildLogger } from './libs/logger';
 import cryptoRouter from './modules/crypto/crypto.router';
 import portfolioRouter from './modules/portfolio/portfolio.router';
@@ -12,6 +13,7 @@ const port = 3001;
 const log = buildLogger('HTTP Server');
 
 app.use(express.json());
+app.use(cors());
 
 app.all('*', (req, _res, next) => {
   log(`Request at "${req.originalUrl}"`);
