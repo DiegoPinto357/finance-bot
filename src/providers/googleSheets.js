@@ -1,4 +1,5 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
 
 const log = buildLogger('GoogleSheets');
@@ -7,6 +8,8 @@ let doc;
 
 const docStatus = { authenticated: false, loaded: false };
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
+
+const getSheetCached = withCache(params => getSheet(params));
 
 const resetDoc = () => {
   doc = new GoogleSpreadsheet(spreadsheetId);
@@ -27,7 +30,7 @@ const toNumberIfPossible = value => {
   return isNaN(num) || value === '' ? value : num;
 };
 
-const loadDoc = async sheetTitle => {
+const getSheet = async sheetTitle => {
   const { authenticated, loaded } = docStatus;
 
   if (!authenticated) {
@@ -43,13 +46,13 @@ const loadDoc = async sheetTitle => {
     docStatus.loaded = true;
   }
 
-  log(`Loadind sheet ${sheetTitle}`);
   const sheet = doc.sheetsByTitle[sheetTitle];
   return await sheet.getRows();
 };
 
 const loadSheet = async sheetTitle => {
-  const rows = await loadDoc(sheetTitle);
+  log(`Loadind sheet ${sheetTitle}`);
+  const rows = await getSheetCached(sheetTitle);
 
   return rows.map(row => {
     return row._sheet.headerValues.reduce((obj, key) => {
@@ -60,10 +63,10 @@ const loadSheet = async sheetTitle => {
 };
 
 const writeValue = async (sheetTitle, { index, target }) => {
-  const rows = await loadDoc(sheetTitle);
+  log(`Writing on sheet ${sheetTitle}`);
+  const rows = await getSheetCached(sheetTitle);
   const rowIndex = rows.findIndex(row => row[index.key] === index.value);
   rows[rowIndex][target.key] = target.value;
-  log(`Writing on sheet ${sheetTitle}`);
   await rows[rowIndex].save();
 };
 
