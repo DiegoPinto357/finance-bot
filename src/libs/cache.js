@@ -1,4 +1,5 @@
 import hash from 'object-hash';
+import config from '../config';
 
 let cache = {};
 
@@ -12,7 +13,7 @@ export const withCache =
     if (cacheEntry) {
       const now = Date.now();
       const { timestamp } = cacheEntry;
-      const { timeToLive } = options;
+      const timeToLive = options.timeToLive || config.cache.defaultTimeToLive;
 
       const expired = Boolean(timeToLive) && timestamp + timeToLive < now;
       if (!expired) {

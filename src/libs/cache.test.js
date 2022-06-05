@@ -2,6 +2,11 @@ import { withCache, clearCache } from './cache';
 
 jest.useFakeTimers();
 
+const minute = 60 * 1000;
+jest.mock('../config', () => ({
+  cache: { defaultTimeToLive: 5 * minute },
+}));
+
 describe('cache', () => {
   beforeEach(() => clearCache());
 
@@ -73,8 +78,8 @@ describe('cache', () => {
     expect(result2).toBe('func2Result');
   });
 
-  it('does not return cached value after "time to live" has been passed', async () => {
-    let iteration = 0;
+  describe('timeToLive', () => {
+    let iteration;
     const func = async (a, b) => {
       return new Promise(resolve => {
         const result =
@@ -86,40 +91,44 @@ describe('cache', () => {
       });
     };
 
-    const funcCached = withCache(func, { timeToLive: 10 });
+    beforeEach(() => (iteration = 0));
 
-    const firstResult = await funcCached('param1', 'param2');
-    // await delay(20);
-    jest.advanceTimersByTime(20);
-    const secondResult = await funcCached('param1', 'param2');
-    const cachedResult = await funcCached('param1', 'param2');
+    it('assumes default "time to live" value whe it is not provided', async () => {
+      const funcCached = withCache(func);
 
-    expect(firstResult).toBe('firstResult - param1, param2');
-    expect(secondResult).toBe('secondResult - param1, param2');
-    expect(cachedResult).toBe('secondResult - param1, param2');
-  });
+      const firstResult = await funcCached('param1', 'param2');
+      jest.advanceTimersByTime(3 * minute);
+      const cachedResult = await funcCached('param1', 'param2');
+      jest.advanceTimersByTime(3 * minute);
+      const secondResult = await funcCached('param1', 'param2');
 
-  it('returns cached value wehn "time to live" has not been passed', async () => {
-    let iteration = 0;
-    const func = async (a, b) => {
-      return new Promise(resolve => {
-        const result =
-          iteration === 0
-            ? `firstResult - ${a}, ${b}`
-            : `secondResult - ${a}, ${b}`;
-        iteration++;
-        resolve(result);
-      });
-    };
+      expect(firstResult).toBe('firstResult - param1, param2');
+      expect(cachedResult).toBe('firstResult - param1, param2');
+      expect(secondResult).toBe('secondResult - param1, param2');
+    });
 
-    const funcCached = withCache(func, { timeToLive: 10 });
+    it('does not return cached value after "time to live" has been passed', async () => {
+      const funcCached = withCache(func, { timeToLive: 10 });
 
-    const firstResult = await funcCached('param1', 'param2');
-    // await delay(5);
-    jest.advanceTimersByTime(5);
-    const cachedResult = await funcCached('param1', 'param2');
+      const firstResult = await funcCached('param1', 'param2');
+      jest.advanceTimersByTime(20);
+      const secondResult = await funcCached('param1', 'param2');
+      const cachedResult = await funcCached('param1', 'param2');
 
-    expect(firstResult).toBe('firstResult - param1, param2');
-    expect(cachedResult).toBe('firstResult - param1, param2');
+      expect(firstResult).toBe('firstResult - param1, param2');
+      expect(secondResult).toBe('secondResult - param1, param2');
+      expect(cachedResult).toBe('secondResult - param1, param2');
+    });
+
+    it('returns cached value wehn "time to live" has not been passed', async () => {
+      const funcCached = withCache(func, { timeToLive: 10 });
+
+      const firstResult = await funcCached('param1', 'param2');
+      jest.advanceTimersByTime(5);
+      const cachedResult = await funcCached('param1', 'param2');
+
+      expect(firstResult).toBe('firstResult - param1, param2');
+      expect(cachedResult).toBe('firstResult - param1, param2');
+    });
   });
 });

@@ -1,4 +1,7 @@
 export default {
+  cache: {
+    defaultTimeToLive: 5 * 60 * 1000,
+  },
   crypto: {
     networks: {
       bsc: { host: 'https://api.bscscan.com' },
