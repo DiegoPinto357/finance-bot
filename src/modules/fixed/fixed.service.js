@@ -18,7 +18,13 @@ const getTotalPosition = async assetName => {
   return balance.find(({ asset }) => asset === assetName).value;
 };
 
+const getAssetsList = async () => {
+  const sheet = await googleSheets.loadSheet('fixed');
+  return sheet.map(row => row.asset);
+};
+
 export default {
   getBalance,
   getTotalPosition,
+  getAssetsList,
 };
