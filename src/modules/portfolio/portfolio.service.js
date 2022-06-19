@@ -233,8 +233,29 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   });
 };
 
+const updateAbsoluteTable = async () => {
+  const fixedAssets = await fixedService.getAssetsList();
+  const header = ['portfolios', ...fixedAssets];
+
+  const { balance } = await getBalance();
+
+  const rows = Object.entries(balance).map(([portfolio, values]) => {
+    const fixedValues = values.balance.fixed.balance.reduce(
+      (values, { asset, value }) => {
+        values[asset] = value;
+        return values;
+      },
+      {}
+    );
+    return { portfolios: portfolio, ...fixedValues };
+  });
+
+  await googleSheets.setSheet('portfolio-absolute', header, rows);
+};
+
 export default {
   getBalance,
   getShares,
   deposit,
+  updateAbsoluteTable,
 };

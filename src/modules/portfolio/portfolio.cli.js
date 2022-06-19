@@ -35,6 +35,10 @@ export default async (command, args) => {
       console.error('Invalid command');
       break;
 
+    case 'update-table':
+      await portfolioService.updateAbsoluteTable();
+      break;
+
     default:
       console.error('Invalid command');
       break;

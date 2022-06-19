@@ -9,7 +9,7 @@ let doc;
 const docStatus = { authenticated: false, loaded: false };
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
 
-const getSheetCached = withCache(params => getSheet(params));
+const getRowsCached = withCache(params => getRows(params));
 
 const resetDoc = () => {
   doc = new GoogleSpreadsheet(spreadsheetId);
@@ -46,13 +46,17 @@ const getSheet = async sheetTitle => {
     docStatus.loaded = true;
   }
 
-  const sheet = doc.sheetsByTitle[sheetTitle];
+  return doc.sheetsByTitle[sheetTitle];
+};
+
+const getRows = async sheetTitle => {
+  const sheet = await getSheet(sheetTitle);
   return await sheet.getRows();
 };
 
 const loadSheet = async sheetTitle => {
   log(`Loadindg sheet ${sheetTitle}`);
-  const rows = await getSheetCached(sheetTitle);
+  const rows = await getRowsCached(sheetTitle);
 
   return rows.map(row => {
     return row._sheet.headerValues.reduce((obj, key) => {
@@ -62,9 +66,18 @@ const loadSheet = async sheetTitle => {
   });
 };
 
+const setSheet = async (sheetTitle, header, rows) => {
+  log(`Setting sheet ${sheetTitle}`);
+  const sheet = await getSheet(sheetTitle);
+  await sheet.clearRows();
+  await sheet.setHeaderRow(header);
+  await sheet.addRows(rows);
+};
+
 const writeValue = async (sheetTitle, { index, target }) => {
   log(`Writing on sheet ${sheetTitle}`);
-  const rows = await getSheetCached(sheetTitle);
+  const rows = await getRowsCached(sheetTitle);
+
   const rowIndex = rows.findIndex(row => row[index.key] === index.value);
   rows[rowIndex][target.key] = target.value;
   await rows[rowIndex].save();
@@ -73,5 +86,6 @@ const writeValue = async (sheetTitle, { index, target }) => {
 export default {
   resetDoc,
   loadSheet,
+  setSheet,
   writeValue,
 };
