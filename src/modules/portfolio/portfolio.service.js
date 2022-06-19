@@ -233,9 +233,18 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   });
 };
 
+const flattenBalance = (balance, totals) =>
+  balance.reduce((values, { asset, value }) => {
+    values[asset] = value;
+    totals[asset] = totals[asset] + value;
+    return values;
+  }, {});
+
 const updateAbsoluteTable = async () => {
   const fixedAssets = await fixedService.getAssetsList();
-  const assets = [...fixedAssets];
+  const stockAssets = ['float', 'br', 'fii', 'us'];
+  const cryptoAssets = ['binanceBuffer', 'hodl', 'defi', 'defi2'];
+  const assets = [...fixedAssets, ...stockAssets, ...cryptoAssets];
   const header = ['portfolios', ...assets, 'total'];
 
   const { balance } = await getBalance();
@@ -250,16 +259,18 @@ const updateAbsoluteTable = async () => {
 
   const rows = Object.entries(balance).map(
     ([portfolio, { balance, total }]) => {
-      const fixedValues = balance.fixed.balance.reduce(
-        (values, { asset, value }) => {
-          values[asset] = value;
-          totalRow[asset] = totalRow[asset] + value;
-          return values;
-        },
-        {}
-      );
+      const fixedValues = flattenBalance(balance.fixed.balance, totalRow);
+      const stockValues = flattenBalance(balance.stock.balance, totalRow);
+      const cryptoValues = flattenBalance(balance.crypto.balance, totalRow);
+
       totalRow.total = totalRow.total + total;
-      return { portfolios: portfolio, ...fixedValues, total };
+      return {
+        portfolios: portfolio,
+        ...fixedValues,
+        ...stockValues,
+        ...cryptoValues,
+        total,
+      };
     }
   );
 
