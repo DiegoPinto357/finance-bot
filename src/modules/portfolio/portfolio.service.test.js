@@ -10,6 +10,9 @@ jest.mock('../../providers/blockchain');
 const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
   balance[assetClass].balance.find(item => item.asset === assetName).value;
 
+const getAssetValue = ({ balance }, assetClass, asset) =>
+  balance[assetClass].balance.find(item => item.asset === asset).value;
+
 describe('portfolio service', () => {
   beforeEach(() => jest.clearAllMocks());
 
@@ -278,5 +281,58 @@ describe('portfolio service', () => {
         expect(newSideBalance).toEqual(curentSideBalance);
       }
     );
+  });
+
+  describe('swap', () => {
+    it('swap funds within same portfolio', async () => {
+      const value = 100;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', asset: 'nubank' };
+      const destiny = { class: 'crypto', asset: 'defi' };
+      const liquidityPortfolio = 'amortecedor';
+
+      await portfolioService.swap(value, {
+        portfolio,
+        origin,
+        destiny,
+        liquidityPortfolio,
+      });
+
+      const [portfolioBalance, liquidityPortfolioBalance] = await Promise.all([
+        portfolioService.getBalance(portfolio),
+        portfolioService.getBalance(liquidityPortfolio),
+      ]);
+
+      const portfolioOriginValue = getAssetValue(
+        portfolioBalance,
+        origin.class,
+        origin.asset
+      );
+
+      const portfolioDestinyValue = getAssetValue(
+        portfolioBalance,
+        destiny.class,
+        destiny.asset
+      );
+
+      const liquidityPortfolioOriginValue = getAssetValue(
+        liquidityPortfolioBalance,
+        origin.class,
+        origin.asset
+      );
+
+      const liquidityPortfolioDestinyValue = getAssetValue(
+        liquidityPortfolioBalance,
+        destiny.class,
+        destiny.asset
+      );
+
+      expect(portfolioOriginValue).toBe(5153.352886268896 - value);
+      expect(portfolioDestinyValue).toBe(266.5505693764885 + value);
+      expect(liquidityPortfolioOriginValue).toBe(3567.3904 + value);
+      expect(liquidityPortfolioDestinyValue).toBe(2635.9486065341357 - value);
+    });
+
+    it('swap funds within same asset', async () => {});
   });
 });

@@ -233,6 +233,41 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   });
 };
 
+const swap = async (
+  value,
+  { portfolio, origin, destiny, liquidityPortfolio }
+) => {
+  await Promise.all([
+    deposit({
+      value: -value,
+      portfolio,
+      assetClass: origin.class,
+      assetName: origin.asset,
+    }),
+
+    deposit({
+      value,
+      portfolio,
+      assetClass: destiny.class,
+      assetName: destiny.asset,
+    }),
+
+    deposit({
+      value,
+      portfolio: liquidityPortfolio,
+      assetClass: origin.class,
+      assetName: origin.asset,
+    }),
+
+    deposit({
+      value: -value,
+      portfolio: liquidityPortfolio,
+      assetClass: destiny.class,
+      assetName: destiny.asset,
+    }),
+  ]);
+};
+
 const flattenBalance = (balance, totals) =>
   balance.reduce((values, { asset, value }) => {
     values[asset] = value;
@@ -284,5 +319,6 @@ export default {
   getBalance,
   getShares,
   deposit,
+  swap,
   updateAbsoluteTable,
 };
