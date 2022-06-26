@@ -26,7 +26,10 @@ const writeValue = async (sheetTitle, { index, target }) => {
   await rows[rowIndex].save();
 };
 
+const resetMockValues = () => (dataBuffer = {});
+
 export default {
   loadSheet,
   writeValue,
+  resetMockValues,
 };

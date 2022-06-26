@@ -10,8 +10,12 @@ jest.mock('../../providers/blockchain');
 const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
   balance[assetClass].balance.find(item => item.asset === assetName).value;
 
-const getAssetValue = ({ balance }, assetClass, asset) =>
-  balance[assetClass].balance.find(item => item.asset === asset).value;
+const getAssetValue = ({ balance }, assetClass, asset) => {
+  const assetBalance = balance[assetClass].balance.find(
+    item => item.asset === asset
+  );
+  return assetBalance ? assetBalance.value : 0;
+};
 
 describe('portfolio service', () => {
   beforeEach(() => jest.clearAllMocks());
@@ -284,23 +288,25 @@ describe('portfolio service', () => {
   });
 
   describe('swap', () => {
+    beforeEach(() => googleSheets.resetMockValues());
+
     it('swap funds within same portfolio', async () => {
       const value = 100;
       const portfolio = 'financiamento';
       const origin = { class: 'fixed', asset: 'nubank' };
       const destiny = { class: 'crypto', asset: 'defi' };
-      const liquidityPortfolio = 'amortecedor';
+      const liquidity = 'amortecedor';
 
       await portfolioService.swap(value, {
         portfolio,
         origin,
         destiny,
-        liquidityPortfolio,
+        liquidity,
       });
 
-      const [portfolioBalance, liquidityPortfolioBalance] = await Promise.all([
+      const [portfolioBalance, liquidityBalance] = await Promise.all([
         portfolioService.getBalance(portfolio),
-        portfolioService.getBalance(liquidityPortfolio),
+        portfolioService.getBalance(liquidity),
       ]);
 
       const portfolioOriginValue = getAssetValue(
@@ -315,24 +321,71 @@ describe('portfolio service', () => {
         destiny.asset
       );
 
-      const liquidityPortfolioOriginValue = getAssetValue(
-        liquidityPortfolioBalance,
+      const liquidityOriginValue = getAssetValue(
+        liquidityBalance,
         origin.class,
         origin.asset
       );
 
-      const liquidityPortfolioDestinyValue = getAssetValue(
-        liquidityPortfolioBalance,
+      const liquidityDestinyValue = getAssetValue(
+        liquidityBalance,
         destiny.class,
         destiny.asset
       );
 
       expect(portfolioOriginValue).toBe(5153.352886268896 - value);
       expect(portfolioDestinyValue).toBe(266.5505693764885 + value);
-      expect(liquidityPortfolioOriginValue).toBe(3567.3904 + value);
-      expect(liquidityPortfolioDestinyValue).toBe(2635.9486065341357 - value);
+      expect(liquidityOriginValue).toBe(3567.3904 + value);
+      expect(liquidityDestinyValue).toBe(2635.9486065341357 - value);
     });
 
-    it('swap funds within same asset', async () => {});
+    it('swap funds within same asset', async () => {
+      const value = 100;
+      const asset = { class: 'crypto', asset: 'hodl' };
+      const origin = 'amortecedor';
+      const destiny = 'suricat';
+      const liquidity = { class: 'fixed', asset: 'nubank' };
+
+      await portfolioService.swap(value, {
+        asset,
+        origin,
+        destiny,
+        liquidity,
+      });
+
+      const [originBalance, destinyBalance] = await Promise.all([
+        portfolioService.getBalance(origin),
+        portfolioService.getBalance(destiny),
+      ]);
+
+      const portfolioOriginValue = getAssetValue(
+        originBalance,
+        asset.class,
+        asset.asset
+      );
+
+      const portfolioDestinyValue = getAssetValue(
+        destinyBalance,
+        asset.class,
+        asset.asset
+      );
+
+      const liquidityOriginValue = getAssetValue(
+        originBalance,
+        liquidity.class,
+        liquidity.asset
+      );
+
+      const liquidityDestinyValue = getAssetValue(
+        destinyBalance,
+        liquidity.class,
+        liquidity.asset
+      );
+
+      expect(portfolioOriginValue).toBe(2759.1290061635623 - value);
+      expect(portfolioDestinyValue).toBe(244.33867596477316 + value);
+      expect(liquidityOriginValue).toBe(3567.3904 + value);
+      expect(liquidityDestinyValue).toBe(4370.80325478285 - value);
+    });
   });
 });

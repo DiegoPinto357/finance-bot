@@ -235,35 +235,65 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
 
 const swap = async (
   value,
-  { portfolio, origin, destiny, liquidityPortfolio }
+  { portfolio, asset, origin, destiny, liquidity }
 ) => {
+  if (portfolio) {
+    await Promise.all([
+      deposit({
+        value: -value,
+        portfolio,
+        assetClass: origin.class,
+        assetName: origin.asset,
+      }),
+      deposit({
+        value,
+        portfolio,
+        assetClass: destiny.class,
+        assetName: destiny.asset,
+      }),
+      deposit({
+        value,
+        portfolio: liquidity,
+        assetClass: origin.class,
+        assetName: origin.asset,
+      }),
+      deposit({
+        value: -value,
+        portfolio: liquidity,
+        assetClass: destiny.class,
+        assetName: destiny.asset,
+      }),
+    ]);
+    return;
+  }
+
   await Promise.all([
     deposit({
       value: -value,
-      portfolio,
-      assetClass: origin.class,
-      assetName: origin.asset,
+      portfolio: origin,
+      assetClass: asset.class,
+      assetName: asset.asset,
     }),
 
     deposit({
       value,
-      portfolio,
-      assetClass: destiny.class,
-      assetName: destiny.asset,
+      portfolio: destiny,
+      assetClass: asset.class,
+      assetName: asset.asset,
     }),
 
     deposit({
       value,
-      portfolio: liquidityPortfolio,
-      assetClass: origin.class,
-      assetName: origin.asset,
+      portfolio: origin,
+      assetClass: liquidity.class,
+      assetName: liquidity.asset,
     }),
 
     deposit({
       value: -value,
-      portfolio: liquidityPortfolio,
-      assetClass: destiny.class,
-      assetName: destiny.asset,
+      portfolio: destiny,
+      assetClass: liquidity.class,
+      assetName: liquidity.asset,
     }),
   ]);
 };
