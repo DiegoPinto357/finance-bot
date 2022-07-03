@@ -128,6 +128,32 @@ describe('portfolio service', () => {
         total: expect.any(Number),
       });
     });
+
+    it('gets the balance of a list of portfolio names', async () => {
+      const balance = await portfolioService.getBalance([
+        'amortecedor',
+        'suricat',
+      ]);
+
+      const expectedBalance = expect.objectContaining({
+        balance: {
+          crypto: { balance: expect.any(Array), total: expect.any(Number) },
+          fixed: { balance: expect.any(Array), total: expect.any(Number) },
+          stock: { balance: expect.any(Array), total: expect.any(Number) },
+        },
+        total: expect.any(Number),
+      });
+
+      // expect(googleSheets.loadSheet).toBeCalledTimes(13);
+
+      expect(balance).toEqual({
+        balance: {
+          amortecedor: expectedBalance,
+          suricat: expectedBalance,
+        },
+        total: expect.any(Number),
+      });
+    });
   });
 
   describe('getShares', () => {

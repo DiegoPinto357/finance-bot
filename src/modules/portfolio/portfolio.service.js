@@ -119,48 +119,54 @@ const getBalance = async portfolioName => {
       assets.crypto ? cryptoService.getTotalPosition() : { total: 0 },
     ]);
 
-  if (!portfolioName) {
-    const reservedKeys = ['class', 'asset', 'save'];
-    const names = Object.keys(portfolios[0]).filter(
-      item => !reservedKeys.includes(item)
-    );
-
-    const balanceArray = await Promise.all(
-      names.map(async portfolioName => {
-        const currentAssets = getAssetsFromPortfolioName(
-          portfolios,
-          portfolioName
-        );
-
-        return {
-          [portfolioName]: getBalancesByAssets(currentAssets, {
-            fixed: fixedTotalBalance,
-            stock: stockTotalBalance,
-            crypto: cryptoTotalBalance,
-          }),
-        };
-      })
-    );
-
-    const { balance, total } = balanceArray.reduce(
-      ({ balance, total }, item) => ({
-        balance: { ...balance, ...item },
-        total: total + Object.values(item)[0].total,
-      }),
-      { balance: {}, total: 0 }
-    );
-
-    return {
-      balance,
-      total,
-    };
+  if (portfolioName && !Array.isArray(portfolioName)) {
+    return getBalancesByAssets(assets, {
+      fixed: fixedTotalBalance,
+      stock: stockTotalBalance,
+      crypto: cryptoTotalBalance,
+    });
   }
 
-  return getBalancesByAssets(assets, {
-    fixed: fixedTotalBalance,
-    stock: stockTotalBalance,
-    crypto: cryptoTotalBalance,
-  });
+  let names;
+
+  if (Array.isArray(portfolioName)) {
+    names = portfolioName;
+  } else {
+    const reservedKeys = ['class', 'asset', 'save'];
+    names = Object.keys(portfolios[0]).filter(
+      item => !reservedKeys.includes(item)
+    );
+  }
+
+  const balanceArray = await Promise.all(
+    names.map(async portfolioName => {
+      const currentAssets = getAssetsFromPortfolioName(
+        portfolios,
+        portfolioName
+      );
+
+      return {
+        [portfolioName]: getBalancesByAssets(currentAssets, {
+          fixed: fixedTotalBalance,
+          stock: stockTotalBalance,
+          crypto: cryptoTotalBalance,
+        }),
+      };
+    })
+  );
+
+  const { balance, total } = balanceArray.reduce(
+    ({ balance, total }, item) => ({
+      balance: { ...balance, ...item },
+      total: total + Object.values(item)[0].total,
+    }),
+    { balance: {}, total: 0 }
+  );
+
+  return {
+    balance,
+    total,
+  };
 };
 
 const getShares = async portfolioName => {
