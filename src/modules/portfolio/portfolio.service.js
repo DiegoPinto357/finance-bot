@@ -305,13 +305,13 @@ const swap = async (
   ]);
 
   const hasOriginFunds = hasFunds(originBalance, params.origin.asset, value);
-  const hasliquidityFunds = hasFunds(
+  const hasLiquidityFunds = hasFunds(
     liquidityBalance,
     params.liquidityDestiny.asset,
     value
   );
 
-  if (!hasOriginFunds || !hasliquidityFunds) {
+  if (!hasOriginFunds || !hasLiquidityFunds) {
     return { status: 'notEnoughFunds' };
   }
 
