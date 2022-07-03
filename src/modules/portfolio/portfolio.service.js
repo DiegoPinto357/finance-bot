@@ -246,6 +246,18 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   return { status: 'ok' };
 };
 
+const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
+  balance[assetClass].balance.find(item => item.asset === assetName).value;
+
+const hasFunds = (balance, asset, value) => {
+  const currentValue = getAssetValueFromBalance(
+    balance,
+    asset.class,
+    asset.name
+  );
+  return currentValue - value >= 0;
+};
+
 const swap = async (
   value,
   { portfolio, asset, origin, destiny, liquidity }
@@ -286,6 +298,23 @@ const swap = async (
     params.liquidityDestiny.asset = liquidity;
   }
 
+  // TODO get balances in a single call
+  const [originBalance, liquidityBalance] = await Promise.all([
+    getBalance(params.origin.portfolio),
+    getBalance(params.liquidityDestiny.portfolio),
+  ]);
+
+  const hasOriginFunds = hasFunds(originBalance, params.origin.asset, value);
+  const hasliquidityFunds = hasFunds(
+    liquidityBalance,
+    params.liquidityDestiny.asset,
+    value
+  );
+
+  if (!hasOriginFunds || !hasliquidityFunds) {
+    return { status: 'notEnoughFunds' };
+  }
+
   await Promise.all([
     deposit({
       value: -value,
@@ -312,6 +341,8 @@ const swap = async (
       assetName: params.liquidityDestiny.asset.name,
     }),
   ]);
+
+  return { status: 'ok' };
 };
 
 const flattenBalance = (balance, totals) =>
