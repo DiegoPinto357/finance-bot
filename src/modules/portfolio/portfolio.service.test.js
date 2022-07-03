@@ -293,8 +293,8 @@ describe('portfolio service', () => {
     it('swap funds within same portfolio', async () => {
       const value = 100;
       const portfolio = 'financiamento';
-      const origin = { class: 'fixed', asset: 'nubank' };
-      const destiny = { class: 'crypto', asset: 'defi' };
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'crypto', name: 'defi' };
       const liquidity = 'amortecedor';
 
       await portfolioService.swap(value, {
@@ -312,25 +312,25 @@ describe('portfolio service', () => {
       const portfolioOriginValue = getAssetValue(
         portfolioBalance,
         origin.class,
-        origin.asset
+        origin.name
       );
 
       const portfolioDestinyValue = getAssetValue(
         portfolioBalance,
         destiny.class,
-        destiny.asset
+        destiny.name
       );
 
       const liquidityOriginValue = getAssetValue(
         liquidityBalance,
         origin.class,
-        origin.asset
+        origin.name
       );
 
       const liquidityDestinyValue = getAssetValue(
         liquidityBalance,
         destiny.class,
-        destiny.asset
+        destiny.name
       );
 
       expect(portfolioOriginValue).toBe(5153.352886268896 - value);
@@ -341,10 +341,10 @@ describe('portfolio service', () => {
 
     it('swap funds within same asset', async () => {
       const value = 100;
-      const asset = { class: 'crypto', asset: 'hodl' };
+      const asset = { class: 'crypto', name: 'hodl' };
       const origin = 'amortecedor';
       const destiny = 'suricat';
-      const liquidity = { class: 'fixed', asset: 'nubank' };
+      const liquidity = { class: 'fixed', name: 'nubank' };
 
       await portfolioService.swap(value, {
         asset,
@@ -361,25 +361,25 @@ describe('portfolio service', () => {
       const portfolioOriginValue = getAssetValue(
         originBalance,
         asset.class,
-        asset.asset
+        asset.name
       );
 
       const portfolioDestinyValue = getAssetValue(
         destinyBalance,
         asset.class,
-        asset.asset
+        asset.name
       );
 
       const liquidityOriginValue = getAssetValue(
         originBalance,
         liquidity.class,
-        liquidity.asset
+        liquidity.name
       );
 
       const liquidityDestinyValue = getAssetValue(
         destinyBalance,
         liquidity.class,
-        liquidity.asset
+        liquidity.name
       );
 
       expect(portfolioOriginValue).toBe(2759.1290061635623 - value);

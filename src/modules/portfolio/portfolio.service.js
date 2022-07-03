@@ -237,63 +237,66 @@ const swap = async (
   value,
   { portfolio, asset, origin, destiny, liquidity }
 ) => {
-  if (portfolio) {
-    await Promise.all([
-      deposit({
-        value: -value,
-        portfolio,
-        assetClass: origin.class,
-        assetName: origin.asset,
-      }),
-      deposit({
-        value,
-        portfolio,
-        assetClass: destiny.class,
-        assetName: destiny.asset,
-      }),
-      deposit({
-        value,
-        portfolio: liquidity,
-        assetClass: origin.class,
-        assetName: origin.asset,
-      }),
-      deposit({
-        value: -value,
-        portfolio: liquidity,
-        assetClass: destiny.class,
-        assetName: destiny.asset,
-      }),
-    ]);
-    return;
+  const withinSamePortfolio = portfolio && !asset;
+
+  const params = {
+    origin: {},
+    destiny: {},
+    liquidityOrigin: {},
+    liquidityDestiny: {},
+  };
+
+  if (withinSamePortfolio) {
+    // portfolio is constant
+    // another portfolio is the liquidity
+    // different assets are the origin and destiny
+    params.origin.portfolio = portfolio;
+    params.origin.asset = origin;
+    params.destiny.portfolio = portfolio;
+    params.destiny.asset = destiny;
+    params.liquidityOrigin.portfolio = liquidity;
+    params.liquidityOrigin.asset = origin;
+    params.liquidityDestiny.portfolio = liquidity;
+    params.liquidityDestiny.asset = destiny;
+  } else {
+    // withinSameAsset
+    // asset is constant
+    // another asset is the liquidity
+    // different portfolios are the origin and destiny
+    params.origin.portfolio = origin;
+    params.origin.asset = asset;
+    params.destiny.portfolio = destiny;
+    params.destiny.asset = asset;
+    params.liquidityOrigin.portfolio = origin;
+    params.liquidityOrigin.asset = liquidity;
+    params.liquidityDestiny.portfolio = destiny;
+    params.liquidityDestiny.asset = liquidity;
   }
 
   await Promise.all([
     deposit({
       value: -value,
-      portfolio: origin,
-      assetClass: asset.class,
-      assetName: asset.asset,
+      portfolio: params.origin.portfolio,
+      assetClass: params.origin.asset.class,
+      assetName: params.origin.asset.name,
     }),
-
     deposit({
       value,
-      portfolio: destiny,
-      assetClass: asset.class,
-      assetName: asset.asset,
+      portfolio: params.destiny.portfolio,
+      assetClass: params.destiny.asset.class,
+      assetName: params.destiny.asset.name,
     }),
-
     deposit({
       value,
-      portfolio: origin,
-      assetClass: liquidity.class,
-      assetName: liquidity.asset,
+      portfolio: params.liquidityOrigin.portfolio,
+      assetClass: params.liquidityOrigin.asset.class,
+      assetName: params.liquidityOrigin.asset.name,
     }),
-
     deposit({
       value: -value,
-      portfolio: destiny,
-      assetClass: liquidity.class,
-      assetName: liquidity.asset,
+      portfolio: params.liquidityDestiny.portfolio,
+      assetClass: params.liquidityDestiny.asset.class,
+      assetName: params.liquidityDestiny.asset.name,
     }),
   ]);
 };
