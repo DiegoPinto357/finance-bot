@@ -263,7 +263,7 @@ describe('portfolio service', () => {
           ? await portfolioService.getBalance(sidePortfolioName)
           : null;
 
-        await portfolioService.deposit({
+        const result = await portfolioService.deposit({
           value: depositValue,
           portfolio: portfolioName,
           assetClass,
@@ -281,10 +281,42 @@ describe('portfolio service', () => {
           ? await portfolioService.getBalance(sidePortfolioName)
           : null;
 
+        expect(result.status).toBe('ok');
         expect(newAssetValue).toBe(currentAssetValue + depositValue);
         expect(newSideBalance).toEqual(curentSideBalance);
       }
     );
+
+    it('does not deposit negative values (withdraw) when there are no funds available', async () => {
+      const depositValue = -10000;
+      const portfolioName = 'suricat';
+      const assetClass = 'fixed';
+      const assetName = 'nubank';
+
+      const currentBalance = await portfolioService.getBalance(portfolioName);
+      const currentAssetValue = getAssetValueFromBalance(
+        currentBalance,
+        assetClass,
+        assetName
+      );
+
+      const result = await portfolioService.deposit({
+        value: depositValue,
+        portfolio: portfolioName,
+        assetClass,
+        assetName,
+      });
+
+      const newBalance = await portfolioService.getBalance(portfolioName);
+      const newAssetValue = getAssetValueFromBalance(
+        newBalance,
+        assetClass,
+        assetName
+      );
+
+      expect(result.status).toBe('notEnoughFunds');
+      expect(newAssetValue).toBe(currentAssetValue);
+    });
   });
 
   describe('swap', () => {

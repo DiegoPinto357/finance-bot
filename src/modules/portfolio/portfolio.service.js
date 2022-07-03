@@ -225,12 +225,19 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
 
   const currentValue = totalAssetValue * portfolioItem[portfolio];
   const newValue = currentValue + value;
+
+  if (newValue < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
   const newRatio = newValue / totalAssetValue;
 
   await googleSheets.writeValue('portfolio', {
     index: { key: 'asset', value: assetName }, // TODO consider assetClass also
     target: { key: portfolio, value: newRatio },
   });
+
+  return { status: 'ok' };
 };
 
 const swap = async (
