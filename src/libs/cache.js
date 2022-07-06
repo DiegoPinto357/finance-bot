@@ -6,6 +6,10 @@ let cache = {};
 export const withCache =
   (func, options = {}) =>
   async (...params) => {
+    if (config.cache.disabled) {
+      return await func(...params);
+    }
+
     const key = hash({ func, params });
     const cacheEntry = cache[key];
     const { dataNode } = options;

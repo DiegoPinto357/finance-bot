@@ -8,7 +8,10 @@ jest.mock('../config', () => ({
 }));
 
 describe('cache', () => {
-  beforeEach(() => clearCache());
+  beforeEach(() => {
+    jest.resetModules();
+    clearCache();
+  });
 
   it('caches a function call with params', async () => {
     let iteration = 0;
@@ -76,6 +79,34 @@ describe('cache', () => {
 
     expect(result1).toBe('func1Result');
     expect(result2).toBe('func2Result');
+  });
+
+  it('does not caches function if disable config is true', async () => {
+    jest.mock('../config', () => ({
+      cache: { disabled: true },
+    }));
+
+    const cache = require('./cache');
+
+    let iteration = 0;
+    const func = async (a, b) => {
+      return new Promise(resolve => {
+        const result =
+          iteration === 0
+            ? `firstResult - ${a}, ${b}`
+            : `secondResult - ${a}, ${b}`;
+        iteration++;
+        resolve(result);
+      });
+    };
+
+    const funcCached = cache.withCache(func);
+
+    const firstResult = await funcCached('param1', 'param2');
+    const secondResult = await funcCached('param1', 'param2');
+
+    expect(firstResult).toBe('firstResult - param1, param2');
+    expect(secondResult).toBe('secondResult - param1, param2');
   });
 
   describe('timeToLive', () => {
