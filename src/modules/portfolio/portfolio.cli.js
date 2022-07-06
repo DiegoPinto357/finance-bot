@@ -35,6 +35,27 @@ export default async (command, args) => {
       console.error('Invalid command');
       break;
 
+    case 'swap':
+      const { v, portfolio, from, to, l } = args;
+      console.log({ portfolio, from, to, l });
+
+      const originItems = from.split('.');
+      const origin = { class: originItems[0], name: originItems[1] };
+
+      const destinyItems = to.split('.');
+      const destiny = { class: destinyItems[0], name: destinyItems[1] };
+
+      console.log({ origin, destiny });
+
+      const response = await portfolioService.swap(v, {
+        portfolio,
+        origin,
+        destiny,
+        liquidity: l,
+      });
+      console.log(response);
+      break;
+
     case 'update-table':
       await portfolioService.updateAbsoluteTable();
       break;
