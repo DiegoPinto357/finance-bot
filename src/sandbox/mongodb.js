@@ -1,9 +1,8 @@
 import 'dotenv/config';
-import { query } from 'express';
 import { MongoClient } from 'mongodb';
 
 const dbPassword = process.env.MONGODB_PASSWORD;
-const url = `mongodb+srv://finance-bot-admin:${dbPassword}@finance-bot.24mvojo.mongodb.net/test`;
+const url = `mongodb+srv://finance-bot-admin:${dbPassword}@finance-bot.24mvojo.mongodb.net`;
 const client = new MongoClient(url);
 
 async function main() {
