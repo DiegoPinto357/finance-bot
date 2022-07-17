@@ -1,0 +1,164 @@
+[
+  {
+    "type": "br",
+    "asset": "ARZZ3",
+    "score": 7,
+    "amount": 3
+  },
+  {
+    "type": "br",
+    "asset": "B3SA3",
+    "score": 7,
+    "amount": 16
+  },
+  {
+    "type": "br",
+    "asset": "BBSE3",
+    "score": 8,
+    "amount": 13
+  },
+  {
+    "type": "br",
+    "asset": "BIDI4",
+    "score": 8,
+    "amount": 39
+  },
+  {
+    "type": "br",
+    "asset": "CRPG5",
+    "score": 7,
+    "amount": 7
+  },
+  {
+    "type": "br",
+    "asset": "EGIE3",
+    "score": 10,
+    "amount": 8
+  },
+  {
+    "type": "br",
+    "asset": "ENBR3",
+    "score": 4,
+    "amount": 6
+  },
+  {
+    "type": "br",
+    "asset": "EZTC3",
+    "score": 6,
+    "amount": 9
+  },
+  {
+    "type": "br",
+    "asset": "FLRY3",
+    "score": 9,
+    "amount": 16
+  },
+  {
+    "type": "br",
+    "asset": "ITSA3",
+    "score": 8,
+    "amount": 23
+  },
+  {
+    "type": "br",
+    "asset": "ITUB3",
+    "score": 8,
+    "amount": 11
+  },
+  {
+    "type": "br",
+    "asset": "MDIA3",
+    "score": 7,
+    "amount": 8
+  },
+  {
+    "type": "br",
+    "asset": "MRVE3",
+    "score": 7,
+    "amount": 18
+  },
+  {
+    "type": "br",
+    "asset": "ROMI3",
+    "score": 6,
+    "amount": 11
+  },
+  {
+    "type": "br",
+    "asset": "SQIA3",
+    "score": 7,
+    "amount": 14
+  },
+  {
+    "type": "br",
+    "asset": "WEGE3",
+    "score": 7,
+    "amount": 6
+  },
+  {
+    "type": "br",
+    "asset": "WIZS3",
+    "score": 6,
+    "amount": 20
+  },
+  {
+    "type": "fii",
+    "asset": "MXRF11",
+    "score": 7,
+    "amount": 10
+  },
+  {
+    "type": "fii",
+    "asset": "XPLG11",
+    "score": 7,
+    "amount": 5
+  },
+  {
+    "type": "fii",
+    "asset": "VISC11",
+    "score": 5,
+    "amount": 3
+  },
+  {
+    "type": "fii",
+    "asset": "BCFF11",
+    "score": 7,
+    "amount": 9
+  },
+  {
+    "type": "fii",
+    "asset": "ALZR11",
+    "score": 6,
+    "amount": 5
+  },
+  {
+    "type": "fii",
+    "asset": "CPTS11",
+    "score": 7,
+    "amount": 7
+  },
+  {
+    "type": "fii",
+    "asset": "KNRI11",
+    "score": 9,
+    "amount": 6
+  },
+  {
+    "type": "fii",
+    "asset": "HGLG11",
+    "score": 9,
+    "amount": 6
+  },
+  {
+    "type": "us",
+    "asset": "NASD11",
+    "score": 2,
+    "amount": 129
+  },
+  {
+    "type": "us",
+    "asset": "IVVB11",
+    "score": 8,
+    "amount": 19
+  }
+]

@@ -1,11 +1,15 @@
-import googleSheets from '../../providers/GoogleSheets';
+import database from '../../providers/database';
 import tradingView from '../../providers/tradingView';
 
 const types = ['br', 'us', 'fii'];
 
 const getBalanceWithPrices = async portfolioType => {
-  const sheetTitle = `stock-${portfolioType}`;
-  const portfolio = await googleSheets.loadSheet(sheetTitle);
+  const portfolio = await database.find(
+    'assets',
+    'stock',
+    { type: portfolioType },
+    { projection: { _id: 0, type: 0 } }
+  );
 
   const totalScore = portfolio.reduce((total, { score }) => total + score, 0);
 
@@ -58,6 +62,7 @@ const getTotalPosition = async portfolioType => {
 
   const totals = await Promise.all(
     types.map(async type => {
+      // TODO optimize to make a single request
       const balanceWithPrices = await getBalanceWithPrices(type);
       return getTotalFromPortfolio(balanceWithPrices);
     })

@@ -1,6 +1,6 @@
 import stock from './stock.service';
 
-jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/database');
 jest.mock('../../providers/tradingView');
 
 describe('stock service', () => {
