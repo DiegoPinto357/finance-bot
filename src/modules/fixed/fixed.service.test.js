@@ -1,6 +1,6 @@
 import fixed from './fixed.service';
 
-jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/database');
 
 describe('fixed service', () => {
   describe('getTotalPosition', () => {

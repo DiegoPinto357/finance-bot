@@ -1,7 +1,9 @@
 import googleSheets from '../../providers/googleSheets';
+import database from '../../providers/database';
 import portfolioService from './portfolio.service';
 
 jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/database');
 jest.mock('../../providers/tradingView');
 jest.mock('../../providers/binance');
 jest.mock('../../providers/coinMarketCap');
@@ -21,7 +23,8 @@ describe('portfolio service', () => {
     it('gets the balance for portfolio "previdencia"', async () => {
       const balance = await portfolioService.getBalance('previdencia');
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(13);
+      expect(googleSheets.loadSheet).toBeCalledTimes(12);
+      expect(database.find).toBeCalledTimes(1);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -56,7 +59,8 @@ describe('portfolio service', () => {
     it('gets the balance for portfolio "suricat"', async () => {
       const balance = await portfolioService.getBalance('suricat');
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(10);
+      expect(googleSheets.loadSheet).toBeCalledTimes(9);
+      expect(database.find).toBeCalledTimes(1);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -79,7 +83,6 @@ describe('portfolio service', () => {
     it('gets the balance for portfolio "temp"', async () => {
       const balance = await portfolioService.getBalance('temp');
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(1);
       expect(balance).toEqual({
         balance: {
           crypto: { balance: [], total: 0 },
@@ -102,7 +105,8 @@ describe('portfolio service', () => {
         total: expect.any(Number),
       });
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(13);
+      expect(googleSheets.loadSheet).toBeCalledTimes(12);
+      expect(database.find).toBeCalledTimes(1);
 
       expect(balance).toEqual({
         balance: {
@@ -141,7 +145,7 @@ describe('portfolio service', () => {
         total: expect.any(Number),
       });
 
-      // expect(googleSheets.loadSheet).toBeCalledTimes(13);
+      expect(googleSheets.loadSheet).toBeCalledTimes(1);
 
       expect(balance).toEqual({
         balance: {

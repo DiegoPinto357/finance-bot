@@ -2,12 +2,15 @@
 import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import database from './providers/database';
 import cryptoContext from './modules/crypto/crypto.cli';
 import stockContext from './modules/stock/stock.cli';
 import fixedContext from './modules/fixed/fixed.cli';
 import portfolioContext from './modules/portfolio/portfolio.cli';
 
 (async () => {
+  await database.connect();
+
   try {
     const argv = yargs(hideBin(process.argv)).argv;
     const [context, command] = argv._;
