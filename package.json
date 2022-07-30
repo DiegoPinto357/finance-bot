@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "NODE_ENV='test' jest --watch",
+    "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "node --experimental-specifier-resolution=node ./src/cli.js",
     "server": "nodemon --experimental-specifier-resolution=node ./src/server.js"
   },
