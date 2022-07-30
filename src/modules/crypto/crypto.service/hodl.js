@@ -60,7 +60,7 @@ const getPortfolioWithPrices = async () => {
   const [portfolio, binanceEarn, binanceSpotBuffer] = await Promise.all([
     getAssetData('spot'),
     getAssetData('earn'),
-    googleSheets.loadSheet('crypto-spot-buffer'),
+    getAssetData('float'),
   ]);
 
   const { balances: binanceBalance } = await binance.getAccountInformation();

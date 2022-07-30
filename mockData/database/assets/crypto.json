@@ -184,5 +184,41 @@
     "location": "binance",
     "type": "earn",
     "amount": 589
+  },
+  {
+    "asset": "BRL",
+    "location": "binance",
+    "type": "float",
+    "amount": 6.8284
+  },
+  {
+    "asset": "BNB",
+    "location": "binance",
+    "type": "float",
+    "amount": 0
+  },
+  {
+    "asset": "MATIC",
+    "location": "binance",
+    "type": "float",
+    "amount": 0
+  },
+  {
+    "asset": "BTC",
+    "location": "binance",
+    "type": "float",
+    "amount": 0.001754
+  },
+  {
+    "asset": "USDC",
+    "location": "binance",
+    "type": "float",
+    "amount": 373.619526
+  },
+  {
+    "asset": "USDT",
+    "location": "binance",
+    "type": "float",
+    "amount": 1.935353
   }
 ]

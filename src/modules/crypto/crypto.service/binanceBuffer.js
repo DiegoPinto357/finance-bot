@@ -1,11 +1,16 @@
-import googleSheets from '../../../providers/GoogleSheets';
+import database from '../../../providers/database';
 import binance from '../../../providers/binance';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
 
 const getTotalPosition = async () => {
-  const binanceSpotBuffer = await googleSheets.loadSheet('crypto-spot-buffer');
+  const binanceSpotBuffer = await database.find(
+    'assets',
+    'crypto',
+    { location: 'binance', type: 'float' },
+    { projection: { _id: 0 } }
+  );
 
   const assets = binanceSpotBuffer.map(item => item.asset);
 
