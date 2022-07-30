@@ -1,0 +1,70 @@
+[
+  {
+    "asset": "ADA",
+    "score": 6
+  },
+  {
+    "asset": "BNB",
+    "score": 1
+  },
+  {
+    "asset": "ATOM",
+    "score": 5
+  },
+  {
+    "asset": "AVAX",
+    "score": 3.5
+  },
+  {
+    "asset": "BRL",
+    "score": 0.75
+  },
+  {
+    "asset": "BTC",
+    "score": 12.5
+  },
+  {
+    "asset": "BUSD",
+    "score": 4
+  },
+  {
+    "asset": "DOT",
+    "score": 3.5
+  },
+  {
+    "asset": "ETH",
+    "score": 8
+  },
+  {
+    "asset": "FTM",
+    "score": 2
+  },
+  {
+    "asset": "LINK",
+    "score": 3
+  },
+  {
+    "asset": "LUNA",
+    "score": 4
+  },
+  {
+    "asset": "MATIC",
+    "score": 3
+  },
+  {
+    "asset": "RUNE",
+    "score": 2
+  },
+  {
+    "asset": "SOL",
+    "score": 2
+  },
+  {
+    "asset": "VET",
+    "score": 3
+  },
+  {
+    "asset": "XRP",
+    "score": 4
+  }
+]

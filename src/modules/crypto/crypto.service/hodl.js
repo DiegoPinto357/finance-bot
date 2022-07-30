@@ -1,4 +1,5 @@
 import binance from '../../../providers/binance';
+import database from '../../../providers/database';
 import googleSheets from '../../../providers/GoogleSheets';
 
 const targetAsset = 'BRL';
@@ -49,7 +50,7 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 
 const getPortfolioWithPrices = async () => {
   const [portfolio, binanceEarn, binanceSpotBuffer] = await Promise.all([
-    googleSheets.loadSheet('crypto-spot'),
+    database.find('assets', 'crypto', {}, { projection: { _id: 0 } }),
     googleSheets.loadSheet('crypto-earn'),
     googleSheets.loadSheet('crypto-spot-buffer'),
   ]);
