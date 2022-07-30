@@ -31,7 +31,7 @@ export default {
       },
       polygon: {
         SPHERE: {
-          contract: '0x17e9C5b37283ac5fBE527011CeC257b832f03eb3',
+          contract: '0x62f594339830b90ae4c084ae7d223ffafd9658a7',
           cmcId: 18945,
         },
       },
