@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import CoinMarketCap from 'coinmarketcap-api';
 import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
@@ -15,6 +14,8 @@ const getQuotesCached = withCache(params => client.getQuotes(params), {
 const getSymbolPrice = async (symbol, network) => {
   const id = network && config.crypto.tokens[network]?.[symbol]?.cmcId;
   const query = id ? { id } : { symbol };
+
+  // if (query.id === 18945) return 0.0762;
 
   log(`Loading ${symbol} token price`);
   const response = await getQuotesCached({

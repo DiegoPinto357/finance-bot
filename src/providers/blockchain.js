@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { buildLogger } from '../libs/logger';
 import httpClient from '../libs/httpClient';
 import { withCache } from '../libs/cache';
