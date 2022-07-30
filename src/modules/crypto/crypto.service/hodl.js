@@ -48,20 +48,28 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
   }));
 };
 
-const getAssetData = type =>
-  database.find(
+const getAssetData = async () => {
+  const assets = await database.find(
     'assets',
     'crypto',
-    { location: 'binance', type },
+    { location: 'binance' },
     { projection: { _id: 0 } }
   );
 
+  return assets.reduce(
+    (result, asset) => {
+      if (asset.type === 'spot') result.portfolio.push(asset);
+      if (asset.type === 'earn') result.binanceEarn.push(asset);
+      if (asset.type === 'float') result.binanceSpotBuffer.push(asset);
+
+      return result;
+    },
+    { portfolio: [], binanceEarn: [], binanceSpotBuffer: [] }
+  );
+};
+
 const getPortfolioWithPrices = async () => {
-  const [portfolio, binanceEarn, binanceSpotBuffer] = await Promise.all([
-    getAssetData('spot'),
-    getAssetData('earn'),
-    getAssetData('float'),
-  ]);
+  const { portfolio, binanceEarn, binanceSpotBuffer } = await getAssetData();
 
   const { balances: binanceBalance } = await binance.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
