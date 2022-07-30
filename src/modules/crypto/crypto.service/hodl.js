@@ -7,15 +7,8 @@ const bridgeAsset = 'USDT';
 
 const mapEarnValue = async (asset, earnPortfolio) => {
   const earnItem = earnPortfolio.find(item => item.asset === asset);
-
   if (!earnItem) return 0;
-
-  const { amount } = earnItem;
-
-  // TODO no need to deal with arrays anymore
-  return Array.isArray(amount)
-    ? amount.reduce((acc, current) => (acc += current), 0)
-    : amount;
+  return earnItem.amount;
 };
 
 const mapBufferValues = async (asset, spotBufferPortfolio) => {
