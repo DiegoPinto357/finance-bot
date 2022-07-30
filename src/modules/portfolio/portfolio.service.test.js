@@ -23,8 +23,8 @@ describe('portfolio service', () => {
     it('gets the balance for portfolio "previdencia"', async () => {
       const balance = await portfolioService.getBalance('previdencia');
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(8);
-      expect(database.find).toBeCalledTimes(5);
+      expect(googleSheets.loadSheet).toBeCalledTimes(7);
+      expect(database.find).toBeCalledTimes(6);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -59,8 +59,8 @@ describe('portfolio service', () => {
     it('gets the balance for portfolio "suricat"', async () => {
       const balance = await portfolioService.getBalance('suricat');
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(8);
-      expect(database.find).toBeCalledTimes(2);
+      expect(googleSheets.loadSheet).toBeCalledTimes(7);
+      expect(database.find).toBeCalledTimes(3);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -105,8 +105,8 @@ describe('portfolio service', () => {
         total: expect.any(Number),
       });
 
-      expect(googleSheets.loadSheet).toBeCalledTimes(8);
-      expect(database.find).toBeCalledTimes(5);
+      expect(googleSheets.loadSheet).toBeCalledTimes(7);
+      expect(database.find).toBeCalledTimes(6);
 
       expect(balance).toEqual({
         balance: {

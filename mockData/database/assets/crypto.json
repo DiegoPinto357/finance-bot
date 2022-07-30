@@ -1,70 +1,188 @@
 [
   {
     "asset": "ADA",
+    "location": "binance",
+    "type": "spot",
     "score": 6
   },
   {
     "asset": "BNB",
+    "location": "binance",
+    "type": "spot",
     "score": 1
   },
   {
     "asset": "ATOM",
+    "location": "binance",
+    "type": "spot",
     "score": 5
   },
   {
     "asset": "AVAX",
+    "location": "binance",
+    "type": "spot",
     "score": 3.5
   },
   {
     "asset": "BRL",
+    "location": "binance",
+    "type": "spot",
     "score": 0.75
   },
   {
     "asset": "BTC",
+    "location": "binance",
+    "type": "spot",
     "score": 12.5
   },
   {
     "asset": "BUSD",
+    "location": "binance",
+    "type": "spot",
     "score": 4
   },
   {
     "asset": "DOT",
+    "location": "binance",
+    "type": "spot",
     "score": 3.5
   },
   {
     "asset": "ETH",
+    "location": "binance",
+    "type": "spot",
     "score": 8
   },
   {
     "asset": "FTM",
+    "location": "binance",
+    "type": "spot",
     "score": 2
   },
   {
     "asset": "LINK",
+    "location": "binance",
+    "type": "spot",
     "score": 3
   },
   {
     "asset": "LUNA",
+    "location": "binance",
+    "type": "spot",
     "score": 4
   },
   {
     "asset": "MATIC",
+    "location": "binance",
+    "type": "spot",
     "score": 3
   },
   {
     "asset": "RUNE",
+    "location": "binance",
+    "type": "spot",
     "score": 2
   },
   {
     "asset": "SOL",
+    "location": "binance",
+    "type": "spot",
     "score": 2
   },
   {
     "asset": "VET",
+    "location": "binance",
+    "type": "spot",
     "score": 3
   },
   {
     "asset": "XRP",
+    "location": "binance",
+    "type": "spot",
     "score": 4
+  },
+  {
+    "asset": "ADA",
+    "location": "binance",
+    "type": "earn",
+    "amount": 64
+  },
+  {
+    "asset": "ATOM",
+    "location": "binance",
+    "type": "earn",
+    "amount": 2
+  },
+  {
+    "asset": "AVAX",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.48276506
+  },
+  {
+    "asset": "BNB",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.009
+  },
+  {
+    "asset": "BRL",
+    "location": "binance",
+    "type": "earn",
+    "amount": 60
+  },
+  {
+    "asset": "BTC",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.00505753
+  },
+  {
+    "asset": "BUSD",
+    "location": "binance",
+    "type": "earn",
+    "amount": 62.49087059
+  },
+  {
+    "asset": "DOT",
+    "location": "binance",
+    "type": "earn",
+    "amount": 1.97780312
+  },
+  {
+    "asset": "ETH",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.04092952
+  },
+  {
+    "asset": "FTM",
+    "location": "binance",
+    "type": "earn",
+    "amount": 24.69181
+  },
+  {
+    "asset": "LUNA",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.666
+  },
+  {
+    "asset": "MATIC",
+    "location": "binance",
+    "type": "earn",
+    "amount": 22
+  },
+  {
+    "asset": "SOL",
+    "location": "binance",
+    "type": "earn",
+    "amount": 0.2
+  },
+  {
+    "asset": "VET",
+    "location": "binance",
+    "type": "earn",
+    "amount": 589
   }
 ]

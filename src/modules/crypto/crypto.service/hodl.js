@@ -48,10 +48,18 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
   }));
 };
 
+const getAssetData = type =>
+  database.find(
+    'assets',
+    'crypto',
+    { location: 'binance', type },
+    { projection: { _id: 0 } }
+  );
+
 const getPortfolioWithPrices = async () => {
   const [portfolio, binanceEarn, binanceSpotBuffer] = await Promise.all([
-    database.find('assets', 'crypto', {}, { projection: { _id: 0 } }),
-    googleSheets.loadSheet('crypto-earn'),
+    getAssetData('spot'),
+    getAssetData('earn'),
     googleSheets.loadSheet('crypto-spot-buffer'),
   ]);
 
