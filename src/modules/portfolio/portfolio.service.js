@@ -258,6 +258,32 @@ const hasFunds = (balance, asset, value) => {
   return currentValue - value >= 0;
 };
 
+const transfer = async (value, { portfolio, origin, destiny }) => {
+  const originBalance = await getBalance(portfolio);
+  const hasOriginFunds = hasFunds(originBalance, origin, value);
+
+  if (!hasOriginFunds) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  await Promise.all([
+    deposit({
+      value: -value,
+      portfolio,
+      assetClass: origin.class,
+      assetName: origin.name,
+    }),
+    deposit({
+      value,
+      portfolio,
+      assetClass: destiny.class,
+      assetName: destiny.name,
+    }),
+  ]);
+
+  return { status: 'ok' };
+};
+
 const swap = async (
   value,
   { portfolio, asset, origin, destiny, liquidity }
@@ -396,6 +422,7 @@ export default {
   getBalance,
   getShares,
   deposit,
+  transfer,
   swap,
   updateAbsoluteTable,
 };

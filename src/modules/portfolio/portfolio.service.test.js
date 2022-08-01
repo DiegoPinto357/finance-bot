@@ -346,6 +346,72 @@ describe('portfolio service', () => {
     });
   });
 
+  describe('transfer', () => {
+    beforeEach(() => googleSheets.resetMockValues());
+
+    it('transfer funds in between assets', async () => {
+      const value = 100;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'crypto', name: 'defi' };
+
+      const response = await portfolioService.transfer(value, {
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      const portfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const portfolioOriginValue = getAssetValueFromBalance(
+        portfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const portfolioDestinyValue = getAssetValueFromBalance(
+        portfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(portfolioOriginValue).toBe(5153.352886268896 - value);
+      expect(portfolioDestinyValue).toBe(266.5505693764885 + value);
+    });
+
+    it('does not transfer when there is no funds available', async () => {
+      const value = 10000;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'crypto', name: 'defi' };
+
+      const response = await portfolioService.transfer(value, {
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      const portfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const portfolioOriginValue = getAssetValueFromBalance(
+        portfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const portfolioDestinyValue = getAssetValueFromBalance(
+        portfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('notEnoughFunds');
+      expect(portfolioOriginValue).toBe(5153.352886268896);
+      expect(portfolioDestinyValue).toBe(266.5505693764885);
+    });
+  });
+
   describe('swap', () => {
     beforeEach(() => googleSheets.resetMockValues());
 
