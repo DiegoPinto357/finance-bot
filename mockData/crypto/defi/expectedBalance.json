@@ -1,0 +1,139 @@
+{
+  "balance": [
+    {
+      "asset": "AXS",
+      "currentAmount": 1.6537144,
+      "depositAmount": 1.02,
+      "depositBRL": 730,
+      "description": "Binance locked staking",
+      "endDate": "2022-06-24",
+      "positionBRL": 362.7785973387948,
+      "priceBRL": 219.3719770105375,
+      "sellFee": 0,
+      "type": "staking"
+    },
+    {
+      "asset": "BNB",
+      "currentAmount": 0.3506239,
+      "depositAmount": 0.28,
+      "depositBRL": 600,
+      "description": "My Diamond Team V2",
+      "positionBRL": 609.2181278089032,
+      "priceBRL": 1930.5843979796623,
+      "sellFee": 0.1,
+      "type": "staking"
+    },
+    {
+      "asset": "CAKE",
+      "currentAmount": 3.21301066,
+      "depositAmount": 1.215758,
+      "depositBRL": 591.41,
+      "description": "Binance locked staking",
+      "endDate": "2022-07-09",
+      "positionBRL": 141.4625327866455,
+      "priceBRL": 44.0280309517073,
+      "sellFee": 0,
+      "type": "staking"
+    },
+    {
+      "asset": "DRIP",
+      "currentAmount": 4.027,
+      "depositAmount": 3.016876636,
+      "depositBRL": 1184,
+      "description": "Drip Faucet",
+      "positionBRL": 565.8958650318215,
+      "priceBRL": 156.139355194609,
+      "sellFee": 0.1,
+      "type": "staking"
+    },
+    {
+      "asset": "KLIMA",
+      "currentAmount": 0.468217934,
+      "depositAmount": 0.068061444,
+      "depositBRL": 575,
+      "description": "Klima DAO",
+      "positionBRL": 35.663064777266015,
+      "priceBRL": 76.16766079973779,
+      "sellFee": 0,
+      "type": "staking"
+    },
+    {
+      "asset": "WMEMO",
+      "currentAmount": 0.002723148517,
+      "depositAmount": 0.000937,
+      "depositBRL": 1754.32,
+      "description": "Wonderland Time",
+      "positionBRL": 397.2640896565751,
+      "priceBRL": 145884.10700942136,
+      "sellFee": 0,
+      "type": "staking"
+    },
+    {
+      "asset": "SPHERE",
+      "currentAmount": 1884.1724611681886,
+      "depositAmount": 1635.059138,
+      "depositBRL": 465.91,
+      "description": "Sphere Finance",
+      "positionBRL": 249.26741746403445,
+      "priceBRL": 0.16536929514236745,
+      "sellFee": 0.2,
+      "type": "autostaking"
+    },
+    {
+      "asset": "TITANO",
+      "currentAmount": 4952.134307326301,
+      "depositAmount": 2282.321854,
+      "depositBRL": 1230.59,
+      "description": "Titano",
+      "positionBRL": 1491.3568359616218,
+      "priceBRL": 0.3672614141427904,
+      "sellFee": 0.18,
+      "type": "autostaking"
+    },
+    {
+      "asset": "DOGS-BNB-LP",
+      "currentAmount": 0.078,
+      "depositAmount": 0.078,
+      "depositBRL": 250,
+      "description": "DOGS/BNB liquidity pool",
+      "performanceFee": 0,
+      "positionBRL": 121.37463001243941,
+      "priceBRL": 1556.0850001594797,
+      "sellFee": 0,
+      "type": "liquiditypool"
+    },
+    {
+      "asset": "PTP-AVAX-LP",
+      "currentAmount": 2.6214689,
+      "depositAmount": 2.074109086,
+      "depositBRL": 500,
+      "description": "PTP/AVAX liquidity pool",
+      "performanceFee": 0.045,
+      "positionBRL": 359.08893353597904,
+      "priceBRL": 136.98004715447092,
+      "sellFee": 0.001,
+      "type": "liquiditypool"
+    },
+    {
+      "asset": "PIGS",
+      "currentAmount": 0,
+      "depositAmount": 0,
+      "depositBRL": 0,
+      "description": "PIGS token",
+      "positionBRL": 0,
+      "priceBRL": 710.4881231733036,
+      "type": "float"
+    },
+    {
+      "asset": "BUSD",
+      "currentAmount": 1.7333047060862912,
+      "depositAmount": 0,
+      "depositBRL": 0,
+      "description": "BUSD token",
+      "positionBRL": 8.323938469222746,
+      "priceBRL": 4.802351508072548,
+      "type": "float"
+    }
+  ],
+  "total": 4341.694032843303
+}

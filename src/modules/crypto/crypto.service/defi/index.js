@@ -1,10 +1,10 @@
 import blockchain from '../../../../providers/blockchain';
 import coinMarketCap from '../../../../providers/coinMarketCap';
+import database from '../../../../providers/database';
 import googleSheets from '../../../../providers/GoogleSheets';
 import liquidityPool from './liquidityPool';
 
-const getTokenBalanceFromBlockchain = async tokenData => {
-  const { asset, network, sellFee } = tokenData;
+const getTokenBalanceFromBlockchain = async (asset, network, sellFee) => {
   const [currentAmount, priceBRL] = await Promise.all([
     blockchain.getTokenBalance({ asset, network }),
     coinMarketCap.getSymbolPrice(asset, network),
@@ -21,29 +21,56 @@ const getTokenBalanceFromBlockchain = async tokenData => {
 
 const getStakingBalance = async () => {
   const balance = await googleSheets.loadSheet('crypto-defi-staking');
+
   const prices = await Promise.all(
     balance.map(({ asset, network }) =>
       coinMarketCap.getSymbolPrice(asset, network)
     )
   );
 
-  return balance.map((item, index) => ({
-    type: 'staking',
-    ...item,
-    performanceFee: undefined,
-    priceBRL: prices[index],
-    positionBRL: item.currentAmount * prices[index] * (1 - item.sellFee),
-  }));
+  return balance.map((item, index) => {
+    const {
+      asset,
+      description,
+      depositBRL,
+      depositAmount,
+      currentAmount,
+      sellFee,
+      endDate,
+    } = item;
+    return {
+      type: 'staking',
+      asset,
+      description,
+      depositBRL,
+      depositAmount,
+      currentAmount,
+      sellFee,
+      performanceFee: undefined,
+      endDate,
+      priceBRL: prices[index],
+      positionBRL: item.currentAmount * prices[index] * (1 - item.sellFee),
+    };
+  });
 };
 
 const getAutoStakingBalance = async () => {
-  const tokens = await googleSheets.loadSheet('crypto-defi-autostaking');
+  const tokens = await database.find(
+    'assets',
+    'crypto',
+    { location: 'walletPrimary', type: 'autostaking' },
+    { projection: { _id: 0 } }
+  );
   const balance = await Promise.all(
-    tokens.map(asset => getTokenBalanceFromBlockchain(asset))
+    tokens.map(({ asset, token, fees }) =>
+      getTokenBalanceFromBlockchain(asset, token.network, fees.sell)
+    )
   );
 
   return tokens.map((token, index) => {
-    const { asset, description, depositBRL, depositAmount, sellFee } = token;
+    const { asset, description, deposits, fees } = token;
+    const { BRL: depositBRL, token: depositAmount } = deposits;
+    const { sell: sellFee } = fees;
     const { currentAmount, priceBRL, positionBRL } = balance[index];
     return {
       type: 'autostaking',

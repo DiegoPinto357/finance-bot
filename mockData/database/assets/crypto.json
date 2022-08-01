@@ -220,5 +220,37 @@
     "location": "binance",
     "type": "float",
     "amount": 1.935353
+  },
+  {
+    "asset": "SPHERE",
+    "description": "Sphere Finance",
+    "location": "walletPrimary",
+    "type": "autostaking",
+    "deposits": {
+      "BRL": 465.91,
+      "token": 1635.059138
+    },
+    "fees": {
+      "sell": 0.2
+    },
+    "token": {
+      "network": "polygon"
+    }
+  },
+  {
+    "asset": "TITANO",
+    "description": "Titano",
+    "location": "walletPrimary",
+    "type": "autostaking",
+    "deposits": {
+      "BRL": 1230.59,
+      "token": 2282.321854
+    },
+    "fees": {
+      "sell": 0.18
+    },
+    "token": {
+      "network": "bsc"
+    }
   }
 ]
