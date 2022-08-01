@@ -12,6 +12,11 @@ const connect = async () => {
   log('Connected to MongoDB');
 };
 
+const close = () => {
+  client.close();
+  log('MongoDB connection closed');
+};
+
 const find = async (databaseName, collectionName, query, options) => {
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
@@ -21,5 +26,6 @@ const find = async (databaseName, collectionName, query, options) => {
 
 export default {
   connect,
+  close,
   find,
 };

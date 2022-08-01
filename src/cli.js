@@ -37,9 +37,11 @@ import portfolioContext from './modules/portfolio/portfolio.cli';
         break;
     }
 
+    database.close();
     process.exit(0);
   } catch (error) {
     console.error(error);
+    database.close();
     process.exit(1);
   }
 })();
