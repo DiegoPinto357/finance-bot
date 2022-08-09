@@ -2,7 +2,7 @@ import database from '../../../providers/database';
 import binance from '../../../providers/binance';
 
 const targetAsset = 'BRL';
-const bridgeAsset = 'USDT';
+const bridgeAsset = 'BUSD';
 
 const getTotalPosition = async () => {
   const binanceSpotBuffer = await database.find(
