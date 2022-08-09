@@ -1,9 +1,12 @@
+import database from '../../providers/database';
 import stock from './stock.service';
 
 jest.mock('../../providers/database');
 jest.mock('../../providers/tradingView');
 
 describe('stock service', () => {
+  beforeEach(() => database.resetMockValues());
+
   describe('getTotalPosition', () => {
     it('gets total stock position', async () => {
       const value = await stock.getTotalPosition();
