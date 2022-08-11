@@ -15,7 +15,7 @@ const getData = async (databaseName, collectionName) => {
     dataBuffer[filename] = JSON.parse(await fs.readFile(filename, 'utf-8'));
   }
 
-  return dataBuffer[filename];
+  return _.cloneDeep(dataBuffer[filename]);
 };
 
 const find = jest.fn(async (databaseName, collectionName, query, options) => {
