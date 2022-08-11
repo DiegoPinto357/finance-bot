@@ -1,4 +1,5 @@
 import googleSheets from '../../providers/googleSheets';
+import database from '../../providers/database';
 import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
@@ -65,11 +66,16 @@ const getAssetsDataFromPortfolio = portfolio =>
 
 const getAssetsFromPortfolioName = (portfolios, portfolioName) => {
   const portfolio = portfolios
-    .map(item => ({
-      class: item.class,
-      asset: item.asset,
-      share: item[portfolioName],
-    }))
+    .map(item => {
+      const portfolioShare = item.shares.find(
+        share => share.portfolio === portfolioName
+      );
+      return {
+        class: item.assetClass,
+        asset: item.assetName,
+        share: portfolioShare ? portfolioShare.value : 0,
+      };
+    })
     .filter(item => !portfolioName || item.share);
 
   return getAssetsDataFromPortfolio(portfolio);
@@ -108,7 +114,12 @@ const getBalancesByAssets = (assets, totalBalances) => {
 };
 
 const getBalance = async portfolioName => {
-  const portfolios = await googleSheets.loadSheet('portfolio');
+  const portfolios = await database.find(
+    'portfolio',
+    'shares',
+    {},
+    { projection: { _id: 0 } }
+  );
 
   const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
 
@@ -132,10 +143,7 @@ const getBalance = async portfolioName => {
   if (Array.isArray(portfolioName)) {
     names = portfolioName;
   } else {
-    const reservedKeys = ['class', 'asset', 'save'];
-    names = Object.keys(portfolios[0]).filter(
-      item => !reservedKeys.includes(item)
-    );
+    names = portfolios[0].shares.map(share => share.portfolio);
   }
 
   const balanceArray = await Promise.all(

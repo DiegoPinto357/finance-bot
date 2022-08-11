@@ -1,0 +1,422 @@
+[
+  {
+    "assetClass": "fixed",
+    "assetName": "nubank",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.07 },
+      { "portfolio": "financiamento", "value": 0.1011200518 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0.5103536704 },
+      { "portfolio": "previdencia", "value": 0.0254265737 },
+      { "portfolio": "leni", "value": 0.0103667194 },
+      { "portfolio": "mae", "value": 0.09370356855 },
+      { "portfolio": "seguroCarro", "value": 0.03102891526 },
+      { "portfolio": "manutencaoCarro", "value": 0.05254668852 },
+      { "portfolio": "impostos", "value": 0.01143305098 },
+      { "portfolio": "suricat", "value": 0.08576471693 },
+      { "portfolio": "congelamentoSuricats", "value": 0.01279980975 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "99pay",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 1 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "pagbankCDB_120",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.5995080938 },
+      { "portfolio": "financiamento", "value": 0.2675063266 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0.05557985886 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0.07740572084 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "xpWesternAsset",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 1 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "daycovalCDB110",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 1 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "daycovalCDBCDI1_2",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.5189425973 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0.4810574027 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "nuInvestCDB8_5",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.5150917528 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0.4849082472 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "nuInvestCDB9_5",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.449935 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0.550065 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "nuInvestCBDIPCA5_5",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "nuInvestCDB12_5",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "fixed",
+    "assetName": "nuInvestTDIPCA2035",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "stock",
+    "assetName": "br",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "stock",
+    "assetName": "fii",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "stock",
+    "assetName": "us",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 1 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "stock",
+    "assetName": "float",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0.2352167536 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0.7647832464 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "binanceBuffer",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.629069297 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0.1018119103 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0.04491757401 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0.2242012186 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "hodl",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.4953861715 },
+      { "portfolio": "financiamento", "value": 0.03277016051 },
+      { "portfolio": "viagem", "value": 0.01824297102 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0.2575872335 },
+      { "portfolio": "leni", "value": 0.01070345772 },
+      { "portfolio": "mae", "value": 0.02398597783 },
+      { "portfolio": "seguroCarro", "value": 0.04627784574 },
+      { "portfolio": "manutencaoCarro", "value": 0.0363696633 },
+      { "portfolio": "impostos", "value": 0.001667437086 },
+      { "portfolio": "suricat", "value": 0.04386964182 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0.03313943999 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "defi",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0.6071244511 },
+      { "portfolio": "financiamento", "value": 0.06139321826 },
+      { "portfolio": "viagem", "value": 0.02152907351 },
+      { "portfolio": "reformaCasa", "value": 0.05085451742 },
+      { "portfolio": "previdencia", "value": 0.1403051706 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0.02554189965 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0.02332122162 },
+      { "portfolio": "suricat", "value": 0.05644564617 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0.01348480162 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "defi2",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 0 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 1 }
+    ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "anchor",
+    "shares": [
+      { "portfolio": "temp", "value": 0 },
+      { "portfolio": "amortecedor", "value": 0 },
+      { "portfolio": "financiamento", "value": 1 },
+      { "portfolio": "viagem", "value": 0 },
+      { "portfolio": "reformaCasa", "value": 0 },
+      { "portfolio": "previdencia", "value": 0 },
+      { "portfolio": "leni", "value": 0 },
+      { "portfolio": "mae", "value": 0 },
+      { "portfolio": "seguroCarro", "value": 0 },
+      { "portfolio": "manutencaoCarro", "value": 0 },
+      { "portfolio": "impostos", "value": 0 },
+      { "portfolio": "suricat", "value": 0 },
+      { "portfolio": "congelamentoSuricats", "value": 0 },
+      { "portfolio": "carro", "value": 0 },
+      { "portfolio": "rendaPassiva", "value": 0 }
+    ]
+  }
+]
