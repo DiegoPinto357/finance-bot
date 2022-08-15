@@ -10,6 +10,9 @@ const services = {
   crypto: cryptoService,
 };
 
+const getPortfolioData = () =>
+  database.find('portfolio', 'shares', {}, { projection: { _id: 0 } });
+
 const getAssetsList = assets =>
   assets ? assets.map(({ asset }) => asset) : [];
 
@@ -114,12 +117,7 @@ const getBalancesByAssets = (assets, totalBalances) => {
 };
 
 const getBalance = async portfolioName => {
-  const portfolios = await database.find(
-    'portfolio',
-    'shares',
-    {},
-    { projection: { _id: 0 } }
-  );
+  const portfolios = await getPortfolioData();
 
   const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
 
@@ -228,28 +226,52 @@ const getShares = async portfolioName => {
   };
 };
 
+const setAssetValue = async ({ assetClass, assetName, value }) => {
+  const service = services[assetClass];
+  await service.setAssetValue({ asset: assetName, value });
+};
+
 const deposit = async ({ value, portfolio, assetClass, assetName }) => {
-  const portfolioList = await googleSheets.loadSheet('portfolio');
-  const portfolioItem = portfolioList.find(
-    item => item.class === assetClass && item.asset === assetName
+  const service = services[assetClass];
+  const currentTotalAssetValue = await service.getTotalPosition(assetName);
+  const newTotalAssetValue = currentTotalAssetValue + value;
+
+  const portfolioData = await getPortfolioData();
+  const asset = portfolioData.find(
+    item => item.assetClass === assetClass && item.assetName === assetName
   );
 
-  const service = services[assetClass];
-  const totalAssetValue = await service.getTotalPosition(assetName);
+  const portfolioList = asset.shares.map(({ portfolio, value }) => ({
+    portfolio,
+    share: value,
+    value: value * currentTotalAssetValue,
+  }));
 
-  const currentValue = totalAssetValue * portfolioItem[portfolio];
-  const newValue = currentValue + value;
+  const portfolioItem = portfolioList.find(
+    item => item.portfolio === portfolio
+  );
 
-  if (newValue < 0) {
+  portfolioItem.value = portfolioItem.value + value;
+
+  if (portfolioItem.value < 0) {
     return { status: 'notEnoughFunds' };
   }
 
-  const newRatio = newValue / totalAssetValue;
+  const newShares = portfolioList.map(item => ({
+    portfolio: item.portfolio,
+    value: item.value / newTotalAssetValue,
+  }));
 
-  await googleSheets.writeValue('portfolio', {
-    index: { key: 'asset', value: assetName }, // TODO consider assetClass also
-    target: { key: portfolio, value: newRatio },
-  });
+  await Promise.all([
+    database.updateOne(
+      'portfolio',
+      'shares',
+      { assetClass, assetName },
+      { $set: { shares: newShares } }
+    ),
+    // TODO for stock and crypto, needs to set the float value (this could be handled by each service)
+    setAssetValue({ assetClass, assetName, value: newTotalAssetValue }),
+  ]);
 
   return { status: 'ok' };
 };

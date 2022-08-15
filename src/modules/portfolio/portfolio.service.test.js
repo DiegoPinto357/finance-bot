@@ -1,5 +1,8 @@
 import googleSheets from '../../providers/googleSheets';
 import database from '../../providers/database';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service';
 import portfolioService from './portfolio.service';
 
 jest.mock('../../providers/googleSheets');
@@ -8,6 +11,12 @@ jest.mock('../../providers/tradingView');
 jest.mock('../../providers/binance');
 jest.mock('../../providers/coinMarketCap');
 jest.mock('../../providers/blockchain');
+
+const services = {
+  fixed: fixedService,
+  stock: stockService,
+  crypto: cryptoService,
+};
 
 const getAssetValueFromBalance = ({ balance }, assetClass, assetName) => {
   const assetBalance = balance[assetClass].balance.find(
@@ -218,7 +227,7 @@ describe('portfolio service', () => {
     });
   });
 
-  describe.skip('deposit', () => {
+  describe('deposit', () => {
     const deposits = [
       {
         depositValue: 1000,
@@ -248,27 +257,27 @@ describe('portfolio service', () => {
         assetName: 'nubank',
         sidePortfolioName: 'previdencia',
       },
-      {
-        depositValue: 100,
-        portfolioName: 'previdencia',
-        assetClass: 'stock',
-        assetName: 'br',
-        sidePortfolioName: null,
-      },
-      {
-        depositValue: 100,
-        portfolioName: 'previdencia',
-        assetClass: 'crypto',
-        assetName: 'hodl',
-        sidePortfolioName: 'financiamento',
-      },
-      {
-        depositValue: 100,
-        portfolioName: 'carro',
-        assetClass: 'crypto',
-        assetName: 'binanceBuffer',
-        sidePortfolioName: 'amortecedor',
-      },
+      // {
+      //   depositValue: 100,
+      //   portfolioName: 'previdencia',
+      //   assetClass: 'stock',
+      //   assetName: 'br',
+      //   sidePortfolioName: null,
+      // },
+      // {
+      //   depositValue: 100,
+      //   portfolioName: 'previdencia',
+      //   assetClass: 'crypto',
+      //   assetName: 'hodl',
+      //   sidePortfolioName: 'financiamento',
+      // },
+      // {
+      //   depositValue: 100,
+      //   portfolioName: 'carro',
+      //   assetClass: 'crypto',
+      //   assetName: 'binanceBuffer',
+      //   sidePortfolioName: 'amortecedor',
+      // },
     ];
 
     it.each(deposits)(
@@ -280,16 +289,23 @@ describe('portfolio service', () => {
         assetName,
         sidePortfolioName,
       }) => {
-        const currentBalance = await portfolioService.getBalance(portfolioName);
-        const currentAssetValue = getAssetValueFromBalance(
-          currentBalance,
+        const currentPortfolioBalance = await portfolioService.getBalance(
+          portfolioName
+        );
+        const currentPortfolioAssetValue = getAssetValueFromBalance(
+          currentPortfolioBalance,
           assetClass,
           assetName
         );
 
-        const curentSideBalance = sidePortfolioName
+        const curentSidePortfolioBalance = sidePortfolioName
           ? await portfolioService.getBalance(sidePortfolioName)
           : null;
+
+        const service = services[assetClass];
+        const currentTotalAssetValue = await service.getTotalPosition(
+          assetName
+        );
 
         const result = await portfolioService.deposit({
           value: depositValue,
@@ -298,20 +314,27 @@ describe('portfolio service', () => {
           assetName,
         });
 
-        const newBalance = await portfolioService.getBalance(portfolioName);
-        const newAssetValue = getAssetValueFromBalance(
-          newBalance,
+        const newPortfolioBalance = await portfolioService.getBalance(
+          portfolioName
+        );
+        const newPortfolioAssetValue = getAssetValueFromBalance(
+          newPortfolioBalance,
           assetClass,
           assetName
         );
 
-        const newSideBalance = sidePortfolioName
+        const newSidePortfolioBalance = sidePortfolioName
           ? await portfolioService.getBalance(sidePortfolioName)
           : null;
 
+        const newTotalAssetValue = await service.getTotalPosition(assetName);
+
         expect(result.status).toBe('ok');
-        expect(newAssetValue).toBe(currentAssetValue + depositValue);
-        expect(newSideBalance).toEqual(curentSideBalance);
+        expect(newPortfolioAssetValue).toBe(
+          currentPortfolioAssetValue + depositValue
+        );
+        expect(newSidePortfolioBalance).toEqual(curentSidePortfolioBalance);
+        expect(newTotalAssetValue).toBe(currentTotalAssetValue + depositValue);
       }
     );
 
