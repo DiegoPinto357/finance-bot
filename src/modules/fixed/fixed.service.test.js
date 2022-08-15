@@ -35,4 +35,18 @@ describe('fixed service', () => {
       ]);
     });
   });
+
+  describe('setAssetValue', () => {
+    it('set a new value for a given asset', async () => {
+      const newValue = 99999.99;
+      const assetName = 'nubank';
+
+      await fixed.setAssetValue({ asset: assetName, value: newValue });
+
+      const { balance } = await fixed.getBalance();
+      const assetValue = balance.find(({ asset }) => asset === assetName).value;
+
+      expect(assetValue).toBe(newValue);
+    });
+  });
 });

@@ -2,22 +2,39 @@ import fixedService from './fixed.service';
 import { formatCurrency } from '../../libs/stringFormat';
 import { formatTable } from '../../libs/cliFormat';
 
-export default async (command, args) => {
-  const { type } = args;
+const getBalance = async () => {
+  const { balance, total } = await fixedService.getBalance();
 
+  const formattedBalance = formatTable(balance, [null, formatCurrency]);
+
+  console.table(formattedBalance);
+  console.log({ total });
+};
+
+const getTotal = async ({ asset }) => {
+  const position = await fixedService.getTotalPosition(asset);
+
+  if (asset) console.log({ asset, position });
+  else console.log({ totalPosition: position });
+};
+
+const setAssetValue = async ({ asset, value }) => {
+  await fixedService.setAssetValue({ asset, value });
+  await getTotal({ asset });
+};
+
+export default async (command, args) => {
   switch (command) {
     case 'balance':
-      const { balance, total } = await fixedService.getBalance(type);
-
-      const formattedBalance = formatTable(balance, [null, formatCurrency]);
-
-      console.table(formattedBalance);
-      console.log({ total });
+      await getBalance();
       break;
 
     case 'total':
-      const totalPosition = await fixedService.getTotalPosition(type);
-      console.log({ totalPosition });
+      await getTotal(args);
+      break;
+
+    case 'set-value':
+      await setAssetValue(args);
       break;
 
     default:

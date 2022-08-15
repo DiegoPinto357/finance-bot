@@ -4,7 +4,12 @@ export const mockFindFn = jest.fn(() => ({
   toArray: mockToArrayFn,
 }));
 
-export const mockCollectionFn = jest.fn(() => ({ find: mockFindFn }));
+export const mockUpdateOneFn = jest.fn();
+
+export const mockCollectionFn = jest.fn(() => ({
+  find: mockFindFn,
+  updateOne: mockUpdateOneFn,
+}));
 
 export const mockDbFn = jest.fn(() => ({ collection: mockCollectionFn }));
 

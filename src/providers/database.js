@@ -24,8 +24,16 @@ const find = async (databaseName, collectionName, query, options) => {
   return await collection.find(query, options).toArray();
 };
 
+const updateOne = async (databaseName, collectionName, query, update) => {
+  log(`Updating document on ${databaseName}/${collectionName}`);
+  const db = client.db(databaseName);
+  const collection = db.collection(collectionName);
+  await collection.updateOne(query, update);
+};
+
 export default {
   connect,
   close,
   find,
+  updateOne,
 };

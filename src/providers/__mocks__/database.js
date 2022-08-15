@@ -18,6 +18,11 @@ const getData = async (databaseName, collectionName) => {
   return _.cloneDeep(dataBuffer[filename]);
 };
 
+const setData = (databaseName, collectionName, data) => {
+  const filename = path.join(mockDir, databaseName, `${collectionName}.json`);
+  dataBuffer[filename] = _.cloneDeep(data);
+};
+
 const find = jest.fn(async (databaseName, collectionName, query, options) => {
   const data = await getData(databaseName, collectionName);
 
@@ -40,15 +45,8 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
   });
 });
 
-const updateOne = async (
-  databaseName,
-  collectionName,
-  query,
-  update,
-  options
-) => {
+const updateOne = async (databaseName, collectionName, query, update) => {
   const data = await getData(databaseName, collectionName);
-
   // TODO update to support multiple queries
   const [queryKey, queryValue] = Object.entries(query)[0];
 
@@ -58,6 +56,7 @@ const updateOne = async (
   const [updateKey, updateValue] = Object.entries(update['$set'])[0];
 
   _.set(record, updateKey, updateValue);
+  setData(databaseName, collectionName, data);
 };
 
 const resetMockValues = () => (dataBuffer = {});

@@ -26,8 +26,12 @@ const getAssetsList = async () => {
   return sheet.map(row => row.asset);
 };
 
+const setAssetValue = ({ asset, value }) =>
+  database.updateOne('assets', 'fixed', { asset }, { $set: { value } });
+
 export default {
   getBalance,
   getTotalPosition,
   getAssetsList,
+  setAssetValue,
 };
