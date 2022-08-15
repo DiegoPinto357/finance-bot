@@ -36,7 +36,7 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('previdencia');
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(8);
+      expect(database.find).toBeCalledTimes(9);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -60,11 +60,16 @@ describe('portfolio service', () => {
               { asset: 'br', value: 3935.519970999999 },
               { asset: 'us', value: 5407.97 },
               { asset: 'fii', value: 4550.180026999999 },
+              { asset: 'float', value: 154.059917105392 },
             ],
-            total: 3935.519970999999 + 5407.97 + 4550.180026999999,
+            total:
+              3935.519970999999 +
+              5407.97 +
+              4550.180026999999 +
+              154.059917105392,
           },
         },
-        total: 20979.950947383677,
+        total: 21134.01086448907,
       });
     });
 
@@ -118,7 +123,7 @@ describe('portfolio service', () => {
       });
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(8);
+      expect(database.find).toBeCalledTimes(9);
 
       expect(balance).toEqual({
         balance: {
@@ -178,51 +183,59 @@ describe('portfolio service', () => {
             asset: 'fii',
             value: 4550.180026999999,
             targetShare: 0.22,
-            currentShare: 0.21688230055501792,
-            diffBRL: 65.40918142440933,
-          },
-          {
-            assetClass: 'stock',
-            asset: 'br',
-            value: 3935.519970999999,
-            targetShare: 0.19,
-            currentShare: 0.1875848032662241,
-            diffBRL: 50.67070900289991,
+            currentShare: 0.21530130064641675,
+            diffBRL: 99.30236318759671,
           },
           {
             assetClass: 'stock',
             asset: 'us',
             value: 5407.97,
             targetShare: 0.26,
-            currentShare: 0.25776847684548115,
-            diffBRL: 46.81724631975612,
+            currentShare: 0.2558894302967768,
+            diffBRL: 86.87282476715882,
+          },
+          {
+            assetClass: 'stock',
+            asset: 'br',
+            value: 3935.519970999999,
+            targetShare: 0.19,
+            currentShare: 0.1862173723783189,
+            diffBRL: 79.94209325292468,
           },
           {
             assetClass: 'crypto',
             asset: 'hodl',
             value: 1434.671471380134,
             targetShare: 0.07,
-            currentShare: 0.06838297548827425,
-            diffBRL: 33.925094936723326,
+            currentShare: 0.067884486318249,
+            diffBRL: 44.70928913410103,
           },
           {
             assetClass: 'crypto',
             asset: 'defi',
             value: 609.1621219710817,
             targetShare: 0.03,
-            currentShare: 0.029035440716654665,
-            diffBRL: 20.236406450428603,
+            currentShare: 0.028823782001297298,
+            diffBRL: 24.858203963590427,
+          },
+          {
+            assetClass: 'stock',
+            asset: 'float',
+            value: 154.059917105392,
+            targetShare: 0,
+            currentShare: 0.007289667734781706,
+            diffBRL: -154.059917105392,
           },
           {
             assetClass: 'fixed',
             asset: 'fixed',
             value: 5042.447356032464,
             targetShare: 0.23,
-            currentShare: 0.24034600312834797,
-            diffBRL: -217.0586381342182,
+            currentShare: 0.23859396062415947,
+            diffBRL: -181.62485719997767,
           },
         ],
-        total: 20979.950947383677,
+        total: 21134.01086448907,
       });
     });
   });

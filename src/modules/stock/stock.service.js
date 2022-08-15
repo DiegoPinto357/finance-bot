@@ -1,7 +1,7 @@
 import database from '../../providers/database';
 import tradingView from '../../providers/tradingView';
 
-const types = ['br', 'us', 'fii'];
+const types = ['br', 'us', 'fii', 'float'];
 
 const getBalanceWithPrices = async portfolioType => {
   const portfolio = await database.find(
@@ -10,6 +10,10 @@ const getBalanceWithPrices = async portfolioType => {
     { type: portfolioType },
     { projection: { _id: 0, type: 0 } }
   );
+
+  if (portfolioType === 'float') {
+    return portfolio.map(({ value }) => ({ positionBRL: value }));
+  }
 
   const totalScore = portfolio.reduce((total, { score }) => total + score, 0);
 

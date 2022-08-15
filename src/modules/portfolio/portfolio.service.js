@@ -269,7 +269,7 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
       { assetClass, assetName },
       { $set: { shares: newShares } }
     ),
-    // TODO for stock and crypto, needs to set the float value (this could be handled by each service)
+    // TODO for stock and crypto, needs to set the float value (use "deposit" method for all asset classes)
     setAssetValue({ assetClass, assetName, value: newTotalAssetValue }),
   ]);
 

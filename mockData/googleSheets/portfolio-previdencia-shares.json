@@ -20,6 +20,11 @@
     "targetShare": 0.26
   },
   {
+    "assetClass": "stock",
+    "asset": "float",
+    "targetShare": 0
+  },
+  {
     "assetClass": "crypto",
     "asset": "hodl",
     "targetShare": 0.07

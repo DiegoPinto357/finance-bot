@@ -160,5 +160,9 @@
     "asset": "IVVB11",
     "score": 8,
     "amount": 19
+  },
+  {
+    "type": "float",
+    "value": 654.97
   }
 ]
