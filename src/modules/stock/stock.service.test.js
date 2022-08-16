@@ -38,4 +38,26 @@ describe('stock service', () => {
       expect(value).toBe(654.97);
     });
   });
+
+  describe('deposit', () => {
+    it('deposits value on float', async () => {
+      const depositValue = 150;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.deposit(depositValue);
+
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newFloatValue).toBe(currentFloatValue + depositValue);
+    });
+
+    it('does not withdrawn a value when funds are not enough', async () => {
+      const withdrawnValue = 150000;
+
+      const result = await stock.deposit(-withdrawnValue);
+
+      expect(result).toEqual({ status: 'notEnoughFunds' });
+    });
+  });
 });

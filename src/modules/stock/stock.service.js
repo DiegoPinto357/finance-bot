@@ -82,7 +82,26 @@ const getTotalPosition = async portfolioType => {
   );
 };
 
+const deposit = async value => {
+  const currentValue = await getTotalPosition('float');
+  const newValue = currentValue + value;
+
+  if (newValue < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'stock',
+    { type: 'float' },
+    { $set: { value: newValue } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
+  deposit,
 };
