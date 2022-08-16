@@ -47,10 +47,10 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
 
 const updateOne = async (databaseName, collectionName, query, update) => {
   const data = await getData(databaseName, collectionName);
-  // TODO update to support multiple queries
-  const [queryKey, queryValue] = Object.entries(query)[0];
 
-  const record = data.find(item => item[queryKey] === queryValue);
+  const record = data.find(item =>
+    Object.entries(query).every(([key, value]) => item[key] === value)
+  );
 
   // TODO update to support multiple updates
   const [updateKey, updateValue] = Object.entries(update['$set'])[0];
