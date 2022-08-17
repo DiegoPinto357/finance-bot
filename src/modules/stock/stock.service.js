@@ -100,8 +100,26 @@ const deposit = async value => {
   return { status: 'ok' };
 };
 
+const setAssetValue = async ({ asset, value }) => {
+  asset = asset ? asset : 'float';
+
+  if (asset !== 'float') {
+    return { status: 'cannotSetStockBrValueDirectly' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'stock',
+    { type: asset },
+    { $set: { value } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
   deposit,
+  setAssetValue,
 };

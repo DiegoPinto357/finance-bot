@@ -60,4 +60,51 @@ describe('stock service', () => {
       expect(result).toEqual({ status: 'notEnoughFunds' });
     });
   });
+
+  describe('setAssetValue', () => {
+    it('sets float value', async () => {
+      const value = 357.75;
+      const result = await stock.setAssetValue({ asset: 'float', value });
+
+      const floatValue = await stock.getTotalPosition('float');
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(floatValue).toBe(value);
+    });
+
+    it('sets float value when asset param is not provided', async () => {
+      const value = 3467.34;
+      const result = await stock.setAssetValue({ value });
+
+      const floatValue = await stock.getTotalPosition('float');
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(floatValue).toBe(value);
+    });
+
+    it('sets float value when asset param is not provided', async () => {
+      const value = 3467.34;
+      const result = await stock.setAssetValue({ value });
+
+      const floatValue = await stock.getTotalPosition('float');
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(floatValue).toBe(value);
+    });
+
+    it.each(['br', 'us', 'fii'])(
+      'does not sets asset value for "%s" portfolio type',
+      async asset => {
+        const value = 357.75;
+        const currentValue = await stock.getTotalPosition(asset);
+
+        const result = await stock.setAssetValue({ asset, value });
+
+        const newValue = await stock.getTotalPosition(asset);
+
+        expect(result).toEqual({ status: 'cannotSetStockBrValueDirectly' });
+        expect(newValue).toBe(currentValue);
+      }
+    );
+  });
 });
