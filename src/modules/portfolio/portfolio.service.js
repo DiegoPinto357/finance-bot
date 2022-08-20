@@ -232,11 +232,14 @@ const setAssetValue = async ({ assetClass, assetName, value }) => {
 };
 
 const deposit = async ({ value, portfolio, assetClass, assetName }) => {
+  if (assetClass === 'stock') assetName = 'float';
+
   const service = services[assetClass];
   const currentTotalAssetValue = await service.getTotalPosition(assetName);
   const newTotalAssetValue = currentTotalAssetValue + value;
 
   const portfolioData = await getPortfolioData();
+
   const asset = portfolioData.find(
     item => item.assetClass === assetClass && item.assetName === assetName
   );
@@ -269,8 +272,11 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
       { assetClass, assetName },
       { $set: { shares: newShares } }
     ),
-    // TODO for stock and crypto, needs to set the float value (use "deposit" method for all asset classes)
-    setAssetValue({ assetClass, assetName, value: newTotalAssetValue }),
+    setAssetValue({
+      assetClass,
+      assetName,
+      value: newTotalAssetValue,
+    }),
   ]);
 
   return { status: 'ok' };

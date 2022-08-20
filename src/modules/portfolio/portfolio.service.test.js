@@ -270,13 +270,12 @@ describe('portfolio service', () => {
         assetName: 'nubank',
         sidePortfolioName: 'previdencia',
       },
-      // {
-      //   depositValue: 100,
-      //   portfolioName: 'previdencia',
-      //   assetClass: 'stock',
-      //   assetName: 'br',
-      //   sidePortfolioName: null,
-      // },
+      {
+        depositValue: 100,
+        portfolioName: 'previdencia',
+        assetClass: 'stock',
+        sidePortfolioName: null,
+      },
       // {
       //   depositValue: 100,
       //   portfolioName: 'previdencia',
@@ -302,6 +301,8 @@ describe('portfolio service', () => {
         assetName,
         sidePortfolioName,
       }) => {
+        if (assetClass === 'stock') assetName = 'float';
+
         const currentPortfolioBalance = await portfolioService.getBalance(
           portfolioName
         );
