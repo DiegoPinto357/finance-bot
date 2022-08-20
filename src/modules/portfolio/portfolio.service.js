@@ -203,12 +203,17 @@ const getShares = async portfolioName => {
         targetShare: shareItem.targetShare,
       };
     } else {
+      const balanceItem = balanceFlat.find(
+        item =>
+          shareItem.assetClass === item.assetClass &&
+          shareItem.asset === item.asset
+      );
       asset = {
-        ...balanceFlat.find(
-          item =>
-            shareItem.assetClass === item.assetClass &&
-            shareItem.asset === item.asset
-        ),
+        ...(balanceItem || {
+          assetClass: shareItem.assetClass,
+          asset: shareItem.asset,
+          value: 0,
+        }),
         targetShare: shareItem.targetShare,
       };
     }
