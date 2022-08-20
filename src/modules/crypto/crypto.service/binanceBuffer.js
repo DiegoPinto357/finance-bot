@@ -27,6 +27,24 @@ const getTotalPosition = async asset => {
   }, 0);
 };
 
+const setAssetValue = async ({ asset, value }) => {
+  asset = asset ? asset : 'BRL';
+
+  if (asset !== 'BRL') {
+    return { status: 'cannotSetValue' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'crypto',
+    { location: 'binance', type: 'float', asset },
+    { $set: { amount: value } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getTotalPosition,
+  setAssetValue,
 };
