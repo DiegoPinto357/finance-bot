@@ -104,7 +104,7 @@ const setAssetValue = async ({ asset, value }) => {
   asset = asset ? asset : 'float';
 
   if (asset !== 'float') {
-    return { status: 'cannotSetStockBrValueDirectly' };
+    return { status: 'cannotSetValue' };
   }
 
   await database.updateOne(

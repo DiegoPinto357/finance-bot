@@ -102,7 +102,7 @@ describe('stock service', () => {
 
         const newValue = await stock.getTotalPosition(asset);
 
-        expect(result).toEqual({ status: 'cannotSetStockBrValueDirectly' });
+        expect(result).toEqual({ status: 'cannotSetValue' });
         expect(newValue).toBe(currentValue);
       }
     );
