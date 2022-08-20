@@ -1,14 +1,15 @@
+import _ from 'lodash';
 import database from '../../../providers/database';
 import binance from '../../../providers/binance';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'BUSD';
 
-const getTotalPosition = async () => {
+const getTotalPosition = async asset => {
   const binanceSpotBuffer = await database.find(
     'assets',
     'crypto',
-    { location: 'binance', type: 'float' },
+    _.omitBy({ location: 'binance', type: 'float', ...{ asset } }, _.isNil),
     { projection: { _id: 0 } }
   );
 
