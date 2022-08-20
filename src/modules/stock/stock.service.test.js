@@ -82,16 +82,6 @@ describe('stock service', () => {
       expect(floatValue).toBe(value);
     });
 
-    it('sets float value when asset param is not provided', async () => {
-      const value = 3467.34;
-      const result = await stock.setAssetValue({ value });
-
-      const floatValue = await stock.getTotalPosition('float');
-
-      expect(result).toEqual({ status: 'ok' });
-      expect(floatValue).toBe(value);
-    });
-
     it.each(['br', 'us', 'fii'])(
       'does not sets asset value for "%s" portfolio type',
       async asset => {
