@@ -44,7 +44,32 @@ const setAssetValue = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
+const deposit = async ({ asset, value }) => {
+  asset = asset ? asset : 'BRL';
+
+  if (asset !== 'BRL') {
+    return { status: 'cannotDepositValue' };
+  }
+
+  const currentValue = await getTotalPosition(asset);
+  const newValue = currentValue + value;
+
+  if (newValue < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'crypto',
+    { location: 'binance', type: 'float', asset },
+    { $set: { amount: newValue } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getTotalPosition,
   setAssetValue,
+  deposit,
 };

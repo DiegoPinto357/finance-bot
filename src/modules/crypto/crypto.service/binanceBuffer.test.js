@@ -1,9 +1,12 @@
+import database from '../../../providers/database';
 import binanceBuffer from './binanceBuffer';
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/binance');
 
 describe('crypto binanceBuffer service', () => {
+  beforeEach(() => database.resetMockValues());
+
   describe('getTotalPosition', () => {
     it('gets total position', async () => {
       const total = await binanceBuffer.getTotalPosition();
@@ -51,5 +54,58 @@ describe('crypto binanceBuffer service', () => {
         expect(newAssetValue).toBe(currentValue);
       }
     );
+  });
+
+  describe('deposit', () => {
+    it('deposits value on BRL', async () => {
+      const value = 150;
+      const asset = 'BRL';
+      const currentBRLValue = await binanceBuffer.getTotalPosition(asset);
+
+      const result = await binanceBuffer.deposit({ asset, value });
+
+      const newBRLValue = await binanceBuffer.getTotalPosition(asset);
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newBRLValue).toBe(currentBRLValue + value);
+    });
+
+    it('deposits value on BRL when asset param is not provided', async () => {
+      const value = 357.98;
+      const asset = 'BRL';
+      const currentBRLValue = await binanceBuffer.getTotalPosition(asset);
+
+      const result = await binanceBuffer.deposit({ value });
+
+      const newBRLValue = await binanceBuffer.getTotalPosition(asset);
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newBRLValue).toBe(currentBRLValue + value);
+    });
+
+    it.each(['br', 'us', 'fii'])(
+      'does not deposits value for "%s" asset',
+      async asset => {
+        const value = 500;
+
+        const currentValue = await binanceBuffer.getTotalPosition(asset);
+
+        const result = await binanceBuffer.deposit({ asset, value });
+
+        const newValue = await binanceBuffer.getTotalPosition(asset);
+
+        expect(result).toEqual({ status: 'cannotDepositValue' });
+        expect(newValue).toBe(currentValue);
+      }
+    );
+
+    it('does not withdrawn a value when funds are not enough', async () => {
+      const value = -150000;
+      const asset = 'BRL';
+
+      const result = await binanceBuffer.deposit({ asset, value });
+
+      expect(result).toEqual({ status: 'notEnoughFunds' });
+    });
   });
 });
