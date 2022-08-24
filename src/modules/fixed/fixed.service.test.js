@@ -1,8 +1,11 @@
+import database from '../../providers/database';
 import fixed from './fixed.service';
 
 jest.mock('../../providers/database');
 
 describe('fixed service', () => {
+  beforeEach(() => database.resetMockValues());
+
   describe('getTotalPosition', () => {
     it('gets total fixed position', async () => {
       const value = await fixed.getTotalPosition();
@@ -47,6 +50,42 @@ describe('fixed service', () => {
       const assetValue = balance.find(({ asset }) => asset === assetName).value;
 
       expect(assetValue).toBe(newValue);
+    });
+  });
+
+  describe('deposit', () => {
+    it('deposits a value for a given asset', async () => {
+      const value = 150;
+      const assetName = 'nubank';
+
+      const currentPosition = await fixed.getTotalPosition('nubank');
+
+      const result = await fixed.deposit({ asset: assetName, value });
+
+      const { balance } = await fixed.getBalance();
+      const newPosition = balance.find(
+        ({ asset }) => asset === assetName
+      ).value;
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newPosition).toBe(currentPosition + value);
+    });
+
+    it('does not withdrawn a value when funds are not enough', async () => {
+      const value = 99999;
+      const assetName = 'nubank';
+
+      const currentPosition = await fixed.getTotalPosition('nubank');
+
+      const result = await fixed.deposit({ asset: assetName, value: -value });
+
+      const { balance } = await fixed.getBalance();
+      const newPosition = balance.find(
+        ({ asset }) => asset === assetName
+      ).value;
+
+      expect(result).toEqual({ status: 'notEnoughFunds' });
+      expect(newPosition).toBe(currentPosition);
     });
   });
 });

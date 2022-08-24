@@ -29,9 +29,28 @@ const getAssetsList = async () => {
 const setAssetValue = ({ asset, value }) =>
   database.updateOne('assets', 'fixed', { asset }, { $set: { value } });
 
+const deposit = async ({ asset, value }) => {
+  const currentValue = await getTotalPosition(asset);
+  const newValue = currentValue + value;
+
+  if (newValue < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  database.updateOne(
+    'assets',
+    'fixed',
+    { asset },
+    { $set: { value: newValue } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
   getAssetsList,
   setAssetValue,
+  deposit,
 };
