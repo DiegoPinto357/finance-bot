@@ -44,6 +44,22 @@ const getTotalPosition = async portfolioType => {
   }, {});
 };
 
+const getPosition = async ({ type, asset }) => {
+  const service = getServiceByPortfolioType(type);
+  return await service.getTotalPosition(asset);
+};
+
+const setAssetValue = async ({ asset, value }) => {
+  asset = asset ? asset : 'binanceBuffer';
+
+  if (asset !== 'binanceBuffer') {
+    return { status: 'cannotSetValue' };
+  }
+
+  await binanceBufferService.setAssetValue({ value });
+  return { status: 'ok' };
+};
+
 const getHistory = async portfolioType => {
   const service = getServiceByPortfolioType(portfolioType);
   return service.getHistory();
@@ -52,5 +68,7 @@ const getHistory = async portfolioType => {
 export default {
   getBalance,
   getTotalPosition,
+  getPosition,
+  setAssetValue,
   getHistory,
 };
