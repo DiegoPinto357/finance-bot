@@ -82,8 +82,14 @@ const getTotalPosition = async portfolioType => {
   );
 };
 
-const deposit = async value => {
-  const currentValue = await getTotalPosition('float');
+const deposit = async ({ asset, value }) => {
+  asset = asset ? asset : 'float';
+
+  if (asset !== 'float') {
+    return { status: 'cannotDepositValue' };
+  }
+
+  const currentValue = await getTotalPosition(asset);
   const newValue = currentValue + value;
 
   if (newValue < 0) {
@@ -93,7 +99,7 @@ const deposit = async value => {
   await database.updateOne(
     'assets',
     'stock',
-    { type: 'float' },
+    { type: asset },
     { $set: { value: newValue } }
   );
 

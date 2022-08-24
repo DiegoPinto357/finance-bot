@@ -41,21 +41,52 @@ describe('stock service', () => {
 
   describe('deposit', () => {
     it('deposits value on float', async () => {
-      const depositValue = 150;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const value = 150;
+      const asset = 'float';
+      const currentFloatValue = await stock.getTotalPosition(asset);
 
-      const result = await stock.deposit(depositValue);
+      const result = await stock.deposit({ asset, value });
 
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getTotalPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
-      expect(newFloatValue).toBe(currentFloatValue + depositValue);
+      expect(newFloatValue).toBe(currentFloatValue + value);
     });
 
-    it('does not withdrawn a value when funds are not enough', async () => {
-      const withdrawnValue = 150000;
+    it('deposits value on float when asset param is not provided', async () => {
+      const value = 357.98;
+      const asset = 'float';
+      const currentFloatValue = await stock.getTotalPosition(asset);
 
-      const result = await stock.deposit(-withdrawnValue);
+      const result = await stock.deposit({ value });
+
+      const newFloatValue = await stock.getTotalPosition(asset);
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newFloatValue).toBe(currentFloatValue + value);
+    });
+
+    it.each(['br', 'us', 'fii'])(
+      'does not deposits value for "%s" asset',
+      async asset => {
+        const value = 500;
+
+        const currentValue = await stock.getTotalPosition(asset);
+
+        const result = await stock.deposit({ asset, value });
+
+        const newValue = await stock.getTotalPosition(asset);
+
+        expect(result).toEqual({ status: 'cannotDepositValue' });
+        expect(newValue).toBe(currentValue);
+      }
+    );
+
+    it('does not withdrawn a value when funds are not enough', async () => {
+      const value = -150000;
+      const asset = 'float';
+
+      const result = await stock.deposit({ asset, value });
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
     });
