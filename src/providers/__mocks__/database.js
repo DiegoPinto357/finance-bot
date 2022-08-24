@@ -52,10 +52,21 @@ const updateOne = async (databaseName, collectionName, query, update) => {
     Object.entries(query).every(([key, value]) => item[key] === value)
   );
 
-  // TODO update to support multiple updates
-  const [updateKey, updateValue] = Object.entries(update['$set'])[0];
+  const operations = Object.entries(update);
+  operations.forEach(([operation, params]) => {
+    // TODO add to support to update multiple key
+    const [key, value] = Object.entries(params)[0];
+    switch (operation) {
+      case '$set':
+        _.set(record, key, value);
+        break;
+      case '$inc':
+        const currentValue = _.get(record, key);
+        _.set(record, key, currentValue + value);
+        break;
+    }
+  });
 
-  _.set(record, updateKey, updateValue);
   setData(databaseName, collectionName, data);
 };
 
