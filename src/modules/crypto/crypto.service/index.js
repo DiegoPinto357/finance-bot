@@ -60,6 +60,16 @@ const setAssetValue = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
+const deposit = async ({ asset, value }) => {
+  asset = asset ? asset : 'binanceBuffer';
+
+  if (asset !== 'binanceBuffer') {
+    return { status: 'cannotDepositValue' };
+  }
+
+  return await binanceBufferService.deposit({ value });
+};
+
 const getHistory = async portfolioType => {
   const service = getServiceByPortfolioType(portfolioType);
   return service.getHistory();
@@ -70,5 +80,6 @@ export default {
   getTotalPosition,
   getPosition,
   setAssetValue,
+  deposit,
   getHistory,
 };
