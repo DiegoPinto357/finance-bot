@@ -3,9 +3,16 @@ import path from 'path';
 
 const mockDir = `${path.resolve()}/mockData/binance/`;
 
-const getAccountInformation = jest.fn(async () => {
+let accountData;
+
+async function loadAccountData() {
   const filename = `${mockDir}accountBalance.json`;
-  const balances = JSON.parse(await fs.readFile(filename, 'utf-8'));
+  accountData = JSON.parse(await fs.readFile(filename, 'utf-8'));
+  return accountData;
+}
+
+const getAccountInformation = jest.fn(async () => {
+  const balances = accountData ? accountData : await loadAccountData();
   return { balances };
 });
 
@@ -18,8 +25,18 @@ const getAssetPriceWithBridge = jest.fn(async ({ asset }) => {
   return price;
 });
 
+const simulateBRLDeposit = async value => {
+  const balances = accountData ? accountData : await loadAccountData();
+  const asset = balances.find(({ asset }) => asset === 'BRL');
+  asset.free = `${parseFloat(asset.free) + value}`;
+};
+
+const resetMockValues = () => (accountData = null);
+
 export default {
   getAccountInformation,
   getSymbolPriceTicker,
   getAssetPriceWithBridge,
+  simulateBRLDeposit,
+  resetMockValues,
 };
