@@ -1,5 +1,6 @@
 import googleSheets from '../../providers/googleSheets';
 import database from '../../providers/database';
+import binance from '../../providers/binance';
 import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
@@ -276,20 +277,20 @@ describe('portfolio service', () => {
         assetClass: 'stock',
         sidePortfolioName: null,
       },
-      // {
-      //   depositValue: 100,
-      //   portfolioName: 'previdencia',
-      //   assetClass: 'crypto',
-      //   assetName: 'hodl',
-      //   sidePortfolioName: 'financiamento',
-      // },
-      // {
-      //   depositValue: 100,
-      //   portfolioName: 'carro',
-      //   assetClass: 'crypto',
-      //   assetName: 'binanceBuffer',
-      //   sidePortfolioName: 'amortecedor',
-      // },
+      {
+        depositValue: 100,
+        portfolioName: 'previdencia',
+        assetClass: 'crypto',
+        assetName: 'hodl',
+        sidePortfolioName: 'financiamento',
+      },
+      {
+        depositValue: 100,
+        portfolioName: 'carro',
+        assetClass: 'crypto',
+        assetName: 'binanceBuffer',
+        sidePortfolioName: 'amortecedor',
+      },
     ];
 
     it.each(deposits)(
@@ -327,6 +328,10 @@ describe('portfolio service', () => {
           assetClass,
           assetName,
         });
+
+        if (assetClass === 'crypto') {
+          await binance.simulateBRLDeposit(depositValue);
+        }
 
         const newPortfolioBalance = await portfolioService.getBalance(
           portfolioName

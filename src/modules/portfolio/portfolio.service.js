@@ -231,9 +231,9 @@ const getShares = async portfolioName => {
   };
 };
 
-const setAssetValue = async ({ assetClass, assetName, value }) => {
+const depositValueToAsset = async ({ assetClass, assetName, value }) => {
   const service = services[assetClass];
-  await service.setAssetValue({ asset: assetName, value });
+  await service.deposit({ asset: assetName, value });
 };
 
 const deposit = async ({ value, portfolio, assetClass, assetName }) => {
@@ -277,10 +277,10 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
       { assetClass, assetName },
       { $set: { shares: newShares } }
     ),
-    setAssetValue({
+    depositValueToAsset({
       assetClass,
       assetName,
-      value: newTotalAssetValue,
+      value,
     }),
   ]);
 
