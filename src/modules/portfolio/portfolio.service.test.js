@@ -392,105 +392,81 @@ describe('portfolio service', () => {
   describe('transfer', () => {
     beforeEach(() => googleSheets.resetMockValues());
 
-    it('transfer funds in between fixed assets', async () => {
-      const value = 100;
-      const portfolio = 'financiamento';
-      const origin = { class: 'fixed', name: 'nubank' };
-      const destiny = { class: 'fixed', name: 'xpWesternAsset' };
+    const transfers = [
+      {
+        value: 100,
+        portfolio: 'financiamento',
+        origin: { class: 'fixed', name: 'nubank' },
+        destiny: { class: 'fixed', name: 'xpWesternAsset' },
+      },
+      {
+        value: 124.67,
+        portfolio: 'financiamento',
+        origin: { class: 'fixed', name: 'nubank' },
+        destiny: { class: 'crypto', name: 'hodl' },
+      },
+      {
+        value: 1000,
+        portfolio: 'previdencia',
+        origin: { class: 'fixed', name: 'nubank' },
+        destiny: { class: 'stock', name: 'float' },
+      },
+    ];
 
-      const currentPortfolioBalance = await portfolioService.getBalance(
-        portfolio
-      );
+    it.each(transfers)(
+      'transfer funds for $portfolio from $origin.class/$origin.name to $destiny.class/$destiny.name"',
+      async ({ value, portfolio, origin, destiny }) => {
+        const currentPortfolioBalance = await portfolioService.getBalance(
+          portfolio
+        );
 
-      const currentPortfolioOriginValue = getAssetValueFromBalance(
-        currentPortfolioBalance,
-        origin.class,
-        origin.name
-      );
+        const currentPortfolioOriginValue = getAssetValueFromBalance(
+          currentPortfolioBalance,
+          origin.class,
+          origin.name
+        );
 
-      const currentPortfolioDestinyValue = getAssetValueFromBalance(
-        currentPortfolioBalance,
-        destiny.class,
-        destiny.name
-      );
+        const currentPortfolioDestinyValue = getAssetValueFromBalance(
+          currentPortfolioBalance,
+          destiny.class,
+          destiny.name
+        );
 
-      const response = await portfolioService.transfer(value, {
-        portfolio,
-        origin,
-        destiny,
-      });
+        const response = await portfolioService.transfer(value, {
+          portfolio,
+          origin,
+          destiny,
+        });
 
-      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+        if (destiny.class === 'crypto') {
+          await binance.simulateBRLDeposit(value);
+        }
 
-      const newPortfolioOriginValue = getAssetValueFromBalance(
-        newPortfolioBalance,
-        origin.class,
-        origin.name
-      );
+        const newPortfolioBalance = await portfolioService.getBalance(
+          portfolio
+        );
 
-      const newPortfolioDestinyValue = getAssetValueFromBalance(
-        newPortfolioBalance,
-        destiny.class,
-        destiny.name
-      );
+        const newPortfolioOriginValue = getAssetValueFromBalance(
+          newPortfolioBalance,
+          origin.class,
+          origin.name
+        );
 
-      expect(response.status).toBe('ok');
-      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
-      expect(newPortfolioDestinyValue).toBe(
-        currentPortfolioDestinyValue + value
-      );
-    });
+        const newPortfolioDestinyValue = getAssetValueFromBalance(
+          newPortfolioBalance,
+          destiny.class,
+          destiny.name
+        );
 
-    it('transfer funds from fixed to crypto', async () => {
-      const value = 100;
-      const portfolio = 'financiamento';
-      const origin = { class: 'fixed', name: 'nubank' };
-      const destiny = { class: 'crypto', name: 'hodl' };
-
-      const currentPortfolioBalance = await portfolioService.getBalance(
-        portfolio
-      );
-
-      const currentPortfolioOriginValue = getAssetValueFromBalance(
-        currentPortfolioBalance,
-        origin.class,
-        origin.name
-      );
-
-      const currentPortfolioDestinyValue = getAssetValueFromBalance(
-        currentPortfolioBalance,
-        destiny.class,
-        destiny.name
-      );
-
-      const response = await portfolioService.transfer(value, {
-        portfolio,
-        origin,
-        destiny,
-      });
-
-      await binance.simulateBRLDeposit(value);
-
-      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
-
-      const newPortfolioOriginValue = getAssetValueFromBalance(
-        newPortfolioBalance,
-        origin.class,
-        origin.name
-      );
-
-      const newPortfolioDestinyValue = getAssetValueFromBalance(
-        newPortfolioBalance,
-        destiny.class,
-        destiny.name
-      );
-
-      expect(response.status).toBe('ok');
-      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
-      expect(newPortfolioDestinyValue).toBe(
-        currentPortfolioDestinyValue + value
-      );
-    });
+        expect(response.status).toBe('ok');
+        expect(newPortfolioOriginValue).toBe(
+          currentPortfolioOriginValue - value
+        );
+        expect(newPortfolioDestinyValue).toBe(
+          currentPortfolioDestinyValue + value
+        );
+      }
+    );
 
     it('does not transfer when there is no funds available', async () => {
       const value = 10000;
