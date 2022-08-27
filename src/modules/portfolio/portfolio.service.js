@@ -307,20 +307,18 @@ const transfer = async (value, { portfolio, origin, destiny }) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await Promise.all([
-    deposit({
-      value: -value,
-      portfolio,
-      assetClass: origin.class,
-      assetName: origin.name,
-    }),
-    deposit({
-      value,
-      portfolio,
-      assetClass: destiny.class,
-      assetName: destiny.name,
-    }),
-  ]);
+  await deposit({
+    value: -value,
+    portfolio,
+    assetClass: origin.class,
+    assetName: origin.name,
+  });
+  await deposit({
+    value,
+    portfolio,
+    assetClass: destiny.class,
+    assetName: destiny.name,
+  });
 
   return { status: 'ok' };
 };

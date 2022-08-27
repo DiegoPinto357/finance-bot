@@ -389,14 +389,30 @@ describe('portfolio service', () => {
     });
   });
 
-  describe.skip('transfer', () => {
+  describe('transfer', () => {
     beforeEach(() => googleSheets.resetMockValues());
 
-    it('transfer funds in between assets', async () => {
+    it('transfer funds in between fixed assets', async () => {
       const value = 100;
       const portfolio = 'financiamento';
       const origin = { class: 'fixed', name: 'nubank' };
-      const destiny = { class: 'crypto', name: 'defi' };
+      const destiny = { class: 'fixed', name: 'xpWesternAsset' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
 
       const response = await portfolioService.transfer(value, {
         portfolio,
@@ -404,23 +420,76 @@ describe('portfolio service', () => {
         destiny,
       });
 
-      const portfolioBalance = await portfolioService.getBalance(portfolio);
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
 
-      const portfolioOriginValue = getAssetValueFromBalance(
-        portfolioBalance,
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
         origin.class,
         origin.name
       );
 
-      const portfolioDestinyValue = getAssetValueFromBalance(
-        portfolioBalance,
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
         destiny.class,
         destiny.name
       );
 
       expect(response.status).toBe('ok');
-      expect(portfolioOriginValue).toBe(5153.352886268896 - value);
-      expect(portfolioDestinyValue).toBe(266.5505693764885 + value);
+      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + value
+      );
+    });
+
+    it('transfer funds from fixed to crypto', async () => {
+      const value = 100;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'crypto', name: 'hodl' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.transfer(value, {
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      await binance.simulateBRLDeposit(value);
+
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + value
+      );
     });
 
     it('does not transfer when there is no funds available', async () => {
