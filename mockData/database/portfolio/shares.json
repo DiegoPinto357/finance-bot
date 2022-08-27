@@ -43,7 +43,7 @@
   },
   {
     "assetClass": "fixed",
-    "assetName": "pagbankCDB_120",
+    "assetName": "pagBankCDB120",
     "shares": [
       { "portfolio": "temp", "value": 0 },
       { "portfolio": "amortecedor", "value": 0.5995080938 },

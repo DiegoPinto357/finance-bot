@@ -287,8 +287,12 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   return { status: 'ok' };
 };
 
-const getAssetValueFromBalance = ({ balance }, assetClass, assetName) =>
-  balance[assetClass].balance.find(item => item.asset === assetName).value;
+const getAssetValueFromBalance = ({ balance }, assetClass, assetName) => {
+  const assetItem = balance[assetClass].balance.find(
+    item => item.asset === assetName
+  );
+  return assetItem ? assetItem.value : 0;
+};
 
 const hasFunds = (balance, asset, value) => {
   const currentValue = getAssetValueFromBalance(
@@ -380,32 +384,30 @@ const swap = async (
     return { status: 'notEnoughFunds' };
   }
 
-  await Promise.all([
-    deposit({
-      value: -value,
-      portfolio: params.origin.portfolio,
-      assetClass: params.origin.asset.class,
-      assetName: params.origin.asset.name,
-    }),
-    deposit({
-      value,
-      portfolio: params.destiny.portfolio,
-      assetClass: params.destiny.asset.class,
-      assetName: params.destiny.asset.name,
-    }),
-    deposit({
-      value,
-      portfolio: params.liquidityOrigin.portfolio,
-      assetClass: params.liquidityOrigin.asset.class,
-      assetName: params.liquidityOrigin.asset.name,
-    }),
-    deposit({
-      value: -value,
-      portfolio: params.liquidityDestiny.portfolio,
-      assetClass: params.liquidityDestiny.asset.class,
-      assetName: params.liquidityDestiny.asset.name,
-    }),
-  ]);
+  await deposit({
+    value: -value,
+    portfolio: params.origin.portfolio,
+    assetClass: params.origin.asset.class,
+    assetName: params.origin.asset.name,
+  });
+  await deposit({
+    value,
+    portfolio: params.destiny.portfolio,
+    assetClass: params.destiny.asset.class,
+    assetName: params.destiny.asset.name,
+  });
+  await deposit({
+    value,
+    portfolio: params.liquidityOrigin.portfolio,
+    assetClass: params.liquidityOrigin.asset.class,
+    assetName: params.liquidityOrigin.asset.name,
+  });
+  await deposit({
+    value: -value,
+    portfolio: params.liquidityDestiny.portfolio,
+    assetClass: params.liquidityDestiny.asset.class,
+    assetName: params.liquidityDestiny.asset.name,
+  });
 
   return { status: 'ok' };
 };

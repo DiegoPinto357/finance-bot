@@ -89,12 +89,15 @@ describe('portfolio service', () => {
             total: 244.33867596477316 + 245.06972515627345,
           },
           fixed: {
-            balance: [{ asset: 'nubank', value: 4370.80325478285 }],
-            total: 4370.80325478285,
+            balance: [
+              { asset: 'nubank', value: 4370.80325478285 },
+              { asset: 'pagBankCDB120', value: 406.70591249473637 },
+            ],
+            total: 4777.509167277586,
           },
           stock: { balance: [], total: 0 },
         },
-        total: 4860.211655903897,
+        total: 5266.917568398632,
       });
     });
 
@@ -500,15 +503,45 @@ describe('portfolio service', () => {
     });
   });
 
-  describe.skip('swap', () => {
+  describe('swap', () => {
     beforeEach(() => googleSheets.resetMockValues());
 
     it('swap funds within same portfolio', async () => {
       const value = 100;
       const portfolio = 'financiamento';
       const origin = { class: 'fixed', name: 'nubank' };
-      const destiny = { class: 'crypto', name: 'defi' };
+      const destiny = { class: 'fixed', name: 'pagBankCDB120' };
       const liquidity = 'amortecedor';
+
+      const [currentPortfolioBalance, currentLiquidityBalance] =
+        await Promise.all([
+          portfolioService.getBalance(portfolio),
+          portfolioService.getBalance(liquidity),
+        ]);
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const currentLiquidityOriginValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentLiquidityDestinyValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        destiny.class,
+        destiny.name
+      );
 
       const response = await portfolioService.swap(value, {
         portfolio,
@@ -517,48 +550,81 @@ describe('portfolio service', () => {
         liquidity,
       });
 
-      const [portfolioBalance, liquidityBalance] = await Promise.all([
+      const [newPortfolioBalance, newLiquidityBalance] = await Promise.all([
         portfolioService.getBalance(portfolio),
         portfolioService.getBalance(liquidity),
       ]);
 
-      const portfolioOriginValue = getAssetValueFromBalance(
-        portfolioBalance,
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
         origin.class,
         origin.name
       );
 
-      const portfolioDestinyValue = getAssetValueFromBalance(
-        portfolioBalance,
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
         destiny.class,
         destiny.name
       );
 
-      const liquidityOriginValue = getAssetValueFromBalance(
-        liquidityBalance,
+      const newLiquidityOriginValue = getAssetValueFromBalance(
+        newLiquidityBalance,
         origin.class,
         origin.name
       );
 
-      const liquidityDestinyValue = getAssetValueFromBalance(
-        liquidityBalance,
+      const newLiquidityDestinyValue = getAssetValueFromBalance(
+        newLiquidityBalance,
         destiny.class,
         destiny.name
       );
 
       expect(response.status).toBe('ok');
-      expect(portfolioOriginValue).toBe(5153.352886268896 - value);
-      expect(portfolioDestinyValue).toBe(266.5505693764885 + value);
-      expect(liquidityOriginValue).toBe(3567.3904 + value);
-      expect(liquidityDestinyValue).toBe(2635.9486065341357 - value);
+      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + value
+      );
+      expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue + value);
+      expect(newLiquidityDestinyValue).toBe(
+        currentLiquidityDestinyValue - value
+      );
     });
 
     it('swap funds within same asset', async () => {
       const value = 100;
-      const asset = { class: 'crypto', name: 'hodl' };
+      const asset = { class: 'fixed', name: 'pagBankCDB120' };
       const origin = 'amortecedor';
       const destiny = 'suricat';
       const liquidity = { class: 'fixed', name: 'nubank' };
+
+      const [currentOriginBalance, currentDestinyBalance] = await Promise.all([
+        portfolioService.getBalance(origin),
+        portfolioService.getBalance(destiny),
+      ]);
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentOriginBalance,
+        asset.class,
+        asset.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentDestinyBalance,
+        asset.class,
+        asset.name
+      );
+
+      const currentLiquidityOriginValue = getAssetValueFromBalance(
+        currentOriginBalance,
+        liquidity.class,
+        liquidity.name
+      );
+
+      const currentLiquidityDestinyValue = getAssetValueFromBalance(
+        currentDestinyBalance,
+        liquidity.class,
+        liquidity.name
+      );
 
       const response = await portfolioService.swap(value, {
         asset,
@@ -567,40 +633,44 @@ describe('portfolio service', () => {
         liquidity,
       });
 
-      const [originBalance, destinyBalance] = await Promise.all([
+      const [newOriginBalance, newDestinyBalance] = await Promise.all([
         portfolioService.getBalance(origin),
         portfolioService.getBalance(destiny),
       ]);
 
-      const portfolioOriginValue = getAssetValueFromBalance(
-        originBalance,
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newOriginBalance,
         asset.class,
         asset.name
       );
 
-      const portfolioDestinyValue = getAssetValueFromBalance(
-        destinyBalance,
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newDestinyBalance,
         asset.class,
         asset.name
       );
 
-      const liquidityOriginValue = getAssetValueFromBalance(
-        originBalance,
+      const newLiquidityOriginValue = getAssetValueFromBalance(
+        newOriginBalance,
         liquidity.class,
         liquidity.name
       );
 
-      const liquidityDestinyValue = getAssetValueFromBalance(
-        destinyBalance,
+      const newLiquidityDestinyValue = getAssetValueFromBalance(
+        newDestinyBalance,
         liquidity.class,
         liquidity.name
       );
 
       expect(response.status).toBe('ok');
-      expect(portfolioOriginValue).toBe(2759.1290061635623 - value);
-      expect(portfolioDestinyValue).toBe(244.33867596477316 + value);
-      expect(liquidityOriginValue).toBe(3567.3904 + value);
-      expect(liquidityDestinyValue).toBe(4370.80325478285 - value);
+      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + value
+      );
+      expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue + value);
+      expect(newLiquidityDestinyValue).toBe(
+        currentLiquidityDestinyValue - value
+      );
     });
 
     describe('no liquidity available', () => {
@@ -698,8 +768,8 @@ describe('portfolio service', () => {
         );
 
         expect(response.status).toBe('notEnoughFunds');
-        expect(portfolioOriginValue).toBe(2759.1290061635623);
-        expect(portfolioDestinyValue).toBe(244.33867596477316);
+        expect(portfolioOriginValue).toBe(2919.966034464467);
+        expect(portfolioDestinyValue).toBe(258.58183257447257);
         expect(liquidityOriginValue).toBe(3567.3904);
         expect(liquidityDestinyValue).toBe(4370.80325478285);
       });
