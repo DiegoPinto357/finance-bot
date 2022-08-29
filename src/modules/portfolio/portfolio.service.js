@@ -408,12 +408,7 @@ const swap = async (
 ) => {
   const withinSamePortfolio = portfolio && !asset;
 
-  const params = {
-    origin: {},
-    destiny: {},
-    liquidityOrigin: {},
-    liquidityDestiny: {},
-  };
+  const params = {};
 
   if (withinSamePortfolio) {
     // portfolio is constant
