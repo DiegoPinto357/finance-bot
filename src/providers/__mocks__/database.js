@@ -8,6 +8,8 @@ const connect = jest.fn();
 
 let dataBuffer = {};
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 const getData = async (databaseName, collectionName) => {
   const filename = path.join(mockDir, databaseName, `${collectionName}.json`);
 
@@ -34,6 +36,7 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
 
   const { projection } = options;
 
+  await delay(10);
   return filteredData.map(item => {
     const projectionEntries = Object.entries(projection);
     projectionEntries.forEach(([key, value]) => {
@@ -67,6 +70,7 @@ const updateOne = async (databaseName, collectionName, query, update) => {
     }
   });
 
+  await delay(10);
   setData(databaseName, collectionName, data);
 };
 

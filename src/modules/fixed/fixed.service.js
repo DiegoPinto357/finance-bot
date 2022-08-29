@@ -37,7 +37,7 @@ const deposit = async ({ asset, value }) => {
     return { status: 'notEnoughFunds' };
   }
 
-  database.updateOne(
+  await database.updateOne(
     'assets',
     'fixed',
     { asset },
