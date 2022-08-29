@@ -10,6 +10,14 @@ const services = {
   crypto: cryptoService,
 };
 
+const verifyShares = shares => {
+  const sum = shares.reduce((acc, current) => acc + current, 0);
+
+  const precision = 0.005;
+  if (sum < 1 - precision || sum > 1 + precision)
+    throw new Error(`Sum of shares is not 1: current value ${sum}`);
+};
+
 const getPortfolioData = () =>
   database.find('portfolio', 'shares', {}, { projection: { _id: 0 } });
 
@@ -290,6 +298,8 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
     value: item.value / newTotalAssetValue,
   }));
 
+  verifyShares(newShares.map(({ value }) => value));
+
   await Promise.all([
     database.updateOne(
       'portfolio',
@@ -379,6 +389,8 @@ const swapOnAsset = async ({
   if (originPortfolio.value < 0 || destinyPortfolio.value < 0) {
     return { status: addValueStatus };
   }
+
+  verifyShares(asset.shares.map(({ value }) => value));
 
   await database.updateOne(
     'portfolio',
