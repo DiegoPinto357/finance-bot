@@ -236,6 +236,27 @@ const depositValueToAsset = async ({ assetClass, assetName, value }) => {
   await service.deposit({ asset: assetName, value });
 };
 
+const addValuesToPortfolioList = (shares, totalAssetValue) =>
+  shares.map(({ portfolio, value }) => ({
+    portfolio,
+    share: value,
+    value: value * totalAssetValue,
+  }));
+
+const addValueToPortfolioItem = (portfolioList, portfolioName, value) => {
+  const portfolioItem = portfolioList.find(
+    item => item.portfolio === portfolioName
+  );
+
+  portfolioItem.value = portfolioItem.value + value;
+
+  if (portfolioItem.value < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  return { status: 'ok' };
+};
+
 const deposit = async ({ value, portfolio, assetClass, assetName }) => {
   if (assetClass === 'stock') assetName = 'float';
 
@@ -249,20 +270,19 @@ const deposit = async ({ value, portfolio, assetClass, assetName }) => {
     item => item.assetClass === assetClass && item.assetName === assetName
   );
 
-  const portfolioList = asset.shares.map(({ portfolio, value }) => ({
-    portfolio,
-    share: value,
-    value: value * currentTotalAssetValue,
-  }));
-
-  const portfolioItem = portfolioList.find(
-    item => item.portfolio === portfolio
+  const portfolioList = addValuesToPortfolioList(
+    asset.shares,
+    currentTotalAssetValue
   );
 
-  portfolioItem.value = portfolioItem.value + value;
+  const { status: addValueStatus } = addValueToPortfolioItem(
+    portfolioList,
+    portfolio,
+    value
+  );
 
-  if (portfolioItem.value < 0) {
-    return { status: 'notEnoughFunds' };
+  if (addValueStatus !== 'ok') {
+    return { status: addValueStatus };
   }
 
   const newShares = portfolioList.map(item => ({
@@ -327,6 +347,49 @@ const transfer = async (value, { portfolio, origin, destiny }) => {
   return { status: 'ok' };
 };
 
+const swapOnAsset = async ({
+  value,
+  assetClass,
+  assetName,
+  origin,
+  destiny,
+}) => {
+  const service = services[assetClass];
+  const totalAssetValue = await service.getTotalPosition(assetName);
+
+  const portfolioData = await getPortfolioData();
+
+  const asset = portfolioData.find(
+    item => item.assetClass === assetClass && item.assetName === assetName
+  );
+
+  const originPortfolio = asset.shares.find(
+    ({ portfolio }) => portfolio === origin
+  );
+
+  const destinyPortfolio = asset.shares.find(
+    ({ portfolio }) => portfolio === destiny
+  );
+
+  const deltaShare = value / totalAssetValue;
+
+  originPortfolio.value = originPortfolio.value - deltaShare;
+  destinyPortfolio.value = destinyPortfolio.value + deltaShare;
+
+  if (originPortfolio.value < 0 || destinyPortfolio.value < 0) {
+    return { status: addValueStatus };
+  }
+
+  await database.updateOne(
+    'portfolio',
+    'shares',
+    { assetClass, assetName },
+    { $set: { shares: asset.shares } }
+  );
+
+  return { status: 'ok' };
+};
+
 const swap = async (
   value,
   { portfolio, asset, origin, destiny, liquidity }
@@ -344,70 +407,48 @@ const swap = async (
     // portfolio is constant
     // another portfolio is the liquidity
     // different assets are the origin and destiny
-    params.origin.portfolio = portfolio;
-    params.origin.asset = origin;
-    params.destiny.portfolio = portfolio;
-    params.destiny.asset = destiny;
-    params.liquidityOrigin.portfolio = liquidity;
-    params.liquidityOrigin.asset = origin;
-    params.liquidityDestiny.portfolio = liquidity;
-    params.liquidityDestiny.asset = destiny;
+    params.assets = [origin, destiny];
+    params.originPortfolio = portfolio;
+    params.destinyPortfolio = liquidity;
   } else {
     // withinSameAsset
     // asset is constant
     // another asset is the liquidity
     // different portfolios are the origin and destiny
-    params.origin.portfolio = origin;
-    params.origin.asset = asset;
-    params.destiny.portfolio = destiny;
-    params.destiny.asset = asset;
-    params.liquidityOrigin.portfolio = origin;
-    params.liquidityOrigin.asset = liquidity;
-    params.liquidityDestiny.portfolio = destiny;
-    params.liquidityDestiny.asset = liquidity;
+    params.assets = [asset, liquidity];
+    params.originPortfolio = origin;
+    params.destinyPortfolio = destiny;
   }
 
   // TODO get balances in a single call
   const [originBalance, liquidityBalance] = await Promise.all([
-    getBalance(params.origin.portfolio),
-    getBalance(params.liquidityDestiny.portfolio),
+    getBalance(params.originPortfolio),
+    getBalance(params.destinyPortfolio),
   ]);
 
-  const hasOriginFunds = hasFunds(originBalance, params.origin.asset, value);
-  const hasLiquidityFunds = hasFunds(
-    liquidityBalance,
-    params.liquidityDestiny.asset,
-    value
-  );
+  const hasOriginFunds = hasFunds(originBalance, params.assets[0], value);
+  const hasLiquidityFunds = hasFunds(liquidityBalance, params.assets[1], value);
 
   if (!hasOriginFunds || !hasLiquidityFunds) {
     return { status: 'notEnoughFunds' };
   }
 
-  await deposit({
-    value: -value,
-    portfolio: params.origin.portfolio,
-    assetClass: params.origin.asset.class,
-    assetName: params.origin.asset.name,
-  });
-  await deposit({
-    value,
-    portfolio: params.destiny.portfolio,
-    assetClass: params.destiny.asset.class,
-    assetName: params.destiny.asset.name,
-  });
-  await deposit({
-    value,
-    portfolio: params.liquidityOrigin.portfolio,
-    assetClass: params.liquidityOrigin.asset.class,
-    assetName: params.liquidityOrigin.asset.name,
-  });
-  await deposit({
-    value: -value,
-    portfolio: params.liquidityDestiny.portfolio,
-    assetClass: params.liquidityDestiny.asset.class,
-    assetName: params.liquidityDestiny.asset.name,
-  });
+  await Promise.all([
+    await swapOnAsset({
+      value,
+      assetClass: params.assets[0].class,
+      assetName: params.assets[0].name,
+      origin: params.originPortfolio,
+      destiny: params.destinyPortfolio,
+    }),
+    await swapOnAsset({
+      value: -value,
+      assetClass: params.assets[1].class,
+      assetName: params.assets[1].name,
+      origin: params.originPortfolio,
+      destiny: params.destinyPortfolio,
+    }),
+  ]);
 
   return { status: 'ok' };
 };

@@ -580,13 +580,21 @@ describe('portfolio service', () => {
       );
 
       expect(response.status).toBe('ok');
-      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
-      expect(newPortfolioDestinyValue).toBe(
-        currentPortfolioDestinyValue + value
+      expect(newPortfolioOriginValue).toBeCloseTo(
+        currentPortfolioOriginValue - value,
+        5
       );
-      expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue + value);
-      expect(newLiquidityDestinyValue).toBe(
-        currentLiquidityDestinyValue - value
+      expect(newPortfolioDestinyValue).toBeCloseTo(
+        currentPortfolioDestinyValue + value,
+        5
+      );
+      expect(newLiquidityOriginValue).toBeCloseTo(
+        currentLiquidityOriginValue + value,
+        5
+      );
+      expect(newLiquidityDestinyValue).toBeCloseTo(
+        currentLiquidityDestinyValue - value,
+        5
       );
     });
 
@@ -663,13 +671,21 @@ describe('portfolio service', () => {
       );
 
       expect(response.status).toBe('ok');
-      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
-      expect(newPortfolioDestinyValue).toBe(
-        currentPortfolioDestinyValue + value
+      expect(newPortfolioOriginValue).toBeCloseTo(
+        currentPortfolioOriginValue - value,
+        5
       );
-      expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue + value);
-      expect(newLiquidityDestinyValue).toBe(
-        currentLiquidityDestinyValue - value
+      expect(newPortfolioDestinyValue).toBeCloseTo(
+        currentPortfolioDestinyValue + value,
+        5
+      );
+      expect(newLiquidityOriginValue).toBeCloseTo(
+        currentLiquidityOriginValue + value,
+        5
+      );
+      expect(newLiquidityDestinyValue).toBeCloseTo(
+        currentLiquidityDestinyValue - value,
+        5
       );
     });
 
@@ -681,6 +697,37 @@ describe('portfolio service', () => {
         const destiny = { class: 'crypto', name: 'defi' };
         const liquidity = 'amortecedor';
 
+        const [currentOriginBalance, currentDestinyBalance] = await Promise.all(
+          [
+            portfolioService.getBalance(portfolio),
+            portfolioService.getBalance(liquidity),
+          ]
+        );
+
+        const currentPortfolioOriginValue = getAssetValueFromBalance(
+          currentOriginBalance,
+          origin.class,
+          origin.name
+        );
+
+        const currentPortfolioDestinyValue = getAssetValueFromBalance(
+          currentDestinyBalance,
+          destiny.class,
+          destiny.name
+        );
+
+        const currentLiquidityOriginValue = getAssetValueFromBalance(
+          currentOriginBalance,
+          origin.class,
+          origin.name
+        );
+
+        const currentLiquidityDestinyValue = getAssetValueFromBalance(
+          currentDestinyBalance,
+          destiny.class,
+          destiny.name
+        );
+
         const response = await portfolioService.swap(value, {
           portfolio,
           origin,
@@ -688,40 +735,40 @@ describe('portfolio service', () => {
           liquidity,
         });
 
-        const [portfolioBalance, liquidityBalance] = await Promise.all([
+        const [newOriginBalance, newDestinyBalance] = await Promise.all([
           portfolioService.getBalance(portfolio),
           portfolioService.getBalance(liquidity),
         ]);
 
-        const portfolioOriginValue = getAssetValueFromBalance(
-          portfolioBalance,
+        const newPortfolioOriginValue = getAssetValueFromBalance(
+          newOriginBalance,
           origin.class,
           origin.name
         );
 
-        const portfolioDestinyValue = getAssetValueFromBalance(
-          portfolioBalance,
+        const newPortfolioDestinyValue = getAssetValueFromBalance(
+          newDestinyBalance,
           destiny.class,
           destiny.name
         );
 
-        const liquidityOriginValue = getAssetValueFromBalance(
-          liquidityBalance,
+        const newLiquidityOriginValue = getAssetValueFromBalance(
+          newOriginBalance,
           origin.class,
           origin.name
         );
 
-        const liquidityDestinyValue = getAssetValueFromBalance(
-          liquidityBalance,
+        const newLiquidityDestinyValue = getAssetValueFromBalance(
+          newDestinyBalance,
           destiny.class,
           destiny.name
         );
 
         expect(response.status).toBe('notEnoughFunds');
-        expect(portfolioOriginValue).toBe(5153.352886268896);
-        expect(portfolioDestinyValue).toBe(266.5505693764885);
-        expect(liquidityOriginValue).toBe(3567.3904);
-        expect(liquidityDestinyValue).toBe(2635.9486065341357);
+        expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue);
+        expect(newPortfolioDestinyValue).toBe(currentPortfolioDestinyValue);
+        expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue);
+        expect(newLiquidityDestinyValue).toBe(currentLiquidityDestinyValue);
       });
 
       it('does not swap funds within same asset', async () => {
@@ -731,6 +778,37 @@ describe('portfolio service', () => {
         const destiny = 'suricat';
         const liquidity = { class: 'fixed', name: 'nubank' };
 
+        const [currentOriginBalance, currentDestinyBalance] = await Promise.all(
+          [
+            portfolioService.getBalance(origin),
+            portfolioService.getBalance(destiny),
+          ]
+        );
+
+        const currentPortfolioOriginValue = getAssetValueFromBalance(
+          currentOriginBalance,
+          asset.class,
+          asset.name
+        );
+
+        const currentPortfolioDestinyValue = getAssetValueFromBalance(
+          currentDestinyBalance,
+          asset.class,
+          asset.name
+        );
+
+        const currentLiquidityOriginValue = getAssetValueFromBalance(
+          currentOriginBalance,
+          liquidity.class,
+          liquidity.name
+        );
+
+        const currentLiquidityDestinyValue = getAssetValueFromBalance(
+          currentDestinyBalance,
+          liquidity.class,
+          liquidity.name
+        );
+
         const response = await portfolioService.swap(value, {
           asset,
           origin,
@@ -738,40 +816,40 @@ describe('portfolio service', () => {
           liquidity,
         });
 
-        const [originBalance, destinyBalance] = await Promise.all([
+        const [newOriginBalance, newDestinyBalance] = await Promise.all([
           portfolioService.getBalance(origin),
           portfolioService.getBalance(destiny),
         ]);
 
-        const portfolioOriginValue = getAssetValueFromBalance(
-          originBalance,
+        const newPortfolioOriginValue = getAssetValueFromBalance(
+          newOriginBalance,
           asset.class,
           asset.name
         );
 
-        const portfolioDestinyValue = getAssetValueFromBalance(
-          destinyBalance,
+        const newPortfolioDestinyValue = getAssetValueFromBalance(
+          newDestinyBalance,
           asset.class,
           asset.name
         );
 
-        const liquidityOriginValue = getAssetValueFromBalance(
-          originBalance,
+        const newLiquidityOriginValue = getAssetValueFromBalance(
+          newOriginBalance,
           liquidity.class,
           liquidity.name
         );
 
-        const liquidityDestinyValue = getAssetValueFromBalance(
-          destinyBalance,
+        const newLiquidityDestinyValue = getAssetValueFromBalance(
+          newDestinyBalance,
           liquidity.class,
           liquidity.name
         );
 
         expect(response.status).toBe('notEnoughFunds');
-        expect(portfolioOriginValue).toBe(2919.966034464467);
-        expect(portfolioDestinyValue).toBe(258.58183257447257);
-        expect(liquidityOriginValue).toBe(3567.3904);
-        expect(liquidityDestinyValue).toBe(4370.80325478285);
+        expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue);
+        expect(newPortfolioDestinyValue).toBe(currentPortfolioDestinyValue);
+        expect(newLiquidityOriginValue).toBe(currentLiquidityOriginValue);
+        expect(newLiquidityDestinyValue).toBe(currentLiquidityDestinyValue);
       });
     });
   });
