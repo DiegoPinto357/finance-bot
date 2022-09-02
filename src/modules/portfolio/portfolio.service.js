@@ -265,11 +265,20 @@ const addValueToPortfolioItem = (portfolioList, portfolioName, value) => {
   return { status: 'ok' };
 };
 
-const deposit = async ({ value, portfolio, assetClass, assetName }) => {
+const deposit = async ({
+  value,
+  portfolio,
+  assetClass,
+  assetName,
+  executed,
+}) => {
   if (assetClass === 'stock') assetName = 'float';
 
   const service = services[assetClass];
-  const currentTotalAssetValue = await service.getTotalPosition(assetName);
+  const totalAssetValue = await service.getTotalPosition(assetName);
+  const currentTotalAssetValue = executed
+    ? totalAssetValue - value
+    : totalAssetValue;
   const newTotalAssetValue = currentTotalAssetValue + value;
 
   const portfolioData = await getPortfolioData();

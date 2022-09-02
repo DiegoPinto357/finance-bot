@@ -360,6 +360,69 @@ describe('portfolio service', () => {
       }
     );
 
+    it('register a deposit on Binance HODL after the real deposit was done', async () => {
+      const depositValue = 500;
+      const portfolioName = 'previdencia';
+      const assetClass = 'crypto';
+      const assetName = 'hodl';
+      const sidePortfolioName = 'amortecedor';
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolioName
+      );
+      const currentPortfolioAssetValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        assetClass,
+        assetName
+      );
+
+      const curentSidePortfolioBalance = sidePortfolioName
+        ? await portfolioService.getBalance(sidePortfolioName)
+        : null;
+
+      const currentTotalAssetValue = await cryptoService.getTotalPosition(
+        assetName
+      );
+
+      await binance.simulateBRLDeposit(depositValue);
+
+      const result = await portfolioService.deposit({
+        value: depositValue,
+        portfolio: portfolioName,
+        assetClass,
+        assetName,
+        executed: true,
+      });
+
+      const newPortfolioBalance = await portfolioService.getBalance(
+        portfolioName
+      );
+      const newPortfolioAssetValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        assetClass,
+        assetName
+      );
+
+      const newSidePortfolioBalance = sidePortfolioName
+        ? await portfolioService.getBalance(sidePortfolioName)
+        : null;
+
+      const newTotalAssetValue = await cryptoService.getTotalPosition(
+        assetName
+      );
+
+      expect(result.status).toBe('ok');
+      expect(newPortfolioAssetValue).toBeCloseTo(
+        currentPortfolioAssetValue + depositValue,
+        5
+      );
+      expect(newSidePortfolioBalance).toEqual(curentSidePortfolioBalance);
+      expect(newTotalAssetValue).toBeCloseTo(
+        currentTotalAssetValue + depositValue,
+        5
+      );
+    });
+
     it('does not deposit negative values (withdraw) when there are no funds available', async () => {
       const depositValue = -10000;
       const portfolioName = 'suricat';
