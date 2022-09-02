@@ -342,7 +342,10 @@ const hasFunds = (balance, asset, value) => {
   return currentValue - value >= 0;
 };
 
-const transfer = async (value, { portfolio, origin, destiny }) => {
+const transfer = async (
+  value,
+  { portfolio, origin, destiny, originExecuted, destinyExecuted }
+) => {
   const originBalance = await getBalance(portfolio);
   const hasOriginFunds = hasFunds(originBalance, origin, value);
 
@@ -355,12 +358,14 @@ const transfer = async (value, { portfolio, origin, destiny }) => {
     portfolio,
     assetClass: origin.class,
     assetName: origin.name,
+    executed: originExecuted,
   });
   await deposit({
     value,
     portfolio,
     assetClass: destiny.class,
     assetName: destiny.name,
+    executed: destinyExecuted,
   });
 
   return { status: 'ok' };

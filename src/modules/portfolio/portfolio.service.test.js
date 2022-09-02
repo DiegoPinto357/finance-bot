@@ -534,6 +534,58 @@ describe('portfolio service', () => {
       }
     );
 
+    it('register a transfer to Binance HODL after the real trasfer was done', async () => {
+      const value = 124.67;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'crypto', name: 'hodl' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      await binance.simulateBRLDeposit(value);
+
+      const response = await portfolioService.transfer(value, {
+        portfolio,
+        origin,
+        destiny,
+        destinyExecuted: true,
+      });
+
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + value
+      );
+    });
+
     it('does not transfer when there is no funds available', async () => {
       const value = 10000;
       const portfolio = 'financiamento';
