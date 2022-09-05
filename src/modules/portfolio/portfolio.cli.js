@@ -1,12 +1,50 @@
 import portfolioService from './portfolio.service';
 
+const proccessAssetInput = input => {
+  if (!input) return;
+  const items = input.split('.');
+  return { class: items[0], name: items[1] };
+};
+
+const isComposedAsset = asset => !!asset.match(/\./);
+
+const balance = async args => {
+  const { name } = args;
+
+  const { balance, total: balanceTotal } = await portfolioService.getBalance(
+    name
+  );
+
+  if (!name) {
+    console.log(JSON.stringify(balance, null, 2));
+    console.log(balanceTotal);
+    return;
+  }
+
+  const flatBalance = [
+    ...balance.fixed.balance,
+    ...balance.stock.balance,
+    ...balance.crypto.balance,
+  ];
+
+  console.table(flatBalance);
+  console.log({ balanceTotal });
+};
+
+const shares = async args => {
+  const { name } = args;
+
+  const { shares, total } = await portfolioService.getShares(name);
+
+  console.table(shares);
+  console.log({ total });
+};
+
 const deposit = async args => {
   const { v, portfolio, asset } = args;
   console.log({ v, portfolio, asset });
 
-  const assetSplitted = asset.split('.');
-  const assetClass = assetSplitted[0];
-  const assetName = assetSplitted[1];
+  const { class: assetClass, name: assetName } = proccessAssetInput(asset);
 
   const response = await portfolioService.deposit({
     value: v,
@@ -21,11 +59,8 @@ const transfer = async args => {
   const { v, portfolio, from, to } = args;
   console.log({ v, portfolio, from, to });
 
-  const originItems = from.split('.');
-  const origin = { class: originItems[0], name: originItems[1] };
-
-  const destinyItems = to.split('.');
-  const destiny = { class: destinyItems[0], name: destinyItems[1] };
+  const origin = proccessAssetInput(from);
+  const destiny = proccessAssetInput(to);
 
   console.log({ origin, destiny });
 
@@ -37,35 +72,39 @@ const transfer = async args => {
   console.log(response);
 };
 
+const swap = async args => {
+  const { v, portfolio, asset, from, to, l } = args;
+  console.log({ portfolio, asset, from, to, l });
+
+  const origin = isComposedAsset(from) ? proccessAssetInput(from) : from;
+  const destiny = isComposedAsset(to) ? proccessAssetInput(to) : to;
+
+  const assetObj = proccessAssetInput(asset);
+
+  const liquidity = isComposedAsset(l) ? proccessAssetInput(l) : l;
+
+  console.log({ assetObj, origin, destiny, liquidity });
+
+  const response = await portfolioService.swap(v, {
+    portfolio,
+    asset: assetObj,
+    origin,
+    destiny,
+    liquidity,
+  });
+  console.log(response);
+};
+
 export default async (command, args) => {
   const { name } = args;
 
   switch (command) {
     case 'balance':
-      const { balance, total: balanceTotal } =
-        await portfolioService.getBalance(name);
-
-      if (!name) {
-        console.log(JSON.stringify(balance, null, 2));
-        console.log(balanceTotal);
-        break;
-      }
-
-      const flatBalance = [
-        ...balance.fixed.balance,
-        ...balance.stock.balance,
-        ...balance.crypto.balance,
-      ];
-
-      console.table(flatBalance);
-      console.log({ balanceTotal });
+      await balance(args);
       break;
 
     case 'shares':
-      const { shares, total } = await portfolioService.getShares(name);
-
-      console.table(shares);
-      console.log({ total });
+      await shares(args);
       break;
 
     case 'total':
@@ -80,44 +119,8 @@ export default async (command, args) => {
       await transfer(args);
       break;
 
-    // TODO refactor this shit
     case 'swap':
-      const { v, portfolio, asset, from, to, l } = args;
-      console.log({ portfolio, asset, from, to, l });
-
-      const originItems = from.split('.');
-      const origin =
-        originItems.length === 1
-          ? from
-          : { class: originItems[0], name: originItems[1] };
-
-      const destinyItems = to.split('.');
-      const destiny =
-        destinyItems.length === 1
-          ? to
-          : { class: destinyItems[0], name: destinyItems[1] };
-
-      const assetItems = asset ? asset.split('.') : [];
-      const assetObj = asset
-        ? { class: assetItems[0], name: assetItems[1] }
-        : undefined;
-
-      const liquidityItems = l.split('.');
-      const liquidity =
-        liquidityItems.length === 1
-          ? l
-          : { class: liquidityItems[0], name: liquidityItems[1] };
-
-      console.log({ assetObj, origin, destiny });
-
-      const response = await portfolioService.swap(v, {
-        portfolio,
-        asset: assetObj,
-        origin,
-        destiny,
-        liquidity,
-      });
-      console.log(response);
+      await swap(args);
       break;
 
     case 'update-table':
