@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import portfolioService from './modules/portfolio/portfolio.service';
-import processScript from './processScript';
+import portfolioService from '../portfolio/portfolio.service';
+import processScript from './processScript.service';
 
-jest.mock('./providers/googleSheets');
-jest.mock('./providers/database');
-jest.mock('./providers/tradingView');
-jest.mock('./providers/binance');
-jest.mock('./providers/coinMarketCap');
-jest.mock('./providers/blockchain');
+jest.mock('../../providers/googleSheets');
+jest.mock('../../providers/tradingView');
+jest.mock('../../providers/binance');
+jest.mock('../../providers/coinMarketCap');
+jest.mock('../../providers/blockchain');
+jest.mock('../../providers/database');
 
 jest.spyOn(portfolioService, 'deposit');
 jest.spyOn(portfolioService, 'transfer');

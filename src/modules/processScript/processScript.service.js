@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import portfolioService from './modules/portfolio/portfolio.service';
+import portfolioService from '../portfolio/portfolio.service';
 
 const modules = {
   portfolio: portfolioService,
