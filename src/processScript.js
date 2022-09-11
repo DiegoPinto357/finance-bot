@@ -6,19 +6,20 @@ const modules = {
 };
 
 export default async script => {
-  const { enable, module, action, defaultParams, params } = script;
+  const { enable, actions } = script;
 
   if (!enable) return;
 
-  const service = modules[module];
-  const actionFunc = service[action];
+  for await (let action of actions) {
+    const { module, method, params, defaultParams } = action;
 
-  if (Array.isArray(params)) {
-    for await (let paramSet of params) {
-      await actionFunc(...Object.values(_.merge({}, defaultParams, paramSet)));
-    }
-    return;
+    const service = modules[module];
+    const actionFunc = service[method];
+
+    if (Array.isArray(params)) {
+      for await (let paramSet of params) {
+        await actionFunc(_.merge({}, defaultParams, paramSet));
+      }
+    } else await actionFunc(params);
   }
-
-  await actionFunc(...Object.values(defaultParams));
 };

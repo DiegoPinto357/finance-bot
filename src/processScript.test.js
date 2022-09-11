@@ -11,6 +11,7 @@ jest.mock('./providers/blockchain');
 
 jest.spyOn(portfolioService, 'deposit');
 jest.spyOn(portfolioService, 'transfer');
+jest.spyOn(portfolioService, 'swap');
 
 describe('processScript', () => {
   beforeEach(() => jest.clearAllMocks());
@@ -18,39 +19,42 @@ describe('processScript', () => {
   it('process script', async () => {
     const script = {
       enable: true,
-      module: 'portfolio',
-      action: 'transfer',
-      defaultParams: {
-        value: 357,
-        options: {
-          portfolio: 'previdencia',
-          origin: { class: 'fixed', name: 'nubank' },
-          destiny: { class: 'crypto', name: 'hodl' },
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'swap',
+          params: {
+            value: 357,
+            portfolio: 'previdencia',
+            origin: { class: 'fixed', name: 'nubank' },
+            destiny: { class: 'crypto', name: 'hodl' },
+            liquidity: 'amortecedor',
+          },
         },
-      },
+      ],
     };
 
     await processScript(script);
 
-    expect(portfolioService.transfer).toBeCalledTimes(1);
-    expect(portfolioService.transfer).toBeCalledWith(
-      ...Object.values(script.defaultParams)
-    );
+    expect(portfolioService.swap).toBeCalledTimes(1);
+    expect(portfolioService.swap).toBeCalledWith(script.actions[0].params);
   });
 
   it('does not process script if enable field is not true', async () => {
     const script = {
       enable: false,
-      module: 'portfolio',
-      action: 'transfer',
-      defaultParams: {
-        value: 357,
-        options: {
-          portfolio: 'previdencia',
-          origin: { class: 'fixed', name: 'nubank' },
-          destiny: { class: 'crypto', name: 'hodl' },
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          params: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+            portfolio: 'previdencia',
+            value: 357,
+          },
         },
-      },
+      ],
     };
 
     await processScript(script);
@@ -60,16 +64,18 @@ describe('processScript', () => {
 
   it('does not process script if enable field is missing', async () => {
     const script = {
-      module: 'portfolio',
-      action: 'transfer',
-      defaultParams: {
-        value: 357,
-        options: {
-          portfolio: 'previdencia',
-          origin: { class: 'fixed', name: 'nubank' },
-          destiny: { class: 'crypto', name: 'hodl' },
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          params: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+            portfolio: 'previdencia',
+            value: 357,
+          },
         },
-      },
+      ],
     };
 
     await processScript(script);
@@ -80,50 +86,114 @@ describe('processScript', () => {
   it('process multiple actions', async () => {
     const script = {
       enable: true,
-      module: 'portfolio',
-      action: 'transfer',
-      defaultParams: {
-        value: 357,
-        options: {
-          portfolio: 'previdencia',
-          origin: { class: 'fixed', name: 'nubank' },
-          destiny: { class: 'crypto', name: 'hodl' },
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          params: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+            portfolio: 'previdencia',
+            value: 100,
+          },
         },
-      },
-    };
-
-    await processScript(script);
-
-    expect(portfolioService.transfer).toBeCalledTimes(1);
-    expect(portfolioService.transfer).toBeCalledWith(
-      ...Object.values(script.defaultParams)
-    );
-  });
-
-  it('process action with multiple params', async () => {
-    const script = {
-      enable: true,
-      module: 'portfolio',
-      action: 'deposit',
-      defaultParams: {
-        options: {
-          assetClass: 'fixed',
-          assetName: 'nubank',
+        {
+          module: 'portfolio',
+          method: 'transfer',
+          params: {
+            portfolio: 'previdencia',
+            value: 100,
+            origin: { class: 'fixed', name: 'nubank' },
+            destiny: { class: 'crypto', name: 'hodl' },
+          },
         },
-      },
-      params: [
-        { options: { portfolio: 'amortecedor', value: 100 } },
-        { options: { portfolio: 'previdencia', value: 150 } },
-        { options: { portfolio: 'financiamento', value: 200 } },
       ],
     };
 
     await processScript(script);
 
-    expect(portfolioService.deposit).toBeCalledTimes(script.params.length);
-    script.params.forEach(params =>
+    expect(portfolioService.deposit).toBeCalledTimes(1);
+    expect(portfolioService.deposit).toBeCalledWith(script.actions[0].params);
+    expect(portfolioService.transfer).toBeCalledTimes(1);
+    expect(portfolioService.transfer).toBeCalledWith(script.actions[1].params);
+  });
+
+  it('process action with multiple params', async () => {
+    const script = {
+      enable: true,
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          defaultParams: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+          },
+          params: [
+            { portfolio: 'amortecedor', value: 100 },
+            { portfolio: 'previdencia', value: 150 },
+            { portfolio: 'financiamento', value: 200 },
+          ],
+        },
+      ],
+    };
+
+    await processScript(script);
+
+    expect(portfolioService.deposit).toBeCalledTimes(
+      script.actions[0].params.length
+    );
+    script.actions[0].params.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
-        ...Object.values(_.merge({}, script.defaultParams, params))
+        _.merge({}, script.actions[0].defaultParams, params)
+      )
+    );
+  });
+
+  it('process multiple actions with multiple params', async () => {
+    const script = {
+      enable: true,
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          defaultParams: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+          },
+          params: [
+            { portfolio: 'previdencia', value: 100 },
+            { portfolio: 'amortecedor', value: 250 },
+          ],
+        },
+        {
+          module: 'portfolio',
+          method: 'transfer',
+          defaultParams: {
+            origin: { class: 'fixed', name: 'nubank' },
+            destiny: { class: 'crypto', name: 'hodl' },
+          },
+          params: [
+            { portfolio: 'previdencia', value: 100 },
+            { portfolio: 'amortecedor', value: 250 },
+          ],
+        },
+      ],
+    };
+
+    await processScript(script);
+
+    expect(portfolioService.deposit).toBeCalledTimes(2);
+    script.actions[0].params.forEach(params =>
+      expect(portfolioService.deposit).toBeCalledWith(
+        _.merge({}, script.actions[0].defaultParams, params)
+      )
+    );
+
+    expect(portfolioService.transfer).toBeCalledTimes(2);
+    script.actions[1].params.forEach(params =>
+      expect(portfolioService.transfer).toBeCalledWith(
+        _.merge({}, script.actions[1].defaultParams, params)
       )
     );
   });
