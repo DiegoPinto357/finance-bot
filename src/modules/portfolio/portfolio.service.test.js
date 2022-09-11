@@ -498,7 +498,8 @@ describe('portfolio service', () => {
           destiny.name
         );
 
-        const response = await portfolioService.transfer(value, {
+        const response = await portfolioService.transfer({
+          value,
           portfolio,
           origin,
           destiny,
@@ -558,7 +559,8 @@ describe('portfolio service', () => {
 
       await binance.simulateBRLDeposit(value);
 
-      const response = await portfolioService.transfer(value, {
+      const response = await portfolioService.transfer({
+        value,
         portfolio,
         origin,
         destiny,
@@ -592,7 +594,8 @@ describe('portfolio service', () => {
       const origin = { class: 'fixed', name: 'nubank' };
       const destiny = { class: 'crypto', name: 'defi' };
 
-      const response = await portfolioService.transfer(value, {
+      const response = await portfolioService.transfer({
+        value,
         portfolio,
         origin,
         destiny,

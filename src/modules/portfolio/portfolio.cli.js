@@ -64,7 +64,8 @@ const transfer = async args => {
 
   console.log({ origin, destiny });
 
-  const response = await portfolioService.transfer(v, {
+  const response = await portfolioService.transfer({
+    value: v,
     portfolio,
     origin,
     destiny,

@@ -342,10 +342,14 @@ const hasFunds = (balance, asset, value) => {
   return currentValue - value >= 0;
 };
 
-const transfer = async (
+const transfer = async ({
   value,
-  { portfolio, origin, destiny, originExecuted, destinyExecuted }
-) => {
+  portfolio,
+  origin,
+  destiny,
+  originExecuted,
+  destinyExecuted,
+}) => {
   const originBalance = await getBalance(portfolio);
   const hasOriginFunds = hasFunds(originBalance, origin, value);
 
