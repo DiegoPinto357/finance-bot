@@ -98,8 +98,6 @@ const swap = async args => {
 };
 
 export default async (command, args) => {
-  const { name } = args;
-
   switch (command) {
     case 'balance':
       await balance(args);
