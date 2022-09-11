@@ -420,10 +420,14 @@ const swapOnAsset = async ({
   return { status: 'ok' };
 };
 
-const swap = async (
+const swap = async ({
   value,
-  { portfolio, asset, origin, destiny, liquidity }
-) => {
+  portfolio,
+  asset,
+  origin,
+  destiny,
+  liquidity,
+}) => {
   const withinSamePortfolio = portfolio && !asset;
 
   const params = {};

@@ -86,7 +86,8 @@ const swap = async args => {
 
   console.log({ assetObj, origin, destiny, liquidity });
 
-  const response = await portfolioService.swap(v, {
+  const response = await portfolioService.swap({
+    value: v,
     portfolio,
     asset: assetObj,
     origin,

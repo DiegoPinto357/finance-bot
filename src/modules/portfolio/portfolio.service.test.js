@@ -661,7 +661,8 @@ describe('portfolio service', () => {
         destiny.name
       );
 
-      const response = await portfolioService.swap(value, {
+      const response = await portfolioService.swap({
+        value,
         portfolio,
         origin,
         destiny,
@@ -752,7 +753,8 @@ describe('portfolio service', () => {
         liquidity.name
       );
 
-      const response = await portfolioService.swap(value, {
+      const response = await portfolioService.swap({
+        value,
         asset,
         origin,
         destiny,
@@ -846,7 +848,8 @@ describe('portfolio service', () => {
           destiny.name
         );
 
-        const response = await portfolioService.swap(value, {
+        const response = await portfolioService.swap({
+          value,
           portfolio,
           origin,
           destiny,
@@ -927,7 +930,8 @@ describe('portfolio service', () => {
           liquidity.name
         );
 
-        const response = await portfolioService.swap(value, {
+        const response = await portfolioService.swap({
+          value,
           asset,
           origin,
           destiny,
