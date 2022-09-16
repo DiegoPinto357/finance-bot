@@ -24,11 +24,18 @@ const find = async (databaseName, collectionName, query, options) => {
   return await collection.find(query, options).toArray();
 };
 
-const updateOne = async (databaseName, collectionName, query, update) => {
+const updateOne = async (databaseName, collectionName, filter, update) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  await collection.updateOne(query, update);
+  await collection.updateOne(filter, update);
+};
+
+const bulkWrite = async (databaseName, collectionName, operations, options) => {
+  log(`Bulk writing on ${databaseName}/${collectionName}`);
+  const db = client.db(databaseName);
+  const collection = db.collection(collectionName);
+  await collection.bulkWrite(operations, options);
 };
 
 export default {
@@ -36,4 +43,5 @@ export default {
   close,
   find,
   updateOne,
+  bulkWrite,
 };

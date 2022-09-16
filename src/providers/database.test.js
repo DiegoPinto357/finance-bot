@@ -6,6 +6,7 @@ import {
   mockFindFn,
   mockToArrayFn,
   mockUpdateOneFn,
+  mockBulkWriteFn,
 } from 'mongodb';
 import database from './database';
 
@@ -62,5 +63,42 @@ describe('database', () => {
 
     expect(mockUpdateOneFn).toBeCalledTimes(1);
     expect(mockUpdateOneFn).toBeCalledWith(query, update);
+  });
+
+  it('bulk writes operarions', async () => {
+    const databaseName = 'assets';
+    const collectionName = 'fixed';
+    const operations = [
+      {
+        updateOne: {
+          filter: { asset: 'nubank' },
+          update: { $set: { value: 357 } },
+        },
+      },
+      {
+        updateOne: {
+          filter: { asset: 'iti' },
+          update: { $set: { value: 100 } },
+        },
+      },
+      {
+        updateOne: {
+          filter: { asset: 'inco' },
+          update: { $set: { value: 1000 } },
+        },
+      },
+    ];
+    const options = { ordered: false };
+
+    await database.bulkWrite(databaseName, collectionName, operations, options);
+
+    expect(mockDbFn).toBeCalledTimes(1);
+    expect(mockDbFn).toBeCalledWith(databaseName);
+
+    expect(mockCollectionFn).toBeCalledTimes(1);
+    expect(mockCollectionFn).toBeCalledWith(collectionName);
+
+    expect(mockBulkWriteFn).toBeCalledTimes(1);
+    expect(mockBulkWriteFn).toBeCalledWith(operations, options);
   });
 });

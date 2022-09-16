@@ -6,9 +6,12 @@ export const mockFindFn = jest.fn(() => ({
 
 export const mockUpdateOneFn = jest.fn();
 
+export const mockBulkWriteFn = jest.fn();
+
 export const mockCollectionFn = jest.fn(() => ({
   find: mockFindFn,
   updateOne: mockUpdateOneFn,
+  bulkWrite: mockBulkWriteFn,
 }));
 
 export const mockDbFn = jest.fn(() => ({ collection: mockCollectionFn }));
