@@ -8,7 +8,7 @@ const modules = {
 export default async script => {
   const { enable, actions } = script;
 
-  if (!enable) return;
+  if (!enable) return { status: 'scriptNotEnabled' };
 
   for await (let action of actions) {
     const { module, method, params, defaultParams } = action;
@@ -22,4 +22,6 @@ export default async script => {
       }
     } else await actionFunc(params);
   }
+
+  return { status: 'ok' };
 };

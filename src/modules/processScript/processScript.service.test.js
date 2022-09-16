@@ -34,8 +34,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('ok');
     expect(portfolioService.swap).toBeCalledTimes(1);
     expect(portfolioService.swap).toBeCalledWith(script.actions[0].params);
   });
@@ -57,8 +58,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('scriptNotEnabled');
     expect(portfolioService.transfer).not.toBeCalled();
   });
 
@@ -78,8 +80,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('scriptNotEnabled');
     expect(portfolioService.transfer).not.toBeCalled();
   });
 
@@ -110,8 +113,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('ok');
     expect(portfolioService.deposit).toBeCalledTimes(1);
     expect(portfolioService.deposit).toBeCalledWith(script.actions[0].params);
     expect(portfolioService.transfer).toBeCalledTimes(1);
@@ -138,8 +142,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('ok');
     expect(portfolioService.deposit).toBeCalledTimes(
       script.actions[0].params.length
     );
@@ -181,8 +186,9 @@ describe('processScript', () => {
       ],
     };
 
-    await processScript(script);
+    const { status } = await processScript(script);
 
+    expect(status).toBe('ok');
     expect(portfolioService.deposit).toBeCalledTimes(2);
     script.actions[0].params.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
