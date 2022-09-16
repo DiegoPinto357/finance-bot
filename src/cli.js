@@ -7,6 +7,7 @@ import cryptoContext from './modules/crypto/crypto.cli';
 import stockContext from './modules/stock/stock.cli';
 import fixedContext from './modules/fixed/fixed.cli';
 import portfolioContext from './modules/portfolio/portfolio.cli';
+import processScriptContext from './modules/processScript/processScript.cli';
 
 (async () => {
   await database.connect();
@@ -30,6 +31,10 @@ import portfolioContext from './modules/portfolio/portfolio.cli';
 
       case 'portfolio':
         await portfolioContext(command, argv);
+        break;
+
+      case 'process':
+        await processScriptContext(argv);
         break;
 
       default:

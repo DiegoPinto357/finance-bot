@@ -10,18 +10,24 @@ export default async script => {
 
   if (!enable) return { status: 'scriptNotEnabled' };
 
+  const actionStatus = [];
+
   for await (let action of actions) {
     const { module, method, params, defaultParams } = action;
 
     const service = modules[module];
     const actionFunc = service[method];
 
+    let result;
+
     if (Array.isArray(params)) {
       for await (let paramSet of params) {
-        await actionFunc(_.merge({}, defaultParams, paramSet));
+        result = await actionFunc(_.merge({}, defaultParams, paramSet));
       }
-    } else await actionFunc(params);
+    } else result = await actionFunc(params);
+
+    actionStatus.push({ module, method, result });
   }
 
-  return { status: 'ok' };
+  return { status: 'ok', actions: actionStatus };
 };
