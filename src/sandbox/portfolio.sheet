@@ -1,18 +1,18 @@
-portfolios	fixed.iti	fixed.nubank	fixed.99pay	fixed.pagBankCDB120	fixed.inco	fixed.daycovalCDB110	fixed.daycovalCDBCDI1_2	fixed.xpWesternAsset	fixed.nuInvestTDPre2029	fixed.nuInvestTDIPCA2045	fixed.nuInvestCDB8_5	fixed.nuInvestCDB9_5	fixed.nuInvestCBDIPCA5_5	fixed.nuInvestCDB12_5	fixed.nuInvestTDIPCA2035	stock.br	stock.fii	stock.us	stock.float	crypto.binanceBuffer	crypto.hodl	crypto.defi	crypto.defi2
-temp	R$ 4.309,11																						
-amortecedor	R$ 1.285,67	R$ 1.900,79		R$ 3.272,40	R$ 80,00			R$ 5.559,47	R$ 1.000,00	R$ 1.000,00	R$ 1.717,30	R$ 1.012,12							R$ 161,03		R$ 2.028,68	R$ 758,63	
-financiamento	R$ 46,43	R$ 30,04	R$ 508,08	R$1.460,18	R$6.049,23				R$250,00	R$250,00										R$ 141,96	R$ 488,68	R$ 184,79	
-viagem											R$ 1.616,67										R$ 60,81	R$ 30,21	
-reformaCasa	R$ 1.644,02	R$ 29.464,33			R$ 451,75	R$5.161,46	R$5.161,38	R$5.153,60	R$500,00	R$500,00												R$ 110,45	
-previdencia	R$ 391,13				R$ 1.027,71				R$ 100,00	R$ 100,00			R$ 1.163,43	R$ 1.165,42	R$1.446,16	R$4.358,81	R$5.014,98	R$ 5.879,65			R$ 1.511,31	R$ 599,68	
-leni	R$ 438,41	R$ 431,41			R$ 201,38				R$ 200,00	R$ 200,00										R$ 51,03	R$ 103,50		
-mae	R$ 310,07	R$ 4.342,26			R$ 201,45				R$ 350,00	R$ 350,00									R$ 427,97		R$ 79,96		
-seguroCarro		R$ 365,91		R$ 303,38																R$ 22,51	R$ 154,27	R$ 35,85	
-manutencaoCarro		R$ 2.016,29																			R$ 121,24		
-impostos		R$ 731,55																			R$ 68,95	R$ 32,73	
-suricat	R$ 548,01	R$ 3.616,56		R$ 422,52	R$ 2.034,13																R$ 146,24	R$ 79,22	
-congelamentoSuricats		R$ 906,45																					
-carro		R$ 85,79										R$1.237,37								R$ 68,29	R$ 110,47	R$ 18,92	
-macbookFirma	R$ 3,90	R$ 6,76			R$ 336,89				R$100,00	R$100,00													
-rendaPassiva	R$ 150,35	R$ 9,36			R$ 100,50																		R$ 874,97
-total	R$9.127,10	R$43.907,51	R$508,08	R$5.458,47	R$10.483,05	R$5.161,46	R$5.161,38	R$10.713,07	R$2.500,00	R$2.500,00	R$3.333,97	R$2.249,49	R$1.163,43	R$1.165,42	R$1.446,16	R$4.358,81	R$5.014,98	R$5.879,65	R$589,00	R$283,79	R$4.874,11	R$1.850,48	R$874,97
+portfolios	fixed.iti	fixed.nubank	fixed.99pay	fixed.pagBankCDB120	fixed.inco	fixed.daycovalCDB110	fixed.daycovalCDBCDI1_2	fixed.xpWesternAsset	fixed.nuInvestTDPre2029	fixed.nuInvestTDIPCA2045	fixed.nuInvestCDB8_5	fixed.nuInvestCDB9_5	fixed.nuInvestCBDIPCA5_5	fixed.nuInvestCDB12_5	fixed.nuInvestTDIPCA2035	stock.br	stock.fii	stock.us	stock.float	crypto.binanceBuffer	crypto.hodl	crypto.defi	crypto.defi2	crypto.backedTokens
+temp																								
+amortecedor	R$ 2.790,67	R$ 6.534,85		R$ 3.311,48	R$ 632,13			R$ 1.412,30	R$ 1.107,67	R$ 1.067,94	R$ 1.728,59	R$ 1.019,54									R$ 1.303,20	R$ 362,90		
+financiamento	R$ 175,86		R$ 500,00	R$1.477,62	R$6.510,19				R$351,92	R$341,99										R$ 138,33	R$ 469,51	R$ 174,83		R$ 500,00
+viagem	R$ 1.446,55				R$ 100,00				R$50,00	R$50,00	R$ 1.627,29										R$ 54,66	R$ 28,59		
+reformaCasa	R$ 4.010,69	R$ 22.823,61			R$ 857,53	R$5.215,93	R$5.215,52	R$5.205,72	R$603,84	R$583,97											R$ 213,43	R$ 104,49		R$ 200,00
+previdencia	R$ 248,43				R$ 1.138,02				R$ 150,77	R$ 146,79			R$ 1.164,24	R$ 1.176,59	R$1.488,97	R$4.327,76	R$5.086,07	R$ 5.785,62	R$ 30,06		R$ 1.609,19	R$ 567,34		R$ 200,00
+leni	R$ 341,78				R$ 303,52			R$ 133,30	R$ 201,53	R$ 193,59										R$ 49,73	R$ 306,45	R$ 99,68		
+mae	R$ 642,99				R$ 303,60			R$ 4.070,09	R$ 352,69	R$ 338,78											R$ 285,29	R$ 99,68		
+seguroCarro		R$ 328,34		R$ 307,00																R$ 21,94	R$ 138,66	R$ 33,91		
+manutencaoCarro		R$ 1.836,72																			R$ 108,97			
+impostos		R$ 737,98																			R$ 61,98	R$ 30,96		
+suricat	R$ 1.349,95	R$ 3.648,34		R$ 427,56	R$ 2.154,65				R$ 100,00	R$100,00											R$ 131,44	R$ 74,95		
+congelamentoSuricats		R$ 352,70																						
+carro	R$ 9,69				R$ 100,12							R$1.246,44								R$ 66,54	R$ 191,14	R$ 17,90		
+macbookFirma	R$ 19,23				R$ 540,54				R$100,77	R$96,79											R$ 10,75			
+rendaPassiva	R$ 139,42				R$ 181,62																	R$ 155,46	R$ 886,93	
+total	R$11.175,26	R$36.262,54	R$500,00	R$5.523,67	R$12.821,92	R$5.215,93	R$5.215,52	R$10.821,41	R$3.019,18	R$2.919,85	R$3.355,88	R$2.265,98	R$1.164,24	R$1.176,59	R$1.488,97	R$4.327,76	R$5.086,07	R$5.785,62	R$30,06	R$276,54	R$4.884,68	R$1.750,69	R$886,93	R$900,00

@@ -127,6 +127,10 @@ export default async (command, args) => {
       await portfolioService.updateAbsoluteTable();
       break;
 
+    case 'migrate':
+      await portfolioService.migrate();
+      break;
+
     default:
       console.error('Invalid command');
       break;

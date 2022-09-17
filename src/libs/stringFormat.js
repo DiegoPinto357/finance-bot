@@ -6,3 +6,8 @@ export const formatCurrency = value => {
 
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 };
+
+export const fromCurrencyToNumber = value =>
+  value !== ''
+    ? parseFloat(value.replace('R$', '').replace('.', '').replace(',', '.'))
+    : 0;
