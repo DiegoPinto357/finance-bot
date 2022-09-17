@@ -1,7 +1,13 @@
 import _ from 'lodash';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service';
 import portfolioService from '../portfolio/portfolio.service';
 
 const modules = {
+  fixed: fixedService,
+  stock: stockService,
+  crypto: cryptoService,
   portfolio: portfolioService,
 };
 
