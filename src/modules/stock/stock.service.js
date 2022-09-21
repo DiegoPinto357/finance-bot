@@ -123,9 +123,32 @@ const setAssetValue = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
+const buy = async ({ asset, amount, orderValue }) => {
+  const { matchedCount } = await database.updateOne(
+    'assets',
+    'stock',
+    { asset },
+    { $inc: { amount } }
+  );
+
+  if (matchedCount === 0) {
+    return { status: 'assetNotFound' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'stock',
+    { type: 'float' },
+    { $inc: { value: -orderValue } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
   deposit,
   setAssetValue,
+  buy,
 };

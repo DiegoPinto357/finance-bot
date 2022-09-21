@@ -55,6 +55,10 @@ const updateOne = async (databaseName, collectionName, query, update) => {
     Object.entries(query).every(([key, value]) => item[key] === value)
   );
 
+  if (!record) {
+    return { matchedCount: 0 };
+  }
+
   const operations = Object.entries(update);
   operations.forEach(([operation, params]) => {
     // TODO add to support to update multiple key
@@ -72,6 +76,7 @@ const updateOne = async (databaseName, collectionName, query, update) => {
 
   await delay(10);
   setData(databaseName, collectionName, data);
+  return { matchedCount: 1 };
 };
 
 const resetMockValues = () => (dataBuffer = {});

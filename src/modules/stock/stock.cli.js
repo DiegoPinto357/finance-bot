@@ -30,6 +30,11 @@ const getTotal = async ({ type }) => {
   else console.log({ position });
 };
 
+const buy = async args => {
+  const result = await stockService.buy(args);
+  console.log(result);
+};
+
 export default async (command, args) => {
   switch (command) {
     case 'balance':
@@ -38,6 +43,10 @@ export default async (command, args) => {
 
     case 'total':
       await getTotal(args);
+      break;
+
+    case 'buy':
+      await buy(args);
       break;
 
     default:

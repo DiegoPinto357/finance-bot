@@ -1,4 +1,5 @@
 import database from '../../providers/database';
+import tradingView from '../../providers/tradingView';
 import stock from './stock.service';
 
 jest.mock('../../providers/database');
@@ -127,5 +128,49 @@ describe('stock service', () => {
         expect(newValue).toBe(currentValue);
       }
     );
+  });
+
+  describe('buy', () => {
+    it('registers a buy operation', async () => {
+      const asset = 'NASD11';
+      const buyAmount = 12;
+      const { lp: price } = await tradingView.getTicker(asset);
+      const orderValue = buyAmount * price;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.buy({ asset, amount: buyAmount, orderValue });
+
+      const { balance, total } = await stock.getBalance('us');
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result.status).toBe('ok');
+      expect(balance).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ asset, amount: 129 + buyAmount }),
+        ])
+      );
+      expect(total).toBe(5407.97 + orderValue);
+      expect(newFloatValue).toBe(currentFloatValue - orderValue);
+    });
+
+    it('does not register a buy operation for an invalid asset', async () => {
+      const asset = 'BANANA3';
+      const buyAmount = 100;
+      const price = 1000;
+      const orderValue = buyAmount * price;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.buy({ asset, amount: buyAmount, orderValue });
+
+      const { balance, total } = await stock.getBalance('us');
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result.status).toBe('assetNotFound');
+      expect(balance).not.toEqual(
+        expect.arrayContaining([expect.objectContaining({ asset })])
+      );
+      expect(total).toBe(5407.97);
+      expect(newFloatValue).toBe(currentFloatValue);
+    });
   });
 });

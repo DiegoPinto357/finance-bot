@@ -28,14 +28,14 @@ const updateOne = async (databaseName, collectionName, filter, update) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  await collection.updateOne(filter, update);
+  return await collection.updateOne(filter, update);
 };
 
 const bulkWrite = async (databaseName, collectionName, operations, options) => {
   log(`Bulk writing on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  await collection.bulkWrite(operations, options);
+  return await collection.bulkWrite(operations, options);
 };
 
 export default {
