@@ -1,0 +1,29 @@
+{
+  "balance": [
+    {
+      "asset": "MBCCSH05",
+      "position": 2,
+      "positionBRL": 200,
+      "priceBRL": 100
+    },
+    {
+      "asset": "MBCCSH06",
+      "position": 2,
+      "positionBRL": 200,
+      "priceBRL": 100
+    },
+    {
+      "asset": "MBPRK06",
+      "position": 2.487,
+      "positionBRL": 297.96747,
+      "priceBRL": 119.81
+    },
+    {
+      "asset": "MBPRK07",
+      "position": 1.7683,
+      "positionBRL": 212.16063400000002,
+      "priceBRL": 119.98
+    }
+  ],
+  "total": 910.1281040000001
+}

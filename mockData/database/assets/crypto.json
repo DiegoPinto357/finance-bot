@@ -252,5 +252,29 @@
     "token": {
       "network": "bsc"
     }
+  },
+  {
+    "asset": "MBCCSH05",
+    "location": "mercadoBitcoin",
+    "type": "backed",
+    "amount": 2
+  },
+  {
+    "asset": "MBCCSH06",
+    "location": "mercadoBitcoin",
+    "type": "backed",
+    "amount": 2
+  },
+  {
+    "asset": "MBPRK06",
+    "location": "mercadoBitcoin",
+    "type": "backed",
+    "amount": 2.487
+  },
+  {
+    "asset": "MBPRK07",
+    "location": "mercadoBitcoin",
+    "type": "backed",
+    "amount": 1.7683
   }
 ]
