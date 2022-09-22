@@ -51,6 +51,16 @@ describe('crypto service', () => {
       const total = await cryptoService.getTotalPosition('binanceBuffer');
       expect(total).toBe(2156.375642691);
     });
+
+    it('gets total position for all crypto assets', async () => {
+      const total = await cryptoService.getTotalPosition();
+      expect(total).toEqual({
+        hodl: expectedHodlBalance.total,
+        defi: expectedDefiBalance.total,
+        backed: expectedBackedBalance.total,
+        binanceBuffer: 2156.375642691,
+      });
+    });
   });
 
   describe('setAssetValue', () => {

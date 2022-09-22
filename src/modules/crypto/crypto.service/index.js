@@ -3,7 +3,7 @@ import defiService from './defi';
 import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
 
-const types = ['hodl', 'defi', 'binanceBuffer'];
+const types = ['hodl', 'defi', 'backed', 'binanceBuffer'];
 
 const getServiceByPortfolioType = portfolioType => {
   switch (portfolioType) {

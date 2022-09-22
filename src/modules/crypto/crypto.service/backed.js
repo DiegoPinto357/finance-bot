@@ -17,8 +17,8 @@ const getBalance = async () => {
       return {
         asset: asset,
         position: amount,
-        positionBRL,
         priceBRL,
+        positionBRL,
       };
     })
   );

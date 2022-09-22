@@ -13,7 +13,8 @@ const log = buildLogger('MercadoBitcoin');
 const getTicker = async ticker => {
   log(`Loading ticker ${ticker}`);
   const url = `${host}/api/${ticker}/ticker`;
-  return await getCached(url);
+  const { ticker: data } = await getCached(url);
+  return data;
 };
 
 export default {

@@ -10,6 +10,7 @@ jest.mock('../../providers/googleSheets');
 jest.mock('../../providers/database');
 jest.mock('../../providers/tradingView');
 jest.mock('../../providers/binance');
+jest.mock('../../providers/mercadoBitcoin');
 jest.mock('../../providers/coinMarketCap');
 jest.mock('../../providers/blockchain');
 
@@ -37,7 +38,7 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('previdencia');
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(9);
+      expect(database.find).toBeCalledTimes(10);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -78,7 +79,7 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('suricat');
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(5);
+      expect(database.find).toBeCalledTimes(6);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -127,7 +128,7 @@ describe('portfolio service', () => {
       });
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(9);
+      expect(database.find).toBeCalledTimes(10);
 
       expect(balance).toEqual({
         balance: {
