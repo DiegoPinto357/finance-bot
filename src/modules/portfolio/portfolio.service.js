@@ -494,7 +494,7 @@ const flattenBalance = (balance, totals) =>
 const updateAbsoluteTable = async () => {
   const fixedAssets = await fixedService.getAssetsList();
   const stockAssets = ['float', 'br', 'fii', 'us'];
-  const cryptoAssets = ['binanceBuffer', 'hodl', 'defi', 'defi2'];
+  const cryptoAssets = ['binanceBuffer', 'hodl', 'defi', 'defi2', 'backed'];
   const assets = [...fixedAssets, ...stockAssets, ...cryptoAssets];
   const header = ['portfolios', ...assets, 'total'];
 
