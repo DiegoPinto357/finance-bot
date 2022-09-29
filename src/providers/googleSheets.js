@@ -51,6 +51,12 @@ const getSheet = async sheetTitle => {
 
 const getRows = async sheetTitle => {
   const sheet = await getSheet(sheetTitle);
+
+  if (!sheet) {
+    log(`WARNING: Sheet ${sheetTitle} not found`);
+    return [];
+  }
+
   return await sheet.getRows();
 };
 

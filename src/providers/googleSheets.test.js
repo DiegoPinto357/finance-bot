@@ -1,7 +1,10 @@
 import { instance, testDataBuffer } from 'google-spreadsheet';
 import googleSheets from './googleSheets';
 import { clearCache } from '../libs/cache';
+import { mockLoggerInstance } from '../libs/logger';
 import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
+
+jest.mock('../libs/logger');
 
 describe('googleSheets provider', () => {
   beforeEach(() => {
@@ -13,6 +16,18 @@ describe('googleSheets provider', () => {
   it('loads a sheet', async () => {
     const sheetData = await googleSheets.loadSheet('test-sheet');
     expect(sheetData).toEqual(mockSheetData);
+  });
+
+  it('returns an empty array when sheet does not exists', async () => {
+    const sheetData = await googleSheets.loadSheet('secret-of-happyness');
+    expect(sheetData).toEqual([]);
+    expect(mockLoggerInstance).toBeCalledTimes(2);
+    expect(mockLoggerInstance).toBeCalledWith(
+      'Loadindg sheet secret-of-happyness'
+    );
+    expect(mockLoggerInstance).toBeCalledWith(
+      'WARNING: Sheet secret-of-happyness not found'
+    );
   });
 
   it('authenticates and load doc only once for multiple sheet loads', async () => {
