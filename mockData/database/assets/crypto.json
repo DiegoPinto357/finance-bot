@@ -276,5 +276,11 @@
     "location": "mercadoBitcoin",
     "type": "backed",
     "amount": 1.7683
+  },
+  {
+    "asset": "BRL",
+    "location": "mercadoBitcoin",
+    "type": "float",
+    "amount": 206.13
   }
 ]

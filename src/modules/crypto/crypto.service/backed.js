@@ -9,7 +9,7 @@ const getBalance = async () => {
     { projection: { _id: 0 } }
   );
 
-  const balance = await Promise.all(
+  const balanceTokens = await Promise.all(
     assets.map(async ({ asset, amount }) => {
       const { last } = await mercadoBitcoin.getTicker(asset);
       const priceBRL = parseFloat(last);
@@ -22,6 +22,22 @@ const getBalance = async () => {
       };
     })
   );
+
+  const [float] = (
+    await database.find(
+      'assets',
+      'crypto',
+      { location: 'mercadoBitcoin', type: 'float' },
+      { projection: { _id: 0 } }
+    )
+  ).map(({ asset, amount }) => ({
+    asset,
+    position: amount,
+    priceBRL: 1,
+    positionBRL: amount,
+  }));
+
+  const balance = [...balanceTokens, float];
 
   const total = balance.reduce((sum, { positionBRL }) => sum + positionBRL, 0);
 

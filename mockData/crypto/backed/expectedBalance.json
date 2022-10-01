@@ -23,7 +23,13 @@
       "position": 1.7683,
       "positionBRL": 212.16063400000002,
       "priceBRL": 119.98
+    },
+    {
+      "asset": "BRL",
+      "position": 206.13,
+      "positionBRL": 206.13,
+      "priceBRL": 1
     }
   ],
-  "total": 910.1281040000001
+  "total": 1116.258104
 }
