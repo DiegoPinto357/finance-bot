@@ -4,9 +4,7 @@ import { buildLogger } from '../libs/logger';
 
 const host = 'https://www.mercadobitcoin.net';
 
-const getCached = withCache(params => httpClient.get(params), {
-  dataNode: 'result',
-});
+const getCached = withCache(params => httpClient.get(params));
 
 const log = buildLogger('MercadoBitcoin');
 
