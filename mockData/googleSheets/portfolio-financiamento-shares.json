@@ -1,0 +1,17 @@
+[
+  {
+    "assetClass": "fixed",
+    "asset": "",
+    "targetShare": 0.9
+  },
+  {
+    "assetClass": "crypto",
+    "asset": "hodl",
+    "targetShare": 0.06
+  },
+  {
+    "assetClass": "crypto",
+    "asset": "defi",
+    "targetShare": 0.04
+  }
+]

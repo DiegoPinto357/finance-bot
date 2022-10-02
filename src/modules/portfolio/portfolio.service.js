@@ -185,6 +185,26 @@ const getBalance = async portfolioName => {
   };
 };
 
+const findShare = (shares, assetClass, asset) => {
+  let share = shares.find(
+    share => asset === share.asset && assetClass === share.assetClass
+  );
+
+  if (!share) {
+    share = shares.find(
+      share => assetClass === share.assetClass && share.asset === ''
+    );
+
+    if (!share) {
+      return { status: 'notFound' };
+    }
+
+    return { share, status: 'hasNoAssetName' };
+  }
+
+  return { share, status: 'hasAssetName' };
+};
+
 const getShares = async portfolioName => {
   const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
   const [{ balance, total }, portfolioShares] = await Promise.all([
@@ -198,42 +218,57 @@ const getShares = async portfolioName => {
     ...balance.crypto.balance.map(item => ({ assetClass: 'crypto', ...item })),
   ];
 
-  const shares = portfolioShares.reduce((result, shareItem) => {
-    let asset;
+  const mappedShares = balanceFlat.reduce(
+    (shares, { assetClass, asset, value }) => {
+      const { share, status } = findShare(portfolioShares, assetClass, asset);
 
-    if (!shareItem.asset) {
-      const assetsByClass = balanceFlat.filter(
-        item => shareItem.assetClass === item.assetClass
-      );
-      const value = getTotalValue(assetsByClass);
-      asset = {
-        assetClass: shareItem.assetClass,
-        asset: shareItem.assetClass,
-        value,
-        targetShare: shareItem.targetShare,
-      };
-    } else {
-      const balanceItem = balanceFlat.find(
-        item =>
-          shareItem.assetClass === item.assetClass &&
-          shareItem.asset === item.asset
-      );
-      asset = {
-        ...(balanceItem || {
-          assetClass: shareItem.assetClass,
-          asset: shareItem.asset,
-          value: 0,
-        }),
-        targetShare: shareItem.targetShare,
-      };
-    }
+      const shareItem = { assetClass, value };
 
-    const currentShare = asset.value / total;
-    const diffBRL = asset.targetShare * total - asset.value;
+      if (status === 'notFound') {
+        shares.push({
+          ...shareItem,
+          asset,
+          targetShare: 0,
+        });
 
-    result.push({ ...asset, currentShare, diffBRL });
-    return result;
-  }, []);
+        return shares;
+      }
+
+      if (status === 'hasNoAssetName') {
+        const shareClassItem = shares.find(
+          ({ assetClass }) => assetClass === assetClass
+        );
+
+        if (!shareClassItem) {
+          shares.push({
+            ...shareItem,
+            targetShare: share ? share.targetShare : 0,
+          });
+        } else {
+          shareClassItem.value = shareClassItem.value + value;
+        }
+
+        return shares;
+      }
+
+      shares.push({
+        ...shareItem,
+        asset,
+        targetShare: share.targetShare,
+      });
+
+      return shares;
+    },
+    []
+  );
+
+  // TODO should diffBRL have an inverted sign?
+  const shares = mappedShares.map(share => {
+    const currentShare = share.value / total;
+    const diffBRL = share.targetShare * total - share.value;
+
+    return { ...share, currentShare, diffBRL };
+  });
 
   return {
     shares: shares.sort((a, b) => b.diffBRL - a.diffBRL),

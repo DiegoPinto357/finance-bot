@@ -418,5 +418,10 @@
       { "portfolio": "carro", "value": 0 },
       { "portfolio": "rendaPassiva", "value": 0 }
     ]
+  },
+  {
+    "assetClass": "crypto",
+    "assetName": "backed",
+    "shares": [{ "portfolio": "financiamento", "value": 1 }]
   }
 ]

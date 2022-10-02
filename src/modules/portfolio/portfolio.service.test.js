@@ -38,7 +38,7 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('previdencia');
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(10);
+      expect(database.find).toBeCalledTimes(11);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -79,7 +79,7 @@ describe('portfolio service', () => {
       const balance = await portfolioService.getBalance('suricat');
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(6);
+      expect(database.find).toBeCalledTimes(7);
       expect(balance).toEqual({
         balance: {
           crypto: {
@@ -128,7 +128,7 @@ describe('portfolio service', () => {
       });
 
       expect(googleSheets.loadSheet).toBeCalledTimes(3);
-      expect(database.find).toBeCalledTimes(10);
+      expect(database.find).toBeCalledTimes(11);
 
       expect(balance).toEqual({
         balance: {
@@ -233,7 +233,6 @@ describe('portfolio service', () => {
           },
           {
             assetClass: 'fixed',
-            asset: 'fixed',
             value: 5042.447356032464,
             targetShare: 0.23,
             currentShare: 0.23859396062415947,
@@ -241,6 +240,47 @@ describe('portfolio service', () => {
           },
         ],
         total: 21134.01086448907,
+      });
+    });
+
+    it('gets shares for a portfolio without target definition', async () => {
+      const shares = await portfolioService.getShares('financiamento');
+
+      expect(shares).toEqual({
+        shares: [
+          {
+            assetClass: 'fixed',
+            value: 7078.717302553882,
+            targetShare: 0.9,
+            currentShare: 0.8189126501241224,
+            diffBRL: 700.9226521261035,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'hodl',
+            value: 182.51841815850264,
+            targetShare: 0.06,
+            currentShare: 0.021114932991704173,
+            diffBRL: 336.12424548682975,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'defi',
+            value: 266.5505693764885,
+            targetShare: 0.04,
+            currentShare: 0.030836325824375215,
+            diffBRL: 79.2112063870664,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'backed',
+            value: 1116.258104,
+            targetShare: 0,
+            currentShare: 0.12913609105979834,
+            diffBRL: -1116.258104,
+          },
+        ],
+        total: 8644.044394088873,
       });
     });
   });

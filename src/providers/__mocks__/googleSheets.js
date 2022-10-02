@@ -9,11 +9,15 @@ const loadSheet = jest.fn(async sheetTitle => {
   const filename = `${mockDir}${sheetTitle}.json`;
 
   if (!dataBuffer[sheetTitle]) {
-    dataBuffer[sheetTitle] = JSON.parse(await fs.readFile(filename, 'utf-8'));
-    dataBuffer[sheetTitle] = dataBuffer[sheetTitle].map(row => ({
-      ...row,
-      save: jest.fn(),
-    }));
+    try {
+      dataBuffer[sheetTitle] = JSON.parse(await fs.readFile(filename, 'utf-8'));
+      dataBuffer[sheetTitle] = dataBuffer[sheetTitle].map(row => ({
+        ...row,
+        save: jest.fn(),
+      }));
+    } catch (e) {
+      return [];
+    }
   }
 
   return dataBuffer[sheetTitle];
