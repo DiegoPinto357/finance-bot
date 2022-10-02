@@ -83,7 +83,7 @@ describe('crypto binanceBuffer service', () => {
       expect(newBRLValue).toBe(currentBRLValue + value);
     });
 
-    it.each(['br', 'us', 'fii'])(
+    it.each(['BNB', 'MATIC', 'BTC', 'USDC'])(
       'does not deposits value for "%s" asset',
       async asset => {
         const value = 500;
