@@ -119,34 +119,48 @@ describe('crypto service', () => {
     it('deposits value on binanceBuffer', async () => {
       const value = 150;
       const asset = 'binanceBuffer';
-      const currentbinanceBufferValue = await cryptoService.getTotalPosition(
+      const currentBinanceBufferValue = await cryptoService.getTotalPosition(
         asset
       );
 
       const result = await cryptoService.deposit({ asset, value });
 
-      const newbinanceBufferValue = await cryptoService.getTotalPosition(asset);
+      const newBinanceBufferValue = await cryptoService.getTotalPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
-      expect(newbinanceBufferValue).toBe(currentbinanceBufferValue + value);
+      expect(newBinanceBufferValue).toBe(currentBinanceBufferValue + value);
     });
 
+    // TODO is this a requirement?
     it('deposits value on binanceBuffer when asset param is not provided', async () => {
       const value = 357.98;
       const asset = 'binanceBuffer';
-      const currentbinanceBufferValue = await cryptoService.getTotalPosition(
+      const currentBinanceBufferValue = await cryptoService.getTotalPosition(
         asset
       );
 
       const result = await cryptoService.deposit({ value });
 
-      const newbinanceBufferValue = await cryptoService.getTotalPosition(asset);
+      const newBinanceBufferValue = await cryptoService.getTotalPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
-      expect(newbinanceBufferValue).toBe(currentbinanceBufferValue + value);
+      expect(newBinanceBufferValue).toBe(currentBinanceBufferValue + value);
     });
 
-    it.each(['hodl', 'defi', 'backed'])(
+    it('deposits value on backed tokens', async () => {
+      const value = 357;
+      const asset = 'backed';
+      const currentBackedValue = await cryptoService.getTotalPosition(asset);
+
+      const result = await cryptoService.deposit({ asset, value });
+
+      const newBackedValue = await cryptoService.getTotalPosition(asset);
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newBackedValue).toBe(currentBackedValue + value);
+    });
+
+    it.each(['hodl', 'defi'])(
       'does not deposits value for "%s" asset',
       async asset => {
         const value = 500;

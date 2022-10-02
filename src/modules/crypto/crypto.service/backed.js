@@ -44,12 +44,42 @@ const getBalance = async () => {
   return { balance, total };
 };
 
-const getTotalPosition = async () => {
-  const { total } = await getBalance();
-  return total;
+const getTotalPosition = async asset => {
+  const { balance, total } = await getBalance();
+
+  if (!asset) {
+    return total;
+  }
+
+  return balance.find(item => item.asset === asset).positionBRL;
+};
+
+const deposit = async ({ asset, value }) => {
+  asset = asset ? asset : 'BRL';
+
+  if (asset !== 'BRL') {
+    return { status: 'cannotDepositValue' };
+  }
+
+  const currentValue = await getTotalPosition(asset);
+  const newValue = currentValue + value;
+
+  if (newValue < 0) {
+    return { status: 'notEnoughFunds' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'crypto',
+    { asset, location: 'mercadoBitcoin', type: 'float', asset },
+    { $set: { amount: newValue } }
+  );
+
+  return { status: 'ok' };
 };
 
 export default {
   getBalance,
   getTotalPosition,
+  deposit,
 };

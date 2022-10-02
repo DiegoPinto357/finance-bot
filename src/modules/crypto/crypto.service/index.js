@@ -67,11 +67,12 @@ const setAssetValue = async ({ asset, value }) => {
 const deposit = async ({ asset, value }) => {
   asset = asset ? asset : 'binanceBuffer';
 
-  if (asset !== 'binanceBuffer') {
+  if (asset !== 'binanceBuffer' && asset !== 'backed') {
     return { status: 'cannotDepositValue' };
   }
 
-  return await binanceBufferService.deposit({ value });
+  const service = getServiceByPortfolioType(asset);
+  return await service.deposit({ value });
 };
 
 const getHistory = async portfolioType => {
