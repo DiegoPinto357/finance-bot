@@ -289,11 +289,16 @@ const addValuesToPortfolioList = (shares, totalAssetValue) =>
   }));
 
 const addValueToPortfolioItem = (portfolioList, portfolioName, value) => {
-  const portfolioItem = portfolioList.find(
+  let portfolioItem = portfolioList.find(
     item => item.portfolio === portfolioName
   );
 
-  portfolioItem.value = portfolioItem.value + value;
+  if (!portfolioItem) {
+    portfolioItem = { portfolio: portfolioName, share: 1, value };
+    portfolioList.push(portfolioItem);
+  } else {
+    portfolioItem.value = portfolioItem.value + value;
+  }
 
   if (portfolioItem.value < 0) {
     return { status: 'notEnoughFunds' };

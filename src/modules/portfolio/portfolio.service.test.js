@@ -518,6 +518,12 @@ describe('portfolio service', () => {
         origin: { class: 'fixed', name: 'nubank' },
         destiny: { class: 'stock', name: 'float' },
       },
+      {
+        value: 100,
+        portfolio: 'amortecedor',
+        origin: { class: 'fixed', name: 'nubank' },
+        destiny: { class: 'crypto', name: 'backed' },
+      },
     ];
 
     it.each(transfers)(
@@ -567,11 +573,13 @@ describe('portfolio service', () => {
         );
 
         expect(response.status).toBe('ok');
-        expect(newPortfolioOriginValue).toBe(
-          currentPortfolioOriginValue - value
+        expect(newPortfolioOriginValue).toBeCloseTo(
+          currentPortfolioOriginValue - value,
+          5
         );
-        expect(newPortfolioDestinyValue).toBe(
-          currentPortfolioDestinyValue + value
+        expect(newPortfolioDestinyValue).toBeCloseTo(
+          currentPortfolioDestinyValue + value,
+          5
         );
       }
     );
