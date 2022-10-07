@@ -1,92 +1,9 @@
 import blockchain from '../../../../providers/blockchain';
 import coinMarketCap from '../../../../providers/coinMarketCap';
-import database from '../../../../providers/database';
 import googleSheets from '../../../../providers/GoogleSheets';
+import staking from './staking';
+import autostaking from './autostaking';
 import liquidityPool from './liquidityPool';
-
-const getTokenBalanceFromBlockchain = async (asset, network, sellFee) => {
-  const [currentAmount, priceBRL] = await Promise.all([
-    blockchain.getTokenBalance({ asset, network }),
-    coinMarketCap.getSymbolPrice(asset, network),
-  ]);
-
-  const positionBRL = currentAmount * priceBRL * (1 - sellFee);
-
-  return {
-    currentAmount,
-    priceBRL,
-    positionBRL,
-  };
-};
-
-const getStakingBalance = async () => {
-  const balance = await googleSheets.loadSheet('crypto-defi-staking');
-
-  const prices = await Promise.all(
-    balance.map(({ asset, network }) =>
-      coinMarketCap.getSymbolPrice(asset, network)
-    )
-  );
-
-  return balance.map((item, index) => {
-    const {
-      asset,
-      description,
-      depositBRL,
-      depositAmount,
-      currentAmount,
-      sellFee,
-      endDate,
-    } = item;
-    return {
-      type: 'staking',
-      asset,
-      description,
-      depositBRL,
-      depositAmount,
-      currentAmount,
-      sellFee,
-      performanceFee: undefined,
-      endDate,
-      priceBRL: prices[index],
-      positionBRL: item.currentAmount * prices[index] * (1 - item.sellFee),
-    };
-  });
-};
-
-const getAutoStakingBalance = async () => {
-  const tokens = await database.find(
-    'assets',
-    'crypto',
-    { location: 'walletPrimary', type: 'autostaking' },
-    { projection: { _id: 0 } }
-  );
-  const balance = await Promise.all(
-    tokens.map(({ asset, token, fees }) =>
-      getTokenBalanceFromBlockchain(asset, token.network, fees.sell)
-    )
-  );
-
-  return tokens.map((token, index) => {
-    const { asset, description, deposits, fees } = token;
-    const { BRL: depositBRL, token: depositAmount } = deposits;
-    const { sell: sellFee } = fees;
-    const { currentAmount, priceBRL, positionBRL } = balance[index];
-    return {
-      type: 'autostaking',
-      asset,
-      description,
-      depositBRL,
-      depositAmount,
-      currentAmount,
-      sellFee,
-      performanceFee: undefined,
-      endDate: undefined,
-      priceBRL,
-      positionBRL,
-    };
-  });
-};
 
 const getLiquidityPoolBalance = async () => {
   const pools = await googleSheets.loadSheet('crypto-defi-liquiditypool');
@@ -165,8 +82,8 @@ const getBalance = async () => {
     liquidityPoolBalance,
     floatBalance,
   ] = await Promise.all([
-    getStakingBalance(),
-    getAutoStakingBalance(),
+    staking.getBalance(),
+    autostaking.getBalance(),
     getLiquidityPoolBalance(),
     getFloatBalance(),
   ]);
