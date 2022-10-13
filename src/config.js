@@ -28,6 +28,10 @@ export default {
           cmcId: 17965,
         },
         TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },
+        'MDB Plus': {
+          contract: '0x9f8BB16f49393eeA4331A39B69071759e54e16ea',
+          cmcId: 20408,
+        },
       },
       polygon: {
         SPHERE: {
