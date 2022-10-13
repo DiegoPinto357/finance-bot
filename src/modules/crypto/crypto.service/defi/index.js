@@ -1,8 +1,8 @@
 import googleSheets from '../../../../providers/GoogleSheets';
-import staking from './staking';
-import autostaking from './autostaking';
-import float from './float';
-import liquidityPool from './liquidityPool';
+import staking from '../defiCommon/staking';
+import autostaking from '../defiCommon/autostaking';
+import float from '../defiCommon/float';
+import liquidityPool from '../defiCommon/liquidityPool';
 
 const getLiquidityPoolBalance = async () => {
   const pools = await googleSheets.loadSheet('crypto-defi-liquiditypool');
@@ -52,10 +52,10 @@ const getBalance = async () => {
     liquidityPoolBalance,
     floatBalance,
   ] = await Promise.all([
-    staking.getBalance(),
-    autostaking.getBalance(),
+    staking.getBalance('defi'),
+    autostaking.getBalance('walletPrimary'),
     getLiquidityPoolBalance(),
-    float.getBalance(),
+    float.getBalance('defi'),
   ]);
 
   const balance = [

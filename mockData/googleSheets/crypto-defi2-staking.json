@@ -1,0 +1,18 @@
+[
+  {
+    "asset": "DRIP",
+    "description": "Drip Faucet",
+    "depositBRL": 995.76,
+    "depositAmount": 1.94744563408552,
+    "currentAmount": 4.815,
+    "sellFee": 0.1
+  },
+  {
+    "asset": "WMEMO",
+    "description": "Wonderland Time",
+    "depositBRL": 2370.5,
+    "depositAmount": 0.000843,
+    "currentAmount": 0.00294486306353368,
+    "sellFee": 0
+  }
+]

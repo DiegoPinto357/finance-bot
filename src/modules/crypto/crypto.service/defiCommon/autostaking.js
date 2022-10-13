@@ -17,11 +17,11 @@ const getTokenBalanceFromBlockchain = async (asset, network, sellFee) => {
   };
 };
 
-const getBalance = async () => {
+const getBalance = async wallet => {
   const tokens = await database.find(
     'assets',
     'crypto',
-    { location: 'walletPrimary', type: 'autostaking' },
+    { location: wallet, type: 'autostaking' },
     { projection: { _id: 0 } }
   );
   const balance = await Promise.all(

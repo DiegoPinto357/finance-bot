@@ -1,0 +1,69 @@
+{
+  "balance": [
+    {
+      "asset": "DRIP",
+      "currentAmount": 4.815,
+      "depositAmount": 1.94744563408552,
+      "depositBRL": 995.76,
+      "description": "Drip Faucet",
+      "positionBRL": 676.6298957358382,
+      "priceBRL": 156.139355194609,
+      "sellFee": 0.1,
+      "type": "staking"
+    },
+    {
+      "asset": "WMEMO",
+      "currentAmount": 0.00294486306353368,
+      "depositAmount": 0.000843,
+      "depositBRL": 2370.5,
+      "description": "Wonderland Time",
+      "positionBRL": 429.6087182886398,
+      "priceBRL": 145884.10700942136,
+      "sellFee": 0,
+      "type": "staking"
+    },
+    {
+      "asset": "SPHERE",
+      "currentAmount": 1884.1724611681886,
+      "depositAmount": 426.559038116849,
+      "depositBRL": 100,
+      "description": "Sphere Finance",
+      "positionBRL": 249.26741746403445,
+      "priceBRL": 0.16536929514236745,
+      "sellFee": 0.2,
+      "type": "autostaking"
+    },
+    {
+      "asset": "TITANO",
+      "currentAmount": 4952.134307326301,
+      "depositAmount": 672.580397387811,
+      "depositBRL": 509.28,
+      "description": "Titano",
+      "positionBRL": 1491.3568359616218,
+      "priceBRL": 0.3672614141427904,
+      "sellFee": 0.18,
+      "type": "autostaking"
+    },
+    {
+      "asset": "BNB",
+      "currentAmount": 0.082,
+      "depositAmount": 0,
+      "depositBRL": 0,
+      "description": "BNB token",
+      "positionBRL": 158.3079206343323,
+      "priceBRL": 1930.5843979796623,
+      "type": "float"
+    },
+    {
+      "asset": "BUSD",
+      "currentAmount": 24.36119,
+      "depositAmount": 0,
+      "depositBRL": 0,
+      "description": "BUSD token",
+      "positionBRL": 116.99099753494188,
+      "priceBRL": 4.802351508072548,
+      "type": "float"
+    }
+  ],
+  "total": 3122.1617856194084
+}

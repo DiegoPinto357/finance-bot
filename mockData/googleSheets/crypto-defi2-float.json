@@ -1,0 +1,10 @@
+[
+  {
+    "asset": "BNB",
+    "network": "bsc"
+  },
+  {
+    "asset": "BUSD",
+    "network": "bsc"
+  }
+]

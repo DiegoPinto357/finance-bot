@@ -3,8 +3,10 @@ import path from 'path';
 
 const mockDir = `${path.resolve()}/mockData/blockchain/`;
 
-const getTokenBalance = jest.fn(async ({ asset }) => {
-  const filename = `${mockDir}tokenBalances.json`;
+const getTokenBalance = jest.fn(async ({ asset, wallet }) => {
+  const filename = `${mockDir}tokenBalances/${
+    wallet || process.env.CRYPTO_WALLET_ADDRESS
+  }.json`;
   const tokens = JSON.parse(await fs.readFile(filename, 'utf-8'));
   const token = tokens.find(item => item.asset === asset);
 

@@ -1,8 +1,8 @@
 import googleSheets from '../../../../providers/GoogleSheets';
 import coinMarketCap from '../../../../providers/coinMarketCap';
 
-const getBalance = async () => {
-  const balance = await googleSheets.loadSheet('crypto-defi-staking');
+const getBalance = async assetName => {
+  const balance = await googleSheets.loadSheet(`crypto-${assetName}-staking`);
 
   const prices = await Promise.all(
     balance.map(({ asset, network }) =>

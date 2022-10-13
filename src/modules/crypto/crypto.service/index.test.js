@@ -2,6 +2,7 @@ import database from '../../../providers/database';
 import cryptoService from './';
 import expectedHodlBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
 import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalance.json';
+import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';
 import expectedBackedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
 
 jest.mock('../../../providers/googleSheets');
@@ -23,6 +24,11 @@ describe('crypto service', () => {
     it('gets DeFi balance', async () => {
       const balance = await cryptoService.getBalance('defi');
       expect(balance).toEqual(expectedDefiBalance);
+    });
+
+    it('gets DeFi 2 balance', async () => {
+      const balance = await cryptoService.getBalance('defi2');
+      expect(balance).toEqual(expectedDefi2Balance);
     });
 
     it('gets backed tokens balance', async () => {
@@ -57,6 +63,7 @@ describe('crypto service', () => {
       expect(total).toEqual({
         hodl: expectedHodlBalance.total,
         defi: expectedDefiBalance.total,
+        defi2: expectedDefi2Balance.total,
         backed: expectedBackedBalance.total,
         binanceBuffer: 2156.375642691,
       });
