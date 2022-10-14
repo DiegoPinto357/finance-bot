@@ -22,6 +22,7 @@ const getBalanceFormatter = type => {
       ];
 
     case 'defi':
+    case 'defi2':
       return [
         null,
         null,
