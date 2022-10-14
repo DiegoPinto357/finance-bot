@@ -10,7 +10,7 @@ const wallets = {
 const getBalance = async assetName => {
   const balance = await googleSheets.loadSheet(`crypto-${assetName}-float`);
   return await Promise.all(
-    balance.map(async ({ asset, network }) => {
+    balance.map(async ({ asset, depositBRL, depositAmount, network }) => {
       const priceBRL = await coinMarketCap.getSymbolPrice(asset, network);
 
       const currentAmount = await blockchain.getTokenBalance({
@@ -24,8 +24,8 @@ const getBalance = async assetName => {
         type: 'float',
         asset,
         description: `${asset} token`,
-        depositBRL: 0,
-        depositAmount: 0,
+        depositBRL,
+        depositAmount,
         currentAmount,
         sellFee: undefined,
         performanceFee: undefined,

@@ -1,10 +1,14 @@
 [
   {
     "asset": "PIGS",
+    "depositAmount": 0,
+    "depositBRL": 0,
     "network": "bsc"
   },
   {
     "asset": "BUSD",
+    "depositAmount": 0,
+    "depositBRL": 0,
     "network": "bsc"
   }
 ]
