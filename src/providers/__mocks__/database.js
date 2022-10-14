@@ -36,7 +36,7 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
 
   const { projection } = options;
 
-  await delay(10);
+  await delay(1);
   return filteredData.map(item => {
     const projectionEntries = Object.entries(projection);
     projectionEntries.forEach(([key, value]) => {
@@ -74,7 +74,7 @@ const updateOne = async (databaseName, collectionName, query, update) => {
     }
   });
 
-  await delay(10);
+  await delay(1);
   setData(databaseName, collectionName, data);
   return { matchedCount: 1 };
 };
