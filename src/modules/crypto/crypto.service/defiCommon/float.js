@@ -1,5 +1,6 @@
 import googleSheets from '../../../../providers/GoogleSheets';
 import coinMarketCap from '../../../../providers/coinMarketCap';
+import dexScreener from '../../../../providers/dexScreener';
 import blockchain from '../../../../providers/blockchain';
 
 const wallets = {
@@ -7,11 +8,19 @@ const wallets = {
   defi2: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS,
 };
 
+const getSymbolPrice = async (asset, network) => {
+  try {
+    return await coinMarketCap.getSymbolPrice(asset, network);
+  } catch (e) {
+    return await dexScreener.getSymbolPrice(asset, network);
+  }
+};
+
 const getBalance = async assetName => {
   const balance = await googleSheets.loadSheet(`crypto-${assetName}-float`);
   return await Promise.all(
     balance.map(async ({ asset, depositBRL, depositAmount, network }) => {
-      const priceBRL = await coinMarketCap.getSymbolPrice(asset, network);
+      const priceBRL = await getSymbolPrice(asset, network);
 
       const currentAmount = await blockchain.getTokenBalance({
         wallet: wallets[assetName],

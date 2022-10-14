@@ -1,0 +1,30 @@
+import tradingView from './tradingView';
+import httpClient from '../libs/httpClient';
+import { withCache } from '../libs/cache';
+import { buildLogger } from '../libs/logger';
+import config from '../config';
+
+const host = 'https://api.dexscreener.com';
+
+const getCached = withCache(params => httpClient.get(params));
+
+const log = buildLogger('DexScreener');
+
+const getSymbolPrice = async (symbol, network) => {
+  const { contract } = config.crypto.tokens[network]?.[symbol];
+
+  log(`Loading ${symbol} token price`);
+  const url = `${host}/latest/dex/tokens/${contract}`;
+  const { pairs } = await getCached(url);
+  const { priceUsd } =
+    pairs
+      .sort((a, b) => b.volume.h24 - a.volume.h24)
+      .find(({ baseToken }) => baseToken.address === contract) || {};
+
+  const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
+  return priceUsd * usdToBrl;
+};
+
+export default {
+  getSymbolPrice,
+};
