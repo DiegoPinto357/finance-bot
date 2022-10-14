@@ -24,22 +24,22 @@
     },
     {
       "asset": "SPHERE",
-      "currentAmount": 1884.1724611681886,
+      "currentAmount": 1226.18798326716,
       "depositAmount": 426.559038116849,
       "depositBRL": 100,
       "description": "Sphere Finance",
-      "positionBRL": 249.26741746403445,
+      "positionBRL": 162.21907400394505,
       "priceBRL": 0.16536929514236745,
       "sellFee": 0.2,
       "type": "autostaking"
     },
     {
       "asset": "TITANO",
-      "currentAmount": 4952.134307326301,
+      "currentAmount": 34124.06352,
       "depositAmount": 672.580397387811,
       "depositBRL": 509.28,
       "description": "Titano",
-      "positionBRL": 1491.3568359616218,
+      "positionBRL": 10276.610496215959,
       "priceBRL": 0.3672614141427904,
       "sellFee": 0.18,
       "type": "autostaking"
@@ -65,5 +65,5 @@
       "type": "float"
     }
   ],
-  "total": 3122.1617856194084
+  "total": 11820.367102413655
 }

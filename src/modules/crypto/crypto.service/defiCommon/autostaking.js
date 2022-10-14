@@ -2,9 +2,19 @@ import database from '../../../../providers/database';
 import blockchain from '../../../../providers/blockchain';
 import coinMarketCap from '../../../../providers/coinMarketCap';
 
-const getTokenBalanceFromBlockchain = async (asset, network, sellFee) => {
+const wallets = {
+  walletPrimary: process.env.CRYPTO_WALLET_ADDRESS,
+  walletSecondary: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS,
+};
+
+const getTokenBalanceFromBlockchain = async (
+  wallet,
+  asset,
+  network,
+  sellFee
+) => {
   const [currentAmount, priceBRL] = await Promise.all([
-    blockchain.getTokenBalance({ asset, network }),
+    blockchain.getTokenBalance({ wallet: wallets[wallet], asset, network }),
     coinMarketCap.getSymbolPrice(asset, network),
   ]);
 
@@ -26,7 +36,7 @@ const getBalance = async wallet => {
   );
   const balance = await Promise.all(
     tokens.map(({ asset, token, fees }) =>
-      getTokenBalanceFromBlockchain(asset, token.network, fees.sell)
+      getTokenBalanceFromBlockchain(wallet, asset, token.network, fees.sell)
     )
   );
 
