@@ -524,6 +524,14 @@ const swap = async ({
   return { status: 'ok' };
 };
 
+const getAssets = async () =>
+  database.find(
+    'portfolio',
+    'shares',
+    {},
+    { projection: { _id: 0, shares: 0 } }
+  );
+
 const flattenBalance = (balance, totals) =>
   balance.reduce((values, { asset, value }) => {
     values[asset] = value;
@@ -620,6 +628,7 @@ export default {
   deposit,
   transfer,
   swap,
+  getAssets,
 
   // debug/dev
   updateAbsoluteTable,

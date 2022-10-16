@@ -15,6 +15,10 @@ router.get('/api/portfolio/shares/:portfolioName', async (req, res) =>
   res.json(await portfolioService.getShares(req.params.portfolioName))
 );
 
+router.get('/api/portfolio/assets', async (_req, res) =>
+  res.json(await portfolioService.getAssets())
+);
+
 router.post('/api/portfolio/deposit', async (req, res) =>
   res.json(await portfolioService.deposit(req.body))
 );
