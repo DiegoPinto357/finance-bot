@@ -25,7 +25,11 @@ const buildUrl = (network, { params }) => {
 
 const getTokenBalance = async ({ asset, network, wallet }) => {
   // TODO build a better rate limit system
-  await delay(500);
+  const min = 500;
+  const max = 1500;
+  const diff = max - min;
+  const ms = Math.floor(Math.random() * diff) + min;
+  await delay(ms);
 
   const { contract, native } = config.crypto.tokens[network][asset];
   const action = native ? 'balance' : 'tokenbalance';
