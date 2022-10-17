@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import menu from './menu';
 import database from './providers/database';
 import cryptoContext from './modules/crypto/crypto.cli';
 import stockContext from './modules/stock/stock.cli';
@@ -38,8 +39,7 @@ import processScriptContext from './modules/processScript/processScript.cli';
         break;
 
       default:
-        console.error('Invalid command');
-        break;
+        while (true) await menu();
     }
 
     database.close();
