@@ -39,7 +39,12 @@ import processScriptContext from './modules/processScript/processScript.cli';
         break;
 
       default:
-        while (true) await menu();
+        while (true) {
+          console.log(
+            '\n----------------------------------------------------------------\n'
+          );
+          await menu();
+        }
     }
 
     database.close();
