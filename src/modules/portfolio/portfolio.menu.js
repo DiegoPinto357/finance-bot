@@ -1,5 +1,6 @@
 import inquirer from 'inquirer';
 import portfolioService from './portfolio.service';
+import { printBalance } from './cliUtils';
 
 const methods = Object.keys(portfolioService);
 
@@ -15,27 +16,25 @@ const getBalanceMenu = async () => {
     },
   ]);
 
-  // TODO duplication from portfolio.cli
   const name = portfolioName !== 'all' ? portfolioName : undefined;
+  const { balance, total } = await portfolioService.getBalance(name);
+  printBalance(name, balance, total);
+};
 
-  const { balance, total: balanceTotal } = await portfolioService.getBalance(
-    name
-  );
+const getSharesMenu = async () => {
+  const { portfolioName } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'portfolioName',
+      message: 'portfolioName?',
+      choices: portfolios,
+    },
+  ]);
 
-  if (!name) {
-    console.log(JSON.stringify(balance, null, 2));
-    console.log(balanceTotal);
-    return;
-  }
-
-  const flatBalance = [
-    ...balance.fixed.balance,
-    ...balance.stock.balance,
-    ...balance.crypto.balance,
-  ];
-
-  console.table(flatBalance);
-  console.log({ balanceTotal });
+  const name = portfolioName !== 'all' ? portfolioName : undefined;
+  const { shares, total } = await portfolioService.getShares(name);
+  console.table(shares);
+  console.log({ total });
 };
 
 const init = async () => {
@@ -55,6 +54,10 @@ const execute = async () => {
   switch (method) {
     case 'getBalance':
       await getBalanceMenu();
+      break;
+
+    case 'getShares':
+      await getSharesMenu();
       break;
 
     case 'updateAbsoluteTable':

@@ -1,4 +1,5 @@
 import portfolioService from './portfolio.service';
+import { printBalance } from './cliUtils';
 
 const proccessAssetInput = input => {
   if (!input) return;
@@ -11,24 +12,8 @@ const isComposedAsset = asset => !!asset.match(/\./);
 const balance = async args => {
   const { name } = args;
 
-  const { balance, total: balanceTotal } = await portfolioService.getBalance(
-    name
-  );
-
-  if (!name) {
-    console.log(JSON.stringify(balance, null, 2));
-    console.log(balanceTotal);
-    return;
-  }
-
-  const flatBalance = [
-    ...balance.fixed.balance,
-    ...balance.stock.balance,
-    ...balance.crypto.balance,
-  ];
-
-  console.table(flatBalance);
-  console.log({ balanceTotal });
+  const { balance, total } = await portfolioService.getBalance(name);
+  printBalance(name, balance, total);
 };
 
 const shares = async args => {
