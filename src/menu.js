@@ -21,7 +21,7 @@ const execute = async () => {
       await portfolioMenu.execute();
 
     case 'crypto':
-      await crtyptoMenu();
+      await crtyptoMenu.execute();
   }
 };
 

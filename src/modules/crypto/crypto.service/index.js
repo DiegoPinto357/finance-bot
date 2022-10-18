@@ -4,7 +4,13 @@ import defi2Service from './defi2';
 import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
 
-const types = ['hodl', 'defi', 'defi2', 'backed', 'binanceBuffer'];
+export const PortfolioTypes = [
+  'hodl',
+  'defi',
+  'defi2',
+  'backed',
+  'binanceBuffer',
+];
 
 const getServiceByPortfolioType = portfolioType => {
   switch (portfolioType) {
@@ -40,14 +46,14 @@ const getTotalPosition = async portfolioType => {
   }
 
   const totals = await Promise.all(
-    types.map(async type => {
+    PortfolioTypes.map(async type => {
       const service = getServiceByPortfolioType(type);
       return await service.getTotalPosition();
     })
   );
 
   return totals.reduce((obj, current, index) => {
-    obj[types[index]] = current;
+    obj[PortfolioTypes[index]] = current;
     return obj;
   }, {});
 };

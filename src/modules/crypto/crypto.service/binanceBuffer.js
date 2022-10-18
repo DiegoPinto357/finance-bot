@@ -69,6 +69,7 @@ const deposit = async ({ asset, value }) => {
 };
 
 export default {
+  // TODO add getBalance method
   getTotalPosition,
   setAssetValue,
   deposit,
