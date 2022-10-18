@@ -55,8 +55,14 @@ const execute = async () => {
   switch (method) {
     case 'getBalance':
       await getBalanceMenu();
+      break;
+
+    case 'updateAbsoluteTable':
+      await portfolioService.updateAbsoluteTable();
+      break;
 
     default:
+      console.log('Not implmented');
   }
 };
 

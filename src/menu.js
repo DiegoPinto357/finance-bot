@@ -19,9 +19,11 @@ const execute = async () => {
   switch (module) {
     case 'portfolio':
       await portfolioMenu.execute();
+      break;
 
     case 'crypto':
       await crtyptoMenu.execute();
+      break;
   }
 };
 

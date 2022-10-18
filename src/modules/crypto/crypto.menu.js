@@ -33,8 +33,10 @@ const execute = async () => {
   switch (method) {
     case 'getBalance':
       await getBalanceMenu();
+      break;
 
     default:
+      console.log('Not implmented');
   }
 };
 
