@@ -524,13 +524,24 @@ const swap = async ({
   return { status: 'ok' };
 };
 
-const getAssets = async () =>
+const getAssets = () =>
   database.find(
     'portfolio',
     'shares',
     {},
     { projection: { _id: 0, shares: 0 } }
   );
+
+const getPortfolios = async () => {
+  const portfolioData = await getPortfolioData();
+  const portfolios = new Set();
+
+  portfolioData.forEach(asset =>
+    asset.shares.forEach(({ portfolio }) => portfolios.add(portfolio))
+  );
+
+  return Array.from(portfolios);
+};
 
 const flattenBalance = (balance, totals) =>
   balance.reduce((values, { asset, value }) => {
@@ -629,6 +640,7 @@ export default {
   transfer,
   swap,
   getAssets,
+  getPortfolios,
 
   // debug/dev
   updateAbsoluteTable,
