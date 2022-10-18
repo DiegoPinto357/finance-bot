@@ -12,6 +12,7 @@ import processScriptContext from './modules/processScript/processScript.cli';
 
 (async () => {
   await database.connect();
+  await menu.init();
 
   try {
     const argv = yargs(hideBin(process.argv)).argv;
@@ -43,7 +44,7 @@ import processScriptContext from './modules/processScript/processScript.cli';
           console.log(
             '\n----------------------------------------------------------------\n'
           );
-          await menu();
+          await menu.execute();
         }
     }
 

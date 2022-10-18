@@ -1,8 +1,12 @@
 import inquirer from 'inquirer';
-import portfolioMenu from '../modules/portfolio/portfolio.menu';
-import crtyptoMenu from '../modules/crypto/crypto.menu';
+import portfolioMenu from './modules/portfolio/portfolio.menu';
+import crtyptoMenu from './modules/crypto/crypto.menu';
 
-export default async () => {
+const init = async () => {
+  await portfolioMenu.init();
+};
+
+const execute = async () => {
   const { module } = await inquirer.prompt([
     {
       type: 'list',
@@ -14,9 +18,14 @@ export default async () => {
 
   switch (module) {
     case 'portfolio':
-      await portfolioMenu();
+      await portfolioMenu.execute();
 
     case 'crypto':
       await crtyptoMenu();
   }
+};
+
+export default {
+  init,
+  execute,
 };

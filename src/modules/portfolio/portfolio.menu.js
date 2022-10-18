@@ -3,32 +3,15 @@ import portfolioService from './portfolio.service';
 
 const methods = Object.keys(portfolioService);
 
+let portfolios;
+
 const getBalanceMenu = async () => {
   const { portfolioName } = await inquirer.prompt([
     {
       type: 'list',
       name: 'portfolioName',
       message: 'portfolioName?',
-      // TODO get assets list from service
-      choices: [
-        'all',
-        'temp',
-        'amortecedor',
-        'financiamento',
-        'viagem',
-        'reformaCasa',
-        'previdencia',
-        'leni',
-        'mae',
-        'seguroCarro',
-        'manutencaoCarro',
-        'impostos',
-        'suricat',
-        'congelamentoSuricats',
-        'carro',
-        'macbookFirma',
-        'rendaPassiva',
-      ],
+      choices: ['all', ...portfolios],
     },
   ]);
 
@@ -55,7 +38,11 @@ const getBalanceMenu = async () => {
   console.log({ balanceTotal });
 };
 
-export default async () => {
+const init = async () => {
+  portfolios = await portfolioService.getPortfolios();
+};
+
+const execute = async () => {
   const { method } = await inquirer.prompt([
     {
       type: 'list',
@@ -71,4 +58,9 @@ export default async () => {
 
     default:
   }
+};
+
+export default {
+  init,
+  execute,
 };
