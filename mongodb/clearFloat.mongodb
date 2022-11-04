@@ -1,0 +1,22 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// The current database to use.
+use('assets');
+
+// Search for documents in the current collection.
+db.getCollection('stock')
+  .find(
+    {
+      type: 'float',
+    },
+    {
+      _id: 0
+    }
+  )
+  .sort({
+    /*
+    * fieldA: 1 // ascending
+    * fieldB: -1 // descending
+    */
+  });
