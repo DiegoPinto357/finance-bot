@@ -16,10 +16,9 @@ const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);
   const url = `${host}/latest/dex/tokens/${contract}`;
   const { pairs } = await getCached(url);
-  const { priceUsd } =
-    pairs
-      .sort((a, b) => b.volume.h24 - a.volume.h24)
-      .find(({ baseToken }) => baseToken.address === contract) || {};
+  const { priceUsd } = pairs
+    .sort((a, b) => b.volume.h24 - a.volume.h24)
+    .find(({ baseToken }) => baseToken.address === contract) || { priceUsd: 0 };
 
   const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
   return priceUsd * usdToBrl;
