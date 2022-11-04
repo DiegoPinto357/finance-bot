@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import portfolioMenu from './modules/portfolio/portfolio.menu';
 import crtyptoMenu from './modules/crypto/crypto.menu';
+import cacheMenu from './libs/cache.menu';
 
 const init = async () => {
   await portfolioMenu.init();
@@ -12,7 +13,7 @@ const execute = async () => {
       type: 'list',
       name: 'module',
       message: 'Which module?',
-      choices: ['scripts', 'portfolio', 'fixed', 'stock', 'crypto'],
+      choices: ['scripts', 'portfolio', 'fixed', 'stock', 'crypto', 'cache'],
     },
   ]);
 
@@ -23,6 +24,10 @@ const execute = async () => {
 
     case 'crypto':
       await crtyptoMenu.execute();
+      break;
+
+    case 'cache':
+      await cacheMenu.execute();
       break;
   }
 };
