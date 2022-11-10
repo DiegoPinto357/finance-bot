@@ -260,16 +260,24 @@ const getShares = async portfolioName => {
     []
   );
 
+  const totalTargetShare = mappedShares.reduce(
+    (total, { targetShare }) => total + targetShare,
+    0
+  );
+
   // TODO should diffBRL have an inverted sign?
   const shares = mappedShares.map(share => {
     const currentShare = share.value / total;
-    const diffBRL = share.targetShare * total - share.value;
+    const diffBRL =
+      totalTargetShare === 1 ? share.targetShare * total - share.value : 0;
 
     return { ...share, currentShare, diffBRL };
   });
 
   return {
-    shares: shares.sort((a, b) => b.diffBRL - a.diffBRL),
+    shares: shares.sort((a, b) =>
+      totalTargetShare === 1 ? b.diffBRL - a.diffBRL : a.value - b.value
+    ),
     total,
   };
 };

@@ -276,6 +276,48 @@ describe('portfolio service', () => {
         total: 8644.044394088873,
       });
     });
+
+    it('sets diffBRL to 0 for portfolio without target share definition', async () => {
+      const shares = await portfolioService.getShares('suricat');
+
+      expect(shares).toEqual({
+        shares: [
+          {
+            assetClass: 'crypto',
+            asset: 'hodl',
+            value: 244.33867596477316,
+            targetShare: 0,
+            currentShare: 0.0463912094297429,
+            diffBRL: 0,
+          },
+          {
+            assetClass: 'crypto',
+            asset: 'defi',
+            value: 245.06972515627345,
+            targetShare: 0,
+            currentShare: 0.04653000962587404,
+            diffBRL: 0,
+          },
+          {
+            asset: 'pagBankCDB120',
+            assetClass: 'fixed',
+            value: 406.70591249473637,
+            targetShare: 0,
+            currentShare: 0.07721896293478395,
+            diffBRL: 0,
+          },
+          {
+            asset: 'nubank',
+            assetClass: 'fixed',
+            value: 4370.80325478285,
+            targetShare: 0,
+            currentShare: 0.8298598180095992,
+            diffBRL: 0,
+          },
+        ],
+        total: 5266.917568398632,
+      });
+    });
   });
 
   describe('deposit', () => {
