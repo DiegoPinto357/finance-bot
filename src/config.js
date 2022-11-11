@@ -30,11 +30,13 @@ export default {
         CAKE: { contract: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82' },
         AXS: { contract: '0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0' },
         DRIP: { contract: '0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333' },
+        AFP: { contract: '0x9a3321E1aCD3B9F6debEE5e042dD2411A1742002' },
         DOGS: {
           contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e',
           cmcId: 17965,
         },
         TITANO: { contract: '0x4e3cABD3AD77420FF9031d19899594041C420aeE' },
+        MDB: { contract: '0x0557a288A93ed0DF218785F2787dac1cd077F8f3' },
         'MDB+': {
           contract: '0x9f8BB16f49393eeA4331A39B69071759e54e16ea',
           cmcId: 20408,
