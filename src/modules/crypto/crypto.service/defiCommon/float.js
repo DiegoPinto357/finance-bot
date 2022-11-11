@@ -1,19 +1,10 @@
 import googleSheets from '../../../../providers/GoogleSheets';
-import coinMarketCap from '../../../../providers/coinMarketCap';
-import dexScreener from '../../../../providers/dexScreener';
 import blockchain from '../../../../providers/blockchain';
+import getSymbolPrice from './getSymbolPrice';
 
 const wallets = {
   defi: process.env.CRYPTO_WALLET_ADDRESS,
   defi2: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS,
-};
-
-const getSymbolPrice = async (asset, network) => {
-  try {
-    return await coinMarketCap.getSymbolPrice(asset, network);
-  } catch (e) {
-    return await dexScreener.getSymbolPrice(asset, network);
-  }
 };
 
 const getBalance = async assetName => {

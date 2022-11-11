@@ -1,13 +1,11 @@
 import googleSheets from '../../../../providers/GoogleSheets';
-import coinMarketCap from '../../../../providers/coinMarketCap';
+import getSymbolPrice from './getSymbolPrice';
 
 const getBalance = async assetName => {
   const balance = await googleSheets.loadSheet(`crypto-${assetName}-staking`);
 
   const prices = await Promise.all(
-    balance.map(({ asset, network }) =>
-      coinMarketCap.getSymbolPrice(asset, network)
-    )
+    balance.map(({ asset, network }) => getSymbolPrice(asset, network))
   );
 
   return balance.map((item, index) => {

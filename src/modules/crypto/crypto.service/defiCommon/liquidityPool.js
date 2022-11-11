@@ -1,5 +1,5 @@
 import blockchain from '../../../../providers/blockchain';
-import coinMarketCap from '../../../../providers/coinMarketCap';
+import getSymbolPrice from './getSymbolPrice';
 
 const getTokens = lpToken => lpToken.split('-').slice(0, 2);
 
@@ -9,7 +9,7 @@ const getTokenTotalValue = async ({ token, network, wallet }) => {
     network,
     wallet,
   });
-  const price = await coinMarketCap.getSymbolPrice(token, network);
+  const price = await getSymbolPrice(token, network);
   return balance * price;
 };
 

@@ -1,6 +1,6 @@
 import database from '../../../../providers/database';
 import blockchain from '../../../../providers/blockchain';
-import coinMarketCap from '../../../../providers/coinMarketCap';
+import getSymbolPrice from './getSymbolPrice';
 
 const wallets = {
   walletPrimary: process.env.CRYPTO_WALLET_ADDRESS,
@@ -15,7 +15,7 @@ const getTokenBalanceFromBlockchain = async (
 ) => {
   const [currentAmount, priceBRL] = await Promise.all([
     blockchain.getTokenBalance({ wallet: wallets[wallet], asset, network }),
-    coinMarketCap.getSymbolPrice(asset, network),
+    getSymbolPrice(asset, network),
   ]);
 
   const positionBRL = currentAmount * priceBRL * (1 - sellFee);

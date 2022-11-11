@@ -11,9 +11,8 @@ const getCached = withCache(params => httpClient.get(params));
 const log = buildLogger('DexScreener');
 
 const getSymbolPrice = async (symbol, network) => {
-  const { contract } = config.crypto.tokens[network]?.[symbol];
-
   log(`Loading ${symbol} token price`);
+  const { contract } = config.crypto.tokens[network]?.[symbol];
   const url = `${host}/latest/dex/tokens/${contract}`;
   const { pairs } = await getCached(url);
   const { priceUsd } = pairs

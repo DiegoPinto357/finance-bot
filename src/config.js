@@ -15,7 +15,11 @@ export default {
           contract: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7',
           native: true,
         },
-        PTP: { contract: '0x22d4002028f537599be9f666d1c4fa138522f9c8' },
+        PTP: { contract: '0x22d4002028f537599bE9f666d1c4Fa138522f9c8' },
+        WMEMO: { contract: '0x0da67235dD5787D67955420C84ca1cEcd4E5Bb3b' },
+        BSGG: { contract: '0x63682bDC5f875e9bF69E201550658492C9763F89' },
+        SPELL: { contract: '0xCE1bFFBD5374Dac86a2893119683F4911a2F7814' },
+        'USDC.e': { contract: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664' },
       },
       bsc: {
         BNB: {
@@ -23,6 +27,9 @@ export default {
           native: true,
         },
         BUSD: { contract: '0xe9e7cea3dedca5984780bafc599bd69add087d56' },
+        CAKE: { contract: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82' },
+        AXS: { contract: '0x715D400F88C167884bbCc41C5FeA407ed4D2f8A0' },
+        DRIP: { contract: '0x20f663CEa80FaCE82ACDFA3aAE6862d246cE0333' },
         DOGS: {
           contract: '0xDBdC73B95cC0D5e7E99dC95523045Fc8d075Fb9e',
           cmcId: 17965,
@@ -39,6 +46,7 @@ export default {
           contract: '0x62f594339830b90ae4c084ae7d223ffafd9658a7',
           cmcId: 18945,
         },
+        KLIMA: { contract: '0x4e78011Ce80ee02d2c3e649Fb657E45898257815' },
       },
     },
   },
