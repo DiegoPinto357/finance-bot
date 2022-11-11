@@ -1,8 +1,11 @@
 import _ from 'lodash';
+import { buildLogger } from '../../libs/logger';
 import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
 import portfolioService from '../portfolio/portfolio.service';
+
+const log = buildLogger('Process Script');
 
 const modules = {
   fixed: fixedService,
@@ -26,11 +29,22 @@ export default async script => {
 
     let result;
 
+    const logMessage = `Executing ${action.method} method on ${action.module} module`;
+    const logOptions = {
+      breakLineAbove: true,
+      separatoAbove: '=',
+      separatorBelow: '-',
+    };
+
     if (Array.isArray(params)) {
       for await (let paramSet of params) {
+        log(logMessage, logOptions);
         result = await actionFunc(_.merge({}, defaultParams, paramSet));
       }
-    } else result = await actionFunc(params);
+    } else {
+      log(logMessage, logOptions);
+      result = await actionFunc(params);
+    }
 
     actionStatus.push({ module, method, result });
   }

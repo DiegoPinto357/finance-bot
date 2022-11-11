@@ -7,7 +7,7 @@ import processScriptCLI from './processScript.cli';
 jest.mock('fs');
 jest.mock('../portfolio/portfolio.service');
 
-global.console = { dir: jest.fn() };
+global.console = { log: jest.fn(), dir: jest.fn() };
 
 const scriptFile = './scripts/deposit.JSON5';
 const scriptData = {
