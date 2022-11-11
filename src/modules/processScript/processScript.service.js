@@ -7,11 +7,25 @@ import portfolioService from '../portfolio/portfolio.service';
 
 const log = buildLogger('Process Script');
 
+const logOptions = {
+  breakLineAbove: true,
+  separatoAbove: '=',
+  separatorBelow: '-',
+};
+
 const modules = {
   fixed: fixedService,
   stock: stockService,
   crypto: cryptoService,
   portfolio: portfolioService,
+};
+
+const runActionFunc = async (module, method, params) => {
+  log(`Executing ${method} method on ${module} module`, logOptions);
+
+  const service = modules[module];
+  const actionFunc = service[method];
+  return await actionFunc(params);
 };
 
 export default async script => {
@@ -24,26 +38,19 @@ export default async script => {
   for await (let action of actions) {
     const { module, method, params, defaultParams } = action;
 
-    const service = modules[module];
-    const actionFunc = service[method];
-
     let result;
-
-    const logMessage = `Executing ${action.method} method on ${action.module} module`;
-    const logOptions = {
-      breakLineAbove: true,
-      separatoAbove: '=',
-      separatorBelow: '-',
-    };
 
     if (Array.isArray(params)) {
       for await (let paramSet of params) {
-        log(logMessage, logOptions);
-        result = await actionFunc(_.merge({}, defaultParams, paramSet));
+        // FIXME result will be overwritten
+        result = await runActionFunc(
+          module,
+          method,
+          _.merge({}, defaultParams, paramSet)
+        );
       }
     } else {
-      log(logMessage, logOptions);
-      result = await actionFunc(params);
+      result = await runActionFunc(module, method, params);
     }
 
     actionStatus.push({ module, method, result });
