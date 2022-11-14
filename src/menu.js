@@ -1,4 +1,5 @@
 import inquirer from 'inquirer';
+import processScriptMenu from './modules/processScript/processScript.menu';
 import portfolioMenu from './modules/portfolio/portfolio.menu';
 import crtyptoMenu from './modules/crypto/crypto.menu';
 import cacheMenu from './libs/cache.menu';
@@ -18,6 +19,10 @@ const execute = async () => {
   ]);
 
   switch (module) {
+    case 'scripts':
+      await processScriptMenu.execute();
+      break;
+
     case 'portfolio':
       await portfolioMenu.execute();
       break;
