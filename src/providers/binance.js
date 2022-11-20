@@ -61,8 +61,22 @@ const getSavingsPosition = async () => {
       return client.savingsFlexibleProductPosition(asset);
     })
   );
-  return responses.map(({ data }) => data);
+  return responses.map(({ data }) => data[0]);
 };
+
+const processEarnData = rawData =>
+  rawData.reduce((prev, current) => {
+    if (!current) return prev;
+    const { asset, totalAmount, amount } = current;
+    const existingAsset = prev.find(item => item.asset === asset);
+    if (existingAsset) {
+      existingAsset.amount =
+        existingAsset.amount + parseFloat(amount || totalAmount);
+    } else {
+      prev.push({ asset, amount: parseFloat(amount || totalAmount) });
+    }
+    return prev;
+  }, []);
 
 const getEarnPosition = async () => {
   log('Loading staking account info');
@@ -71,29 +85,8 @@ const getEarnPosition = async () => {
     getSavingsPosition(),
   ]);
 
-  const staking = stakingData.reduce((prev, current) => {
-    if (!current) return prev;
-    const { asset, amount } = current;
-    const existingAsset = prev.find(item => item.asset === asset);
-    if (existingAsset) {
-      existingAsset.amount = existingAsset.amount + parseFloat(amount);
-    } else {
-      prev.push({ asset, amount: parseFloat(amount) });
-    }
-    return prev;
-  }, []);
-
-  const savings = savingsData.reduce((prev, [current]) => {
-    if (!current) return prev;
-    const { asset, totalAmount: amount } = current;
-    const existingAsset = prev.find(item => item.asset === asset);
-    if (existingAsset) {
-      existingAsset.amount = existingAsset.amount + parseFloat(amount);
-    } else {
-      prev.push({ asset, amount: parseFloat(amount) });
-    }
-    return prev;
-  }, []);
+  const staking = processEarnData(stakingData);
+  const savings = processEarnData(savingsData);
 
   return [...staking, ...savings];
 };
