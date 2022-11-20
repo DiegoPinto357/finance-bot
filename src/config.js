@@ -1,7 +1,7 @@
 export default {
   cache: {
     disabled: false,
-    defaultTimeToLive: 5 * 60 * 1000,
+    defaultTimeToLive: 20 * 60 * 1000,
   },
   crypto: {
     networks: {
