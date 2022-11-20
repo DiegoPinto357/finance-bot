@@ -40,17 +40,21 @@ export default async script => {
 
     let result;
 
-    if (Array.isArray(params)) {
-      for await (let paramSet of params) {
-        // FIXME result will be overwritten
-        result = await runActionFunc(
-          module,
-          method,
-          _.merge({}, defaultParams, paramSet)
-        );
+    try {
+      if (Array.isArray(params)) {
+        for await (let paramSet of params) {
+          // FIXME result will be overwritten
+          result = await runActionFunc(
+            module,
+            method,
+            _.merge({}, defaultParams, paramSet)
+          );
+        }
+      } else {
+        result = await runActionFunc(module, method, params);
       }
-    } else {
-      result = await runActionFunc(module, method, params);
+    } catch (e) {
+      console.error(e);
     }
 
     actionStatus.push({ module, method, result });
