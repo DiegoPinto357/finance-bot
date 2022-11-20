@@ -442,13 +442,21 @@ const swapOnAsset = async ({
     item => item.assetClass === assetClass && item.assetName === assetName
   );
 
-  const originPortfolio = asset.shares.find(
+  let originPortfolio = asset.shares.find(
     ({ portfolio }) => portfolio === origin
   );
+  if (!originPortfolio) {
+    originPortfolio = { portfolio: origin, value: 0 };
+    asset.shares.push(originPortfolio);
+  }
 
-  const destinyPortfolio = asset.shares.find(
+  let destinyPortfolio = asset.shares.find(
     ({ portfolio }) => portfolio === destiny
   );
+  if (!destinyPortfolio) {
+    destinyPortfolio = { portfolio: destiny, value: 0 };
+    asset.shares.push(destinyPortfolio);
+  }
 
   const deltaShare = value / totalAssetValue;
 

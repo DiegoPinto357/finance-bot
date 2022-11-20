@@ -801,6 +801,192 @@ describe('portfolio service', () => {
       );
     });
 
+    it('swap funds when asset misses origin portfolio info', async () => {
+      const value = 100;
+      const portfolio = 'previdencia';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'fixed', name: 'pagBankCDB120' };
+      const liquidity = 'amortecedor';
+
+      const [currentPortfolioBalance, currentLiquidityBalance] =
+        await Promise.all([
+          portfolioService.getBalance(portfolio),
+          portfolioService.getBalance(liquidity),
+        ]);
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const currentLiquidityOriginValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentLiquidityDestinyValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.swap({
+        value,
+        portfolio,
+        origin,
+        destiny,
+        liquidity,
+      });
+
+      const [newPortfolioBalance, newLiquidityBalance] = await Promise.all([
+        portfolioService.getBalance(portfolio),
+        portfolioService.getBalance(liquidity),
+      ]);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const newLiquidityOriginValue = getAssetValueFromBalance(
+        newLiquidityBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newLiquidityDestinyValue = getAssetValueFromBalance(
+        newLiquidityBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBeCloseTo(
+        currentPortfolioOriginValue - value,
+        5
+      );
+      expect(newPortfolioDestinyValue).toBeCloseTo(
+        currentPortfolioDestinyValue + value,
+        5
+      );
+      expect(newLiquidityOriginValue).toBeCloseTo(
+        currentLiquidityOriginValue + value,
+        5
+      );
+      expect(newLiquidityDestinyValue).toBeCloseTo(
+        currentLiquidityDestinyValue - value,
+        5
+      );
+    });
+
+    it('swap funds when asset misses destiny portfolio info', async () => {
+      const value = -100;
+      const portfolio = 'previdencia';
+      const origin = { class: 'fixed', name: 'pagBankCDB120' };
+      const destiny = { class: 'fixed', name: 'nubank' };
+      const liquidity = 'amortecedor';
+
+      const [currentPortfolioBalance, currentLiquidityBalance] =
+        await Promise.all([
+          portfolioService.getBalance(portfolio),
+          portfolioService.getBalance(liquidity),
+        ]);
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const currentLiquidityOriginValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentLiquidityDestinyValue = getAssetValueFromBalance(
+        currentLiquidityBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.swap({
+        value,
+        portfolio,
+        origin,
+        destiny,
+        liquidity,
+      });
+
+      const [newPortfolioBalance, newLiquidityBalance] = await Promise.all([
+        portfolioService.getBalance(portfolio),
+        portfolioService.getBalance(liquidity),
+      ]);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const newLiquidityOriginValue = getAssetValueFromBalance(
+        newLiquidityBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newLiquidityDestinyValue = getAssetValueFromBalance(
+        newLiquidityBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBeCloseTo(
+        currentPortfolioOriginValue - value,
+        5
+      );
+      expect(newPortfolioDestinyValue).toBeCloseTo(
+        currentPortfolioDestinyValue + value,
+        5
+      );
+      expect(newLiquidityOriginValue).toBeCloseTo(
+        currentLiquidityOriginValue + value,
+        5
+      );
+      expect(newLiquidityDestinyValue).toBeCloseTo(
+        currentLiquidityDestinyValue - value,
+        5
+      );
+    });
+
     it('swap funds within same asset', async () => {
       const value = 100;
       const asset = { class: 'fixed', name: 'pagBankCDB120' };
