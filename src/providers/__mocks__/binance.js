@@ -25,6 +25,22 @@ const getAssetPriceWithBridge = jest.fn(async ({ asset }) => {
   return price;
 });
 
+const getEarnPosition = jest.fn(async () => {
+  const stakingData = JSON.parse(
+    await fs.readFile(`${mockDir}stakingBalance.json`, 'utf-8')
+  );
+  const savingsData = JSON.parse(
+    await fs.readFile(`${mockDir}savingsBalance.json`, 'utf-8')
+  );
+  return [
+    ...stakingData.map(item => ({ ...item, amount: parseFloat(item.amount) })),
+    ...savingsData.map(({ asset, totalAmount }) => ({
+      asset,
+      amount: parseFloat(totalAmount),
+    })),
+  ];
+});
+
 const simulateBRLDeposit = async value => {
   const balances = accountData ? accountData : await loadAccountData();
   const asset = balances.find(({ asset }) => asset === 'BRL');
@@ -37,6 +53,7 @@ export default {
   getAccountInformation,
   getSymbolPriceTicker,
   getAssetPriceWithBridge,
+  getEarnPosition,
   simulateBRLDeposit,
   resetMockValues,
 };

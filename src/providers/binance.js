@@ -48,8 +48,59 @@ const getAssetPriceWithBridge = async ({ asset, targetAsset, bridgeAsset }) => {
   }
 };
 
+const getSavingsPosition = async () => {
+  log('Loading savings account info');
+  const { data: savingsAccount } = await client.savingsAccount();
+  const savingsAssets = savingsAccount.positionAmountVos.map(
+    ({ asset }) => asset
+  );
+
+  const responses = await Promise.all(
+    savingsAssets.map(async asset => {
+      log(`Loading savings position for ${asset}`);
+      return client.savingsFlexibleProductPosition(asset);
+    })
+  );
+  return responses.map(({ data }) => data);
+};
+
+const getEarnPosition = async () => {
+  log('Loading staking account info');
+  const [{ data: stakingData }, savingsData] = await Promise.all([
+    client.stakingProductPosition('STAKING'),
+    getSavingsPosition(),
+  ]);
+
+  const staking = stakingData.reduce((prev, current) => {
+    if (!current) return prev;
+    const { asset, amount } = current;
+    const existingAsset = prev.find(item => item.asset === asset);
+    if (existingAsset) {
+      existingAsset.amount = existingAsset.amount + parseFloat(amount);
+    } else {
+      prev.push({ asset, amount: parseFloat(amount) });
+    }
+    return prev;
+  }, []);
+
+  const savings = savingsData.reduce((prev, [current]) => {
+    if (!current) return prev;
+    const { asset, totalAmount: amount } = current;
+    const existingAsset = prev.find(item => item.asset === asset);
+    if (existingAsset) {
+      existingAsset.amount = existingAsset.amount + parseFloat(amount);
+    } else {
+      prev.push({ asset, amount: parseFloat(amount) });
+    }
+    return prev;
+  }, []);
+
+  return [...staking, ...savings];
+};
+
 export default {
   getAccountInformation,
   getSymbolPriceTicker,
   getAssetPriceWithBridge,
+  getEarnPosition,
 };

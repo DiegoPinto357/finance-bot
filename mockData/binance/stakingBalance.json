@@ -1,0 +1,13 @@
+[
+  { "asset": "ADA", "amount": "64" },
+  { "asset": "ATOM", "amount": "2" },
+  { "asset": "AVAX", "amount": "0.48276506" },
+  { "asset": "BNB", "amount": "0.009" },
+  { "asset": "DOT", "amount": "1.97780312" },
+  { "asset": "LUNA", "amount": "0.666" },
+  { "asset": "MATIC", "amount": "22" },
+  { "asset": "SOL", "amount": "0.2" },
+  { "asset": "VET", "amount": "589" },
+  { "asset": "CAKE", "amount": "3.6" },
+  { "asset": "AXS", "amount": "2.8" }
+]

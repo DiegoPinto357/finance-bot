@@ -52,26 +52,27 @@ const getAssetData = async () => {
   return assets.reduce(
     (result, asset) => {
       if (asset.type === 'spot') result.portfolio.push(asset);
-      if (asset.type === 'earn') result.binanceEarn.push(asset);
       if (asset.type === 'float') result.binanceSpotBuffer.push(asset);
 
       return result;
     },
-    { portfolio: [], binanceEarn: [], binanceSpotBuffer: [] }
+    { portfolio: [], binanceSpotBuffer: [] }
   );
 };
 
 const getPortfolioWithPrices = async () => {
-  const { portfolio, binanceEarn, binanceSpotBuffer } = await getAssetData();
+  const { portfolio, binanceSpotBuffer } = await getAssetData();
 
   const { balances: binanceBalance } = await binance.getAccountInformation();
   const binanceSpot = binanceBalance.filter(item =>
     portfolio.map(({ asset }) => asset).includes(item.asset)
   );
 
+  const earnBalance = await binance.getEarnPosition();
+
   const balance = await Promise.all(
     binanceSpot.map(async ({ asset, free, locked }) => {
-      const earn = await mapEarnValue(asset, binanceEarn);
+      const earn = await mapEarnValue(asset, earnBalance);
       const { spot: spotBufferValue } = await mapBufferValues(
         asset,
         binanceSpotBuffer
