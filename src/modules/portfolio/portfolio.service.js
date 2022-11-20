@@ -10,11 +10,13 @@ const services = {
   crypto: cryptoService,
 };
 
+const precision = 0.005;
+const isAround1 = value => value >= 1 - precision && value <= 1 + precision;
+
 const verifyShares = shares => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
 
-  const precision = 0.005;
-  if (sum < 1 - precision || sum > 1 + precision)
+  if (!isAround1(sum))
     throw new Error(`Sum of shares is not 1: current value ${sum}`);
 };
 
@@ -268,15 +270,16 @@ const getShares = async portfolioName => {
   // TODO should diffBRL have an inverted sign?
   const shares = mappedShares.map(share => {
     const currentShare = share.value / total;
-    const diffBRL =
-      totalTargetShare === 1 ? share.targetShare * total - share.value : 0;
+    const diffBRL = isAround1(totalTargetShare)
+      ? share.targetShare * total - share.value
+      : 0;
 
     return { ...share, currentShare, diffBRL };
   });
 
   return {
     shares: shares.sort((a, b) =>
-      totalTargetShare === 1 ? b.diffBRL - a.diffBRL : a.value - b.value
+      isAround1(totalTargetShare) ? b.diffBRL - a.diffBRL : a.value - b.value
     ),
     total,
   };
