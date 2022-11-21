@@ -1,5 +1,5 @@
 /**
- * @enable true
+ * @batata true
  */
 
 export default {

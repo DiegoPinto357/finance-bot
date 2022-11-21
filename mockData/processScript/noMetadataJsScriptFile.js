@@ -1,7 +1,3 @@
-/**
- * @enable true
- */
-
 export default {
   actions: [
     {

@@ -130,6 +130,9 @@ describe('processScript cli', () => {
   describe('js script files', () => {
     it('process script from js file', async () => {
       const jsScriptFile = 'mockData/processScript/enabledJsScriptFile.js';
+
+      const { promises: actualFs } = jest.requireActual('fs');
+      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
       mockUserInput({ _: ['process', jsScriptFile] });
 
       const { argv } = yargs();
@@ -139,6 +142,46 @@ describe('processScript cli', () => {
       expect(portfolioService.swap).toBeCalledWith(
         scriptData.actions[0].params
       );
+    });
+
+    it('does not run script if enable metadata field is false', async () => {
+      const jsScriptFile = 'mockData/processScript/disabledJsScriptFile.js';
+
+      const { promises: actualFs } = jest.requireActual('fs');
+      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      mockUserInput({ _: ['process', jsScriptFile] });
+
+      const { argv } = yargs();
+      await processScriptCLI(argv);
+
+      expect(portfolioService.swap).not.toBeCalled();
+    });
+
+    it('does not run script if metadata invalid', async () => {
+      const jsScriptFile =
+        'mockData/processScript/invalidMetadataJsScriptFile.js';
+
+      const { promises: actualFs } = jest.requireActual('fs');
+      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      mockUserInput({ _: ['process', jsScriptFile] });
+
+      const { argv } = yargs();
+      await processScriptCLI(argv);
+
+      expect(portfolioService.swap).not.toBeCalled();
+    });
+
+    it('does not run script if metadata is missing', async () => {
+      const jsScriptFile = 'mockData/processScript/noMetadataJsScriptFile.js';
+
+      const { promises: actualFs } = jest.requireActual('fs');
+      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      mockUserInput({ _: ['process', jsScriptFile] });
+
+      const { argv } = yargs();
+      await processScriptCLI(argv);
+
+      expect(portfolioService.swap).not.toBeCalled();
     });
   });
 });
