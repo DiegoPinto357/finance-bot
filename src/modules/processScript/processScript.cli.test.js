@@ -126,4 +126,19 @@ describe('processScript cli', () => {
 
     expect(scriptFileAfterRun).toBe(expectedScriptFileAfterRun);
   });
+
+  describe('js script files', () => {
+    it('process script from js file', async () => {
+      const jsScriptFile = 'mockData/processScript/enabledJsScriptFile.js';
+      mockUserInput({ _: ['process', jsScriptFile] });
+
+      const { argv } = yargs();
+      await processScriptCLI(argv);
+
+      expect(portfolioService.swap).toBeCalledTimes(1);
+      expect(portfolioService.swap).toBeCalledWith(
+        scriptData.actions[0].params
+      );
+    });
+  });
 });
