@@ -33,59 +33,62 @@ describe('processScript cli', () => {
     jest.clearAllMocks();
   });
 
-  it('runs script from file', async () => {
-    mockFile(
-      scriptFile,
-      fleece.stringify(scriptData, { singleQuotes: true, spaces: 2 })
-    );
-    mockUserInput({ _: ['process', scriptFile] });
+  describe('json5 script files', () => {
+    it('runs script from json5 file', async () => {
+      mockFile(
+        scriptFile,
+        fleece.stringify(scriptData, { singleQuotes: true, spaces: 2 })
+      );
+      mockUserInput({ _: ['process', scriptFile] });
 
-    const { argv } = yargs();
-    await processScriptCLI(argv);
+      const { argv } = yargs();
+      await processScriptCLI(argv);
 
-    expect(fs.readFile).toBeCalledTimes(1);
-    expect(fs.readFile).toBeCalledWith(scriptFile, 'utf-8');
-    expect(portfolioService.swap).toBeCalledTimes(1);
-    expect(portfolioService.swap).toBeCalledWith(scriptData.actions[0].params);
-  });
+      expect(fs.readFile).toBeCalledTimes(1);
+      expect(fs.readFile).toBeCalledWith(scriptFile, 'utf-8');
+      expect(portfolioService.swap).toBeCalledTimes(1);
+      expect(portfolioService.swap).toBeCalledWith(
+        scriptData.actions[0].params
+      );
+    });
 
-  it('does not run script if enable field is false', async () => {
-    mockFile(
-      scriptFile,
-      fleece.stringify(
-        { ...scriptData, enable: false },
-        { singleQuotes: true, spaces: 2 }
-      )
-    );
-    mockUserInput({ _: ['process', scriptFile] });
+    it('does not run script if enable field is false', async () => {
+      mockFile(
+        scriptFile,
+        fleece.stringify(
+          { ...scriptData, enable: false },
+          { singleQuotes: true, spaces: 2 }
+        )
+      );
+      mockUserInput({ _: ['process', scriptFile] });
 
-    const { argv } = yargs();
-    await processScriptCLI(argv);
+      const { argv } = yargs();
+      await processScriptCLI(argv);
 
-    expect(fs.readFile).toBeCalledTimes(1);
-    expect(fs.readFile).toBeCalledWith(scriptFile, 'utf-8');
-    expect(portfolioService.swap).not.toBeCalled();
-  });
+      expect(fs.readFile).toBeCalledTimes(1);
+      expect(fs.readFile).toBeCalledWith(scriptFile, 'utf-8');
+      expect(portfolioService.swap).not.toBeCalled();
+    });
 
-  it('sets enable field to false after run a script file', async () => {
-    mockFile(
-      scriptFile,
-      fleece.stringify(scriptData, { singleQuotes: true, spaces: 2 })
-    );
-    mockUserInput({ _: ['process', scriptFile] });
+    it('sets enable field to false after run a script file', async () => {
+      mockFile(
+        scriptFile,
+        fleece.stringify(scriptData, { singleQuotes: true, spaces: 2 })
+      );
+      mockUserInput({ _: ['process', scriptFile] });
 
-    const { argv } = yargs();
-    await processScriptCLI(argv);
+      const { argv } = yargs();
+      await processScriptCLI(argv);
 
-    const scriptFileAfterRun = await fleece.evaluate(
-      await fs.readFile(scriptFile, 'utf-8')
-    );
+      const scriptFileAfterRun = await fleece.evaluate(
+        await fs.readFile(scriptFile, 'utf-8')
+      );
 
-    expect(scriptFileAfterRun.enable).toBe(false);
-  });
+      expect(scriptFileAfterRun.enable).toBe(false);
+    });
 
-  it('does not remove comments and formatting when saving a script', async () => {
-    const rawJSON5Script = `{
+    it('does not remove comments and formatting when saving a script', async () => {
+      const rawJSON5Script = `{
       enable: true,
       actions: [
         {
@@ -100,15 +103,15 @@ describe('processScript cli', () => {
       ],
     }
     `;
-    mockFile(scriptFile, rawJSON5Script);
-    mockUserInput({ _: ['process', scriptFile] });
+      mockFile(scriptFile, rawJSON5Script);
+      mockUserInput({ _: ['process', scriptFile] });
 
-    const { argv } = yargs();
-    await processScriptCLI(argv);
+      const { argv } = yargs();
+      await processScriptCLI(argv);
 
-    const scriptFileAfterRun = await fs.readFile(scriptFile, 'utf-8');
+      const scriptFileAfterRun = await fs.readFile(scriptFile, 'utf-8');
 
-    const expectedScriptFileAfterRun = `{
+      const expectedScriptFileAfterRun = `{
       enable: false,
       actions: [
         {
@@ -124,7 +127,8 @@ describe('processScript cli', () => {
     }
     `;
 
-    expect(scriptFileAfterRun).toBe(expectedScriptFileAfterRun);
+      expect(scriptFileAfterRun).toBe(expectedScriptFileAfterRun);
+    });
   });
 
   describe('js script files', () => {
@@ -182,6 +186,27 @@ describe('processScript cli', () => {
       await processScriptCLI(argv);
 
       expect(portfolioService.swap).not.toBeCalled();
+    });
+
+    it('sets enable metadata field to false after run a script file', async () => {
+      const jsScriptFile = 'mockData/processScript/enabledJsScriptFile.js';
+
+      const { promises: actualFs } = jest.requireActual('fs');
+      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      mockUserInput({ _: ['process', jsScriptFile] });
+
+      const { argv } = yargs();
+      await processScriptCLI(argv);
+
+      const fileAfterRunBuffer = await fs.readFile(jsScriptFile, 'utf-8');
+      const fileAfterRun = fileAfterRunBuffer.toString();
+
+      const enableFieldMetadataFinderExp =
+        /(\/\*\*\n\s\*\s@enable\s)(.*)(\n\s\*\/)/gm;
+      const regexResult = enableFieldMetadataFinderExp.exec(fileAfterRun);
+      const enableFieldAfterRun = regexResult[2];
+
+      expect(enableFieldAfterRun).toBe('false');
     });
   });
 });
