@@ -24,7 +24,9 @@ const loadJsScript = async filename => {
   const regexResult = enableFieldMetadataFinderExp.exec(rawFile);
   const enable = regexResult && regexResult[2];
 
-  const module = await import(path.join('../../../', filename));
+  const module = await import(
+    `${path.join('../../../', filename)}?timestamp=${Number(new Date())}`
+  );
   const script = module.default;
   script.enable = enable === 'true';
 
