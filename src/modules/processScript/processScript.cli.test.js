@@ -1,13 +1,28 @@
 import { promises as fs, mockFile, clearMockFiles } from 'fs';
+import path from 'path';
 import * as fleece from 'golden-fleece';
 import yargs, { mockUserInput } from 'yargs';
 import portfolioService from '../portfolio/portfolio.service';
 import processScriptCLI from './processScript.cli';
+import { mockModule } from '../../libs/dynamicImport';
 
 jest.mock('fs');
 jest.mock('../portfolio/portfolio.service');
+jest.mock('../../libs/dynamicImport');
+
+jest.useFakeTimers('modern').setSystemTime(new Date(2020, 9, 1, 7));
 
 global.console = { log: jest.fn(), dir: jest.fn() };
+
+const mockJsFileModule = async filename => {
+  const { promises: actualFs } = jest.requireActual('fs');
+  const fileData = await actualFs.readFile(filename);
+  mockFile(filename, fileData);
+
+  const timestamp = Number(new Date());
+  const module = await import(filename);
+  mockModule(`${filename}?timestamp=${timestamp}`, module);
+};
 
 const scriptFile = './scripts/deposit.JSON5';
 const scriptData = {
@@ -133,10 +148,11 @@ describe('processScript cli', () => {
 
   describe('js script files', () => {
     it('process script from js file', async () => {
-      const jsScriptFile = 'mockData/processScript/enabledJsScriptFile.js';
+      const jsScriptFile = path.resolve(
+        'mockData/processScript/enabledJsScriptFile.js'
+      );
 
-      const { promises: actualFs } = jest.requireActual('fs');
-      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      await mockJsFileModule(jsScriptFile);
       mockUserInput({ _: ['process', jsScriptFile] });
 
       const { argv } = yargs();
@@ -149,10 +165,11 @@ describe('processScript cli', () => {
     });
 
     it('does not run script if enable metadata field is false', async () => {
-      const jsScriptFile = 'mockData/processScript/disabledJsScriptFile.js';
+      const jsScriptFile = path.resolve(
+        'mockData/processScript/disabledJsScriptFile.js'
+      );
 
-      const { promises: actualFs } = jest.requireActual('fs');
-      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      await mockJsFileModule(jsScriptFile);
       mockUserInput({ _: ['process', jsScriptFile] });
 
       const { argv } = yargs();
@@ -162,11 +179,11 @@ describe('processScript cli', () => {
     });
 
     it('does not run script if metadata invalid', async () => {
-      const jsScriptFile =
-        'mockData/processScript/invalidMetadataJsScriptFile.js';
+      const jsScriptFile = path.resolve(
+        'mockData/processScript/invalidMetadataJsScriptFile.js'
+      );
 
-      const { promises: actualFs } = jest.requireActual('fs');
-      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      await mockJsFileModule(jsScriptFile);
       mockUserInput({ _: ['process', jsScriptFile] });
 
       const { argv } = yargs();
@@ -176,10 +193,11 @@ describe('processScript cli', () => {
     });
 
     it('does not run script if metadata is missing', async () => {
-      const jsScriptFile = 'mockData/processScript/noMetadataJsScriptFile.js';
+      const jsScriptFile = path.resolve(
+        'mockData/processScript/noMetadataJsScriptFile.js'
+      );
 
-      const { promises: actualFs } = jest.requireActual('fs');
-      mockFile(jsScriptFile, await actualFs.readFile(jsScriptFile));
+      await mockJsFileModule(jsScriptFile);
       mockUserInput({ _: ['process', jsScriptFile] });
 
       const { argv } = yargs();

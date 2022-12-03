@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import * as fleece from 'golden-fleece';
 import processScript from './processScript.service';
+import dynamicImport from '../../libs/dynamicImport';
 
 const getFileExtension = filename => filename.split('.').pop().toLowerCase();
 
@@ -24,9 +25,10 @@ const loadJsScript = async filename => {
   const regexResult = enableFieldMetadataFinderExp.exec(rawFile);
   const enable = regexResult && regexResult[2];
 
-  const module = await import(
-    `${path.join('../../../', filename)}?timestamp=${Number(new Date())}`
-  );
+  const modulePath = `${path.resolve(filename)}?timestamp=${Number(
+    new Date()
+  )}`;
+  const module = await dynamicImport(modulePath);
   const script = module.default;
   script.enable = enable === 'true';
 
