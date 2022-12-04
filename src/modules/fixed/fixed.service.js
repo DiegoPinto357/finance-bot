@@ -20,7 +20,8 @@ const getTotalPosition = async assetName => {
     return total;
   }
 
-  return balance.find(({ asset }) => asset === assetName).value;
+  const filteredBalance = balance.find(({ asset }) => asset === assetName);
+  return filteredBalance ? filteredBalance.value : 0;
 };
 
 const getAssetsList = async () => {
@@ -49,7 +50,8 @@ const deposit = async ({ asset, value }) => {
     'assets',
     'fixed',
     { asset },
-    { $set: { value: newValue } }
+    { $setOnInsert: { asset }, $set: { value: newValue } },
+    { upsert: true }
   );
 
   return { status: 'ok' };

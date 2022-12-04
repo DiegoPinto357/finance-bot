@@ -44,6 +44,11 @@ describe('fixed service', () => {
       const value = await fixed.getTotalPosition('nubank');
       expect(value).toBe(50962.72);
     });
+
+    it('gets 0 as total position for an asset that does not exists', async () => {
+      const value = await fixed.getTotalPosition('pupancaBamerindus');
+      expect(value).toBe(0);
+    });
   });
 
   describe('getAssetsList', () => {
@@ -96,7 +101,7 @@ describe('fixed service', () => {
       const value = 150;
       const assetName = 'nubank';
 
-      const currentPosition = await fixed.getTotalPosition('nubank');
+      const currentPosition = await fixed.getTotalPosition(assetName);
 
       const result = await fixed.deposit({ asset: assetName, value });
 
@@ -113,7 +118,7 @@ describe('fixed service', () => {
       const value = 99999;
       const assetName = 'nubank';
 
-      const currentPosition = await fixed.getTotalPosition('nubank');
+      const currentPosition = await fixed.getTotalPosition(assetName);
 
       const result = await fixed.deposit({ asset: assetName, value: -value });
 
@@ -124,6 +129,23 @@ describe('fixed service', () => {
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
       expect(newPosition).toBe(currentPosition);
+    });
+
+    it('deposits a value for a non existing asset', async () => {
+      const value = 150;
+      const assetName = 'poupancaBamerindus';
+
+      const currentPosition = await fixed.getTotalPosition(assetName);
+
+      const result = await fixed.deposit({ asset: assetName, value });
+
+      const { balance } = await fixed.getBalance();
+      const newPosition = balance.find(
+        ({ asset }) => asset === assetName
+      ).value;
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(newPosition).toBe(currentPosition + value);
     });
   });
 });
