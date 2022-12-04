@@ -52,8 +52,15 @@ describe('database', () => {
     const collectionName = 'fixed';
     const query = { asset: 'nubank' };
     const update = { $set: { value: 357 } };
+    const options = { upsert: true };
 
-    await database.updateOne(databaseName, collectionName, query, update);
+    await database.updateOne(
+      databaseName,
+      collectionName,
+      query,
+      update,
+      options
+    );
 
     expect(mockDbFn).toBeCalledTimes(1);
     expect(mockDbFn).toBeCalledWith(databaseName);
@@ -62,7 +69,7 @@ describe('database', () => {
     expect(mockCollectionFn).toBeCalledWith(collectionName);
 
     expect(mockUpdateOneFn).toBeCalledTimes(1);
-    expect(mockUpdateOneFn).toBeCalledWith(query, update);
+    expect(mockUpdateOneFn).toBeCalledWith(query, update, options);
   });
 
   it('bulk writes operarions', async () => {

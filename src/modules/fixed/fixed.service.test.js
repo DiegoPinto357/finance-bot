@@ -51,6 +51,18 @@ describe('fixed service', () => {
 
       expect(assetValue).toBe(newValue);
     });
+
+    it('insert record if asset does no exists on database', async () => {
+      const newValue = 100;
+      const assetName = 'poupancaBamerindus';
+
+      await fixed.setAssetValue({ asset: assetName, value: newValue });
+
+      const { balance } = await fixed.getBalance();
+      const assetValue = balance.find(({ asset }) => asset === assetName).value;
+
+      expect(assetValue).toBe(newValue);
+    });
   });
 
   describe('deposit', () => {

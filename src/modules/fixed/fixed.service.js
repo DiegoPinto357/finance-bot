@@ -27,7 +27,13 @@ const getAssetsList = async () => {
 };
 
 const setAssetValue = ({ asset, value }) =>
-  database.updateOne('assets', 'fixed', { asset }, { $set: { value } });
+  database.updateOne(
+    'assets',
+    'fixed',
+    { asset },
+    { $setOnInsert: { asset }, $set: { value } },
+    { upsert: true }
+  );
 
 const deposit = async ({ asset, value }) => {
   const currentValue = await getTotalPosition(asset);

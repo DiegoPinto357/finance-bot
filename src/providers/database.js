@@ -24,11 +24,17 @@ const find = async (databaseName, collectionName, query, options) => {
   return await collection.find(query, options).toArray();
 };
 
-const updateOne = async (databaseName, collectionName, filter, update) => {
+const updateOne = async (
+  databaseName,
+  collectionName,
+  filter,
+  update,
+  options
+) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  return await collection.updateOne(filter, update);
+  return await collection.updateOne(filter, update, options);
 };
 
 const bulkWrite = async (databaseName, collectionName, operations, options) => {

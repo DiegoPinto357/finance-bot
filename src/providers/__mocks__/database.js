@@ -48,15 +48,28 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
   });
 });
 
-const updateOne = async (databaseName, collectionName, query, update) => {
+const updateOne = async (
+  databaseName,
+  collectionName,
+  query,
+  update,
+  options = {}
+) => {
   const data = await getData(databaseName, collectionName);
 
-  const record = data.find(item =>
+  let record = data.find(item =>
     Object.entries(query).every(([key, value]) => item[key] === value)
   );
 
+  const { upsert } = options;
+
   if (!record) {
-    return { matchedCount: 0 };
+    if (!upsert) {
+      return { matchedCount: 0 };
+    }
+
+    record = {};
+    data.push(record);
   }
 
   const operations = Object.entries(update);
@@ -67,9 +80,16 @@ const updateOne = async (databaseName, collectionName, query, update) => {
       case '$set':
         _.set(record, key, value);
         break;
+
       case '$inc':
         const currentValue = _.get(record, key);
         _.set(record, key, currentValue + value);
+        break;
+
+      case '$setOnInsert':
+        if (upsert) {
+          _.set(record, key, value);
+        }
         break;
     }
   });
