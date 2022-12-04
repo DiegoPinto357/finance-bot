@@ -6,14 +6,40 @@ jest.mock('../../providers/database');
 describe('fixed service', () => {
   beforeEach(() => database.resetMockValues());
 
+  describe('getBalance', () => {
+    it('gets balance for given asset', async () => {
+      const { balance, total } = await fixed.getBalance('nubank');
+
+      expect(balance).toEqual([{ asset: 'nubank', value: 50962.72 }]);
+      expect(total).toBe(50962.72);
+    });
+
+    it('gets balance for all assets when asset is not provided', async () => {
+      const { balance, total } = await fixed.getBalance();
+
+      expect(balance).toEqual([
+        { asset: 'nubank', value: 50962.72 },
+        { asset: '99pay', value: 519.83 },
+        { asset: 'pagBankCDB120', value: 5254.21 },
+        { asset: 'xpWesternAsset', value: 10393.77 },
+        { asset: 'daycovalCDB110', value: 5000 },
+        { asset: 'daycovalCDBCDI1_2', value: 5000 },
+        { asset: 'nuInvestCDB8_5', value: 3260.39 },
+        { asset: 'nuInvestCDB9_5', value: 2194.88 },
+        { asset: 'nuInvestCDB12_5', value: 1128.63 },
+        { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
+        { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
+      ]);
+      expect(total).toBe(86332.44);
+    });
+  });
+
   describe('getTotalPosition', () => {
     it('gets total fixed position', async () => {
       const value = await fixed.getTotalPosition();
       expect(value).toBe(86332.44);
     });
-  });
 
-  describe('getTotalPosition', () => {
     it('gets total fixed position for a given asset', async () => {
       const value = await fixed.getTotalPosition('nubank');
       expect(value).toBe(50962.72);

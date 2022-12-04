@@ -1,13 +1,15 @@
 import database from '../../providers/database';
 
-const getDataFromDatabase = () =>
-  database.find('assets', 'fixed', {}, { projection: { _id: 0 } });
+const getDataFromDatabase = assetName =>
+  database.find('assets', 'fixed', assetName ? { asset: assetName } : {}, {
+    projection: { _id: 0 },
+  });
 
 const getTotal = balance =>
   balance.reduce((total, { value }) => total + value, 0);
 
-const getBalance = async () => {
-  const balance = await getDataFromDatabase();
+const getBalance = async assetName => {
+  const balance = await getDataFromDatabase(assetName);
   const total = getTotal(balance);
   return { balance, total };
 };

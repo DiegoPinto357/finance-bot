@@ -2,8 +2,8 @@ import fixedService from './fixed.service';
 import { formatCurrency } from '../../libs/stringFormat';
 import { formatTable } from '../../libs/cliFormat';
 
-const getBalance = async () => {
-  const { balance, total } = await fixedService.getBalance();
+const getBalance = async ({ asset }) => {
+  const { balance, total } = await fixedService.getBalance(asset);
 
   const formattedBalance = formatTable(balance, [null, formatCurrency]);
 
@@ -26,7 +26,7 @@ const setAssetValue = async ({ asset, value }) => {
 export default async (command, args) => {
   switch (command) {
     case 'balance':
-      await getBalance();
+      await getBalance(args);
       break;
 
     case 'total':
