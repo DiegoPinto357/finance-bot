@@ -20,8 +20,8 @@ const verifyShares = shares => {
     throw new Error(`Sum of shares is not 1: current value ${sum}`);
 };
 
-const getPortfolioData = () =>
-  database.find('portfolio', 'shares', {}, { projection: { _id: 0 } });
+const getPortfolioData = (filter = {}) =>
+  database.find('portfolio', 'shares', filter, { projection: { _id: 0 } });
 
 const getAssetsList = assets =>
   assets ? assets.map(({ asset }) => asset) : [];
@@ -332,11 +332,11 @@ const deposit = async ({
     : totalAssetValue;
   const newTotalAssetValue = currentTotalAssetValue + value;
 
-  const portfolioData = await getPortfolioData();
+  const portfolioData = await getPortfolioData({ assetClass, assetName });
 
-  const asset = portfolioData.find(
-    item => item.assetClass === assetClass && item.assetName === assetName
-  );
+  const asset = portfolioData.length
+    ? portfolioData[0]
+    : { assetClass, assetName, shares: [] };
 
   const portfolioList = addValuesToPortfolioList(
     asset.shares,
@@ -365,7 +365,8 @@ const deposit = async ({
       'portfolio',
       'shares',
       { assetClass, assetName },
-      { $set: { shares: newShares } }
+      { $setOnInsert: { assetClass, assetName }, $set: { shares: newShares } },
+      { upsert: true }
     ),
     depositValueToAsset({
       assetClass,

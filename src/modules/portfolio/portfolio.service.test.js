@@ -703,6 +703,60 @@ describe('portfolio service', () => {
       expect(portfolioOriginValue).toBe(5153.352886268896);
       expect(portfolioDestinyValue).toBe(266.5505693764885);
     });
+
+    it('transfer funds to an asset without shares definition', async () => {
+      const value = 100;
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'fixed', name: 'poupancaBamerindus' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.transfer({
+        value,
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBeCloseTo(
+        currentPortfolioOriginValue - value,
+        5
+      );
+      expect(newPortfolioDestinyValue).toBeCloseTo(
+        currentPortfolioDestinyValue + value,
+        5
+      );
+    });
   });
 
   describe('swap', () => {

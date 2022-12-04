@@ -74,24 +74,24 @@ const updateOne = async (
 
   const operations = Object.entries(update);
   operations.forEach(([operation, params]) => {
-    // TODO add to support to update multiple key
-    const [key, value] = Object.entries(params)[0];
-    switch (operation) {
-      case '$set':
-        _.set(record, key, value);
-        break;
-
-      case '$inc':
-        const currentValue = _.get(record, key);
-        _.set(record, key, currentValue + value);
-        break;
-
-      case '$setOnInsert':
-        if (upsert) {
+    Object.entries(params).forEach(([key, value]) => {
+      switch (operation) {
+        case '$set':
           _.set(record, key, value);
-        }
-        break;
-    }
+          break;
+
+        case '$inc':
+          const currentValue = _.get(record, key);
+          _.set(record, key, currentValue + value);
+          break;
+
+        case '$setOnInsert':
+          if (upsert) {
+            _.set(record, key, value);
+          }
+          break;
+      }
+    });
   });
 
   await delay(1);
