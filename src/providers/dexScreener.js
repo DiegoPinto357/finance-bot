@@ -15,6 +15,9 @@ const getSymbolPrice = async (symbol, network) => {
   const { contract } = config.crypto.tokens[network]?.[symbol];
   const url = `${host}/latest/dex/tokens/${contract}`;
   const { pairs } = await getCached(url);
+
+  if (!pairs) return 0;
+
   const { priceUsd } = pairs
     .sort((a, b) => b.volume.h24 - a.volume.h24)
     .find(({ baseToken }) => baseToken.address === contract) || { priceUsd: 0 };
