@@ -318,6 +318,21 @@ describe('portfolio service', () => {
         total: 5266.917568398632,
       });
     });
+
+    it('gets shares for all portfolios when portfolioType is not provided', async () => {
+      const { shares, total } = await portfolioService.getShares();
+
+      expect(shares).toHaveLength(15);
+      expect(shares).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            portfolio: expect.any(String),
+            shares: expect.any(Array),
+          }),
+        ])
+      );
+      expect(total).toBe(126116.99037688586);
+    });
   });
 
   describe('deposit', () => {

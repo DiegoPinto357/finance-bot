@@ -27,13 +27,18 @@ const getSharesMenu = async () => {
       type: 'list',
       name: 'portfolioName',
       message: 'portfolioName?',
-      choices: portfolios,
+      choices: ['all', ...portfolios],
     },
   ]);
 
   const name = portfolioName !== 'all' ? portfolioName : undefined;
   const { shares, total } = await portfolioService.getShares(name);
-  console.table(shares);
+
+  if (!name) {
+    console.dir(shares, { depth: null });
+  } else {
+    console.table(shares);
+  }
   console.log({ total });
 };
 
