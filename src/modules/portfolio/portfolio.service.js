@@ -11,7 +11,10 @@ const services = {
 };
 
 const precision = 0.005;
+const isAround0 = value => value >= 0 - precision && value <= 0 + precision;
 const isAround1 = value => value >= 1 - precision && value <= 1 + precision;
+const isNegative = value => value < -precision;
+const adjust0 = value => (isAround0(value) ? 0 : value);
 
 const verifyShares = shares => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
@@ -499,11 +502,11 @@ const swapOnAsset = async ({
 
   const deltaShare = value / totalAssetValue;
 
-  originPortfolio.value = originPortfolio.value - deltaShare;
-  destinyPortfolio.value = destinyPortfolio.value + deltaShare;
+  originPortfolio.value = adjust0(originPortfolio.value - deltaShare);
+  destinyPortfolio.value = adjust0(destinyPortfolio.value + deltaShare);
 
-  if (originPortfolio.value < 0 || destinyPortfolio.value < 0) {
-    return { status: addValueStatus };
+  if (isNegative(originPortfolio.value) || isNegative(destinyPortfolio.value)) {
+    return { status: 'notEnoughFunds' };
   }
 
   verifyShares(asset.shares.map(({ value }) => value));
@@ -553,8 +556,21 @@ const swap = async ({
     getBalance(params.destinyPortfolio),
   ]);
 
-  const hasOriginFunds = hasFunds(originBalance, params.assets[0], value);
-  const hasLiquidityFunds = hasFunds(liquidityBalance, params.assets[1], value);
+  const swapValue =
+    value === 'all'
+      ? getAssetValueFromBalance(
+          originBalance,
+          params.assets[0].class,
+          params.assets[0].name
+        )
+      : value;
+
+  const hasOriginFunds = hasFunds(originBalance, params.assets[0], swapValue);
+  const hasLiquidityFunds = hasFunds(
+    liquidityBalance,
+    params.assets[1],
+    swapValue
+  );
 
   if (!hasOriginFunds || !hasLiquidityFunds) {
     return { status: 'notEnoughFunds' };
@@ -562,14 +578,14 @@ const swap = async ({
 
   await Promise.all([
     await swapOnAsset({
-      value,
+      value: swapValue,
       assetClass: params.assets[0].class,
       assetName: params.assets[0].name,
       origin: params.originPortfolio,
       destiny: params.destinyPortfolio,
     }),
     await swapOnAsset({
-      value: -value,
+      value: -swapValue,
       assetClass: params.assets[1].class,
       assetName: params.assets[1].name,
       origin: params.originPortfolio,
