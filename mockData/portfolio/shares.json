@@ -1,0 +1,793 @@
+{
+  "shares": [
+    {
+      "portfolio": "temp",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 0.009179996261820152,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 1,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "amortecedor",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 21341.287336832833,
+          "targetShare": 1,
+          "currentShare": 0.9251777781878168,
+          "diffBRL": 1725.9412974680017
+        },
+        {
+          "assetClass": "crypto",
+          "value": 43.41949548103058,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.0018823022119122729,
+          "diffBRL": -43.41949548103058
+        },
+        {
+          "assetClass": "crypto",
+          "value": 126.0647794876702,
+          "asset": "binanceBuffer",
+          "targetShare": 0,
+          "currentShare": 0.00546510295997208,
+          "diffBRL": -126.0647794876702
+        },
+        {
+          "assetClass": "crypto",
+          "value": 759.6851397114783,
+          "asset": "backed",
+          "targetShare": 0,
+          "currentShare": 0.03293352451459344,
+          "diffBRL": -759.6851397114783
+        },
+        {
+          "assetClass": "crypto",
+          "value": 796.7718827878227,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.034541292125705454,
+          "diffBRL": -796.7718827878227
+        }
+      ]
+    },
+    {
+      "portfolio": "financiamento",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 238.82656452202664,
+          "asset": "defi",
+          "targetShare": 0.03,
+          "currentShare": 0.019969544331684994,
+          "diffBRL": 119.95963593687222
+        },
+        {
+          "assetClass": "crypto",
+          "value": 1118.1205157735506,
+          "asset": "backed",
+          "targetShare": 0.1,
+          "currentShare": 0.09349193316326876,
+          "diffBRL": 77.8334857561124
+        },
+        {
+          "assetClass": "crypto",
+          "value": 0.4958869837910462,
+          "asset": "binanceBuffer",
+          "targetShare": 0,
+          "currentShare": 0.00004146371709587418,
+          "diffBRL": -0.4958869837910462
+        },
+        {
+          "assetClass": "crypto",
+          "value": 602.1799561717353,
+          "asset": "hodl",
+          "targetShare": 0.05,
+          "currentShare": 0.050351431192297375,
+          "diffBRL": -4.202955406903811
+        },
+        {
+          "assetClass": "fixed",
+          "value": 9999.917091845526,
+          "targetShare": 0.82,
+          "currentShare": 0.836145627595653,
+          "diffBRL": -193.0942793022914
+        }
+      ]
+    },
+    {
+      "portfolio": "viagem",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 1.2782820177545997,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.0011368942692661596,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 19.857770422559344,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.017661349436384595,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 43.17257476111142,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.03839735844957739,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 46.11151868174271,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.04101123273917236,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 47.53036283546362,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.04227314189923438,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 315.2893303662187,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.2804159237753848,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 316.27354730144214,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.28129127880489213,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 334.84976004745886,
+          "asset": "nuInvestCDB8_5",
+          "targetShare": 0,
+          "currentShare": 0.29781282062608816,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "reformaCasa",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 902.3048777138691,
+          "asset": "backed",
+          "targetShare": 0.1,
+          "currentShare": 0.01950663918248983,
+          "diffBRL": 3723.3247311211817
+        },
+        {
+          "assetClass": "crypto",
+          "value": 526.128077363233,
+          "asset": "hodl",
+          "targetShare": 0.02,
+          "currentShare": 0.011374193825599812,
+          "diffBRL": 398.9978444037771
+        },
+        {
+          "assetClass": "crypto",
+          "value": 163.82100263339126,
+          "asset": "defi",
+          "targetShare": 0.01,
+          "currentShare": 0.0035415936096675287,
+          "diffBRL": 298.74195825011384
+        },
+        {
+          "assetClass": "fixed",
+          "value": 44664.04213064002,
+          "targetShare": 0.87,
+          "currentShare": 0.9655775733822429,
+          "diffBRL": -4421.064533775076
+        }
+      ]
+    },
+    {
+      "portfolio": "previdencia",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 4852.843972898,
+          "targetShare": 0.22,
+          "currentShare": 0.20886072646550563,
+          "diffBRL": 258.81915355331785
+        },
+        {
+          "assetClass": "crypto",
+          "value": 394.0576240480874,
+          "asset": "defi",
+          "targetShare": 0.02,
+          "currentShare": 0.01695977906720236,
+          "diffBRL": 70.63902381112331
+        },
+        {
+          "assetClass": "crypto",
+          "value": 1162.1591935510426,
+          "asset": "backed",
+          "targetShare": 0.05,
+          "currentShare": 0.05001797189219847,
+          "diffBRL": -0.41757390301563646
+        },
+        {
+          "assetClass": "crypto",
+          "value": 1405.501602463409,
+          "asset": "hodl",
+          "targetShare": 0.06,
+          "currentShare": 0.06049114444609612,
+          "diffBRL": -11.411658885776887
+        },
+        {
+          "assetClass": "stock",
+          "value": 4902.629999999999,
+          "asset": "fii",
+          "targetShare": 0.21,
+          "currentShare": 0.21100345881924032,
+          "diffBRL": -23.31519747828679
+        },
+        {
+          "assetClass": "stock",
+          "value": 25.33,
+          "asset": "float",
+          "targetShare": 0,
+          "currentShare": 0.0010901735623311075,
+          "diffBRL": -25.33
+        },
+        {
+          "assetClass": "stock",
+          "value": 4474.41,
+          "asset": "br",
+          "targetShare": 0.19,
+          "currentShare": 0.19257337106316347,
+          "diffBRL": -59.79184533749776
+        },
+        {
+          "assetClass": "stock",
+          "value": 6017.9,
+          "asset": "us",
+          "targetShare": 0.25,
+          "currentShare": 0.2590033746842626,
+          "diffBRL": -209.1919017598657
+        }
+      ]
+    },
+    {
+      "portfolio": "leni",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 0.8991735379537577,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.0005848539970458042,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 45.498893541717386,
+          "asset": "binanceBuffer",
+          "targetShare": 0,
+          "currentShare": 0.02959407569932673,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 69.23478683877984,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.04503273295766968,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 137.0215664132493,
+          "asset": "xpWesternAsset",
+          "targetShare": 0,
+          "currentShare": 0.08912363121876843,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 178.53457803197145,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.1161251495573421,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 191.57588044461968,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.1246076699171802,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 242.04602150645064,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.1574352193117615,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 672.6215913765764,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.43749666734090564,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "mae",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 6.9360815304979715,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.0011361086584274818,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 69.23478683877984,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.01134044351209805,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 225.33303793628752,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.03690885326297555,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 312.4332059800158,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.05117559084814692,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 335.2696733687933,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.05491613343176678,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 972.1930971812111,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.15924221630245255,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 4183.721734755452,
+          "asset": "xpWesternAsset",
+          "targetShare": 0,
+          "currentShare": 0.6852806539841327,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "seguroCarro",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 0.0369462961105811,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.000047888457287829896,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 0.2865598280072211,
+          "asset": "pagBankCDB120",
+          "targetShare": 0,
+          "currentShare": 0.0003714285200026198,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 9.721945584925004,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.01260123543926647,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 20.073310362060717,
+          "asset": "binanceBuffer",
+          "targetShare": 0,
+          "currentShare": 0.026018301348036767,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 23.55288545047175,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.030528401156213393,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 109.51901237423543,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.1419545962223491,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 608.3166761730508,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.7884781488568438,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "manutencaoCarro",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 86.06870603216815,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.04734888707244705,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 429.03857579251064,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.23602654218282965,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 1302.6483477950233,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.7166245707447234,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "impostos",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 21.503902493264686,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.01851543660319801,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 48.95419289596936,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.042150872629279565,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 280.4120797393278,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.24144231898422244,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 810.5338443451407,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.6978913717832999,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "suricat",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 52.05805852293889,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.005488353139347446,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 92.22303736348542,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.009722848123715768,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 95.06072567092724,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.010022018626276389,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 112.11400849936278,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.011819904313972226,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 277.6106892500589,
+          "asset": "backed",
+          "targetShare": 0,
+          "currentShare": 0.029267812536470178,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 442.70739591612096,
+          "asset": "pagBankCDB120",
+          "targetShare": 0,
+          "currentShare": 0.046673552474453796,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 2027.705837872961,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.2137760419178795,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 3153.909413107314,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.3325089163864534,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 3231.7983210452358,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.34072055248143135,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "congelamentoSuricats",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 65.07279569119447,
+          "asset": "nubank",
+          "targetShare": 0,
+          "currentShare": 0.13763229119941064,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 99.08095956103425,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.20956129721758052,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 308.6480496447976,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.6528064115830088,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "carro",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 12.432811842036108,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.0068005476774534645,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 17.56059707077295,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.009605363544598093,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 60.87867235604012,
+          "asset": "binanceBuffer",
+          "targetShare": 0,
+          "currentShare": 0.03329965249675309,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 100,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.054698388135018594,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 100,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.054698388135018594,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 115.73918691317255,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.06330746968208176,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 150.96973911157767,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.08257801386567572,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 1270.6264300655787,
+          "asset": "nuInvestCDB9_5",
+          "targetShare": 0,
+          "currentShare": 0.6950121764634007,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "macbookFirma",
+      "shares": [
+        {
+          "assetClass": "crypto",
+          "value": 8.490764337393847,
+          "asset": "hodl",
+          "targetShare": 0,
+          "currentShare": 0.008530002471856014,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 11.011789471962155,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.01106267795017218,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 189.26267786411756,
+          "asset": "nuInvestTDIPCA2045",
+          "targetShare": 0,
+          "currentShare": 0.19013731224420466,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 195.79269325859337,
+          "asset": "nuInvestTDPre2029",
+          "targetShare": 0,
+          "currentShare": 0.19669750461826757,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 590.8420606374999,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.5935725027154994,
+          "diffBRL": 0
+        }
+      ]
+    },
+    {
+      "portfolio": "rendaPassiva",
+      "shares": [
+        {
+          "assetClass": "fixed",
+          "value": 99.08270057344603,
+          "asset": "iti",
+          "targetShare": 0,
+          "currentShare": 0.0751898256252693,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 107.97792899234264,
+          "asset": "defi",
+          "targetShare": 0,
+          "currentShare": 0.0819400521516244,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "fixed",
+          "value": 337.75985467680323,
+          "asset": "inco",
+          "targetShare": 0,
+          "currentShare": 0.2563121960683744,
+          "diffBRL": 0
+        },
+        {
+          "assetClass": "crypto",
+          "value": 772.9469098095493,
+          "asset": "defi2",
+          "targetShare": 0,
+          "currentShare": 0.5865579261547318,
+          "diffBRL": 0
+        }
+      ]
+    }
+  ],
+  "total": 131134.85466090945
+}

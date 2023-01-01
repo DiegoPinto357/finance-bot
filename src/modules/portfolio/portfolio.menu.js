@@ -69,6 +69,10 @@ const execute = async () => {
       await portfolioService.updateAbsoluteTable();
       break;
 
+    case 'updateSharesDiffTable':
+      await portfolioService.updateSharesDiffTable();
+      break;
+
     default:
       console.log('Not implmented');
   }
