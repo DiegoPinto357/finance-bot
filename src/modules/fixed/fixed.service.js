@@ -20,6 +20,7 @@ const getTotalPosition = async assetName => {
     return total;
   }
 
+  // TODO when assetName is provided, get specific balance rather than get all and filter later
   const filteredBalance = balance.find(({ asset }) => asset === assetName);
   return filteredBalance ? filteredBalance.value : 0;
 };

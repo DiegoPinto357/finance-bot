@@ -136,6 +136,7 @@ const getBalance = async portfolioName => {
 
   const [fixedTotalBalance, stockTotalBalance, cryptoTotalBalance] =
     await Promise.all([
+      // TODO provide assets to getters to prevent getting data from all assets
       assets.fixed ? fixedService.getBalance() : { balance: [], total: 0 },
       assets.stock ? stockService.getTotalPosition() : { total: 0 },
       assets.crypto ? cryptoService.getTotalPosition() : { total: 0 },
