@@ -6,6 +6,7 @@ const mockDir = `${path.resolve()}/mockData/googleSheets/`;
 let dataBuffer = {};
 
 const loadSheet = jest.fn(async sheetTitle => {
+  console.log(`[GoogleSheets] Loadindg sheet ${sheetTitle}`);
   const filename = `${mockDir}${sheetTitle}.json`;
 
   if (!dataBuffer[sheetTitle]) {
