@@ -1,6 +1,8 @@
 import { MongoClient } from 'mongodb';
 import { buildLogger } from '../libs/logger';
 
+const debugMode = false;
+
 const log = buildLogger('Database');
 
 const dbPassword = process.env.MONGODB_PASSWORD;
@@ -32,6 +34,15 @@ const updateOne = async (
   options
 ) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
+
+  if (debugMode) {
+    console.dir(
+      { databaseName, collectionName, filter, update, options },
+      { depth: null }
+    );
+    return;
+  }
+
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
   return await collection.updateOne(filter, update, options);
