@@ -10,7 +10,7 @@ const services = {
   crypto: cryptoService,
 };
 
-const precision = 0.005;
+const precision = 0.006;
 const isAround0 = value => value >= 0 - precision && value <= 0 + precision;
 const isAround1 = value => value >= 1 - precision && value <= 1 + precision;
 const isNegative = value => value < -precision;
@@ -19,7 +19,7 @@ const adjust0 = value => (isAround0(value) ? 0 : value);
 const verifyShares = shares => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
 
-  if (!isAround1(sum))
+  if (!isAround1(sum) && !isAround0(sum))
     throw new Error(`Sum of shares is not 1: current value ${sum}`);
 };
 
@@ -397,8 +397,10 @@ const deposit = async ({
 
   const newShares = portfolioList.map(item => ({
     portfolio: item.portfolio,
-    value: item.value / newTotalAssetValue,
+    value: newTotalAssetValue !== 0 ? item.value / newTotalAssetValue : 0,
   }));
+
+  // console.log({ value, newShares, currentTotalAssetValue, newTotalAssetValue });
 
   verifyShares(newShares.map(({ value }) => value));
 
@@ -445,21 +447,26 @@ const transfer = async ({
   destinyExecuted,
 }) => {
   const originBalance = await getBalance(portfolio);
-  const hasOriginFunds = hasFunds(originBalance, origin, value);
+
+  const transferValue =
+    value === 'all'
+      ? getAssetValueFromBalance(originBalance, origin.class, origin.name)
+      : value;
+  const hasOriginFunds = hasFunds(originBalance, origin, transferValue);
 
   if (!hasOriginFunds) {
     return { status: 'notEnoughFunds' };
   }
 
   await deposit({
-    value: -value,
+    value: -transferValue,
     portfolio,
     assetClass: origin.class,
     assetName: origin.name,
     executed: originExecuted,
   });
   await deposit({
-    value,
+    value: transferValue,
     portfolio,
     assetClass: destiny.class,
     assetName: destiny.name,

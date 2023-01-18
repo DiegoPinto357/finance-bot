@@ -772,6 +772,114 @@ describe('portfolio service', () => {
         5
       );
     });
+
+    it('transfer all funds from a portfolio', async () => {
+      const value = 'all';
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: 'nubank' };
+      const destiny = { class: 'fixed', name: 'iti' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.transfer({
+        value,
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      if (destiny.class === 'crypto') {
+        await binance.simulateBRLDeposit(value);
+      }
+
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBe(0);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + currentPortfolioOriginValue
+      );
+    });
+
+    it('transfer all funds from an asset', async () => {
+      const value = 'all';
+      const portfolio = 'financiamento';
+      const origin = { class: 'fixed', name: '99pay' };
+      const destiny = { class: 'fixed', name: 'iti' };
+
+      const currentPortfolioBalance = await portfolioService.getBalance(
+        portfolio
+      );
+
+      const currentPortfolioOriginValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const currentPortfolioDestinyValue = getAssetValueFromBalance(
+        currentPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      const response = await portfolioService.transfer({
+        value,
+        portfolio,
+        origin,
+        destiny,
+      });
+
+      if (destiny.class === 'crypto') {
+        await binance.simulateBRLDeposit(value);
+      }
+
+      const newPortfolioBalance = await portfolioService.getBalance(portfolio);
+
+      const newPortfolioOriginValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        origin.class,
+        origin.name
+      );
+
+      const newPortfolioDestinyValue = getAssetValueFromBalance(
+        newPortfolioBalance,
+        destiny.class,
+        destiny.name
+      );
+
+      expect(response.status).toBe('ok');
+      expect(newPortfolioOriginValue).toBe(0);
+      expect(newPortfolioDestinyValue).toBe(
+        currentPortfolioDestinyValue + currentPortfolioOriginValue
+      );
+    });
   });
 
   describe('swap', () => {
