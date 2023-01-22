@@ -26,7 +26,6 @@ const setData = (databaseName, collectionName, data) => {
 };
 
 const find = jest.fn(async (databaseName, collectionName, query, options) => {
-  console.log(`[Database] Findind data on ${databaseName}/${collectionName}`);
   const data = await getData(databaseName, collectionName);
 
   const filteredData = [
@@ -56,9 +55,6 @@ const updateOne = async (
   update,
   options = {}
 ) => {
-  console.log(
-    `[Database] Updating document on ${databaseName}/${collectionName}`
-  );
   const data = await getData(databaseName, collectionName);
 
   let record = data.find(item =>
