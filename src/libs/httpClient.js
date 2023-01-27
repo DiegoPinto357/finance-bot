@@ -1,8 +1,8 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 const get = async url => {
-  const response = await fetch(url);
-  return await response.json();
+  const response = await axios(url);
+  return response.data;
 };
 
 export default {
