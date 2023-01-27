@@ -4,6 +4,7 @@ import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
 import portfolioService from '../portfolio/portfolio.service';
+import '../../../globals';
 
 const log = buildLogger('Process Script');
 
