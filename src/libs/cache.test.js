@@ -162,4 +162,56 @@ describe('cache', () => {
       expect(cachedResult).toBe('firstResult - param1, param2');
     });
   });
+
+  describe('error handling', () => {
+    it('does not cache data in case of error', async () => {
+      let iteration = 0;
+      const func = async () => {
+        return new Promise(resolve => {
+          const result =
+            iteration === 0 ? { status: 'error' } : { status: 'ok' };
+          iteration++;
+          resolve(result);
+        });
+      };
+
+      const funcCached = withCache(func, {
+        errorHandler: result => result.status === 'error',
+      });
+
+      const firstResult = await funcCached();
+      const secondResult = await funcCached();
+      const thirdResult = await funcCached();
+
+      expect(firstResult).toEqual({ status: 'error' });
+      expect(secondResult).toEqual({ status: 'ok' });
+      expect(thirdResult).toEqual({ status: 'ok' });
+    });
+
+    it('returns stale cache if function returns error', async () => {
+      let iteration = 0;
+      const func = async () => {
+        return new Promise(resolve => {
+          const result =
+            iteration === 0 ? { status: 'ok' } : { status: 'error' };
+          iteration++;
+          resolve(result);
+        });
+      };
+
+      const funcCached = withCache(func, {
+        timeToLive: 10,
+        errorHandler: result => result.status === 'error',
+      });
+
+      const firstResult = await funcCached();
+      jest.advanceTimersByTime(20);
+      const secondResult = await funcCached();
+      const cachedResult = await funcCached();
+
+      expect(firstResult).toEqual({ status: 'ok' });
+      expect(secondResult).toEqual({ status: 'ok' });
+      expect(cachedResult).toEqual({ status: 'ok' });
+    });
+  });
 });
