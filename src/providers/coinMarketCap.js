@@ -12,7 +12,7 @@ const getQuotesCached = withCache(params => client.getQuotes(params), {
 });
 
 const getSymbolPrice = async (symbol, network) => {
-  const id = network && config.crypto.tokens[network]?.[symbol]?.cmcId;
+  const id = network && config.crypto.tokens[network][symbol].cmcId;
   const query = id ? { id } : { symbol };
 
   log(`Loading ${symbol} token price`);

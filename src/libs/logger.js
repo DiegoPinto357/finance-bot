@@ -1,10 +1,22 @@
 const separatorLength = 100;
 
+const severityMessage = {
+  info: '',
+  warn: 'WARNING ',
+  error: 'ERROR ',
+};
+
 export const buildLogger =
   module =>
   (
     message,
-    { breakLineAbove, breakLineBelow, separatoAbove, separatorBelow } = {}
+    {
+      breakLineAbove,
+      breakLineBelow,
+      separatoAbove,
+      separatorBelow,
+      severity,
+    } = {}
   ) => {
     if (process.env.NODE_ENV === 'test') return;
 
@@ -13,9 +25,16 @@ export const buildLogger =
       timeZone: 'America/Sao_Paulo',
     });
 
-    if (breakLineAbove) console.log();
-    if (separatoAbove) console.log(separatoAbove.repeat(separatorLength));
-    console.log(`${timestamp}: [${module}] ${message}`);
-    if (separatorBelow) console.log(separatorBelow.repeat(separatorLength));
-    if (breakLineBelow) console.log();
+    severity = severity ? severity : 'info';
+
+    if (breakLineAbove) console[severity]();
+    if (separatoAbove) console[severity](separatoAbove.repeat(separatorLength));
+
+    console[severity](
+      `${timestamp}: ${severityMessage[severity]}[${module}] ${message}`
+    );
+
+    if (separatorBelow)
+      console[severity](separatorBelow.repeat(separatorLength));
+    if (breakLineBelow) console[severity]();
   };

@@ -42,6 +42,8 @@ const execute = async () => {
   } catch (error) {
     if (error === InterruptedPrompt.EVENT_INTERRUPTED) {
       console.log('\n\nPrompt has been interrupted');
+    } else {
+      throw error;
     }
   }
 };

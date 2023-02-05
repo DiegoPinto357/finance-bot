@@ -12,7 +12,7 @@ const log = buildLogger('DexScreener');
 
 const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);
-  const { contract } = config.crypto.tokens[network]?.[symbol];
+  const { contract } = config.crypto.tokens[network][symbol];
   const url = `${host}/latest/dex/tokens/${contract}`;
   const { pairs } = await getCached(url);
 
@@ -20,7 +20,9 @@ const getSymbolPrice = async (symbol, network) => {
 
   const { priceUsd } = pairs
     .sort((a, b) => b.volume.h24 - a.volume.h24)
-    .find(({ baseToken }) => baseToken.address === contract) || { priceUsd: 0 };
+    .find(({ baseToken }) => baseToken.address === contract) || {
+    priceUsd: 0,
+  };
 
   const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
   return priceUsd * usdToBrl;

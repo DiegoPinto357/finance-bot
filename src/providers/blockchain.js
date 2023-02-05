@@ -49,7 +49,12 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
   const { status, result } = await getCached(url);
 
   if (status === '0') {
-    log(`Failed to load ${asset} balance on ${network} network: ${result}`);
+    log(`Failed to load ${asset} balance on ${network} network: ${result}`, {
+      severity: 'error',
+    });
+    throw new Error(
+      `Failed to load ${asset} balance on ${network} network: ${result}`
+    );
   }
 
   const tokenScale = 1e-18;
@@ -67,9 +72,15 @@ const getContractTokenTotalSupply = async ({ network, contractAddress }) => {
   log(
     `Loading total supply of contract ${contractAddress} on ${network} network`
   );
-  const { result } = await getCached(
+  const { status, result } = await getCached(
     buildUrl(network, { params: totalSupplyParams })
   );
+
+  if (status === '0') {
+    throw new Error(
+      `Failed to load total supply of contract ${contractAddress} on ${network} network: ${result}`
+    );
+  }
 
   return result * 1e-18;
 };
