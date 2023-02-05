@@ -696,6 +696,9 @@ const updateSharesDiffTable = async () => {
   await googleSheets.setSheet('portfolio-shares-diff', header, rows);
 };
 
+const updateTables = () =>
+  Promise.all([updateAbsoluteTable(), updateSharesDiffTable()]);
+
 export default {
   getBalance,
   getShares,
@@ -708,4 +711,5 @@ export default {
   // debug/dev
   updateAbsoluteTable,
   updateSharesDiffTable,
+  updateTables,
 };

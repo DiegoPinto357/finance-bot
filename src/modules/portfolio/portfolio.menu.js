@@ -73,6 +73,10 @@ const execute = async () => {
       await portfolioService.updateSharesDiffTable();
       break;
 
+    case 'updateTables':
+      await portfolioService.updateTables();
+      break;
+
     default:
       console.log('Not implmented');
   }
