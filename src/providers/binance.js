@@ -36,6 +36,7 @@ const getAssetPriceWithBridge = async ({ asset, targetAsset, bridgeAsset }) => {
   try {
     return await getSymbolPrice(symbol);
   } catch (e) {
+    // TODO check error type and re-throw if not related to symbol not found
     log(
       `Symbol ${symbol} not available. Using ${bridgeAsset} token as bridge.`
     );
