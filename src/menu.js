@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import InterruptedPrompt from 'inquirer-interrupted-prompt';
 import processScriptMenu from './modules/processScript/processScript.menu';
 import portfolioMenu from './modules/portfolio/portfolio.menu';
+import stockMenu from './modules/stock/stock.menu';
 import crtyptoMenu from './modules/crypto/crypto.menu';
 import cacheMenu from './libs/cache.menu';
 
@@ -29,6 +30,10 @@ const execute = async () => {
 
       case 'portfolio':
         await portfolioMenu.execute();
+        break;
+
+      case 'stock':
+        await stockMenu.execute();
         break;
 
       case 'crypto':

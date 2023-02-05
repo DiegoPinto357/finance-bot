@@ -1,7 +1,7 @@
 import database from '../../providers/database';
 import tradingView from '../../providers/tradingView';
 
-const types = ['br', 'us', 'fii', 'float'];
+export const PortfolioTypes = ['br', 'us', 'fii', 'float'];
 
 const getBalanceWithPrices = async portfolioType => {
   const portfolio = await database.find(
@@ -65,7 +65,7 @@ const getTotalPosition = async portfolioType => {
   }
 
   const totals = await Promise.all(
-    types.map(async type => {
+    PortfolioTypes.map(async type => {
       // TODO optimize to make a single request
       const balanceWithPrices = await getBalanceWithPrices(type);
       return getTotalFromPortfolio(balanceWithPrices);
@@ -74,7 +74,7 @@ const getTotalPosition = async portfolioType => {
 
   return totals.reduce(
     (obj, current, index) => {
-      obj[types[index]] = current;
+      obj[PortfolioTypes[index]] = current;
       obj.total = obj.total + current;
       return obj;
     },
