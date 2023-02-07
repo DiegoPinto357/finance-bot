@@ -7,9 +7,11 @@ const AssetClasses = {
 const FixedAssets = {
   NUBANK: 'nubank',
   ITI: 'iti',
+  INCO: 'inco',
   NUINVEST_TD_PRE_2029: 'nuInvestTDPre2029',
   NUINVEST_TD_IPCA_2045: 'nuInvestTDIPCA2045',
   INTER_ARCA_PGBL: 'interArcaPGBL',
+  SOFISA_CDB_MAX60: 'sofisaCDBMax60',
 };
 
 const CryptoAssets = {
