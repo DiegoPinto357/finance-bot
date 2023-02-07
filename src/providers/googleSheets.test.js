@@ -1,6 +1,6 @@
 import { instance, testDataBuffer } from 'google-spreadsheet';
 import googleSheets from './googleSheets';
-import { clearCache } from '../libs/cache';
+import cache from '../libs/cache';
 import { mockLoggerInstance } from '../libs/logger';
 import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
 
@@ -10,7 +10,7 @@ describe('googleSheets provider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     googleSheets.resetDoc();
-    clearCache();
+    cache.clear();
   });
 
   it('loads a sheet', async () => {

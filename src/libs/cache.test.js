@@ -1,6 +1,9 @@
-import { withCache, clearCache } from './cache';
+import { promises as fs, mockFile, clearMockFiles } from 'fs';
+import cache, { withCache } from './cache';
 
-jest.useFakeTimers();
+jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
+
+jest.mock('fs');
 
 const minute = 60 * 1000;
 jest.mock('../config', () => ({
@@ -9,8 +12,10 @@ jest.mock('../config', () => ({
 
 describe('cache', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
     jest.resetModules();
-    clearCache();
+    clearMockFiles();
+    cache.clear();
   });
 
   it('caches a function call with params', async () => {
@@ -31,7 +36,7 @@ describe('cache', () => {
     const firstResult = await funcCached('param1', 'param2');
     const cachedResult = await funcCached('param1', 'param2');
 
-    clearCache();
+    cache.clear();
 
     const secondResult = await funcCached('param1', 'param2');
 
@@ -58,7 +63,7 @@ describe('cache', () => {
     const { data: firstResult } = await funcCached('param1', 'param2');
     const { data: cachedResult } = await funcCached('param1', 'param2');
 
-    clearCache();
+    cache.clear();
 
     const { data: secondResult } = await funcCached('param1', 'param2');
 
@@ -212,6 +217,63 @@ describe('cache', () => {
       expect(firstResult).toEqual({ status: 'ok' });
       expect(secondResult).toEqual({ status: 'ok' });
       expect(cachedResult).toEqual({ status: 'ok' });
+    });
+  });
+
+  describe('non volatile cache', () => {
+    it('does not load cache file if it does not exists', async () => {
+      const func = jest.fn(async () => Promise.resolve('realResult'));
+      await cache.init();
+
+      const funcCached = withCache(func);
+      const result = await funcCached();
+
+      expect(result).toBe('realResult');
+      expect(func).toBeCalled();
+    });
+
+    it('loads cache file', async () => {
+      const func = jest.fn(async () => Promise.resolve('realResult'));
+
+      mockFile(
+        './.cache/main.json',
+        JSON.stringify({
+          f6c1553c69e1ed4a172a469af57505bd26fc47c7: { data: 'cachedResult' },
+        })
+      );
+      await cache.init();
+
+      const funcCached = withCache(func);
+      const result = await funcCached();
+
+      expect(result).toBe('cachedResult');
+      expect(func).not.toBeCalled();
+    });
+
+    it('saves cache file', async () => {
+      const func = jest.fn(async () => Promise.resolve('realResult'));
+      await cache.init();
+
+      const funcCached = withCache(func);
+      const result = await funcCached();
+      await cache.saveData();
+
+      expect(result).toBe('realResult');
+      expect(fs.writeFile).toBeCalledTimes(1);
+      expect(fs.writeFile).toBeCalledWith(
+        './.cache/main.json',
+        JSON.stringify(
+          {
+            f6c1553c69e1ed4a172a469af57505bd26fc47c7: {
+              data: 'realResult',
+              timestamp: 1577837160045,
+            },
+          },
+          null,
+          2
+        ),
+        'utf-8'
+      );
     });
   });
 });

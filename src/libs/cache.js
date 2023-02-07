@@ -1,7 +1,33 @@
+import { promises as fs } from 'fs';
 import hash from 'object-hash';
+import stringify from 'json-stringify-safe';
+import { buildLogger } from './logger';
 import config from '../config';
 
+const log = buildLogger('Cache');
+
+const cacheFilename = './.cache/main.json';
+
 let cache = {};
+
+const init = async () => {
+  log('Loading cache file');
+  try {
+    const cacheFile = await fs.readFile(cacheFilename, 'utf-8');
+    if (cacheFile) {
+      cache = JSON.parse(cacheFile);
+    }
+  } catch (error) {
+    log('Cache file does not exists', { severity: 'warn' });
+  }
+};
+
+const clear = () => (cache = {});
+
+const saveData = async () => {
+  log('Saving cache file');
+  await fs.writeFile(cacheFilename, stringify(cache, null, 2), 'utf-8');
+};
 
 export const withCache =
   (func, options = {}) =>
@@ -38,4 +64,8 @@ export const withCache =
     return result;
   };
 
-export const clearCache = () => (cache = {});
+export default {
+  init,
+  clear,
+  saveData,
+};

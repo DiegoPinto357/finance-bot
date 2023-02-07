@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import _ from 'lodash';
-import { clearCache } from './cache';
+import cache from './cache';
 
 const methods = ['clearCache'];
 
@@ -16,7 +16,7 @@ const execute = async () => {
 
   switch (method) {
     case 'clearCache':
-      clearCache();
+      cache.clear();
       break;
 
     default:
