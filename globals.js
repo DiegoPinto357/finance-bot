@@ -23,9 +23,11 @@ const FixedAssets = {
   NUINVEST_TD_IPCA_2045: 'nuInvestTDIPCA2045',
   INTER_ARCA_PGBL: 'interArcaPGBL',
   SOFISA_CDB_MAX60: 'sofisaCDBMax60',
+  SOFISA_CDB_110: 'sofisaCDB110',
 };
 
 const CryptoAssets = {
+  HODL: 'hodl',
   BACKED: 'backed',
 };
 
