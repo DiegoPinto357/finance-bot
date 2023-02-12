@@ -12,7 +12,7 @@ jest.mock('../../libs/dynamicImport');
 
 jest.useFakeTimers('modern').setSystemTime(new Date(2020, 9, 1, 7));
 
-global.console = { log: jest.fn(), dir: jest.fn() };
+global.console = { log: jest.fn(), dir: jest.fn(), error: jest.fn() };
 
 const mockJsFileModule = async filename => {
   const { promises: actualFs } = jest.requireActual('fs');
