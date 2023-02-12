@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+import moment from 'moment';
 import { buildLogger } from '../libs/logger';
 
 const debugMode = false;
@@ -45,9 +46,19 @@ const updateOne = async (
 
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
+
+  const { _id, ...actualDocument } = await collection.findOne(filter);
+  const backupCollection = db.collection(`${collectionName}-backup`);
+  const createdAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
+  await backupCollection.insertOne({
+    ...actualDocument,
+    createdAt,
+  });
+
   return await collection.updateOne(filter, update, options);
 };
 
+// TODO add backup
 const bulkWrite = async (databaseName, collectionName, operations, options) => {
   log(`Bulk writing on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);

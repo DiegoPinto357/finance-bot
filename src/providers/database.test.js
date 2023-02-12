@@ -4,15 +4,27 @@ import {
   mockDbFn,
   mockCollectionFn,
   mockFindFn,
+  mockFindOneFn,
+  mockInsertOneFn,
   mockToArrayFn,
   mockUpdateOneFn,
   mockBulkWriteFn,
 } from 'mongodb';
+import _ from 'lodash';
 import database from './database';
+import portfolioShares from '../../mockData/database/portfolio/shares.json';
 
 jest.mock('mongodb');
 
+jest.useFakeTimers().setSystemTime(new Date('2020-01-01T10:24:05.357-03:00'));
+
 describe('database', () => {
+  beforeEach(() =>
+    mockFindOneFn.mockResolvedValue({
+      _id: '62d36b150ef9ecf5cd14df91',
+    })
+  );
+
   afterEach(() => jest.clearAllMocks());
 
   it('configs mongodb client on start', () => {
@@ -65,7 +77,7 @@ describe('database', () => {
     expect(mockDbFn).toBeCalledTimes(1);
     expect(mockDbFn).toBeCalledWith(databaseName);
 
-    expect(mockCollectionFn).toBeCalledTimes(1);
+    // expect(mockCollectionFn).toBeCalledTimes(1);
     expect(mockCollectionFn).toBeCalledWith(collectionName);
 
     expect(mockUpdateOneFn).toBeCalledTimes(1);
@@ -107,5 +119,51 @@ describe('database', () => {
 
     expect(mockBulkWriteFn).toBeCalledTimes(1);
     expect(mockBulkWriteFn).toBeCalledWith(operations, options);
+  });
+
+  describe('backup', () => {
+    it('saves a document copy before updateOne', async () => {
+      const databaseName = 'portfolios';
+      const collectionName = 'shares';
+      const asset = { assetClass: 'fixed', assetName: 'nubank' };
+
+      const currentData = portfolioShares.find(
+        ({ assetName }) => assetName === asset.assetName
+      );
+      mockFindOneFn.mockResolvedValue({
+        ...currentData,
+        _id: '62d36b150ef9ecf5cd14df91',
+      });
+
+      const newData = _.cloneDeep(currentData);
+      newData.shares[1].value = 0.15;
+
+      const update = { $set: { shares: newData.shares } };
+      const options = { upsert: true };
+
+      await database.updateOne(
+        databaseName,
+        collectionName,
+        asset,
+        update,
+        options
+      );
+
+      const backupDocument = {
+        ...currentData,
+        _id: undefined,
+        createdAt: '2020-01-01T10:24:05.357',
+      };
+
+      expect(mockDbFn).toBeCalledTimes(1);
+      expect(mockDbFn).toBeCalledWith(databaseName);
+
+      expect(mockCollectionFn).toBeCalledTimes(2);
+      expect(mockCollectionFn).toBeCalledWith(collectionName);
+      expect(mockCollectionFn).toBeCalledWith(`${collectionName}-backup`);
+
+      expect(mockInsertOneFn).toBeCalledTimes(1);
+      expect(mockInsertOneFn).toBeCalledWith(backupDocument);
+    });
   });
 });
