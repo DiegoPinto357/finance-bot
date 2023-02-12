@@ -400,8 +400,6 @@ const deposit = async ({
     value: newTotalAssetValue !== 0 ? item.value / newTotalAssetValue : 0,
   }));
 
-  // console.log({ value, newShares, currentTotalAssetValue, newTotalAssetValue });
-
   verifyShares(newShares.map(({ value }) => value));
 
   await Promise.all([
@@ -513,7 +511,22 @@ const swapOnAsset = async ({
   originPortfolio.value = adjust0(originPortfolio.value - deltaShare);
   destinyPortfolio.value = adjust0(destinyPortfolio.value + deltaShare);
 
-  if (isNegative(originPortfolio.value) || isNegative(destinyPortfolio.value)) {
+  const hasOriginFunds = !isNegative(originPortfolio.value);
+  const hasDestinyFinds = !isNegative(destinyPortfolio.value);
+
+  if (!hasOriginFunds || !hasDestinyFinds) {
+    if (!hasOriginFunds) {
+      log(`Not enough funds on ${origin} (${assetClass}/${assetName})`, {
+        severity: 'warn',
+      });
+    }
+
+    if (!hasDestinyFinds) {
+      log(`Not enough funds on ${destiny} (${assetClass}/${assetName})`, {
+        severity: 'warn',
+      });
+    }
+
     return { status: 'notEnoughFunds' };
   }
 
