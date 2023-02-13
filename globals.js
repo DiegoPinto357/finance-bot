@@ -26,6 +26,35 @@ const FixedAssets = {
   SOFISA_CDB_110: 'sofisaCDB110',
 };
 
+const StockPortfolioType = {
+  BR: 'br',
+  US: 'us',
+  FII: 'fii',
+};
+
+const StockAssets = {
+  BR: {
+    B3SA3: 'B3SA3',
+    CRPG5: 'CRPG5',
+    FLRY3: 'FLRY3',
+    ITSA3: 'ITSA3',
+    MDIA3: 'MDIA3',
+    MRVE3: 'MRVE3',
+    WIZC3: 'WIZC3',
+  },
+  US: {},
+  FII: {
+    ALZR11: 'ALZR11',
+    BCFF11: 'BCFF11',
+    CPTS11: 'CPTS11',
+    HGLG11: 'HGLG11',
+    KNRI11: 'KNRI11',
+    MXRF11: 'MXRF11',
+    VISC11: 'VISC11',
+    XPLG11: 'XPLG11',
+  },
+};
+
 const CryptoAssets = {
   HODL: 'hodl',
   BACKED: 'backed',
@@ -49,5 +78,7 @@ const Portfolios = {
 
 global.AssetClasses = AssetClasses;
 global.FixedAssets = FixedAssets;
+global.StockPortfolioType = StockPortfolioType;
+global.StockAssets = StockAssets;
 global.CryptoAssets = CryptoAssets;
 global.Portfolios = Portfolios;
