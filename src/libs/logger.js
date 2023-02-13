@@ -1,9 +1,17 @@
+import chalk from 'chalk';
+
 const separatorLength = 100;
 
 const severityMessage = {
   info: '',
   warn: 'WARNING ',
   error: 'ERROR ',
+};
+
+const style = {
+  info: m => m,
+  warn: chalk.bold.yellow,
+  error: chalk.bold.red,
 };
 
 export const buildLogger =
@@ -28,13 +36,18 @@ export const buildLogger =
     severity = severity ? severity : 'info';
 
     if (breakLineAbove) console[severity]();
-    if (separatoAbove) console[severity](separatoAbove.repeat(separatorLength));
+    if (separatoAbove)
+      console[severity](style[severity](separatoAbove.repeat(separatorLength)));
 
     console[severity](
-      `${timestamp}: ${severityMessage[severity]}[${module}] ${message}`
+      style[severity](
+        `${timestamp}: ${severityMessage[severity]}[${module}] ${message}`
+      )
     );
 
     if (separatorBelow)
-      console[severity](separatorBelow.repeat(separatorLength));
+      console[severity](
+        style[severity](separatorBelow.repeat(separatorLength))
+      );
     if (breakLineBelow) console[severity]();
   };
