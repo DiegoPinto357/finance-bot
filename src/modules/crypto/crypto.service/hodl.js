@@ -27,7 +27,7 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 
   const prices = await Promise.all(
     assets.map(async asset => {
-      return await binance.getAssetPriceWithBridge({
+      return await binance.getAssetPrice({
         asset,
         targetAsset,
         bridgeAsset,

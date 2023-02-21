@@ -4,6 +4,9 @@ import { buildLogger } from '../libs/logger';
 
 const log = buildLogger('Binance');
 
+// needs to check on Binance which assets don't support BRL anymore
+const assetsWithBridge = ['ATOM'];
+
 const client = new Spot(
   process.env.BINANCE_API_KEY,
   process.env.BINANCE_API_SECRET
@@ -28,20 +31,41 @@ const getSymbolPriceTicker = async ({ symbol }) => {
 const getSymbolPrice = async symbol =>
   +(await getSymbolPriceTicker({ symbol })).price;
 
-const getAssetPriceWithBridge = async ({ asset, targetAsset, bridgeAsset }) => {
+const getAssetPriceWithBridge = async (
+  symbol,
+  bridgeAsset,
+  asset,
+  targetAsset
+) => {
+  log(`Symbol ${symbol} not available. Using ${bridgeAsset} token as bridge.`);
+  const bridgePrice = await getSymbolPrice(`${asset}${bridgeAsset}`);
+  return (await getSymbolPrice(`${bridgeAsset}${targetAsset}`)) * bridgePrice;
+};
+
+const getAssetPrice = async ({ asset, targetAsset, bridgeAsset }) => {
   if (asset === targetAsset) return 1;
 
   const symbol = `${asset}${targetAsset}`;
 
   try {
+    if (assetsWithBridge.includes(asset)) {
+      return await getAssetPriceWithBridge(
+        symbol,
+        bridgeAsset,
+        asset,
+        targetAsset
+      );
+    }
+
     return await getSymbolPrice(symbol);
   } catch (e) {
     // TODO check error type and re-throw if not related to symbol not found
-    log(
-      `Symbol ${symbol} not available. Using ${bridgeAsset} token as bridge.`
+    return await getAssetPriceWithBridge(
+      symbol,
+      bridgeAsset,
+      asset,
+      targetAsset
     );
-    const bridgePrice = await getSymbolPrice(`${asset}${bridgeAsset}`);
-    return (await getSymbolPrice(`${bridgeAsset}${targetAsset}`)) * bridgePrice;
   }
 };
 
@@ -91,6 +115,6 @@ const getEarnPosition = async () => {
 export default {
   getAccountInformation,
   getSymbolPriceTicker,
-  getAssetPriceWithBridge,
+  getAssetPrice,
   getEarnPosition,
 };

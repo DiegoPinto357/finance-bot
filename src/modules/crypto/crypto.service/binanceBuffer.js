@@ -17,7 +17,7 @@ const getTotalPosition = async asset => {
 
   const assetPrices = await Promise.all(
     assets.map(async asset =>
-      binance.getAssetPriceWithBridge({ asset, targetAsset, bridgeAsset })
+      binance.getAssetPrice({ asset, targetAsset, bridgeAsset })
     )
   );
 
