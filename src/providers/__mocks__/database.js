@@ -99,11 +99,33 @@ const updateOne = async (
   return { matchedCount: 1 };
 };
 
+const deleteOne = async (databaseName, collectionName, query) => {
+  const data = await getData(databaseName, collectionName);
+
+  const record = data.find(item =>
+    Object.entries(query).every(([key, value]) => item[key] === value)
+  );
+
+  if (!record) {
+    if (!upsert) {
+      return { matchedCount: 0 };
+    }
+  }
+
+  const recordIndex = data.indexOf(record);
+  data.splice(recordIndex, 1);
+
+  await delay(1);
+  setData(databaseName, collectionName, data);
+  return { matchedCount: 1 };
+};
+
 const resetMockValues = () => (dataBuffer = {});
 
 export default {
   connect,
   find,
   updateOne,
+  deleteOne,
   resetMockValues,
 };

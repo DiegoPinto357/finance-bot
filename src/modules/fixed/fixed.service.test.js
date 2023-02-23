@@ -148,4 +148,29 @@ describe('fixed service', () => {
       expect(newPosition).toBe(currentPosition + value);
     });
   });
+
+  describe('removeAsset', () => {
+    it('removes an asset with no funds', async () => {
+      const asset = 'nubank';
+      await fixed.setAssetValue({ asset, value: 0 });
+
+      const { status } = await fixed.removeAsset(asset);
+
+      const remainingAssets = await fixed.getAssetsList();
+
+      expect(status).toBe('ok');
+      expect(remainingAssets).not.toContain(asset);
+    });
+
+    it('does not remove an asset if it still have funds', async () => {
+      const asset = 'nubank';
+
+      const { status } = await fixed.removeAsset(asset);
+
+      const remainingAssets = await fixed.getAssetsList();
+
+      expect(status).toBe('assetHasFunds');
+      expect(remainingAssets).toContain(asset);
+    });
+  });
 });

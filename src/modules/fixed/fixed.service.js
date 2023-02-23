@@ -58,10 +58,23 @@ const deposit = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
+const removeAsset = async asset => {
+  const funds = await getTotalPosition(asset);
+
+  if (funds !== 0) {
+    return { status: 'assetHasFunds' };
+  }
+
+  await database.deleteOne('assets', 'fixed', { asset });
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
   getAssetsList,
   setAssetValue,
   deposit,
+  removeAsset,
 };
