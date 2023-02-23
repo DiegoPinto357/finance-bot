@@ -20,6 +20,16 @@ const close = () => {
   log('MongoDB connection closed');
 };
 
+const saveBackup = async (db, collection, collectionName, filter) => {
+  const { _id, ...actualDocument } = await collection.findOne(filter);
+  const backupCollection = db.collection(`${collectionName}-backup`);
+  const createdAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
+  await backupCollection.insertOne({
+    ...actualDocument,
+    createdAt,
+  });
+};
+
 const find = async (databaseName, collectionName, query, options) => {
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
@@ -47,15 +57,28 @@ const updateOne = async (
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
 
-  const { _id, ...actualDocument } = await collection.findOne(filter);
-  const backupCollection = db.collection(`${collectionName}-backup`);
-  const createdAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
-  await backupCollection.insertOne({
-    ...actualDocument,
-    createdAt,
-  });
+  await saveBackup(db, collection, collectionName, filter);
 
   return await collection.updateOne(filter, update, options);
+};
+
+const deleteOne = async (databaseName, collectionName, filter) => {
+  log(`Deleting document on ${databaseName}/${collectionName}`);
+
+  if (debugMode) {
+    console.dir(
+      { databaseName, collectionName, filter, update, options },
+      { depth: null }
+    );
+    return;
+  }
+
+  const db = client.db(databaseName);
+  const collection = db.collection(collectionName);
+
+  await saveBackup(db, collection, collectionName, filter);
+
+  return await collection.deleteOne(filter);
 };
 
 // TODO add backup
@@ -71,5 +94,6 @@ export default {
   close,
   find,
   updateOne,
+  deleteOne,
   bulkWrite,
 };

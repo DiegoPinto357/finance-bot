@@ -8,6 +8,7 @@ import {
   mockInsertOneFn,
   mockToArrayFn,
   mockUpdateOneFn,
+  mockDeleteOneFn,
   mockBulkWriteFn,
 } from 'mongodb';
 import _ from 'lodash';
@@ -77,11 +78,26 @@ describe('database', () => {
     expect(mockDbFn).toBeCalledTimes(1);
     expect(mockDbFn).toBeCalledWith(databaseName);
 
-    // expect(mockCollectionFn).toBeCalledTimes(1);
     expect(mockCollectionFn).toBeCalledWith(collectionName);
 
     expect(mockUpdateOneFn).toBeCalledTimes(1);
     expect(mockUpdateOneFn).toBeCalledWith(query, update, options);
+  });
+
+  it('deletes a single document', async () => {
+    const databaseName = 'assets';
+    const collectionName = 'fixed';
+    const query = { asset: 'nubank' };
+
+    await database.deleteOne(databaseName, collectionName, query);
+
+    expect(mockDbFn).toBeCalledTimes(1);
+    expect(mockDbFn).toBeCalledWith(databaseName);
+
+    expect(mockCollectionFn).toBeCalledWith(collectionName);
+
+    expect(mockDeleteOneFn).toBeCalledTimes(1);
+    expect(mockDeleteOneFn).toBeCalledWith(query);
   });
 
   it('bulk writes operarions', async () => {
@@ -148,6 +164,38 @@ describe('database', () => {
         update,
         options
       );
+
+      const backupDocument = {
+        ...currentData,
+        _id: undefined,
+        createdAt: '2020-01-01T10:24:05.357',
+      };
+
+      expect(mockDbFn).toBeCalledTimes(1);
+      expect(mockDbFn).toBeCalledWith(databaseName);
+
+      expect(mockCollectionFn).toBeCalledTimes(2);
+      expect(mockCollectionFn).toBeCalledWith(collectionName);
+      expect(mockCollectionFn).toBeCalledWith(`${collectionName}-backup`);
+
+      expect(mockInsertOneFn).toBeCalledTimes(1);
+      expect(mockInsertOneFn).toBeCalledWith(backupDocument);
+    });
+
+    it('saves a document copy before deleteOne', async () => {
+      const databaseName = 'portfolios';
+      const collectionName = 'shares';
+      const asset = { assetClass: 'fixed', assetName: 'nubank' };
+
+      const currentData = portfolioShares.find(
+        ({ assetName }) => assetName === asset.assetName
+      );
+      mockFindOneFn.mockResolvedValue({
+        ...currentData,
+        _id: '62d36b150ef9ecf5cd14df91',
+      });
+
+      await database.deleteOne(databaseName, collectionName, asset);
 
       const backupDocument = {
         ...currentData,

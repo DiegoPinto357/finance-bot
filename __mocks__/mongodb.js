@@ -10,6 +10,8 @@ export const mockInsertOneFn = jest.fn();
 
 export const mockUpdateOneFn = jest.fn();
 
+export const mockDeleteOneFn = jest.fn();
+
 export const mockBulkWriteFn = jest.fn();
 
 export const mockCollectionFn = jest.fn(() => ({
@@ -17,6 +19,7 @@ export const mockCollectionFn = jest.fn(() => ({
   findOne: mockFindOneFn,
   insertOne: mockInsertOneFn,
   updateOne: mockUpdateOneFn,
+  deleteOne: mockDeleteOneFn,
   bulkWrite: mockBulkWriteFn,
 }));
 
