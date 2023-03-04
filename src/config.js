@@ -41,7 +41,6 @@ export default {
           contract: '0x9f8BB16f49393eeA4331A39B69071759e54e16ea',
           cmcId: 20408,
         },
-        'PHOENIX+': { contract: '0xfc62b18CAC1343bd839CcbEDB9FC3382a84219B9' },
       },
       polygon: {
         SPHERE: {
