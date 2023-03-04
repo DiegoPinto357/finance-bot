@@ -6,26 +6,45 @@ import config from '../config';
 
 const host = 'https://api.dexscreener.com';
 
-const getCached = withCache(params => httpClient.get(params));
-
 const log = buildLogger('DexScreener');
+
+const fetchSymbolPrice = async (symbol, network) => {
+  const { contract } = config.crypto.tokens[network][symbol];
+  const url = `${host}/latest/dex/tokens/${contract}`;
+  const { pairs } = await httpClient.get(url);
+
+  if (!pairs) {
+    throw new Error(
+      `No trading pairs found for ${symbol} on ${network} network`
+    );
+  }
+
+  const result = pairs
+    .sort((a, b) => b.volume.h24 - a.volume.h24)
+    .find(
+      ({ baseToken }) =>
+        baseToken.address.toLowerCase() === contract.toLowerCase()
+    );
+
+  const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
+  return result.priceUsd * usdToBrl;
+};
+
+const fetchSymbolPriceCached = withCache((...params) =>
+  fetchSymbolPrice(...params)
+);
 
 const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);
-  const { contract } = config.crypto.tokens[network][symbol];
-  const url = `${host}/latest/dex/tokens/${contract}`;
-  const { pairs } = await getCached(url);
 
-  if (!pairs) return 0;
-
-  const { priceUsd } = pairs
-    .sort((a, b) => b.volume.h24 - a.volume.h24)
-    .find(({ baseToken }) => baseToken.address === contract) || {
-    priceUsd: 0,
-  };
-
-  const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
-  return priceUsd * usdToBrl;
+  try {
+    return await fetchSymbolPriceCached(symbol, network);
+  } catch (error) {
+    log(`Error loading ${symbol} token price: ${error.message}`, {
+      severity: 'error',
+    });
+    throw error;
+  }
 };
 
 export default {
