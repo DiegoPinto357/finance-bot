@@ -8,7 +8,6 @@ const FixedAssets = {
   NUBANK: 'nubank',
   ITI: 'iti',
   PAY99: '99pay',
-  PAGBANK_CDB_120: 'pagBankCDB120',
   INCO: 'inco',
   XP_WESTERN_ASSET: 'xpWesternAsset',
   XP_TREND_INVESTBACK: 'xpTrendInvestback',
