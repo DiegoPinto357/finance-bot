@@ -1,8 +1,11 @@
+import { buildLogger } from '../../libs/logger';
 import googleSheets from '../../providers/googleSheets';
 import database from '../../providers/database';
 import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
+
+const log = buildLogger('Portfolios');
 
 const services = {
   fixed: fixedService,
@@ -625,6 +628,28 @@ const getAssets = () =>
     { projection: { _id: 0, shares: 0 } }
   );
 
+const removeAsset = async ({ assetClass, assetName }) => {
+  if (assetClass !== 'fixed') {
+    log(`removeAsset not implemented for ${assetClass} assets`, {
+      severity: 'error',
+    });
+  }
+
+  const service = services[assetClass];
+  const { status } = await service.removeAsset(assetName);
+
+  if (status !== 'ok') {
+    return { status };
+  }
+
+  await database.deleteOne('portfolio', 'shares', {
+    assetClass,
+    assetName,
+  });
+
+  return { status: 'ok' };
+};
+
 const getPortfolios = async () => {
   const portfolioData = await getPortfolioData();
   const portfolios = new Set();
@@ -719,6 +744,7 @@ export default {
   transfer,
   swap,
   getAssets,
+  removeAsset,
   getPortfolios,
 
   // debug/dev

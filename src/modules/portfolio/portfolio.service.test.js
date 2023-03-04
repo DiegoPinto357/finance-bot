@@ -1537,6 +1537,56 @@ describe('portfolio service', () => {
         { assetClass: 'crypto', assetName: 'backed' },
       ]);
     });
+
+    describe('removeAsset', () => {
+      it('removes a fixed asset with no funds', async () => {
+        const assetClass = 'fixed';
+        const assetName = 'nubank';
+        await database.updateOne(
+          'assets',
+          'fixed',
+          { asset: assetName },
+          { $set: { value: 0 } }
+        );
+
+        const databaseDeleteOneSpy = jest.spyOn(database, 'deleteOne');
+
+        const { status } = await portfolioService.removeAsset({
+          assetClass,
+          assetName,
+        });
+
+        const remainingAssets = await portfolioService.getAssets();
+
+        expect(status).toBe('ok');
+        expect(remainingAssets).not.toContain(assetName);
+        expect(databaseDeleteOneSpy).toBeCalledWith('portfolio', 'shares', {
+          assetClass,
+          assetName,
+        });
+      });
+
+      it('does not remove a fixed asset if it still have funds', async () => {
+        const assetClass = 'fixed';
+        const assetName = 'nubank';
+
+        const databaseDeleteOneSpy = jest.spyOn(database, 'deleteOne');
+
+        const { status } = await portfolioService.removeAsset({
+          assetClass,
+          assetName,
+        });
+
+        const remainingAssets = await portfolioService.getAssets();
+
+        expect(status).toBe('assetHasFunds');
+        expect(remainingAssets).not.toContain(assetName);
+        expect(databaseDeleteOneSpy).not.toBeCalledWith('portfolio', 'shares', {
+          assetClass,
+          assetName,
+        });
+      });
+    });
   });
 
   describe('getPortfolios', () => {
