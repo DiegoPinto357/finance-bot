@@ -38,7 +38,7 @@ export const withCache =
 
     const key = hash({ func, params });
     const cacheEntry = cache[key];
-    const { dataNode, errorHandler } = options;
+    const { dataNode } = options;
 
     if (cacheEntry) {
       const now = Date.now();
@@ -51,17 +51,21 @@ export const withCache =
       }
     }
 
-    const result = await func(...params);
-    const hasError = errorHandler ? errorHandler(result) : false;
-
-    if (!hasError) {
+    try {
+      const result = await func(...params);
       const data = dataNode ? result[dataNode] : result;
       cache[key] = { data, timestamp: Date.now() };
-    } else if (cacheEntry) {
-      return dataNode ? { [dataNode]: cacheEntry.data } : cacheEntry.data;
+      return result;
+    } catch (error) {
+      if (cacheEntry) {
+        // TODO identify function
+        log(`Error calling function. Loading stale cache.`, {
+          severity: 'warn',
+        });
+        return dataNode ? { [dataNode]: cacheEntry.data } : cacheEntry.data;
+      }
+      throw new Error(error);
     }
-
-    return result;
   };
 
 export default {

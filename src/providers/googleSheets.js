@@ -53,7 +53,7 @@ const getRows = async sheetTitle => {
   const sheet = await getSheet(sheetTitle);
 
   if (!sheet) {
-    log(`WARNING: Sheet ${sheetTitle} not found`);
+    log(`Sheet ${sheetTitle} not found`, { severity: 'warn' });
     return [];
   }
 

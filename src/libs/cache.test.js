@@ -173,50 +173,39 @@ describe('cache', () => {
       let iteration = 0;
       const func = async () => {
         return new Promise(resolve => {
-          const result =
-            iteration === 0 ? { status: 'error' } : { status: 'ok' };
+          if (iteration === 0) {
+            iteration++;
+            throw new Error('error!');
+          }
           iteration++;
-          resolve(result);
+          resolve('result');
         });
       };
 
-      const funcCached = withCache(func, {
-        errorHandler: result => result.status === 'error',
-      });
+      const funcCached = withCache(func);
 
-      const firstResult = await funcCached();
-      const secondResult = await funcCached();
-      const thirdResult = await funcCached();
-
-      expect(firstResult).toEqual({ status: 'error' });
-      expect(secondResult).toEqual({ status: 'ok' });
-      expect(thirdResult).toEqual({ status: 'ok' });
+      await expect(funcCached()).rejects.toThrow('error!');
+      await expect(funcCached()).resolves.toEqual('result');
     });
 
     it('returns stale cache if function returns error', async () => {
       let iteration = 0;
       const func = async () => {
         return new Promise(resolve => {
-          const result =
-            iteration === 0 ? { status: 'ok' } : { status: 'error' };
+          if (iteration === 1) {
+            iteration++;
+            throw new Error('error!');
+          }
           iteration++;
-          resolve(result);
+          resolve('staleResult');
         });
       };
 
-      const funcCached = withCache(func, {
-        timeToLive: 10,
-        errorHandler: result => result.status === 'error',
-      });
+      const funcCached = withCache(func, { timeToLive: 10 });
 
-      const firstResult = await funcCached();
+      await expect(funcCached()).resolves.toEqual('staleResult');
       jest.advanceTimersByTime(20);
-      const secondResult = await funcCached();
-      const cachedResult = await funcCached();
-
-      expect(firstResult).toEqual({ status: 'ok' });
-      expect(secondResult).toEqual({ status: 'ok' });
-      expect(cachedResult).toEqual({ status: 'ok' });
+      await expect(funcCached()).resolves.toEqual('staleResult');
     });
   });
 

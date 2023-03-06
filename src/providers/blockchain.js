@@ -24,9 +24,10 @@ const buildUrl = (network, { params }) => {
 };
 
 const getTokenBalance = async ({ asset, network, wallet }) => {
+  log(`Loading ${asset} token balance on ${network} network`);
   // TODO build a better rate limit system
   const min = 500;
-  const max = 1500;
+  const max = 2500;
   const diff = max - min;
   const ms = Math.floor(Math.random() * diff) + min;
   await delay(ms);
@@ -44,8 +45,6 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
   });
 
   const url = buildUrl(network, { params });
-
-  log(`Loading ${asset} token balance on ${network} network`);
   const { status, result } = await getCached(url);
 
   if (status === '0') {
