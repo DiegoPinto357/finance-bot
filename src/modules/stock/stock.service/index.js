@@ -1,5 +1,5 @@
-import database from '../../providers/database';
-import tradingView from '../../providers/tradingView';
+import database from '../../../providers/database';
+import tradingView from '../../../providers/tradingView';
 
 export const PortfolioTypes = ['br', 'us', 'fii', 'float'];
 

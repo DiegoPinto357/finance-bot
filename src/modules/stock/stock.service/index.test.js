@@ -1,9 +1,9 @@
-import database from '../../providers/database';
-import tradingView from '../../providers/tradingView';
-import stock from './stock.service';
+import database from '../../../providers/database';
+import tradingView from '../../../providers/tradingView';
+import stock from '.';
 
-jest.mock('../../providers/database');
-jest.mock('../../providers/tradingView');
+jest.mock('../../../providers/database');
+jest.mock('../../../providers/tradingView');
 
 describe('stock service', () => {
   beforeEach(() => database.resetMockValues());

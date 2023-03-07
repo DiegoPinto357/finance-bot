@@ -4,8 +4,8 @@ const httpClient = axios.create({
   timeout: 5000,
 });
 
-const get = async url => {
-  const response = await httpClient(url);
+const get = async (url, config) => {
+  const response = await httpClient(url, config);
   return response.data;
 };
 
