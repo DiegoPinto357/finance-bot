@@ -9,7 +9,7 @@ export default async (asset, network) => {
     return await coinMarketCap.getSymbolPrice(asset, network);
   } catch (error) {
     log(
-      `Failed to load ${asset} balance on ${network} network: ${error.message}`,
+      `Failed to load ${asset} price on ${network} network: ${error.message}`,
       {
         severity: 'warn',
       }

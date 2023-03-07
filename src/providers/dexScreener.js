@@ -36,15 +36,7 @@ const fetchSymbolPriceCached = withCache((...params) =>
 
 const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);
-
-  try {
-    return await fetchSymbolPriceCached(symbol, network);
-  } catch (error) {
-    log(`Error loading ${symbol} token price: ${error.message}`, {
-      severity: 'error',
-    });
-    throw error;
-  }
+  return await fetchSymbolPriceCached(symbol, network);
 };
 
 export default {

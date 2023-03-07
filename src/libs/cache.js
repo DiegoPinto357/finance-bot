@@ -64,7 +64,7 @@ export const withCache =
         });
         return dataNode ? { [dataNode]: cacheEntry.data } : cacheEntry.data;
       }
-      throw new Error(error);
+      throw error;
     }
   };
 

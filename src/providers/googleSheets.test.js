@@ -26,7 +26,8 @@ describe('googleSheets provider', () => {
       'Loadindg sheet secret-of-happyness'
     );
     expect(mockLoggerInstance).toBeCalledWith(
-      'WARNING: Sheet secret-of-happyness not found'
+      'Sheet secret-of-happyness not found',
+      { severity: 'warn' }
     );
   });
 
