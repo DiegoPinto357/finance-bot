@@ -156,7 +156,7 @@ describe('cache', () => {
       expect(cachedResult).toBe('secondResult - param1, param2');
     });
 
-    it('returns cached value wehn "time to live" has not been passed', async () => {
+    it('returns cached value when "time to live" has not been passed', async () => {
       const funcCached = withCache(func, { timeToLive: 10 });
 
       const firstResult = await funcCached('param1', 'param2');
