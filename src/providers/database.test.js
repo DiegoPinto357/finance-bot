@@ -60,6 +60,24 @@ describe('database', () => {
     expect(mockToArrayFn).toBeCalledTimes(1);
   });
 
+  it('finds a single document from collection', async () => {
+    const databaseName = 'assets';
+    const collectionName = 'fixed';
+    const query = {};
+    const options = { projection: { _id: 0, asset: 1 } };
+
+    await database.findOne(databaseName, collectionName, query, options);
+
+    expect(mockDbFn).toBeCalledTimes(1);
+    expect(mockDbFn).toBeCalledWith(databaseName);
+
+    expect(mockCollectionFn).toBeCalledTimes(1);
+    expect(mockCollectionFn).toBeCalledWith(collectionName);
+
+    expect(mockFindOneFn).toBeCalledTimes(1);
+    expect(mockFindOneFn).toBeCalledWith(query, options);
+  });
+
   it('updates single document', async () => {
     const databaseName = 'assets';
     const collectionName = 'fixed';

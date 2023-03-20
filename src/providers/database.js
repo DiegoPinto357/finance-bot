@@ -37,6 +37,13 @@ const find = async (databaseName, collectionName, query, options) => {
   return await collection.find(query, options).toArray();
 };
 
+const findOne = async (databaseName, collectionName, query, options) => {
+  log(`Findind data on ${databaseName}/${collectionName}`);
+  const db = client.db(databaseName);
+  const collection = db.collection(collectionName);
+  return await collection.findOne(query, options);
+};
+
 const updateOne = async (
   databaseName,
   collectionName,
@@ -93,6 +100,7 @@ export default {
   connect,
   close,
   find,
+  findOne,
   updateOne,
   deleteOne,
   bulkWrite,

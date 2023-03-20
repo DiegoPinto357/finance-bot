@@ -145,10 +145,44 @@ const buy = async ({ asset, amount, orderValue }) => {
   return { status: 'ok' };
 };
 
+const sell = async ({ asset, amount, orderValue }) => {
+  const currentAssetData = await database.findOne(
+    'assets',
+    'stock',
+    { asset },
+    { projection: { _id: 0, type: 0 } }
+  );
+
+  if (!currentAssetData) {
+    return { status: 'assetNotFound' };
+  }
+
+  if (amount > currentAssetData.amount) {
+    return { status: 'notEnoughStocks' };
+  }
+
+  await database.updateOne(
+    'assets',
+    'stock',
+    { asset },
+    { $inc: { amount: -amount } }
+  );
+
+  await database.updateOne(
+    'assets',
+    'stock',
+    { type: 'float' },
+    { $inc: { value: orderValue } }
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
   deposit,
   setAssetValue,
   buy,
+  sell,
 };

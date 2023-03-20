@@ -173,4 +173,82 @@ describe('stock service', () => {
       expect(newFloatValue).toBe(currentFloatValue);
     });
   });
+
+  describe('sell', () => {
+    it('registers a sell operation', async () => {
+      const asset = 'NASD11';
+      const sellAmount = 12;
+      const { lp: price } = await tradingView.getTicker(asset);
+      const orderValue = sellAmount * price;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.sell({
+        asset,
+        amount: sellAmount,
+        orderValue,
+      });
+
+      const { balance, total } = await stock.getBalance('us');
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result.status).toBe('ok');
+      expect(balance).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ asset, amount: 129 - sellAmount }),
+        ])
+      );
+      expect(total).toBeCloseTo(5407.97 - orderValue, 5);
+      expect(newFloatValue).toBeCloseTo(currentFloatValue + orderValue, 5);
+    });
+
+    it('does not register a sell operation for an invalid asset', async () => {
+      const asset = 'BANANA3';
+      const sellAmount = 100;
+      const price = 1000;
+      const orderValue = sellAmount * price;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.sell({
+        asset,
+        amount: sellAmount,
+        orderValue,
+      });
+
+      const { balance, total } = await stock.getBalance('us');
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result.status).toBe('assetNotFound');
+      expect(balance).not.toEqual(
+        expect.arrayContaining([expect.objectContaining({ asset })])
+      );
+      expect(total).toBe(5407.97);
+      expect(newFloatValue).toBe(currentFloatValue);
+    });
+
+    it('does not register a sell operation if there are not enough stocks', async () => {
+      const asset = 'NASD11';
+      const sellAmount = 1000;
+      const { lp: price } = await tradingView.getTicker(asset);
+      const orderValue = sellAmount * price;
+      const currentFloatValue = await stock.getTotalPosition('float');
+
+      const result = await stock.sell({
+        asset,
+        amount: sellAmount,
+        orderValue,
+      });
+
+      const { balance, total } = await stock.getBalance('us');
+      const newFloatValue = await stock.getTotalPosition('float');
+
+      expect(result.status).toBe('notEnoughStocks');
+      expect(balance).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ asset, amount: 129 }),
+        ])
+      );
+      expect(total).toBe(5407.97);
+      expect(newFloatValue).toBe(currentFloatValue);
+    });
+  });
 });

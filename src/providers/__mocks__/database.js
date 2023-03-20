@@ -48,6 +48,13 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
   });
 });
 
+const findOne = jest.fn(
+  async (databaseName, collectionName, query, options) => {
+    const result = await find(databaseName, collectionName, query, options);
+    return result[0];
+  }
+);
+
 const updateOne = async (
   databaseName,
   collectionName,
@@ -125,6 +132,7 @@ const resetMockValues = () => (dataBuffer = {});
 export default {
   connect,
   find,
+  findOne,
   updateOne,
   deleteOne,
   resetMockValues,
