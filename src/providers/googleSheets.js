@@ -53,8 +53,7 @@ const getRows = async sheetTitle => {
   const sheet = await getSheet(sheetTitle);
 
   if (!sheet) {
-    log(`Sheet ${sheetTitle} not found`, { severity: 'warn' });
-    return [];
+    return null;
   }
 
   return await sheet.getRows();
@@ -62,7 +61,12 @@ const getRows = async sheetTitle => {
 
 const loadSheet = async sheetTitle => {
   log(`Loadindg sheet ${sheetTitle}`);
-  const rows = await getRowsCached(sheetTitle);
+  const rows = await getRows(sheetTitle);
+
+  if (!rows) {
+    log(`Sheet ${sheetTitle} not found`, { severity: 'warn' });
+    return [];
+  }
 
   return rows.map(row => {
     return row._sheet.headerValues.reduce((obj, key) => {
@@ -82,7 +86,7 @@ const setSheet = async (sheetTitle, header, rows) => {
 
 const writeValue = async (sheetTitle, { index, target }) => {
   log(`Writing on sheet ${sheetTitle}`);
-  const rows = await getRowsCached(sheetTitle);
+  const rows = await getRows(sheetTitle);
 
   const rowIndex = rows.findIndex(row => row[index.key] === index.value);
   rows[rowIndex][target.key] = target.value;
