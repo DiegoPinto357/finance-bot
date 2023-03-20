@@ -23,6 +23,7 @@ const FixedAssets = {
   INTER_ARCA_PGBL: 'interArcaPGBL',
   SOFISA_CDB_MAX60: 'sofisaCDBMax60',
   SOFISA_CDB_110: 'sofisaCDB110',
+  SOFISA_CDB_100: 'sofisaCDB100',
 };
 
 const StockPortfolioType = {
@@ -37,6 +38,7 @@ const StockAssets = {
     CRPG5: 'CRPG5',
     EZTC3: 'EZTC3',
     FLRY3: 'FLRY3',
+    INBR32: 'INBR32',
     ITSA3: 'ITSA3',
     ITUB3: 'ITUB3',
     MDIA3: 'MDIA3',
