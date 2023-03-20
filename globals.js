@@ -34,6 +34,7 @@ const StockPortfolioType = {
 
 const StockAssets = {
   BR: {
+    ARZZ3: 'ARZZ3',
     B3SA3: 'B3SA3',
     CRPG5: 'CRPG5',
     EZTC3: 'EZTC3',
@@ -43,6 +44,7 @@ const StockAssets = {
     ITUB3: 'ITUB3',
     MDIA3: 'MDIA3',
     MRVE3: 'MRVE3',
+    SQIA3: 'SQIA3',
     WIZC3: 'WIZC3',
   },
   US: {},
