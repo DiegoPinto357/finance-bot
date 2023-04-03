@@ -53,6 +53,10 @@ const execute = async () => {
       await getBalanceMenu();
       break;
 
+    case 'analysePortfolio':
+      await stockService.analysePortfolio();
+      break;
+
     default:
       console.log('Not implmented');
   }

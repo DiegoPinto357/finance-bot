@@ -1,5 +1,9 @@
 import database from '../../../providers/database';
 import tradingView from '../../../providers/tradingView';
+import stockAnalyser from './stockAnalyser';
+import { buildLogger } from '../../../libs/logger';
+
+const log = buildLogger('Stock');
 
 export const PortfolioTypes = ['br', 'us', 'fii', 'float'];
 
@@ -132,6 +136,9 @@ const buy = async ({ asset, amount, orderValue }) => {
   );
 
   if (matchedCount === 0) {
+    log(`Asset ${asset} not found while trying to register a buy action`, {
+      severity: 'warn',
+    });
     return { status: 'assetNotFound' };
   }
 
@@ -154,10 +161,16 @@ const sell = async ({ asset, amount, orderValue }) => {
   );
 
   if (!currentAssetData) {
+    log(`Asset ${asset} not found while trying to register a sell action`, {
+      severity: 'warn',
+    });
     return { status: 'assetNotFound' };
   }
 
   if (amount > currentAssetData.amount) {
+    log(`Not enought stocks to sell ${asset}`, {
+      severity: 'warn',
+    });
     return { status: 'notEnoughStocks' };
   }
 
@@ -185,4 +198,6 @@ export default {
   setAssetValue,
   buy,
   sell,
+
+  analysePortfolio: stockAnalyser.analysePortfolio,
 };

@@ -16,7 +16,6 @@ const removeFields = data =>
       'Mrg Ebit': mrg_ebit,
       'Liq. Corr.': liq_corr,
       ROIC,
-      'Liq.2meses': liq_2meses,
       'Patrim. Líq': patrim_liq,
       'Cresc. Rec.5a': cresc_rec5a,
       ...entries
