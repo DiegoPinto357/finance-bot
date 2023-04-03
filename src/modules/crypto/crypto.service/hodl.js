@@ -1,6 +1,6 @@
 import binance from '../../../providers/binance';
 import database from '../../../providers/database';
-import googleSheets from '../../../providers/GoogleSheets';
+import googleSheets from '../../../providers/googleSheets';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
