@@ -9,8 +9,6 @@ let doc;
 const docStatus = { authenticated: false, loaded: false };
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
 
-const getRowsCached = withCache(params => getRows(params));
-
 const resetDoc = () => {
   doc = new GoogleSpreadsheet(spreadsheetId);
   docStatus.authenticated = false;
