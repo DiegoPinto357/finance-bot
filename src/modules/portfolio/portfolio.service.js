@@ -17,7 +17,6 @@ const precision = 0.006;
 const isAround0 = value => value >= 0 - precision && value <= 0 + precision;
 const isAround1 = value => value >= 1 - precision && value <= 1 + precision;
 const isNegative = value => value < -precision;
-const adjust0 = value => (isAround0(value) ? 0 : value);
 
 const verifyShares = shares => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
@@ -314,11 +313,14 @@ const getShares = async portfolioName => {
       const sharesSheetTitle = `portfolio-${portfolio}-shares`;
       const portfolioShares = await googleSheets.loadSheet(sharesSheetTitle);
 
-      const balanceFlat = totalBalanceFlat.find(
+      const balanceFlatItem = totalBalanceFlat.find(
         item => item.portfolio === portfolio
-      ).balance;
+      );
+      const balanceFlat = balanceFlatItem ? balanceFlatItem.balance : [];
 
-      const { total } = totalBalance.balance[portfolio];
+      const total = totalBalance.balance[portfolio]
+        ? totalBalance.balance[portfolio].total
+        : 0;
 
       const targetShares = mapTargetShares(portfolioShares, balanceFlat);
       const shares = mapActualShares(targetShares, total);
@@ -511,8 +513,8 @@ const swapOnAsset = async ({
 
   const deltaShare = value / totalAssetValue;
 
-  originPortfolio.value = adjust0(originPortfolio.value - deltaShare);
-  destinyPortfolio.value = adjust0(destinyPortfolio.value + deltaShare);
+  originPortfolio.value = originPortfolio.value - deltaShare;
+  destinyPortfolio.value = destinyPortfolio.value + deltaShare;
 
   const hasOriginFunds = !isNegative(originPortfolio.value);
   const hasDestinyFinds = !isNegative(destinyPortfolio.value);
