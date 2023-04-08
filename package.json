@@ -4,6 +4,9 @@
   "description": "",
   "main": "./src/index.js",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@diegopinto357"
+  },
   "scripts": {
     "test": "NODE_ENV='test' jest --watch",
     "test:coverage": "NODE_ENV='test' jest --coverage",
