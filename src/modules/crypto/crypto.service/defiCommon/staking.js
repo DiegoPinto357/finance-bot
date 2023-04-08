@@ -1,4 +1,4 @@
-import googleSheets from '../../../../providers/GoogleSheets';
+import googleSheets from '../../../../providers/googleSheets';
 import getSymbolPrice from './getSymbolPrice';
 
 const getBalance = async assetName => {

@@ -1,4 +1,4 @@
-import googleSheets from '../../../../providers/GoogleSheets';
+import googleSheets from '../../../../providers/googleSheets';
 import staking from '../defiCommon/staking';
 import autostaking from '../defiCommon/autostaking';
 import float from '../defiCommon/float';
