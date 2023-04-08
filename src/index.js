@@ -1,4 +1,4 @@
-export { fixed } from './modules/fixed/fixed.service';
-export { stock } from './modules/stock/stock.service';
-export { crypto } from './modules/crypto/crypto.service';
-export { portfolio } from './modules/portfolio/portfolio.service';
+export * as fixed from './modules/fixed/fixed.service';
+export * as stock from './modules/stock/stock.service';
+export * as crypto from './modules/crypto/crypto.service';
+export * as portfolio from './modules/portfolio/portfolio.service';
