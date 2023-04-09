@@ -37,6 +37,7 @@ const StockAssets = {
     ARZZ3: 'ARZZ3',
     B3SA3: 'B3SA3',
     CRPG5: 'CRPG5',
+    ENBR3: 'ENBR3',
     EZTC3: 'EZTC3',
     FLRY3: 'FLRY3',
     INBR32: 'INBR32',
