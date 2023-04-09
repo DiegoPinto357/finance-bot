@@ -3,31 +3,15 @@ import 'dotenv/config';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import menu from './menu';
-import cache from './libs/cache';
-import database from './providers/database';
+import core from '.';
 import cryptoContext from './modules/crypto/crypto.cli';
 import stockContext from './modules/stock/stock.cli';
 import fixedContext from './modules/fixed/fixed.cli';
 import portfolioContext from './modules/portfolio/portfolio.cli';
 import processScriptContext from './modules/processScript/processScript.cli';
 
-process.on('SIGINT', async code => {
-  try {
-    await handleExit();
-    process.exit(0);
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-});
-
-const handleExit = async () => {
-  await cache.saveData();
-  database.close();
-};
-
 (async () => {
-  await Promise.all([database.connect(), cache.init(), menu.init()]);
+  await core.init();
 
   try {
     const argv = yargs(hideBin(process.argv)).argv;

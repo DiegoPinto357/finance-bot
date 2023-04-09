@@ -3,6 +3,7 @@ import 'dotenv/config';
 import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
+import core from '.';
 import { buildLogger } from './libs/logger';
 import cryptoRouter from './modules/crypto/crypto.router';
 import portfolioRouter from './modules/portfolio/portfolio.router';
@@ -28,4 +29,8 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: err });
 });
 
-app.listen(port, () => log(`Finance Bot listening on port ${port}`));
+(async () => {
+  await core.init();
+
+  app.listen(port, () => log(`Finance Bot listening on port ${port}`));
+})();
