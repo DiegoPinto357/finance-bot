@@ -1,4 +1,4 @@
-export const formatTable = (data, farmatter) =>
+const formatTable = (data, farmatter) =>
   data.map(item =>
     Object.entries(item).reduce((obj, [key, value], index) => {
       const formatFunc = farmatter[index];
@@ -6,3 +6,7 @@ export const formatTable = (data, farmatter) =>
       return obj;
     }, {})
   );
+
+module.exports = {
+  formatTable,
+};

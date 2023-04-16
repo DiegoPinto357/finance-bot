@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+const { promises: fs } = require('fs');
+const path = require('path');
 
 const mockDir = `${path.resolve()}/mockData/blockchain/`;
 
@@ -23,7 +23,7 @@ const getContractTokenTotalSupply = jest.fn(async ({ contractAddress }) => {
   return totalSupply;
 });
 
-export default {
+module.exports = {
   getTokenBalance,
   getContractTokenTotalSupply,
 };

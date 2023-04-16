@@ -1,6 +1,6 @@
-import httpClient from '../libs/httpClient';
-import { withCache } from '../libs/cache';
-import { buildLogger } from '../libs/logger';
+const httpClient = require('../libs/httpClient');
+const { withCache } = require('../libs/cache');
+const { buildLogger } = require('../libs/logger');
 
 const host = 'https://www.mercadobitcoin.net';
 
@@ -15,6 +15,6 @@ const getTicker = async ticker => {
   return data;
 };
 
-export default {
+module.exports = {
   getTicker,
 };

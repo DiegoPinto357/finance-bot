@@ -1,6 +1,6 @@
-import inquirer from 'inquirer';
-import portfolioService from './portfolio.service';
-import { printBalance } from './cliUtils';
+const inquirer = require('inquirer');
+const portfolioService = require('./portfolio.service');
+const { printBalance } = require('./cliUtils');
 
 const methods = Object.keys(portfolioService);
 
@@ -82,7 +82,7 @@ const execute = async () => {
   }
 };
 
-export default {
+module.exports = {
   init,
   execute,
 };

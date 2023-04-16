@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+const { promises: fs } = require('fs');
+const path = require('path');
 
 const mockDir = `${path.resolve()}/mockData/binance/`;
 
@@ -49,7 +49,7 @@ const simulateBRLDeposit = async value => {
 
 const resetMockValues = () => (accountData = null);
 
-export default {
+module.exports = {
   getAccountInformation,
   getSymbolPriceTicker,
   getAssetPrice,

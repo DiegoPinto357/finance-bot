@@ -1,5 +1,6 @@
-import { promises as fs, mockFile, clearMockFiles } from 'fs';
-import cache, { withCache } from './cache';
+const { promises: fs, mockFile, clearMockFiles } = require('fs');
+const cache = require('./cache');
+const { withCache } = cache;
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 

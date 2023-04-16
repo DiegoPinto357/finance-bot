@@ -1,8 +1,9 @@
-import { MongoClient } from 'mongodb';
-import moment from 'moment';
-import { buildLogger } from '../libs/logger';
+const { MongoClient } = require('mongodb');
+const moment = require('moment');
+const { buildLogger } = require('../libs/logger');
 
 const debugMode = false;
+const verboseMode = false;
 
 const log = buildLogger('Database');
 
@@ -53,13 +54,13 @@ const updateOne = async (
 ) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
 
-  if (debugMode) {
+  if (debugMode || verboseMode) {
     console.dir(
       { databaseName, collectionName, filter, update, options },
       { depth: null }
     );
-    return;
   }
+  if (debugMode) return;
 
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
@@ -72,13 +73,13 @@ const updateOne = async (
 const deleteOne = async (databaseName, collectionName, filter) => {
   log(`Deleting document on ${databaseName}/${collectionName}`);
 
-  if (debugMode) {
+  if (debugMode || verboseMode) {
     console.dir(
       { databaseName, collectionName, filter, update, options },
       { depth: null }
     );
-    return;
   }
+  if (debugMode) return;
 
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
@@ -96,7 +97,7 @@ const bulkWrite = async (databaseName, collectionName, operations, options) => {
   return await collection.bulkWrite(operations, options);
 };
 
-export default {
+module.exports = {
   connect,
   close,
   find,

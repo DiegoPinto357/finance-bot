@@ -1,6 +1,6 @@
-import database from '../../../providers/database';
-import tradingView from '../../../providers/tradingView';
-import stock from '.';
+const database = require('../../../providers/database');
+const tradingView = require('../../../providers/tradingView');
+const stock = require('.');
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/tradingView');

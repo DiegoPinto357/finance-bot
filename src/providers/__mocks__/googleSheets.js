@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+const { promises: fs } = require('fs');
+const path = require('path');
 
 const mockDir = `${path.resolve()}/mockData/googleSheets/`;
 
@@ -32,7 +32,7 @@ const writeValue = async (sheetTitle, { index, target }) => {
 
 const resetMockValues = () => (dataBuffer = {});
 
-export default {
+module.exports = {
   loadSheet,
   writeValue,
   resetMockValues,

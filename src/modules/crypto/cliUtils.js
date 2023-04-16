@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
-import { formatTable } from '../../libs/cliFormat';
+const _ = require('lodash');
+const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
+const { formatTable } = require('../../libs/cliFormat');
 
 const getBalanceFormatter = type => {
   switch (type) {
@@ -40,8 +40,7 @@ const getBalanceFormatter = type => {
       return [];
   }
 };
-
-export const printBalance = (type, balance, total) => {
+const printBalance = (type, balance, total) => {
   const formatter = getBalanceFormatter(type);
   const formattedBalance = formatTable(
     balance.map(item => _.omit(item, 'network')),
@@ -50,4 +49,8 @@ export const printBalance = (type, balance, total) => {
 
   console.table(formattedBalance);
   console.log({ total });
+};
+
+module.exports = {
+  printBalance,
 };

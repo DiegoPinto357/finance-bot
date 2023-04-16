@@ -1,6 +1,6 @@
-import httpClient from '../libs/httpClient';
-import * as cheerio from 'cheerio';
-import { buildLogger } from '../libs/logger';
+const httpClient = require('../libs/httpClient');
+const cheerio = require('cheerio');
+const { buildLogger } = require('../libs/logger');
 
 const log = buildLogger('Fundamentei');
 
@@ -67,6 +67,6 @@ const getStockInfo = async stock => {
   }
 };
 
-export default {
+module.exports = {
   getStockInfo,
 };

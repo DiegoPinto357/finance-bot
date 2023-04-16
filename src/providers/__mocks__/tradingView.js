@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+const { promises: fs } = require('fs');
+const path = require('path');
 
 const mockDir = `${path.resolve()}/mockData/tradingView/`;
 
@@ -10,6 +10,6 @@ const getTicker = jest.fn(async asset => {
   return { lp, chp };
 });
 
-export default {
+module.exports = {
   getTicker,
 };

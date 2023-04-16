@@ -1,4 +1,4 @@
-export const printBalance = (name, balance, balanceTotal) => {
+const printBalance = (name, balance, balanceTotal) => {
   if (!name) {
     console.log(JSON.stringify(balance, null, 2));
     console.log(balanceTotal);
@@ -13,4 +13,8 @@ export const printBalance = (name, balance, balanceTotal) => {
 
   console.table(flatBalance);
   console.log({ balanceTotal });
+};
+
+module.exports = {
+  printBalance,
 };

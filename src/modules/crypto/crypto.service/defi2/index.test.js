@@ -1,5 +1,5 @@
-import defi2 from '../defi2';
-import expectedBalance from '../../../../../mockData/crypto/defi2/expectedBalance.json';
+const defi2 = require('../defi2');
+const expectedBalance = require('../../../../../mockData/crypto/defi2/expectedBalance.json');
 
 jest.mock('../../../../providers/googleSheets');
 jest.mock('../../../../providers/database');

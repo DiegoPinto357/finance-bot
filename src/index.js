@@ -1,29 +1,11 @@
-import menu from './menu';
-import cache from './libs/cache';
-import database from './providers/database';
+const fixed = require('./modules/fixed/fixed.service');
+const stock = require('./modules/stock/stock.service');
+const crypto = require('./modules/crypto/crypto.service');
+const portfolio = require('./modules/portfolio/portfolio.service');
 
-// export * as fixed from './modules/fixed/fixed.service';
-// export * as stock from './modules/stock/stock.service';
-// export * as crypto from './modules/crypto/crypto.service';
-// export * as portfolio from './modules/portfolio/portfolio.service';
-
-process.on('SIGINT', async () => {
-  try {
-    await handleExit();
-    process.exit(0);
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-});
-
-const handleExit = async () => {
-  await cache.saveData();
-  database.close();
+module.exports = {
+  fixed,
+  stock,
+  crypto,
+  portfolio,
 };
-
-const init = async () => {
-  await Promise.all([database.connect(), cache.init(), menu.init()]);
-};
-
-export default { init };

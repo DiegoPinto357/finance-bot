@@ -1,6 +1,6 @@
-import staking from '../defiCommon/staking';
-import autostaking from '../defiCommon/autostaking';
-import float from '../defiCommon/float';
+const staking = require('../defiCommon/staking');
+const autostaking = require('../defiCommon/autostaking');
+const float = require('../defiCommon/float');
 
 const getBalance = async () => {
   const [stakingBalance, autoStakingBalance, floatBalance] = await Promise.all([
@@ -18,7 +18,7 @@ const getBalance = async () => {
 
 const getTotalPosition = async () => (await getBalance()).total;
 
-export default {
+module.exports = {
   getBalance,
   getTotalPosition,
 };

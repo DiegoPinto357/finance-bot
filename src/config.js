@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   cache: {
     disabled: false,
     defaultTimeToLive: 20 * 60 * 1000,

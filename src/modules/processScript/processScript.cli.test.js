@@ -1,12 +1,14 @@
-import { promises as fs, mockFile, clearMockFiles } from 'fs';
-import path from 'path';
-import * as fleece from 'golden-fleece';
-import yargs, { mockUserInput } from 'yargs';
-import portfolioService from '../portfolio/portfolio.service';
-import processScriptCLI from './processScript.cli';
-import { mockModule } from '../../libs/dynamicImport';
+const { promises: fs, mockFile, clearMockFiles } = require('fs');
+const path = require('path');
+const fleece = require('golden-fleece');
+const yargs = require('yargs');
+const portfolioService = require('../portfolio/portfolio.service');
+const processScriptCLI = require('./processScript.cli');
+
+const { mockUserInput } = yargs();
 
 jest.mock('fs');
+jest.mock('yargs');
 jest.mock('../portfolio/portfolio.service');
 jest.mock('../../libs/dynamicImport');
 
@@ -18,10 +20,6 @@ const mockJsFileModule = async filename => {
   const { promises: actualFs } = jest.requireActual('fs');
   const fileData = await actualFs.readFile(filename);
   mockFile(filename, fileData);
-
-  const timestamp = Number(new Date());
-  const module = await import(filename);
-  mockModule(`${filename}?timestamp=${timestamp}`, module);
 };
 
 const scriptFile = './scripts/deposit.JSON5';

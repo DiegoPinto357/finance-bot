@@ -1,6 +1,6 @@
-import binance from '../../../providers/binance';
-import database from '../../../providers/database';
-import googleSheets from '../../../providers/googleSheets';
+const binance = require('../../../providers/binance');
+const database = require('../../../providers/database');
+const googleSheets = require('../../../providers/googleSheets');
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
@@ -171,7 +171,7 @@ const getHistory = async () => {
   });
 };
 
-export default {
+module.exports = {
   getBalance,
   getTotalPosition,
   getHistory,

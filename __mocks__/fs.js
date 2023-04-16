@@ -1,8 +1,8 @@
 let files = {};
 
-export const mockFile = (filename, data) => (files[filename] = data);
+const mockFile = (filename, data) => (files[filename] = data);
 
-export const clearMockFiles = () => (files = {});
+const clearMockFiles = () => (files = {});
 
 const readFile = jest.fn(filename => {
   const data = files[filename];
@@ -16,7 +16,12 @@ const writeFile = jest.fn((filename, data) =>
   Promise.resolve((files[filename] = data))
 );
 
-export const promises = {
-  readFile,
-  writeFile,
+module.exports = {
+  promises: {
+    readFile,
+    writeFile,
+  },
+
+  mockFile,
+  clearMockFiles,
 };

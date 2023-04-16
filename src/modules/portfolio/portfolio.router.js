@@ -1,5 +1,5 @@
-import express from 'express';
-import portfolioService from './portfolio.service';
+const express = require('express');
+const portfolioService = require('./portfolio.service');
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router.post('/api/portfolio/deposit', async (req, res) =>
   res.json(await portfolioService.deposit(req.body))
 );
 
-export default router;
+module.exports = router;

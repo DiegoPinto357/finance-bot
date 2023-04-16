@@ -1,8 +1,10 @@
-import inquirer from 'inquirer';
-import _ from 'lodash';
-import stockService, { PortfolioTypes } from './stock.service';
-import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
-import { formatTable } from '../../libs/cliFormat';
+const inquirer = require('inquirer');
+const _ = require('lodash');
+const stockService = require('./stock.service');
+const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
+const { formatTable } = require('../../libs/cliFormat');
+
+const { PortfolioTypes } = stockService;
 
 const methods = Object.keys(stockService);
 
@@ -62,6 +64,6 @@ const execute = async () => {
   }
 };
 
-export default {
+module.exports = {
   execute,
 };

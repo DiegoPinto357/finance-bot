@@ -1,5 +1,5 @@
 let argv;
 
-export const mockUserInput = args => (argv = args);
+const mockUserInput = args => (argv = args);
 
-export default () => ({ argv });
+module.exports = () => ({ argv, mockUserInput });

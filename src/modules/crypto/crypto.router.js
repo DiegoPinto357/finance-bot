@@ -1,5 +1,5 @@
-import express from 'express';
-import cryptoService from './crypto.service';
+const express = require('express');
+const cryptoService = require('./crypto.service');
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.get('/api/crypto/history/:type', async (req, res) =>
   res.json(await cryptoService.getHistory(req.params.type))
 );
 
-export default router;
+module.exports = router;

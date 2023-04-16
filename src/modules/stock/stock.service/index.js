@@ -1,11 +1,11 @@
-import database from '../../../providers/database';
-import tradingView from '../../../providers/tradingView';
-import stockAnalyser from './stockAnalyser';
-import { buildLogger } from '../../../libs/logger';
+const database = require('../../../providers/database');
+const tradingView = require('../../../providers/tradingView');
+const stockAnalyser = require('./stockAnalyser');
+const { buildLogger } = require('../../../libs/logger');
 
 const log = buildLogger('Stock');
 
-export const PortfolioTypes = ['br', 'us', 'fii', 'float'];
+const PortfolioTypes = ['br', 'us', 'fii', 'float'];
 
 const getBalanceWithPrices = async portfolioType => {
   const portfolio = await database.find(
@@ -191,7 +191,9 @@ const sell = async ({ asset, amount, orderValue }) => {
   return { status: 'ok' };
 };
 
-export default {
+module.exports = {
+  PortfolioTypes,
+
   getBalance,
   getTotalPosition,
   deposit,

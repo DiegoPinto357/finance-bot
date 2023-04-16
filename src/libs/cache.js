@@ -1,8 +1,8 @@
-import { promises as fs } from 'fs';
-import hash from 'object-hash';
-import stringify from 'json-stringify-safe';
-import { buildLogger } from './logger';
-import config from '../config';
+const { promises: fs } = require('fs');
+const hash = require('object-hash');
+const stringify = require('json-stringify-safe');
+const { buildLogger } = require('./logger');
+const config = require('../config');
 
 const log = buildLogger('Cache');
 
@@ -29,7 +29,7 @@ const saveData = async () => {
   await fs.writeFile(cacheFilename, stringify(cache, null, 2), 'utf-8');
 };
 
-export const withCache =
+const withCache =
   (func, options = {}) =>
   async (...params) => {
     if (config.cache.disabled) {
@@ -68,8 +68,9 @@ export const withCache =
     }
   };
 
-export default {
+module.exports = {
   init,
   clear,
   saveData,
+  withCache,
 };

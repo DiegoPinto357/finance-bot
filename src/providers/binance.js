@@ -1,6 +1,6 @@
-import { Spot } from '@binance/connector';
-import { withCache } from '../libs/cache';
-import { buildLogger } from '../libs/logger';
+const { Spot } = require('@binance/connector');
+const { withCache } = require('../libs/cache');
+const { buildLogger } = require('../libs/logger');
 
 const log = buildLogger('Binance');
 
@@ -112,7 +112,7 @@ const getEarnPosition = async () => {
   return [...staking, ...savings];
 };
 
-export default {
+module.exports = {
   getAccountInformation,
   getSymbolPriceTicker,
   getAssetPrice,

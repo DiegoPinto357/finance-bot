@@ -1,6 +1,5 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { withCache } from '../libs/cache';
-import { buildLogger } from '../libs/logger';
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { buildLogger } = require('../libs/logger');
 
 const log = buildLogger('GoogleSheets');
 
@@ -91,7 +90,7 @@ const writeValue = async (sheetTitle, { index, target }) => {
   await rows[rowIndex].save();
 };
 
-export default {
+module.exports = {
   resetDoc,
   loadSheet,
   setSheet,

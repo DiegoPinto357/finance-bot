@@ -1,8 +1,8 @@
-import tradingView from './tradingView';
-import httpClient from '../libs/httpClient';
-import { withCache } from '../libs/cache';
-import { buildLogger } from '../libs/logger';
-import config from '../config';
+const tradingView = require('./tradingView');
+const httpClient = require('../libs/httpClient');
+const { withCache } = require('../libs/cache');
+const { buildLogger } = require('../libs/logger');
+const config = require('../config');
 
 const host = 'https://api.dexscreener.com';
 
@@ -39,6 +39,6 @@ const getSymbolPrice = async (symbol, network) => {
   return await fetchSymbolPriceCached(symbol, network);
 };
 
-export default {
+module.exports = {
   getSymbolPrice,
 };

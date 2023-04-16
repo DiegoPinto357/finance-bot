@@ -1,16 +1,10 @@
-import hodlService from './hodl';
-import defiService from './defi';
-import defi2Service from './defi2';
-import backedService from './backed';
-import binanceBufferService from './binanceBuffer';
+const hodlService = require('./hodl');
+const defiService = require('./defi');
+const defi2Service = require('./defi2');
+const backedService = require('./backed');
+const binanceBufferService = require('./binanceBuffer');
 
-export const PortfolioTypes = [
-  'hodl',
-  'defi',
-  'defi2',
-  'backed',
-  'binanceBuffer',
-];
+const PortfolioTypes = ['hodl', 'defi', 'defi2', 'backed', 'binanceBuffer'];
 
 const getServiceByPortfolioType = portfolioType => {
   switch (portfolioType) {
@@ -90,7 +84,9 @@ const getHistory = async portfolioType => {
   return service.getHistory();
 };
 
-export default {
+module.exports = {
+  PortfolioTypes,
+
   getBalance,
   getTotalPosition,
   getPosition,

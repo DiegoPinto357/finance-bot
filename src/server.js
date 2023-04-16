@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import 'dotenv/config';
-import 'express-async-errors';
-import express from 'express';
-import cors from 'cors';
-import core from '.';
-import { buildLogger } from './libs/logger';
-import cryptoRouter from './modules/crypto/crypto.router';
-import portfolioRouter from './modules/portfolio/portfolio.router';
+require('dotenv/config');
+require('express-async-errors');
+const express = require('express');
+const cors = require('cors');
+const core = require('./core');
+const { buildLogger } = require('./libs/logger');
+const cryptoRouter = require('./modules/crypto/crypto.router');
+const portfolioRouter = require('./modules/portfolio/portfolio.router');
 
 const app = express();
 const port = 3001;

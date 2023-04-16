@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import cryptoService from './crypto.service';
-import { printBalance } from './cliUtils';
-import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
-import { formatTable } from '../../libs/cliFormat';
+const _ = require('lodash');
+const cryptoService = require('./crypto.service');
+const { printBalance } = require('./cliUtils');
+const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
+const { formatTable } = require('../../libs/cliFormat');
 
-export default async (command, args) => {
+module.exports = async (command, args) => {
   const { type } = args;
 
   switch (command) {

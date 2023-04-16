@@ -1,5 +1,5 @@
-import hodl from './hodl';
-import expectedBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
+const hodl = require('./hodl');
+const expectedBalance = require('../../../../mockData/crypto/hodl/expectedBalance.json');
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');

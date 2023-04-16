@@ -1,5 +1,5 @@
-import portfolioService from './portfolio.service';
-import { printBalance } from './cliUtils';
+const portfolioService = require('./portfolio.service');
+const { printBalance } = require('./cliUtils');
 
 const proccessAssetInput = input => {
   if (!input) return;
@@ -82,7 +82,7 @@ const swap = async args => {
   console.log(response);
 };
 
-export default async (command, args) => {
+module.exports = async (command, args) => {
   switch (command) {
     case 'balance':
       await balance(args);

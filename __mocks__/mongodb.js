@@ -1,20 +1,20 @@
-export const mockToArrayFn = jest.fn();
+const mockToArrayFn = jest.fn();
 
-export const mockFindFn = jest.fn(() => ({
+const mockFindFn = jest.fn(() => ({
   toArray: mockToArrayFn,
 }));
 
-export const mockFindOneFn = jest.fn();
+const mockFindOneFn = jest.fn();
 
-export const mockInsertOneFn = jest.fn();
+const mockInsertOneFn = jest.fn();
 
-export const mockUpdateOneFn = jest.fn();
+const mockUpdateOneFn = jest.fn();
 
-export const mockDeleteOneFn = jest.fn();
+const mockDeleteOneFn = jest.fn();
 
-export const mockBulkWriteFn = jest.fn();
+const mockBulkWriteFn = jest.fn();
 
-export const mockCollectionFn = jest.fn(() => ({
+const mockCollectionFn = jest.fn(() => ({
   find: mockFindFn,
   findOne: mockFindOneFn,
   insertOne: mockInsertOneFn,
@@ -23,11 +23,25 @@ export const mockCollectionFn = jest.fn(() => ({
   bulkWrite: mockBulkWriteFn,
 }));
 
-export const mockDbFn = jest.fn(() => ({ collection: mockCollectionFn }));
+const mockDbFn = jest.fn(() => ({ collection: mockCollectionFn }));
 
-export const instance = {
+const instance = {
   connect: jest.fn(),
   db: mockDbFn,
 };
 
-export const MongoClient = jest.fn().mockImplementation(() => instance);
+const MongoClient = jest.fn().mockImplementation(() => instance);
+
+module.exports = {
+  mockToArrayFn,
+  mockFindFn,
+  mockFindOneFn,
+  mockInsertOneFn,
+  mockUpdateOneFn,
+  mockDeleteOneFn,
+  mockBulkWriteFn,
+  mockCollectionFn,
+  mockDbFn,
+  instance,
+  MongoClient,
+};

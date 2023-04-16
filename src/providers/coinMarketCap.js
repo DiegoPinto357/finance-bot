@@ -1,7 +1,7 @@
-import CoinMarketCap from 'coinmarketcap-api';
-import { withCache } from '../libs/cache';
-import { buildLogger } from '../libs/logger';
-import config from '../config';
+const CoinMarketCap = require('coinmarketcap-api');
+const { withCache } = require('../libs/cache');
+const { buildLogger } = require('../libs/logger');
+const config = require('../config');
 
 const client = new CoinMarketCap(process.env.COIMARKETCAP_API_KEY);
 
@@ -27,6 +27,6 @@ const getSymbolPrice = async (symbol, network) => {
   return await fetchSymbolQuoteCached(symbol, network);
 };
 
-export default {
+module.exports = {
   getSymbolPrice,
 };

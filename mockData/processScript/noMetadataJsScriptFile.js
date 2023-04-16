@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   actions: [
     {
       module: 'portfolio',

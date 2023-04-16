@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+const chalk = require('chalk');
 
 const separatorLength = 100;
 
@@ -14,7 +14,7 @@ const style = {
   error: chalk.bold.red,
 };
 
-export const buildLogger =
+const buildLogger =
   module =>
   (
     message,
@@ -51,3 +51,7 @@ export const buildLogger =
       );
     if (breakLineBelow) console[severity]();
   };
+
+module.exports = {
+  buildLogger,
+};

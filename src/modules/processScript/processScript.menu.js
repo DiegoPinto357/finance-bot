@@ -1,7 +1,7 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import inquirer from 'inquirer';
-import processScriptFile from './processScriptFile';
+const { promises: fs } = require('fs');
+const path = require('path');
+const inquirer = require('inquirer');
+const processScriptFile = require('./processScriptFile');
 
 const scriptsFolder = 'scripts';
 
@@ -21,6 +21,6 @@ const execute = async () => {
   return await processScriptFile(filename);
 };
 
-export default {
+module.exports = {
   execute,
 };

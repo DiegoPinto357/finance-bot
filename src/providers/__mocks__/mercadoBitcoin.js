@@ -1,7 +1,7 @@
-import tickers from '../../../mockData/mercadoBitcoin/tickers.json';
+const tickers = require('../../../mockData/mercadoBitcoin/tickers.json');
 
 const getTicker = ticker => Promise.resolve(tickers[ticker].ticker);
 
-export default {
+module.exports = {
   getTicker,
 };

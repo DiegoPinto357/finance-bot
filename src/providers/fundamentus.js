@@ -1,5 +1,5 @@
-import fundamentus from 'fundamentus';
-import { buildLogger } from '../libs/logger';
+const fundamentus = require('fundamentus');
+const { buildLogger } = require('../libs/logger');
 
 const log = buildLogger('Fundamentus');
 
@@ -35,6 +35,6 @@ const getStocksInfo = async stocksList => {
   );
 };
 
-export default {
+module.exports = {
   getStocksInfo,
 };

@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const httpClient = axios.create({
   timeout: 5000,
@@ -9,6 +9,6 @@ const get = async (url, config) => {
   return response.data;
 };
 
-export default {
+module.exports = {
   get,
 };

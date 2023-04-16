@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import path from 'path';
+const { promises: fs } = require('fs');
+const path = require('path');
 
 const mockDir = `${path.resolve()}/mockData/coinMarketCap/`;
 
@@ -10,6 +10,6 @@ const getSymbolPrice = jest.fn(async symbol => {
   return price;
 });
 
-export default {
+module.exports = {
   getSymbolPrice,
 };

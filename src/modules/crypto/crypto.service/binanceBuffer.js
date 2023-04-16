@@ -1,6 +1,6 @@
-import _ from 'lodash';
-import database from '../../../providers/database';
-import binance from '../../../providers/binance';
+const _ = require('lodash');
+const database = require('../../../providers/database');
+const binance = require('../../../providers/binance');
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'BUSD';
@@ -68,7 +68,7 @@ const deposit = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
-export default {
+module.exports = {
   // TODO add getBalance method
   getTotalPosition,
   setAssetValue,

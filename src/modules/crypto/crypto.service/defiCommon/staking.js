@@ -1,5 +1,5 @@
-import googleSheets from '../../../../providers/googleSheets';
-import getSymbolPrice from './getSymbolPrice';
+const googleSheets = require('../../../../providers/googleSheets');
+const getSymbolPrice = require('./getSymbolPrice');
 
 const getBalance = async assetName => {
   const balance = await googleSheets.loadSheet(`crypto-${assetName}-staking`);
@@ -34,6 +34,6 @@ const getBalance = async assetName => {
   });
 };
 
-export default {
+module.exports = {
   getBalance,
 };

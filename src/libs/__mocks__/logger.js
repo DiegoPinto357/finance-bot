@@ -1,3 +1,8 @@
-export const mockLoggerInstance = jest.fn();
+const mockLoggerInstance = jest.fn();
 
-export const buildLogger = () => mockLoggerInstance;
+const buildLogger = () => mockLoggerInstance;
+
+module.exports = {
+  buildLogger,
+  mockLoggerInstance,
+};

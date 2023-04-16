@@ -1,4 +1,4 @@
-import database from '../../providers/database';
+const database = require('../../providers/database');
 
 const getDataFromDatabase = assetName =>
   database.find('assets', 'fixed', assetName ? { asset: assetName } : {}, {
@@ -70,7 +70,7 @@ const removeAsset = async asset => {
   return { status: 'ok' };
 };
 
-export default {
+module.exports = {
   getBalance,
   getTotalPosition,
   getAssetsList,

@@ -1,6 +1,6 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import _ from 'lodash';
+const { promises: fs } = require('fs');
+const path = require('path');
+const _ = require('lodash');
 
 const mockDir = `${path.resolve()}/mockData/database/`;
 
@@ -129,7 +129,7 @@ const deleteOne = async (databaseName, collectionName, query) => {
 
 const resetMockValues = () => (dataBuffer = {});
 
-export default {
+module.exports = {
   connect,
   find,
   findOne,

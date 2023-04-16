@@ -1,8 +1,8 @@
-import { buildLogger } from '../libs/logger';
-import httpClient from '../libs/httpClient';
-import { withCache } from '../libs/cache';
-import delay from '../libs/delay';
-import config from '../config';
+const { buildLogger } = require('../libs/logger');
+const httpClient = require('../libs/httpClient');
+const { withCache } = require('../libs/cache');
+const delay = require('../libs/delay');
+const config = require('../config');
 
 const log = buildLogger('Blockchain');
 
@@ -84,7 +84,7 @@ const getContractTokenTotalSupply = async ({ network, contractAddress }) => {
   return result * 1e-18;
 };
 
-export default {
+module.exports = {
   getTokenBalance,
   getContractTokenTotalSupply,
 };

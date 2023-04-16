@@ -1,12 +1,12 @@
-import mockSheetData from '../mockData/googleSheets/crypto-spot.json';
+const mockSheetData = require('../mockData/googleSheets/crypto-spot.json');
 
-export const testDataBuffer = mockSheetData.map(row => ({
+const testDataBuffer = mockSheetData.map(row => ({
   ...row,
   _sheet: { headerValues: Object.keys(row) },
   save: jest.fn(),
 }));
 
-export const instance = {
+const instance = {
   useServiceAccountAuth: jest.fn(),
   loadInfo: jest.fn(),
   sheetsByTitle: {
@@ -16,4 +16,10 @@ export const instance = {
   },
 };
 
-export const GoogleSpreadsheet = jest.fn().mockImplementation(() => instance);
+const GoogleSpreadsheet = jest.fn().mockImplementation(() => instance);
+
+module.exports = {
+  GoogleSpreadsheet,
+  testDataBuffer,
+  instance,
+};

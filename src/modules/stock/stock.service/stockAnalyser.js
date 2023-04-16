@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import fundamentus from '../../../providers/fundamentus';
-import fundamentei from '../../../providers/fundamentei';
-import { withCache } from '../../../libs/cache';
+const _ = require('lodash');
+const fundamentus = require('../../../providers/fundamentus');
+const fundamentei = require('../../../providers/fundamentei');
+const { withCache } = require('../../../libs/cache');
 
 const stocksList = [
   'MRVE3',
@@ -41,11 +41,12 @@ const calcPLMetric = value => {
 };
 
 const calcDivYieldMetric = value => {
-  return range(saturate(value, { min: 0, max: 1 }), { min: 0, max: 0.1 });
+  // return range(saturate(value, { min: 0, max: 1 }), { min: 0, max: 0.1 });
+  return range(value, { min: 0, optimal: 7, max: 10 });
 };
 
 const calcPVpMetric = value => {
-  return 1 - range(value, { min: 0, max: 5 });
+  return range(value, { min: 0, optimal: 0.5, max: 5 });
 };
 
 const calcMargLiqMetric = value => {
@@ -87,14 +88,16 @@ const calcReclameAquiRatingsMetric = value => {
   return range(value, { min: 0, max: 10 });
 };
 
+// TODO move cache to provider
 const getStocksInfoCached = withCache(
   params => fundamentus.getStocksInfo(params),
-  { timeToLive: 30 * 24 * 60 * 60 * 1000 }
+  { timeToLive: 24 * 60 * 60 * 1000 }
 );
 
+// TODO move cache to provider
 const getStockInfoCached = withCache(
   params => fundamentei.getStockInfo(params),
-  { timeToLive: 30 * 24 * 60 * 60 * 1000 }
+  { timeToLive: 24 * 60 * 60 * 1000 }
 );
 
 // for (let i = 0; i < 100; i++) {
@@ -104,7 +107,7 @@ const getStockInfoCached = withCache(
 // }
 
 const analysePortfolio = async () => {
-  const partialStocksInfo = await getStocksInfoCached();
+  const partialStocksInfo = await getStocksInfoCached(stocksList);
   const stocksInfo = await Promise.all(
     partialStocksInfo.map(async partialStockInfo => {
       try {
@@ -126,7 +129,7 @@ const analysePortfolio = async () => {
         pl: calcPLMetric(stockInfo['P/L']),
         divYield: calcDivYieldMetric(stockInfo['Div.Yield']),
         pvp: calcPVpMetric(stockInfo['P/VP']),
-        margLiq: calcMargLiqMetric(stockInfo['Mrg. Líq.']),
+        margLiq: 2 * calcMargLiqMetric(stockInfo['Mrg. Líq.']),
         dbpl: calcDBPLMetric(stockInfo['Dív.Brut/ Patrim.']),
         roe: calcROEMetric(stockInfo['ROE']),
         evEbit: calcEvEbitMetric(stockInfo['EV/EBIT']),
@@ -161,6 +164,6 @@ const analysePortfolio = async () => {
   );
 };
 
-export default {
+module.exports = {
   analysePortfolio,
 };
