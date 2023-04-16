@@ -10,8 +10,7 @@
     "test": "NODE_ENV='test' jest --watch",
     "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "node ./src/cli.js",
-    "server": "nodemon ./src/server.js",
-    "publish": "npx auto-version && npm publish"
+    "server": "nodemon ./src/server.js"
   },
   "repository": {
     "type": "git",
