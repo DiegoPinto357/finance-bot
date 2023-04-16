@@ -16,7 +16,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@diegopinto357'
       - run: npm install
-      - run: npx auto-version
       - run: npm prune --production
       - run: npm publish
         env:
