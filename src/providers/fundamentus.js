@@ -1,4 +1,4 @@
-const fundamentus = require('fundamentus');
+// const fundamentus = require('fundamentus');
 const { buildLogger } = require('../libs/logger');
 
 const log = buildLogger('Fundamentus');
@@ -24,15 +24,15 @@ const removeFields = data =>
 
 const getStocksInfo = async stocksList => {
   log('Loading stocks info.');
-  const stocksInfo = await fundamentus.getStocksInfo();
+  // const stocksInfo = await fundamentus.getStocksInfo();
 
-  if (!stocksList || stocksList.length === 0) {
-    return removeFields(stocksInfo);
-  }
+  // if (!stocksList || stocksList.length === 0) {
+  //   return removeFields(stocksInfo);
+  // }
 
-  return removeFields(
-    stocksInfo.filter(stock => stocksList.includes(stock.Papel))
-  );
+  // return removeFields(
+  //   stocksInfo.filter(stock => stocksList.includes(stock.Papel))
+  // );
 };
 
 module.exports = {
