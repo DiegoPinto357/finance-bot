@@ -5,6 +5,11 @@ const processScript = require('./processScript.service');
 
 const getFileExtension = filename => filename.split('.').pop().toLowerCase();
 
+const requireUncached = module => {
+  delete require.cache[require.resolve(module)];
+  return require(module);
+};
+
 const loadJson5Script = async filename => {
   const rawFile = await fs.readFile(filename, 'utf-8');
   const script = await fleece.evaluate(rawFile);
@@ -25,7 +30,7 @@ const loadJsScript = async filename => {
   const enable = regexResult && regexResult[2];
 
   const modulePath = path.resolve(filename);
-  const script = require(modulePath);
+  const script = requireUncached(modulePath);
   script.enable = enable === 'true';
 
   const disabledScript = rawFile.replace(
