@@ -66,6 +66,7 @@ const CryptoAssets = {
 };
 
 const Portfolios = {
+  RESERVA_EMERGENCIA: 'reservaEmergencia',
   AMORTECEDOR: 'amortecedor',
   FINANCIAMENTO: 'financiamento',
   VIAGEM: 'viagem',
