@@ -71,7 +71,7 @@ const deposit = async ({ asset, value }) => {
   await database.updateOne(
     'assets',
     'crypto',
-    { asset, location: 'mercadoBitcoin', type: 'float', asset },
+    { asset, location: 'mercadoBitcoin', type: 'float' },
     { $set: { amount: newValue } }
   );
 

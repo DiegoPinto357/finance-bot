@@ -9,8 +9,8 @@
   "scripts": {
     "test": "NODE_ENV='test' jest --watch",
     "test:coverage": "NODE_ENV='test' jest --coverage",
-    "cli": "node ./src/cli.js",
-    "server": "nodemon ./src/server.js"
+    "cli": "tsx ./src/cli.js",
+    "server": "tsx watch ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "jest": "^29.4.1",
-    "nodemon": "^2.0.16"
+    "tsx": "^3.12.7",
+    "typescript": "^5.0.4"
   }
 }
