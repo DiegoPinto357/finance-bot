@@ -47,7 +47,10 @@ const StockAssets = {
     SQIA3: 'SQIA3',
     WIZC3: 'WIZC3',
   },
-  US: {},
+  US: {
+    IVVB11: 'IVVB11',
+    NASD11: 'NASD11',
+  },
   FII: {
     ALZR11: 'ALZR11',
     BCFF11: 'BCFF11',
