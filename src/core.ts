@@ -1,6 +1,6 @@
-const menu = require('./menu');
-const cache = require('./libs/cache');
-const database = require('./providers/database');
+import menu from './menu';
+import cache from './libs/cache';
+import database from './providers/database';
 
 process.on('SIGINT', async () => {
   try {
@@ -21,6 +21,6 @@ const init = async () => {
   await Promise.all([database.connect(), cache.init(), menu.init()]);
 };
 
-module.exports = {
+export default {
   init,
 };

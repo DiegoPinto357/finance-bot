@@ -1,10 +1,10 @@
-const inquirer = require('inquirer');
-const InterruptedPrompt = require('inquirer-interrupted-prompt');
-const processScriptMenu = require('./modules/processScript/processScript.menu');
-const portfolioMenu = require('./modules/portfolio/portfolio.menu');
-const stockMenu = require('./modules/stock/stock.menu');
-const crtyptoMenu = require('./modules/crypto/crypto.menu');
-const cacheMenu = require('./libs/cache.menu');
+import inquirer from 'inquirer';
+import InterruptedPrompt from 'inquirer-interrupted-prompt';
+import processScriptMenu from './modules/processScript/processScript.menu';
+import portfolioMenu from './modules/portfolio/portfolio.menu';
+import stockMenu from './modules/stock/stock.menu';
+import crtyptoMenu from './modules/crypto/crypto.menu';
+import cacheMenu from './libs/cache.menu';
 
 InterruptedPrompt.fromAll(inquirer);
 
@@ -53,7 +53,7 @@ const execute = async () => {
   }
 };
 
-module.exports = {
+export default {
   init,
   execute,
 };

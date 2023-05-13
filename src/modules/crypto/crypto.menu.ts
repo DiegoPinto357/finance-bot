@@ -1,7 +1,7 @@
-const inquirer = require('inquirer');
-const _ = require('lodash');
-const cryptoService = require('./crypto.service');
-const { printBalance } = require('./cliUtils');
+import inquirer from 'inquirer';
+import _ from 'lodash';
+import cryptoService from './crypto.service';
+import { printBalance } from './cliUtils';
 
 const { PortfolioTypes } = cryptoService;
 
@@ -42,6 +42,6 @@ const execute = async () => {
   }
 };
 
-module.exports = {
+export default {
   execute,
 };

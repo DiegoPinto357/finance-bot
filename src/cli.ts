@@ -1,20 +1,21 @@
 #!/usr/bin/env node
-require('dotenv/config');
-const yargs = require('yargs');
-const { hideBin } = require('yargs/helpers');
-const menu = require('./menu');
-const core = require('./core');
-const cryptoContext = require('./modules/crypto/crypto.cli');
-const stockContext = require('./modules/stock/stock.cli');
-const fixedContext = require('./modules/fixed/fixed.cli');
-const portfolioContext = require('./modules/portfolio/portfolio.cli');
-const processScriptContext = require('./modules/processScript/processScript.cli');
+import 'dotenv/config';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import menu from './menu';
+import core from './core';
+import cryptoContext from './modules/crypto/crypto.cli';
+import stockContext from './modules/stock/stock.cli';
+import fixedContext from './modules/fixed/fixed.cli';
+import portfolioContext from './modules/portfolio/portfolio.cli';
+import processScriptContext from './modules/processScript/processScript.cli';
 
 (async () => {
   await core.init();
 
   try {
     const argv = yargs(hideBin(process.argv)).argv;
+    console.log(argv);
     const [context, command] = argv._;
 
     switch (context) {
@@ -46,12 +47,7 @@ const processScriptContext = require('./modules/processScript/processScript.cli'
           await menu.execute();
         }
     }
-
-    await handleExit();
-    process.exit(0);
   } catch (error) {
     console.error(error);
-    await handleExit();
-    process.exit(1);
   }
 })();
