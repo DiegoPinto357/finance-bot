@@ -1,9 +1,9 @@
-const { promises: fs, mockFile, clearMockFiles } = require('fs');
-const path = require('path');
-const fleece = require('golden-fleece');
-const yargs = require('yargs');
-const portfolioService = require('../portfolio/portfolio.service');
-const processScriptCLI = require('./processScript.cli');
+import { promises as fs, mockFile, clearMockFiles } from 'fs';
+import path from 'path';
+import * as fleece from 'golden-fleece';
+import yargs, { mockUserInput } from 'yargs';
+import portfolioService from '../portfolio/portfolio.service';
+import processScriptCLI from './processScript.cli';
 
 const { mockUserInput } = yargs();
 

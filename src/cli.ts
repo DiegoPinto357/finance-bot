@@ -15,7 +15,6 @@ import processScriptContext from './modules/processScript/processScript.cli';
 
   try {
     const argv = yargs(hideBin(process.argv)).argv;
-    console.log(argv);
     const [context, command] = argv._;
 
     switch (context) {

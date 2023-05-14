@@ -1,10 +1,10 @@
-const _ = require('lodash');
-const { buildLogger } = require('../../libs/logger');
-const fixedService = require('../fixed/fixed.service');
-const stockService = require('../stock/stock.service');
-const cryptoService = require('../crypto/crypto.service');
-const portfolioService = require('../portfolio/portfolio.service');
-require('../../../globals');
+import _ from 'lodash';
+import { buildLogger } from '../../libs/logger';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service';
+import portfolioService from '../portfolio/portfolio.service';
+import '../../../globals';
 
 const log = buildLogger('Process Script');
 
@@ -29,7 +29,7 @@ const runActionFunc = async (module, method, params) => {
   return await actionFunc(params);
 };
 
-module.exports = async script => {
+export default async script => {
   const { enable, actions } = script;
 
   if (!enable) return { status: 'scriptNotEnabled' };

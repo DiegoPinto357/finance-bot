@@ -1,9 +1,7 @@
 import inquirer from 'inquirer';
 import _ from 'lodash';
-import cryptoService from './crypto.service';
+import cryptoService, { portfolioTypes } from './crypto.service';
 import { printBalance } from './cliUtils';
-
-const { PortfolioTypes } = cryptoService;
 
 const methods = Object.keys(cryptoService);
 
@@ -13,7 +11,7 @@ const getBalanceMenu = async () => {
       type: 'list',
       name: 'portfolioName',
       message: 'portfolioName?',
-      choices: PortfolioTypes,
+      choices: portfolioTypes,
     },
   ]);
 

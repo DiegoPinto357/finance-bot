@@ -1,11 +1,11 @@
-const _ = require('lodash');
-const database = require('../../../providers/database');
-const binance = require('../../../providers/binance');
+import _ from 'lodash';
+import database from '../../../providers/database';
+import binance from '../../../providers/binance';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'BUSD';
 
-const getTotalPosition = async asset => {
+const getTotalPosition = async (asset?: string) => {
   const binanceSpotBuffer = await database.find(
     'assets',
     'crypto',
@@ -27,7 +27,13 @@ const getTotalPosition = async asset => {
   }, 0);
 };
 
-const setAssetValue = async ({ asset, value }) => {
+const setAssetValue = async ({
+  asset,
+  value,
+}: {
+  asset?: string;
+  value: number;
+}) => {
   asset = asset ? asset : 'BRL';
 
   if (asset !== 'BRL') {
@@ -44,7 +50,7 @@ const setAssetValue = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
-const deposit = async ({ asset, value }) => {
+const deposit = async ({ asset, value }: { asset?: string; value: number }) => {
   asset = asset ? asset : 'BRL';
 
   if (asset !== 'BRL') {
@@ -68,8 +74,14 @@ const deposit = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
-module.exports = {
+export default {
   // TODO add getBalance method
+  getBalance: () => {
+    throw new Error('Not implemented');
+  },
+  getHistory: () => {
+    throw new Error('Not implemented');
+  },
   getTotalPosition,
   setAssetValue,
   deposit,

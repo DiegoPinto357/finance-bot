@@ -1,12 +1,20 @@
-const hodlService = require('./hodl');
-const defiService = require('./defi');
-const defi2Service = require('./defi2');
-const backedService = require('./backed');
-const binanceBufferService = require('./binanceBuffer');
+import hodlService from './hodl';
+import defiService from './defi';
+import defi2Service from './defi2';
+import backedService from './backed';
+import binanceBufferService from './binanceBuffer';
 
-const PortfolioTypes = ['hodl', 'defi', 'defi2', 'backed', 'binanceBuffer'];
+export const portfolioTypes = [
+  'hodl',
+  'defi',
+  'defi2',
+  'backed',
+  'binanceBuffer',
+] as const;
 
-const getServiceByPortfolioType = portfolioType => {
+type PortfolioTypes = (typeof portfolioTypes)[number];
+
+const getServiceByPortfolioType = (portfolioType: PortfolioTypes) => {
   switch (portfolioType) {
     case 'hodl':
       return hodlService;
@@ -24,51 +32,62 @@ const getServiceByPortfolioType = portfolioType => {
       return binanceBufferService;
 
     default:
-      console.error('Invalid portfolio type.');
+      throw new Error('Invalid portfolio type.');
   }
 };
 
-const getBalance = async portfolioType => {
+const getBalance = async (portfolioType: PortfolioTypes) => {
   const service = getServiceByPortfolioType(portfolioType);
   return service.getBalance();
 };
 
-const getTotalPosition = async portfolioType => {
+const getTotalPosition = async (portfolioType: PortfolioTypes) => {
   if (portfolioType) {
     const service = getServiceByPortfolioType(portfolioType);
     return service.getTotalPosition();
   }
 
   const totals = await Promise.all(
-    PortfolioTypes.map(async type => {
+    portfolioTypes.map(async type => {
       const service = getServiceByPortfolioType(type);
       return await service.getTotalPosition();
     })
   );
 
   return totals.reduce((obj, current, index) => {
-    obj[PortfolioTypes[index]] = current;
+    obj[portfolioTypes[index]] = current;
     return obj;
   }, {});
 };
 
-const getPosition = async ({ type, asset }) => {
+const getPosition = async ({
+  type,
+  asset,
+}: {
+  type: PortfolioTypes;
+  asset: string;
+}) => {
   const service = getServiceByPortfolioType(type);
   return await service.getTotalPosition(asset);
 };
 
-const setAssetValue = async ({ asset, value }) => {
+const setAssetValue = async ({
+  asset,
+  value,
+}: {
+  asset?: string;
+  value: number;
+}) => {
   asset = asset ? asset : 'binanceBuffer';
 
   if (asset !== 'binanceBuffer') {
     return { status: 'cannotSetValue' };
   }
 
-  await binanceBufferService.setAssetValue({ value });
-  return { status: 'ok' };
+  return await binanceBufferService.setAssetValue({ value });
 };
 
-const deposit = async ({ asset, value }) => {
+const deposit = async ({ asset, value }: { asset: string; value: number }) => {
   asset = asset ? asset : 'binanceBuffer';
 
   if (asset !== 'binanceBuffer' && asset !== 'backed') {
@@ -79,14 +98,12 @@ const deposit = async ({ asset, value }) => {
   return await service.deposit({ value });
 };
 
-const getHistory = async portfolioType => {
+const getHistory = async (portfolioType: PortfolioTypes) => {
   const service = getServiceByPortfolioType(portfolioType);
   return service.getHistory();
 };
 
-module.exports = {
-  PortfolioTypes,
-
+export default {
   getBalance,
   getTotalPosition,
   getPosition,

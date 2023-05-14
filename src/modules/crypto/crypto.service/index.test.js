@@ -1,9 +1,9 @@
-const database = require('../../../providers/database');
-const cryptoService = require('./');
-const expectedHodlBalance = require('../../../../mockData/crypto/hodl/expectedBalance.json');
-const expectedDefiBalance = require('../../../../mockData/crypto/defi/expectedBalance.json');
-const expectedDefi2Balance = require('../../../../mockData/crypto/defi2/expectedBalance.json');
-const expectedBackedBalance = require('../../../../mockData/crypto/backed/expectedBalance.json');
+import database from '../../../providers/database';
+import cryptoService from './index.ts';
+import expectedHodlBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
+import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalance.json';
+import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';
+import expectedBackedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');

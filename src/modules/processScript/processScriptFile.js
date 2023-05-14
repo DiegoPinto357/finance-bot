@@ -1,7 +1,8 @@
-const { promises: fs } = require('fs');
-const path = require('path');
-const fleece = require('golden-fleece');
-const processScript = require('./processScript.service');
+import { promises as fs } from 'fs';
+import path from 'path';
+import * as fleece from 'golden-fleece';
+import processScript from './processScript.service';
+// import dynamicImport from '../../libs/dynamicImport';
 
 const getFileExtension = filename => filename.split('.').pop().toLowerCase();
 
@@ -30,7 +31,7 @@ const loadJsScript = async filename => {
   const enable = regexResult && regexResult[2];
 
   const modulePath = path.resolve(filename);
-  const script = requireUncached(modulePath);
+  const script = requireUncached(modulePath).default;
   script.enable = enable === 'true';
 
   const disabledScript = rawFile.replace(
@@ -42,7 +43,7 @@ const loadJsScript = async filename => {
   return script;
 };
 
-module.exports = async filename => {
+export default async filename => {
   const fileExtension = getFileExtension(filename);
 
   const script =

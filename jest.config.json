@@ -1,9 +1,0 @@
-{
-  "setupFiles": ["<rootDir>/.jest/setEnvVars.js"],
-  "moduleFileExtensions": ["js"],
-  "transform": {
-    "^.+\\.js$": "babel-jest"
-  },
-
-  "testRegex": "((\\.|/*.)(test))\\.js?$"
-}

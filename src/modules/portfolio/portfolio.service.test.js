@@ -1,10 +1,10 @@
-const googleSheets = require('../../providers/googleSheets');
-const database = require('../../providers/database');
-const binance = require('../../providers/binance');
-const fixedService = require('../fixed/fixed.service');
-const stockService = require('../stock/stock.service');
-const cryptoService = require('../crypto/crypto.service');
-const portfolioService = require('./portfolio.service');
+import googleSheets from '../../providers/googleSheets';
+import database from '../../providers/database';
+import binance from '../../providers/binance';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service';
+import portfolioService from './portfolio.service';
 
 jest.mock('../../providers/googleSheets');
 jest.mock('../../providers/database');

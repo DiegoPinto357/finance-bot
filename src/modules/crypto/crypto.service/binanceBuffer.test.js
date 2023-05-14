@@ -1,5 +1,5 @@
-const database = require('../../../providers/database');
-const binanceBuffer = require('./binanceBuffer');
+import database from '../../../providers/database';
+import binanceBuffer from './binanceBuffer';
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/binance');

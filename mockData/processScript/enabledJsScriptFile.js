@@ -2,7 +2,7 @@
  * @enable true
  */
 
-module.exports = {
+export default {
   actions: [
     {
       module: 'portfolio',

@@ -47,9 +47,12 @@
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",
+    "@types/jest": "^29.5.1",
     "@types/lodash": "^4.14.194",
     "@types/yargs": "^17.0.24",
     "jest": "^29.4.1",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
     "tsx": "^3.12.7",
     "typescript": "^5.0.4"
   }

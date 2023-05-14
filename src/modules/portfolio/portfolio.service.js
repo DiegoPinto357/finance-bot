@@ -1,9 +1,9 @@
-const { buildLogger } = require('../../libs/logger');
-const googleSheets = require('../../providers/googleSheets');
-const database = require('../../providers/database');
-const fixedService = require('../fixed/fixed.service');
-const stockService = require('../stock/stock.service');
-const cryptoService = require('../crypto/crypto.service');
+import { buildLogger } from '../../libs/logger';
+import googleSheets from '../../providers/googleSheets';
+import database from '../../providers/database';
+import fixedService from '../fixed/fixed.service';
+import stockService from '../stock/stock.service';
+import cryptoService from '../crypto/crypto.service/index.ts';
 
 const log = buildLogger('Portfolios');
 
@@ -739,7 +739,7 @@ const updateSharesDiffTable = async () => {
 const updateTables = () =>
   Promise.all([updateAbsoluteTable(), updateSharesDiffTable()]);
 
-module.exports = {
+export default {
   getBalance,
   getShares,
   deposit,

@@ -81,5 +81,8 @@ const deposit = async ({ asset, value }) => {
 module.exports = {
   getBalance,
   getTotalPosition,
+  getHistory: () => {
+    throw new Error('Not implemented');
+  },
   deposit,
 };

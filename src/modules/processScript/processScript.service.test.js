@@ -1,6 +1,6 @@
-const _ = require('lodash');
-const portfolioService = require('../portfolio/portfolio.service');
-const processScript = require('./processScript.service');
+import _ from 'lodash';
+import portfolioService from '../portfolio/portfolio.service';
+import processScript from './processScript.service';
 
 jest.mock('../../providers/googleSheets');
 jest.mock('../../providers/tradingView');

@@ -75,4 +75,10 @@ const getTotalPosition = async () => (await getBalance()).total;
 module.exports = {
   getBalance,
   getTotalPosition,
+  getHistory: () => {
+    throw new Error('Not implemented');
+  },
+  deposit: _value => {
+    throw new Error('Not implemented');
+  },
 };

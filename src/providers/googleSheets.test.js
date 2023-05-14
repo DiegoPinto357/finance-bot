@@ -1,8 +1,8 @@
-const { instance, testDataBuffer } = require('google-spreadsheet');
-const googleSheets = require('./googleSheets');
-const cache = require('../libs/cache');
-const { mockLoggerInstance } = require('../libs/logger');
-const mockSheetData = require('../../mockData/googleSheets/crypto-spot.json');
+import { instance, testDataBuffer } from 'google-spreadsheet';
+import googleSheets from './googleSheets';
+import cache from '../libs/cache';
+import { mockLoggerInstance } from '../libs/logger';
+import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
 
 jest.mock('../libs/logger');
 

@@ -1,6 +1,6 @@
-const processScriptFile = require('./processScriptFile');
+import processScriptFile from './processScriptFile';
 
-module.exports = async args => {
+export default async args => {
   const filename = args._[1];
   await processScriptFile(filename);
 };

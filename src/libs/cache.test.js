@@ -1,14 +1,12 @@
-const { promises: fs, mockFile, clearMockFiles } = require('fs');
-const cache = require('./cache');
-const { withCache } = cache;
+import { promises as fs, mockFile, clearMockFiles } from 'fs';
+import cache, { withCache } from './cache';
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
 jest.mock('fs');
 
-const minute = 60 * 1000;
 jest.mock('../config', () => ({
-  cache: { defaultTimeToLive: 5 * minute },
+  cache: { defaultTimeToLive: 5 * 60 * 1000 },
 }));
 
 describe('cache', () => {
@@ -132,6 +130,8 @@ describe('cache', () => {
 
     it('assumes default "time to live" value whe it is not provided', async () => {
       const funcCached = withCache(func);
+
+      const minute = 60 * 1000;
 
       const firstResult = await funcCached('param1', 'param2');
       jest.advanceTimersByTime(3 * minute);
