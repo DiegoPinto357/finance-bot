@@ -1,8 +1,13 @@
-let files = {};
+interface StringIndexed {
+  [key: string]: any;
+}
 
-const mockFile = (filename, data) => (files[filename] = data);
+let files: StringIndexed = {};
 
-const clearMockFiles = () => (files = {});
+export const mockFile = (filename: string, data: any) =>
+  (files[filename] = data);
+
+export const clearMockFiles = () => (files = {});
 
 const readFile = jest.fn(filename => {
   const data = files[filename];
@@ -16,12 +21,7 @@ const writeFile = jest.fn((filename, data) =>
   Promise.resolve((files[filename] = data))
 );
 
-module.exports = {
-  promises: {
-    readFile,
-    writeFile,
-  },
-
-  mockFile,
-  clearMockFiles,
+export const promises = {
+  readFile,
+  writeFile,
 };

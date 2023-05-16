@@ -8,7 +8,16 @@ const log = buildLogger('Cache');
 
 const cacheFilename = './.cache/main.json';
 
-let cache = {};
+interface CacheEntry {
+  timestamp: number;
+  data: Object;
+}
+
+interface StringIndexed {
+  [key: string]: CacheEntry;
+}
+
+let cache: StringIndexed = {};
 
 const init = async () => {
   log('Loading cache file');
@@ -29,9 +38,14 @@ const saveData = async () => {
   await fs.writeFile(cacheFilename, stringify(cache, null, 2), 'utf-8');
 };
 
+interface Options {
+  dataNode?: string;
+  timeToLive?: number;
+}
+
 export const withCache =
-  (func, options = {}) =>
-  async (...params) => {
+  (func: (...params: any) => any, options: Options = {}) =>
+  async (...params: any) => {
     if (config.cache.disabled) {
       return await func(...params);
     }

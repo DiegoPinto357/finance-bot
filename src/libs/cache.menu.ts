@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const _ = require('lodash');
-const cache = require('./cache');
+import inquirer from 'inquirer';
+import _ from 'lodash';
+import cache from './cache';
 
 const methods = ['clearCache'];
 
@@ -24,6 +24,6 @@ const execute = async () => {
   }
 };
 
-module.exports = {
+export default {
   execute,
 };

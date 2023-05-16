@@ -1,19 +1,13 @@
-const formatPercentage = value =>
+export const formatPercentage = (value: number) =>
   typeof value === 'number' ? `${(value * 100).toFixed(2)}%` : undefined;
 
-const formatCurrency = value => {
+export const formatCurrency = (value: number) => {
   if (typeof value !== 'number') return;
 
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 };
 
-const fromCurrencyToNumber = value =>
+export const fromCurrencyToNumber = (value: string) =>
   value !== ''
     ? parseFloat(value.replace('R$', '').replace('.', '').replace(',', '.'))
     : 0;
-
-module.exports = {
-  formatPercentage,
-  formatCurrency,
-  fromCurrencyToNumber,
-};
