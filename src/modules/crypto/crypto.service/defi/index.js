@@ -1,8 +1,8 @@
-const googleSheets = require('../../../../providers/googleSheets');
-const staking = require('../defiCommon/staking');
-const autostaking = require('../defiCommon/autostaking');
-const float = require('../defiCommon/float');
-const liquidityPool = require('../defiCommon/liquidityPool');
+import googleSheets from '../../../../providers/googleSheets';
+import staking from '../defiCommon/staking';
+import autostaking from '../defiCommon/autostaking';
+import float from '../defiCommon/float';
+import liquidityPool from '../defiCommon/liquidityPool';
 
 const getLiquidityPoolBalance = async () => {
   const pools = await googleSheets.loadSheet('crypto-defi-liquiditypool');
@@ -72,7 +72,7 @@ const getBalance = async () => {
 
 const getTotalPosition = async () => (await getBalance()).total;
 
-module.exports = {
+export default {
   getBalance,
   getTotalPosition,
   getHistory: () => {

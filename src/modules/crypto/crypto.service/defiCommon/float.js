@@ -1,6 +1,6 @@
-const googleSheets = require('../../../../providers/googleSheets');
-const blockchain = require('../../../../providers/blockchain');
-const getSymbolPrice = require('./getSymbolPrice');
+import googleSheets from '../../../../providers/googleSheets';
+import blockchain from '../../../../providers/blockchain';
+import getSymbolPrice from './getSymbolPrice';
 
 const wallets = {
   defi: process.env.CRYPTO_WALLET_ADDRESS,
@@ -37,6 +37,6 @@ const getBalance = async assetName => {
   );
 };
 
-module.exports = {
+export default {
   getBalance,
 };

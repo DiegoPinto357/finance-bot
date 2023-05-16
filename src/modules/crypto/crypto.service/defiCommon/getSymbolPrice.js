@@ -1,10 +1,10 @@
-const coinMarketCap = require('../../../../providers/coinMarketCap');
-const dexScreener = require('../../../../providers/dexScreener');
-const { buildLogger } = require('../../../../libs/logger');
+import coinMarketCap from '../../../../providers/coinMarketCap';
+import dexScreener from '../../../../providers/dexScreener';
+import { buildLogger } from '../../../../libs/logger';
 
 const log = buildLogger('CoinMarketCap');
 
-module.exports = async (asset, network) => {
+export default async (asset, network) => {
   try {
     return await coinMarketCap.getSymbolPrice(asset, network);
   } catch (error) {

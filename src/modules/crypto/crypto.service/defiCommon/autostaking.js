@@ -1,6 +1,6 @@
-const database = require('../../../../providers/database');
-const blockchain = require('../../../../providers/blockchain');
-const getSymbolPrice = require('./getSymbolPrice');
+import database from '../../../../providers/database';
+import blockchain from '../../../../providers/blockchain';
+import getSymbolPrice from './getSymbolPrice';
 
 const wallets = {
   walletPrimary: process.env.CRYPTO_WALLET_ADDRESS,
@@ -61,6 +61,6 @@ const getBalance = async wallet => {
   });
 };
 
-module.exports = {
+export default {
   getBalance,
 };

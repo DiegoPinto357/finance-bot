@@ -1,16 +1,27 @@
-const { promises: fs } = require('fs');
-const path = require('path');
-const _ = require('lodash');
+import { promises as fs } from 'fs';
+import path from 'path';
+import _ from 'lodash';
+import {
+  Filter,
+  UpdateFilter,
+  UpdateOptions,
+  AnyBulkWriteOperation,
+  BulkWriteOptions,
+} from 'mongodb';
 
 const mockDir = `${path.resolve()}/mockData/database/`;
 
 const connect = jest.fn();
 
-let dataBuffer = {};
+interface StringIndexed {
+  [key: string]: any;
+}
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+let dataBuffer: StringIndexed = {};
 
-const getData = async (databaseName, collectionName) => {
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+const getData = async (databaseName: string, collectionName: string) => {
   const filename = path.join(mockDir, databaseName, `${collectionName}.json`);
 
   if (!dataBuffer[filename]) {
@@ -20,7 +31,11 @@ const getData = async (databaseName, collectionName) => {
   return _.cloneDeep(dataBuffer[filename]);
 };
 
-const setData = (databaseName, collectionName, data) => {
+const setData = (
+  databaseName: string,
+  collectionName: string,
+  data: Object
+) => {
   const filename = path.join(mockDir, databaseName, `${collectionName}.json`);
   dataBuffer[filename] = _.cloneDeep(data);
 };
@@ -29,7 +44,7 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
   const data = await getData(databaseName, collectionName);
 
   const filteredData = [
-    ...data.filter(item =>
+    ...data.filter((item: StringIndexed) =>
       Object.entries(query).every(([key, value]) => item[key] === value)
     ),
   ];
@@ -55,17 +70,17 @@ const findOne = jest.fn(
   }
 );
 
-const updateOne = async (
-  databaseName,
-  collectionName,
-  query,
-  update,
-  options = {}
+const updateOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>,
+  update: UpdateFilter<Schema>,
+  options: UpdateOptions = {}
 ) => {
   const data = await getData(databaseName, collectionName);
 
-  let record = data.find(item =>
-    Object.entries(query).every(([key, value]) => item[key] === value)
+  let record = data.find((item: StringIndexed) =>
+    Object.entries(filter).every(([key, value]) => item[key] === value)
   );
 
   const { upsert } = options;
@@ -106,17 +121,19 @@ const updateOne = async (
   return { matchedCount: 1 };
 };
 
-const deleteOne = async (databaseName, collectionName, query) => {
+const deleteOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>
+) => {
   const data = await getData(databaseName, collectionName);
 
-  const record = data.find(item =>
-    Object.entries(query).every(([key, value]) => item[key] === value)
+  const record = data.find((item: StringIndexed) =>
+    Object.entries(filter).every(([key, value]) => item[key] === value)
   );
 
   if (!record) {
-    if (!upsert) {
-      return { matchedCount: 0 };
-    }
+    return { matchedCount: 0 };
   }
 
   const recordIndex = data.indexOf(record);
@@ -129,7 +146,7 @@ const deleteOne = async (databaseName, collectionName, query) => {
 
 const resetMockValues = () => (dataBuffer = {});
 
-module.exports = {
+export default {
   connect,
   find,
   findOne,

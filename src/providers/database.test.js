@@ -1,4 +1,4 @@
-const {
+import {
   MongoClient,
   instance,
   mockDbFn,
@@ -10,10 +10,10 @@ const {
   mockUpdateOneFn,
   mockDeleteOneFn,
   mockBulkWriteFn,
-} = require('mongodb');
-const _ = require('lodash');
-const database = require('./database');
-const portfolioShares = require('../../mockData/database/portfolio/shares.json');
+} from 'mongodb';
+import _ from 'lodash';
+import database from './database';
+import portfolioShares from '../../mockData/database/portfolio/shares.json';
 
 jest.mock('mongodb');
 

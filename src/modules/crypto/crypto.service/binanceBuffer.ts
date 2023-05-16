@@ -5,11 +5,21 @@ import binance from '../../../providers/binance';
 const targetAsset = 'BRL';
 const bridgeAsset = 'BUSD';
 
+interface AssetData {
+  asset: string;
+  location: string;
+  type: string;
+  amount: number;
+}
+
 const getTotalPosition = async (asset?: string) => {
-  const binanceSpotBuffer = await database.find(
+  const binanceSpotBuffer = await database.find<AssetData[]>(
     'assets',
     'crypto',
-    _.omitBy({ location: 'binance', type: 'float', ...{ asset } }, _.isNil),
+    _.omitBy(
+      <AssetData>{ location: 'binance', type: 'float', ...{ asset } },
+      _.isNil
+    ),
     { projection: { _id: 0 } }
   );
 
@@ -40,11 +50,12 @@ const setAssetValue = async ({
     return { status: 'cannotSetValue' };
   }
 
-  await database.updateOne(
+  await database.updateOne<AssetData>(
     'assets',
     'crypto',
     { location: 'binance', type: 'float', asset },
-    { $set: { amount: value } }
+    { $set: { amount: value } },
+    {}
   );
 
   return { status: 'ok' };
@@ -64,11 +75,12 @@ const deposit = async ({ asset, value }: { asset?: string; value: number }) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await database.updateOne(
+  await database.updateOne<AssetData>(
     'assets',
     'crypto',
     { location: 'binance', type: 'float', asset },
-    { $set: { amount: newValue } }
+    { $set: { amount: newValue } },
+    {}
   );
 
   return { status: 'ok' };

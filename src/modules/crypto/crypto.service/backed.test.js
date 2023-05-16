@@ -1,5 +1,5 @@
-const backed = require('./backed');
-const expectedBalance = require('../../../../mockData/crypto/backed/expectedBalance.json');
+import backed from './backed';
+import expectedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/mercadoBitcoin');

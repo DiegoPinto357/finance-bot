@@ -1,10 +1,8 @@
-const inquirer = require('inquirer');
-const _ = require('lodash');
-const stockService = require('./stock.service');
-const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
-const { formatTable } = require('../../libs/cliFormat');
-
-const { PortfolioTypes } = stockService;
+import inquirer from 'inquirer';
+import _ from 'lodash';
+import stockService, { portfolioTypes } from './stock.service';
+import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 const methods = Object.keys(stockService);
 
@@ -14,7 +12,7 @@ const getBalanceMenu = async () => {
       type: 'list',
       name: 'portfolioName',
       message: 'portfolioName?',
-      choices: PortfolioTypes,
+      choices: portfolioTypes,
     },
   ]);
 
@@ -64,6 +62,6 @@ const execute = async () => {
   }
 };
 
-module.exports = {
+export default {
   execute,
 };

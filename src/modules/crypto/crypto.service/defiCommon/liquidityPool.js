@@ -1,5 +1,5 @@
-const blockchain = require('../../../../providers/blockchain');
-const getSymbolPrice = require('./getSymbolPrice');
+import blockchain from '../../../../providers/blockchain';
+import getSymbolPrice from './getSymbolPrice';
 
 const getTokens = lpToken => lpToken.split('-').slice(0, 2);
 
@@ -35,6 +35,6 @@ const getLPTokenPrice = async ({ lpToken, network, contractAddress }) => {
   return totalValue / totalSupply;
 };
 
-module.exports = {
+export default {
   getLPTokenPrice,
 };

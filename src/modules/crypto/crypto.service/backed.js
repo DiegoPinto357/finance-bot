@@ -1,5 +1,5 @@
-const database = require('../../../providers/database');
-const mercadoBitcoin = require('../../../providers/mercadoBitcoin');
+import database from '../../../providers/database';
+import mercadoBitcoin from '../../../providers/mercadoBitcoin';
 
 const getBalance = async () => {
   const assets = await database.find(
@@ -78,7 +78,7 @@ const deposit = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
-module.exports = {
+export default {
   getBalance,
   getTotalPosition,
   getHistory: () => {

@@ -1,6 +1,16 @@
-const { MongoClient } = require('mongodb');
-const moment = require('moment');
-const { buildLogger } = require('../libs/logger');
+import {
+  Collection,
+  Db,
+  MongoClient,
+  Filter,
+  FindOptions,
+  UpdateFilter,
+  UpdateOptions,
+  AnyBulkWriteOperation,
+  BulkWriteOptions,
+} from 'mongodb';
+import moment from 'moment';
+import { buildLogger } from '../libs/logger';
 
 const debugMode = false;
 const verboseMode = false;
@@ -21,8 +31,15 @@ const close = () => {
   log('MongoDB connection closed');
 };
 
-const saveBackup = async (db, collection, collectionName, filter) => {
-  const { _id, ...actualDocument } = await collection.findOne(filter);
+const saveBackup = async <Schema>(
+  db: Db,
+  collection: Collection,
+  collectionName: string,
+  filter: Filter<Schema>
+) => {
+  // @ts-ignore
+  const { _id, ...actualDocument } = await collection.findOne<Schema>(filter);
+  // const actualDocument = await collection.findOne<Schema>(filter);
   const backupCollection = db.collection(`${collectionName}-backup`);
   const createdAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
   await backupCollection.insertOne({
@@ -31,26 +48,36 @@ const saveBackup = async (db, collection, collectionName, filter) => {
   });
 };
 
-const find = async (databaseName, collectionName, query, options) => {
+const find = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>,
+  options: FindOptions
+) => {
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  return await collection.find(query, options).toArray();
+  return (await collection.find(filter, options).toArray()) as Schema;
 };
 
-const findOne = async (databaseName, collectionName, query, options) => {
+const findOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>,
+  options: FindOptions
+) => {
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  return await collection.findOne(query, options);
+  return await collection.findOne(filter, options);
 };
 
-const updateOne = async (
-  databaseName,
-  collectionName,
-  filter,
-  update,
-  options
+const updateOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>,
+  update: UpdateFilter<Schema>,
+  options: UpdateOptions
 ) => {
   log(`Updating document on ${databaseName}/${collectionName}`);
 
@@ -70,14 +97,15 @@ const updateOne = async (
   return await collection.updateOne(filter, update, options);
 };
 
-const deleteOne = async (databaseName, collectionName, filter) => {
+const deleteOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  filter: Filter<Schema>
+) => {
   log(`Deleting document on ${databaseName}/${collectionName}`);
 
   if (debugMode || verboseMode) {
-    console.dir(
-      { databaseName, collectionName, filter, update, options },
-      { depth: null }
-    );
+    console.dir({ databaseName, collectionName, filter }, { depth: null });
   }
   if (debugMode) return;
 
@@ -90,14 +118,20 @@ const deleteOne = async (databaseName, collectionName, filter) => {
 };
 
 // TODO add backup
-const bulkWrite = async (databaseName, collectionName, operations, options) => {
+const bulkWrite = async <Schema extends Document>(
+  databaseName: string,
+  collectionName: string,
+  operations: AnyBulkWriteOperation<Schema>[],
+  options: BulkWriteOptions
+) => {
   log(`Bulk writing on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
+  // @ts-ignore
   return await collection.bulkWrite(operations, options);
 };
 
-module.exports = {
+export default {
   connect,
   close,
   find,

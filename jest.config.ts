@@ -8,6 +8,6 @@ const config: Config.InitialOptions = {
   },
   setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
   moduleFileExtensions: ['js', 'ts'],
-  testRegex: '((\\.|/*.)(test))\\.js?$',
+  testRegex: '((\\.|/*.)(test))\\.(js|ts)?$',
 };
 export default config;

@@ -1,5 +1,5 @@
-const database = require('../../providers/database');
-const fixed = require('./fixed.service');
+import database from '../../providers/database';
+import fixed from './fixed.service';
 
 jest.mock('../../providers/database');
 
