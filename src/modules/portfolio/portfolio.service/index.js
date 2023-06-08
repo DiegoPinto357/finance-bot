@@ -5,9 +5,12 @@ import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 
-import { getPortfolioData } from './common';
+import { getPortfolioData, isAround0, isAround1, isNegative } from './common';
 
 import getBalance from './getBalance';
+import getShares from './getShares';
+
+import getPortfolios from './getPortfolios';
 
 const log = buildLogger('Portfolios');
 
@@ -17,157 +20,11 @@ const services = {
   crypto: cryptoService,
 };
 
-const precision = 0.006;
-const isAround0 = value => value >= 0 - precision && value <= 0 + precision;
-const isAround1 = value => value >= 1 - precision && value <= 1 + precision;
-const isNegative = value => value < -precision;
-
 const verifyShares = shares => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
 
   if (!isAround1(sum) && !isAround0(sum))
     throw new Error(`Sum of shares is not 1: current value ${sum}`);
-};
-
-const findShare = (shares, assetClass, asset) => {
-  let share = shares.find(
-    share => asset === share.asset && assetClass === share.assetClass
-  );
-
-  if (!share) {
-    share = shares.find(
-      share => assetClass === share.assetClass && share.asset === ''
-    );
-
-    if (!share) {
-      return { status: 'notFound' };
-    }
-
-    return { share, status: 'hasNoAssetName' };
-  }
-
-  return { share, status: 'hasAssetName' };
-};
-
-const flatPortfolioBalance = balance => [
-  ...balance.fixed.balance.map(item => ({ assetClass: 'fixed', ...item })),
-  ...balance.stock.balance.map(item => ({ assetClass: 'stock', ...item })),
-  ...balance.crypto.balance.map(item => ({
-    assetClass: 'crypto',
-    ...item,
-  })),
-];
-
-const mapTargetShares = (portfolioShares, balanceFlat) =>
-  balanceFlat.reduce((shares, { assetClass, asset, value }) => {
-    const { share, status } = findShare(portfolioShares, assetClass, asset);
-
-    const shareItem = { assetClass, value };
-
-    if (status === 'notFound') {
-      shares.push({
-        ...shareItem,
-        asset,
-        targetShare: 0,
-      });
-
-      return shares;
-    }
-
-    if (status === 'hasNoAssetName') {
-      const shareClassItem = shares.find(
-        ({ assetClass }) => assetClass === assetClass
-      );
-
-      if (!shareClassItem) {
-        shares.push({
-          ...shareItem,
-          targetShare: share ? share.targetShare : 0,
-        });
-      } else {
-        shareClassItem.value = shareClassItem.value + value;
-      }
-
-      return shares;
-    }
-
-    shares.push({
-      ...shareItem,
-      asset,
-      targetShare: share.targetShare,
-    });
-
-    return shares;
-  }, []);
-
-const mapActualShares = (targetShares, total) => {
-  const totalTargetShare = targetShares.reduce(
-    (total, { targetShare }) => total + targetShare,
-    0
-  );
-
-  const isTargetSharesAvailable = isAround1(totalTargetShare);
-
-  return targetShares
-    .map(share => {
-      const currentShare = share.value / total;
-      const diffBRL = isTargetSharesAvailable
-        ? share.targetShare * total - share.value
-        : 0;
-
-      return { ...share, currentShare, diffBRL };
-    })
-    .sort((a, b) =>
-      isTargetSharesAvailable ? b.diffBRL - a.diffBRL : a.value - b.value
-    );
-};
-
-const getShares = async portfolioName => {
-  if (portfolioName) {
-    const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
-    const [{ balance, total }, portfolioShares] = await Promise.all([
-      getBalance(portfolioName),
-      googleSheets.loadSheet(sharesSheetTitle),
-    ]);
-
-    const balanceFlat = flatPortfolioBalance(balance);
-    const targetShares = mapTargetShares(portfolioShares, balanceFlat);
-    const shares = mapActualShares(targetShares, total);
-
-    return { shares, total };
-  }
-
-  const totalBalance = await getBalance();
-  const totalBalanceFlat = Object.entries(totalBalance.balance).map(
-    ([key, value]) => ({
-      portfolio: key,
-      balance: flatPortfolioBalance(value.balance),
-    })
-  );
-
-  const portfolios = await getPortfolios();
-  const shares = await Promise.all(
-    portfolios.map(async portfolio => {
-      const sharesSheetTitle = `portfolio-${portfolio}-shares`;
-      const portfolioShares = await googleSheets.loadSheet(sharesSheetTitle);
-
-      const balanceFlatItem = totalBalanceFlat.find(
-        item => item.portfolio === portfolio
-      );
-      const balanceFlat = balanceFlatItem ? balanceFlatItem.balance : [];
-
-      const total = totalBalance.balance[portfolio]
-        ? totalBalance.balance[portfolio].total
-        : 0;
-
-      const targetShares = mapTargetShares(portfolioShares, balanceFlat);
-      const shares = mapActualShares(targetShares, total);
-
-      return { portfolio, shares };
-    })
-  );
-
-  return { shares, total: totalBalance.total };
 };
 
 const depositValueToAsset = async ({ assetClass, assetName, value }) => {
@@ -488,17 +345,6 @@ const removeAsset = async ({ assetClass, assetName }) => {
   });
 
   return { status: 'ok' };
-};
-
-const getPortfolios = async () => {
-  const portfolioData = await getPortfolioData();
-  const portfolios = new Set();
-
-  portfolioData.forEach(asset =>
-    asset.shares.forEach(({ portfolio }) => portfolios.add(portfolio))
-  );
-
-  return Array.from(portfolios);
 };
 
 const flattenBalance = (balance, totals) =>
