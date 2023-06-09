@@ -5,10 +5,18 @@ import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 
-import { getPortfolioData, isAround0, isAround1, isNegative } from './common';
+import {
+  getPortfolioData,
+  isNegative,
+  verifyShares,
+  getAssetValueFromBalance,
+  hasFunds,
+} from './common';
 
 import getBalance from './getBalance';
 import getShares from './getShares';
+import deposit from './deposit';
+import transfer from './transfer';
 
 import getPortfolios from './getPortfolios';
 
@@ -18,160 +26,6 @@ const services = {
   fixed: fixedService,
   stock: stockService,
   crypto: cryptoService,
-};
-
-const verifyShares = shares => {
-  const sum = shares.reduce((acc, current) => acc + current, 0);
-
-  if (!isAround1(sum) && !isAround0(sum))
-    throw new Error(`Sum of shares is not 1: current value ${sum}`);
-};
-
-const depositValueToAsset = async ({ assetClass, assetName, value }) => {
-  const service = services[assetClass];
-  await service.deposit({ asset: assetName, value });
-};
-
-const addValuesToPortfolioList = (shares, totalAssetValue) =>
-  shares.map(({ portfolio, value }) => ({
-    portfolio,
-    share: value,
-    value: value * totalAssetValue,
-  }));
-
-const addValueToPortfolioItem = (portfolioList, portfolioName, value) => {
-  let portfolioItem = portfolioList.find(
-    item => item.portfolio === portfolioName
-  );
-
-  if (!portfolioItem) {
-    portfolioItem = { portfolio: portfolioName, share: 1, value };
-    portfolioList.push(portfolioItem);
-  } else {
-    portfolioItem.value = portfolioItem.value + value;
-  }
-
-  if (portfolioItem.value < 0) {
-    return { status: 'notEnoughFunds' };
-  }
-
-  return { status: 'ok' };
-};
-
-const deposit = async ({
-  value,
-  portfolio,
-  assetClass,
-  assetName,
-  executed,
-}) => {
-  if (assetClass === 'stock') assetName = 'float';
-
-  const service = services[assetClass];
-  const totalAssetValue = await service.getTotalPosition(assetName);
-  const currentTotalAssetValue = executed
-    ? totalAssetValue - value
-    : totalAssetValue;
-  const newTotalAssetValue = currentTotalAssetValue + value;
-
-  const portfolioData = await getPortfolioData({ assetClass, assetName });
-
-  const asset = portfolioData.length
-    ? portfolioData[0]
-    : { assetClass, assetName, shares: [] };
-
-  const portfolioList = addValuesToPortfolioList(
-    asset.shares,
-    currentTotalAssetValue
-  );
-
-  const { status: addValueStatus } = addValueToPortfolioItem(
-    portfolioList,
-    portfolio,
-    value
-  );
-
-  if (addValueStatus !== 'ok') {
-    return { status: addValueStatus };
-  }
-
-  const newShares = portfolioList.map(item => ({
-    portfolio: item.portfolio,
-    value: newTotalAssetValue !== 0 ? item.value / newTotalAssetValue : 0,
-  }));
-
-  verifyShares(newShares.map(({ value }) => value));
-
-  await Promise.all([
-    database.updateOne(
-      'portfolio',
-      'shares',
-      { assetClass, assetName },
-      { $setOnInsert: { assetClass, assetName }, $set: { shares: newShares } },
-      { upsert: true }
-    ),
-    depositValueToAsset({
-      assetClass,
-      assetName,
-      value,
-    }),
-  ]);
-
-  return { status: 'ok' };
-};
-
-const getAssetValueFromBalance = ({ balance }, assetClass, assetName) => {
-  const assetItem = balance[assetClass].balance.find(
-    item => item.asset === assetName
-  );
-  return assetItem ? assetItem.value : 0;
-};
-
-const hasFunds = (balance, asset, value) => {
-  const currentValue = getAssetValueFromBalance(
-    balance,
-    asset.class,
-    asset.name
-  );
-  return currentValue - value >= 0;
-};
-
-const transfer = async ({
-  value,
-  portfolio,
-  origin,
-  destiny,
-  originExecuted,
-  destinyExecuted,
-}) => {
-  const originBalance = await getBalance(portfolio);
-
-  const transferValue =
-    value === 'all'
-      ? getAssetValueFromBalance(originBalance, origin.class, origin.name)
-      : value;
-  const hasOriginFunds = hasFunds(originBalance, origin, transferValue);
-
-  if (!hasOriginFunds) {
-    return { status: 'notEnoughFunds' };
-  }
-
-  await deposit({
-    value: -transferValue,
-    portfolio,
-    assetClass: origin.class,
-    assetName: origin.name,
-    executed: originExecuted,
-  });
-  await deposit({
-    value: transferValue,
-    portfolio,
-    assetClass: destiny.class,
-    assetName: destiny.name,
-    executed: destinyExecuted,
-  });
-
-  return { status: 'ok' };
 };
 
 const swapOnAsset = async ({
