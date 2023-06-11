@@ -1,4 +1,16 @@
+import { buildLogger } from '../../../libs/logger';
 import database from '../../../providers/database';
+import fixedService from '../../fixed/fixed.service';
+import stockService from '../../stock/stock.service';
+import cryptoService from '../../crypto/crypto.service';
+
+const log = buildLogger('Portfolios');
+
+export const services = {
+  fixed: fixedService,
+  stock: stockService,
+  crypto: cryptoService,
+};
 
 const precision = 0.006;
 export const isAround0 = value =>
@@ -16,6 +28,7 @@ export const verifyShares = shares => {
 
 export const getAssetValueFromBalance = (
   { balance },
+  // TODO change asset param to { class, name }
   assetClass,
   assetName
 ) => {
@@ -36,3 +49,71 @@ export const hasFunds = (balance, asset, value) => {
 
 export const getPortfolioData = (filter = {}) =>
   database.find('portfolio', 'shares', filter, { projection: { _id: 0 } });
+
+export const swapOnAsset = async ({
+  value,
+  assetClass,
+  assetName,
+  origin,
+  destiny,
+}) => {
+  const service = services[assetClass];
+  const totalAssetValue = await service.getTotalPosition(assetName);
+
+  const portfolioData = await getPortfolioData();
+
+  const asset = portfolioData.find(
+    item => item.assetClass === assetClass && item.assetName === assetName
+  );
+
+  let originPortfolio = asset.shares.find(
+    ({ portfolio }) => portfolio === origin
+  );
+  if (!originPortfolio) {
+    originPortfolio = { portfolio: origin, value: 0 };
+    asset.shares.push(originPortfolio);
+  }
+
+  let destinyPortfolio = asset.shares.find(
+    ({ portfolio }) => portfolio === destiny
+  );
+  if (!destinyPortfolio) {
+    destinyPortfolio = { portfolio: destiny, value: 0 };
+    asset.shares.push(destinyPortfolio);
+  }
+
+  const deltaShare = value / totalAssetValue;
+
+  originPortfolio.value = originPortfolio.value - deltaShare;
+  destinyPortfolio.value = destinyPortfolio.value + deltaShare;
+
+  const hasOriginFunds = !isNegative(originPortfolio.value);
+  const hasDestinyFinds = !isNegative(destinyPortfolio.value);
+
+  if (!hasOriginFunds || !hasDestinyFinds) {
+    if (!hasOriginFunds) {
+      log(`Not enough funds on ${origin} (${assetClass}/${assetName})`, {
+        severity: 'warn',
+      });
+    }
+
+    if (!hasDestinyFinds) {
+      log(`Not enough funds on ${destiny} (${assetClass}/${assetName})`, {
+        severity: 'warn',
+      });
+    }
+
+    return { status: 'notEnoughFunds' };
+  }
+
+  verifyShares(asset.shares.map(({ value }) => value));
+
+  await database.updateOne(
+    'portfolio',
+    'shares',
+    { assetClass, assetName },
+    { $set: { shares: asset.shares } }
+  );
+
+  return { status: 'ok' };
+};
