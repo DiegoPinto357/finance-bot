@@ -1,6 +1,24 @@
 type AssetClass = 'fixed' | 'stock' | 'crypto';
 
-type FixedAssets = 'nubank' | 'iti' | 'inco';
+type FixedAssets =
+  | 'nubank'
+  | 'iti'
+  | '99pay'
+  | 'inco'
+  | 'xpWesternAsset'
+  | 'xpTrendInvestback'
+  | 'daycovalCDB110'
+  | 'daycovalCDBCDI1_2'
+  | 'nuInvestCDB8_5'
+  | 'nuInvestCDB9_5'
+  | 'nuInvestCDB12_5'
+  | 'nuInvestCBDIPCA5_5'
+  | 'nuInvestTDIPCA2035'
+  | 'nuInvestTDPre2029'
+  | 'nuInvestTDIPCA2045'
+  | 'interArcaPGBL'
+  | 'sofisaCDBMax60'
+  | 'sofisaCDB110';
 
 type StockAssets = 'float' | 'br' | 'us' | 'fii';
 
