@@ -35,4 +35,12 @@ export type Portfolio =
   | 'financiamento'
   | 'viagem'
   | 'reformaCasa'
-  | 'previdencia';
+  | 'previdencia'
+  | 'mae'
+  | 'seguroCarro'
+  | 'impostos'
+  | 'manutencaoCarro'
+  | 'suricat'
+  | 'congelamentoSuricats'
+  | 'carro'
+  | 'macbookFirma';
