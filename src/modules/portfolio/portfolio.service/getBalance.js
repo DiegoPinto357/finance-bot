@@ -1,7 +1,7 @@
 import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
-import { getPortfolioData } from './common';
+import { getPortfolioData, extractPortfolioNames } from './common';
 
 const getAssetsDataFromPortfolio = portfolio =>
   portfolio.reduce((obj, item) => {
@@ -132,7 +132,7 @@ export default async portfolioName => {
   if (Array.isArray(portfolioName)) {
     names = portfolioName;
   } else {
-    names = portfolios[0].shares.map(share => share.portfolio);
+    names = extractPortfolioNames(portfolios);
   }
 
   const balanceArray = await Promise.all(

@@ -50,6 +50,16 @@ export const hasFunds = (balance, asset, value) => {
 export const getPortfolioData = (filter = {}) =>
   database.find('portfolio', 'shares', filter, { projection: { _id: 0 } });
 
+export const extractPortfolioNames = portfolioData => {
+  const portfolios = new Set();
+
+  portfolioData.forEach(asset =>
+    asset.shares.forEach(({ portfolio }) => portfolios.add(portfolio))
+  );
+
+  return Array.from(portfolios);
+};
+
 export const swapOnAsset = async ({
   value,
   assetClass,
