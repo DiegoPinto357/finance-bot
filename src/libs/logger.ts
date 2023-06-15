@@ -22,7 +22,9 @@ const style: Style = {
   error: chalk.bold.red,
 };
 
-const log = (message: string, severity: string) => {
+type Severity = 'info' | 'warn' | 'error';
+
+const log = (message: string, severity: Severity) => {
   switch (severity) {
     case 'error':
       console.error(message);
@@ -42,7 +44,7 @@ interface Options {
   breakLineBelow?: string;
   separatoAbove?: string;
   separatorBelow?: string;
-  severity?: string;
+  severity?: Severity;
 }
 
 export const buildLogger =

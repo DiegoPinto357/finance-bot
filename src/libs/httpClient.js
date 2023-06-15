@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const httpClient = axios.create({
-  timeout: 5000,
+  timeout: 15000,
 });
 
 const get = async (url, config) => {
