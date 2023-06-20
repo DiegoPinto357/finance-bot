@@ -1,6 +1,6 @@
 type AssetClass = 'fixed' | 'stock' | 'crypto';
 
-type FixedAssets =
+export type FixedAsset =
   | 'nubank'
   | 'iti'
   | '99pay'
@@ -20,13 +20,13 @@ type FixedAssets =
   | 'sofisaCDBMax60'
   | 'sofisaCDB110';
 
-type StockAssets = 'float' | 'br' | 'us' | 'fii';
+type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
-type CryptoAssets = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
+type CryptoAsset = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
 
 export interface Asset {
   class: AssetClass;
-  name: FixedAssets | StockAssets | CryptoAssets;
+  name: FixedAsset | StockAsset | CryptoAsset;
 }
 
 export type Portfolio =

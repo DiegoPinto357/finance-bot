@@ -1,20 +1,31 @@
 import database from '../../providers/database';
+import { FixedAsset } from '../../types';
 
-const getDataFromDatabase = assetName =>
-  database.find('assets', 'fixed', assetName ? { asset: assetName } : {}, {
-    projection: { _id: 0 },
-  });
+interface AssetData {
+  asset: FixedAsset;
+  value: number;
+}
 
-const getTotal = balance =>
+const getDataFromDatabase = (assetName?: FixedAsset) =>
+  database.find<AssetData[]>(
+    'assets',
+    'fixed',
+    assetName ? { asset: assetName } : {},
+    {
+      projection: { _id: 0 },
+    }
+  );
+
+const getTotal = (balance: AssetData[]) =>
   balance.reduce((total, { value }) => total + value, 0);
 
-const getBalance = async assetName => {
+const getBalance = async (assetName?: FixedAsset) => {
   const balance = await getDataFromDatabase(assetName);
   const total = getTotal(balance);
   return { balance, total };
 };
 
-const getTotalPosition = async assetName => {
+const getTotalPosition = async (assetName: FixedAsset) => {
   const { balance, total } = await getBalance();
   if (!assetName) {
     return total;
@@ -30,8 +41,8 @@ const getAssetsList = async () => {
   return sheet.map(row => row.asset);
 };
 
-const setAssetValue = ({ asset, value }) =>
-  database.updateOne(
+const setAssetValue = ({ asset, value }: AssetData) =>
+  database.updateOne<AssetData>(
     'assets',
     'fixed',
     { asset },
@@ -39,7 +50,7 @@ const setAssetValue = ({ asset, value }) =>
     { upsert: true }
   );
 
-const deposit = async ({ asset, value }) => {
+const deposit = async ({ asset, value }: AssetData) => {
   const currentValue = await getTotalPosition(asset);
   const newValue = currentValue + value;
 
@@ -47,7 +58,7 @@ const deposit = async ({ asset, value }) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await database.updateOne(
+  await database.updateOne<AssetData>(
     'assets',
     'fixed',
     { asset },
@@ -58,7 +69,7 @@ const deposit = async ({ asset, value }) => {
   return { status: 'ok' };
 };
 
-const removeAsset = async asset => {
+const removeAsset = async (asset: FixedAsset) => {
   const funds = await getTotalPosition(asset);
 
   if (funds !== 0) {
