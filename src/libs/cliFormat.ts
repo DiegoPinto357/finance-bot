@@ -1,4 +1,7 @@
-type FormatFunc = ((value: string) => string) | null;
+type FormatFunc =
+  | ((value: string | number) => string)
+  | ((value: number) => string | undefined)
+  | null;
 
 interface StringIndexed {
   [key: string]: string;

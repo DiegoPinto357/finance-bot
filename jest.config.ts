@@ -9,5 +9,6 @@ const config: Config.InitialOptions = {
   setupFiles: ['<rootDir>/.jest/setEnvVars.js'],
   moduleFileExtensions: ['js', 'ts'],
   testRegex: '((\\.|/*.)(test))\\.(js|ts)?$',
+  testPathIgnorePatterns: ['<rootDir>/dist/'],
 };
 export default config;

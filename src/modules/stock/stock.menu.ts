@@ -20,21 +20,23 @@ const getBalanceMenu = async () => {
   const { balance, total } = await stockService.getBalance(type);
 
   // TODO duplication from .cli
-  const formattedBalance = formatTable(balance, [
-    null,
-    null,
-    null,
-    formatPercentage,
-    formatCurrency,
-    formatCurrency,
-    formatPercentage,
-    formatPercentage,
-    formatPercentage,
-    formatCurrency,
-    null,
-  ]);
+  if (balance) {
+    const formattedBalance = formatTable(balance, [
+      null,
+      null,
+      null,
+      formatPercentage,
+      formatCurrency,
+      formatCurrency,
+      formatPercentage,
+      formatPercentage,
+      formatPercentage,
+      formatCurrency,
+      null,
+    ]);
 
-  console.table(formattedBalance);
+    console.table(formattedBalance);
+  }
   console.log({ total });
 };
 

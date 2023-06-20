@@ -22,7 +22,7 @@ const getTotal = (balance: AssetData[]) =>
 const getBalance = async (assetName?: FixedAsset) => {
   const balance = await getDataFromDatabase(assetName);
   const total = getTotal(balance);
-  return { balance, total };
+  return { balance: balance.sort((a, b) => b.value - a.value), total };
 };
 
 const getTotalPosition = async (assetName: FixedAsset) => {
