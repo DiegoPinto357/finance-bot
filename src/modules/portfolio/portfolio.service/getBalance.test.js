@@ -23,9 +23,9 @@ describe('portfolio service - getBalance', () => {
         fixed: {
           balance: [
             { asset: 'nubank', value: 1295.807356032464 },
-            { asset: 'nuInvestCDB12_5', value: 1128.63 },
-            { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
             { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
+            { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
+            { asset: 'nuInvestCDB12_5', value: 1128.63 },
           ],
           total: 1295.807356032464 + 1128.63 + 1128.9 + 1489.11,
         },

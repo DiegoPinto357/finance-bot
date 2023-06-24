@@ -1,10 +1,13 @@
 import database from '../../providers/database';
+import { FixedAsset } from '../../types';
 import fixed from './fixed.service';
+
+type MockDatabase = typeof database & { resetMockValues: () => void };
 
 jest.mock('../../providers/database');
 
 describe('fixed service', () => {
-  beforeEach(() => database.resetMockValues());
+  beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getBalance', () => {
     it('gets balance for given asset', async () => {
@@ -16,8 +19,6 @@ describe('fixed service', () => {
 
     it('gets sorted balance for all assets when asset is not provided', async () => {
       const { balance, total } = await fixed.getBalance();
-
-      console.log(balance);
 
       expect(balance).toEqual([
         { asset: 'nubank', value: 50962.72 },
@@ -48,7 +49,9 @@ describe('fixed service', () => {
     });
 
     it('gets 0 as total position for an asset that does not exists', async () => {
-      const value = await fixed.getTotalPosition('pupancaBamerindus');
+      const value = await fixed.getTotalPosition(
+        'pupancaBamerindus' as FixedAsset
+      );
       expect(value).toBe(0);
     });
   });
@@ -80,19 +83,23 @@ describe('fixed service', () => {
       await fixed.setAssetValue({ asset: assetName, value: newValue });
 
       const { balance } = await fixed.getBalance();
-      const assetValue = balance.find(({ asset }) => asset === assetName).value;
+      const assetValue = balance.find(
+        ({ asset }) => asset === assetName
+      )?.value;
 
       expect(assetValue).toBe(newValue);
     });
 
     it('insert record if asset does no exists on database', async () => {
       const newValue = 100;
-      const assetName = 'poupancaBamerindus';
+      const assetName = 'poupancaBamerindus' as FixedAsset;
 
       await fixed.setAssetValue({ asset: assetName, value: newValue });
 
       const { balance } = await fixed.getBalance();
-      const assetValue = balance.find(({ asset }) => asset === assetName).value;
+      const assetValue = balance.find(
+        ({ asset }) => asset === assetName
+      )?.value;
 
       expect(assetValue).toBe(newValue);
     });
@@ -110,7 +117,7 @@ describe('fixed service', () => {
       const { balance } = await fixed.getBalance();
       const newPosition = balance.find(
         ({ asset }) => asset === assetName
-      ).value;
+      )?.value;
 
       expect(result).toEqual({ status: 'ok' });
       expect(newPosition).toBe(currentPosition + value);
@@ -127,7 +134,7 @@ describe('fixed service', () => {
       const { balance } = await fixed.getBalance();
       const newPosition = balance.find(
         ({ asset }) => asset === assetName
-      ).value;
+      )?.value;
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
       expect(newPosition).toBe(currentPosition);
@@ -135,7 +142,7 @@ describe('fixed service', () => {
 
     it('deposits a value for a non existing asset', async () => {
       const value = 150;
-      const assetName = 'poupancaBamerindus';
+      const assetName = 'poupancaBamerindus' as FixedAsset;
 
       const currentPosition = await fixed.getTotalPosition(assetName);
 
@@ -144,7 +151,7 @@ describe('fixed service', () => {
       const { balance } = await fixed.getBalance();
       const newPosition = balance.find(
         ({ asset }) => asset === assetName
-      ).value;
+      )?.value;
 
       expect(result).toEqual({ status: 'ok' });
       expect(newPosition).toBe(currentPosition + value);

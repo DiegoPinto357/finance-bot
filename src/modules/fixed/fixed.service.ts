@@ -25,7 +25,7 @@ const getBalance = async (assetName?: FixedAsset) => {
   return { balance: balance.sort((a, b) => b.value - a.value), total };
 };
 
-const getTotalPosition = async (assetName: FixedAsset) => {
+const getTotalPosition = async (assetName?: FixedAsset) => {
   const { balance, total } = await getBalance();
   if (!assetName) {
     return total;
