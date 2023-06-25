@@ -1,4 +1,4 @@
-type AssetClass = 'fixed' | 'stock' | 'crypto';
+export type AssetClass = 'fixed' | 'stock' | 'crypto';
 
 export type FixedAsset =
   | 'nubank'

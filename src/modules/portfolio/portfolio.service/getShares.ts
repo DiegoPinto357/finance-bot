@@ -2,17 +2,81 @@ import googleSheets from '../../../providers/googleSheets';
 import { isAround1 } from './common';
 import getBalance from './getBalance';
 import getPortfolios from './getPortfolios';
+import { AssetClass, Asset, Portfolio } from '../../../types';
 
-const flatPortfolioBalance = balance => [
-  ...balance.fixed.balance.map(item => ({ assetClass: 'fixed', ...item })),
-  ...balance.stock.balance.map(item => ({ assetClass: 'stock', ...item })),
+interface AssetBalance {
+  asset: Asset;
+  value: number;
+}
+
+type AssetBalanceWithClass = AssetBalance & {
+  assetClass: AssetClass;
+};
+
+interface Balance {
+  fixed: {
+    balance: AssetBalance[];
+    total: number;
+  };
+  stock: {
+    balance: AssetBalance[];
+    total: number;
+  };
+  crypto: {
+    balance: AssetBalance[];
+    total: number;
+  };
+}
+
+interface BalanceForSinglePortfolio {
+  balance: Balance;
+  total: number;
+}
+
+type BalanceByPortfolio = {
+  [key in Portfolio]: {
+    balance: Balance;
+    total: number;
+  };
+};
+
+interface BalanceWithTotal {
+  balance: BalanceByPortfolio;
+  total: number;
+}
+
+interface TargetShare {
+  assetClass: AssetClass;
+  asset: Asset;
+  targetShare: number;
+}
+
+interface TargetShareWithValue {
+  assetClass: AssetClass;
+  asset?: Asset;
+  targetShare: number;
+  value: number;
+}
+
+const flatPortfolioBalance = (balance: Balance) => [
+  ...balance.fixed.balance.map(item => ({
+    assetClass: <AssetClass>'fixed',
+    ...item,
+  })),
+  ...balance.stock.balance.map(item => ({
+    assetClass: <AssetClass>'stock',
+    ...item,
+  })),
   ...balance.crypto.balance.map(item => ({
-    assetClass: 'crypto',
+    assetClass: <AssetClass>'crypto',
     ...item,
   })),
 ];
 
-const mapTargetShares = (portfolioShares, balanceFlat) =>
+const mapTargetShares = (
+  portfolioShares: TargetShare[],
+  balanceFlat: AssetBalanceWithClass[]
+) =>
   balanceFlat.reduce((shares, { assetClass, asset, value }) => {
     const { share, status } = findShare(portfolioShares, assetClass, asset);
 
@@ -48,13 +112,16 @@ const mapTargetShares = (portfolioShares, balanceFlat) =>
     shares.push({
       ...shareItem,
       asset,
-      targetShare: share.targetShare,
+      targetShare: share ? share.targetShare : 0,
     });
 
     return shares;
-  }, []);
+  }, [] as TargetShareWithValue[]);
 
-const mapActualShares = (targetShares, total) => {
+const mapActualShares = (
+  targetShares: TargetShareWithValue[],
+  total: number
+) => {
   const totalTargetShare = targetShares.reduce(
     (total, { targetShare }) => total + targetShare,
     0
@@ -76,14 +143,19 @@ const mapActualShares = (targetShares, total) => {
     );
 };
 
-const findShare = (shares, assetClass, asset) => {
+const findShare = (
+  shares: TargetShare[],
+  assetClass: AssetClass,
+  asset: Asset
+) => {
   let share = shares.find(
     share => asset === share.asset && assetClass === share.assetClass
   );
 
   if (!share) {
     share = shares.find(
-      share => assetClass === share.assetClass && share.asset === ''
+      // FIXME remove unkown cats
+      share => assetClass === share.assetClass && <unknown>share.asset === ''
     );
 
     if (!share) {
@@ -96,11 +168,12 @@ const findShare = (shares, assetClass, asset) => {
   return { share, status: 'hasAssetName' };
 };
 
-export default async portfolioName => {
+export default async (portfolioName: Portfolio) => {
   if (portfolioName) {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
     const [{ balance, total }, portfolioShares] = await Promise.all([
-      getBalance(portfolioName),
+      // TODO remove type cast as getBalance type is defined
+      <Promise<BalanceForSinglePortfolio>>getBalance(portfolioName),
       googleSheets.loadSheet(sharesSheetTitle),
     ]);
 
@@ -111,19 +184,23 @@ export default async portfolioName => {
     return { shares, total };
   }
 
-  const totalBalance = await getBalance();
+  // TODO remove type cast as getBalance type is defined
+  const totalBalance = await (<Promise<BalanceWithTotal>>getBalance());
   const totalBalanceFlat = Object.entries(totalBalance.balance).map(
     ([key, value]) => ({
-      portfolio: key,
+      portfolio: key as Portfolio,
       balance: flatPortfolioBalance(value.balance),
     })
   );
 
-  const portfolios = await getPortfolios();
+  // TODO remove type cast as getPortfolios type is defined
+  const portfolios = await (<Promise<Portfolio[]>>getPortfolios());
   const shares = await Promise.all(
     portfolios.map(async portfolio => {
       const sharesSheetTitle = `portfolio-${portfolio}-shares`;
-      const portfolioShares = await googleSheets.loadSheet(sharesSheetTitle);
+      const portfolioShares = await (<Promise<TargetShare[]>>(
+        googleSheets.loadSheet(sharesSheetTitle)
+      ));
 
       const balanceFlatItem = totalBalanceFlat.find(
         item => item.portfolio === portfolio
