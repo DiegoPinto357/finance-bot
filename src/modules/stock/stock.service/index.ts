@@ -222,7 +222,7 @@ const sell = async ({
   amount: number;
   orderValue: number;
 }) => {
-  const currentAssetData = await database.findOne(
+  const currentAssetData = await database.findOne<AssetData>(
     'assets',
     'stock',
     { asset },

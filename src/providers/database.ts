@@ -69,7 +69,7 @@ const findOne = async <Schema>(
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-  return await collection.findOne(filter, options);
+  return (await collection.findOne(filter, options)) as Schema;
 };
 
 const updateOne = async <Schema>(
