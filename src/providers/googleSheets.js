@@ -66,8 +66,18 @@ const loadSheet = async sheetTitle => {
   }
 
   return rows.map(row => {
-    return row._sheet.headerValues.reduce((obj, key) => {
-      obj[key] = toNumberIfPossible(row[key]);
+    return row._sheet.headerValues.reduce((obj, key, index, keys) => {
+      const isMergedCell = key === '';
+      if (isMergedCell) {
+        key = keys[index - 1];
+      }
+
+      const value = toNumberIfPossible(row._rawData[index]);
+      if (obj[key] != undefined) {
+        obj[key] = [obj[key], value];
+      } else {
+        obj[key] = value;
+      }
       return obj;
     }, {});
   });

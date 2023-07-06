@@ -3,6 +3,7 @@ import mockSheetData from '../mockData/googleSheets/crypto-spot.json';
 export const testDataBuffer = mockSheetData.map(row => ({
   ...row,
   _sheet: { headerValues: Object.keys(row) },
+  _rawData: Object.values(row),
   save: jest.fn(),
 }));
 
