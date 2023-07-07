@@ -75,6 +75,7 @@ const Portfolios = {
   VIAGEM: 'viagem',
   REFORMA_CASA: 'reformaCasa',
   PREVIDENCIA: 'previdencia',
+  LENI: 'leni',
   MAE: 'mae',
   SEGURO_CARRO: 'seguroCarro',
   IMPOSTOS: 'impostos',
