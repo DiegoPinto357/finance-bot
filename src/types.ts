@@ -24,9 +24,11 @@ type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
 type CryptoAsset = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
 
+export type AssetName = FixedAsset | StockAsset | CryptoAsset;
+
 export interface Asset {
   class: AssetClass;
-  name: FixedAsset | StockAsset | CryptoAsset;
+  name: AssetName;
 }
 
 export type Portfolio =

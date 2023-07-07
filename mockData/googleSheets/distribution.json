@@ -16,7 +16,7 @@
     "total": "share"
   },
   {
-    "portfolios": "reservaEmergencia",
+    "portfolios": "temp",
     "jan": ["", "R$ 0,00"],
     "fev": ["", "R$ 0,00"],
     "mar": ["", "R$ 0,00"],
@@ -238,22 +238,6 @@
     "nov": ["", "R$ 0,00"],
     "dec": ["", "R$ 0,00"],
     "total": "5%"
-  },
-  {
-    "portfolios": "macbookFirma",
-    "jan": ["2%", "R$ 223,64"],
-    "fev": ["2%", "R$ 104,50"],
-    "mar": ["5%", "R$ 91,90"],
-    "apr": ["5%", "R$ 100,44"],
-    "may": ["5%", "R$ 187,04"],
-    "jun": ["5%", "R$ 126,42"],
-    "jul": ["", "R$ 0,00"],
-    "aug": ["", "R$ 0,00"],
-    "sep": ["", "R$ 0,00"],
-    "oct": ["", "R$ 0,00"],
-    "nov": ["", "R$ 0,00"],
-    "dec": ["", "R$ 0,00"],
-    "total": "3%"
   },
   {
     "portfolios": "rendaPassiva",

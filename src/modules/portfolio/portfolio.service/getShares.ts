@@ -2,58 +2,27 @@ import googleSheets from '../../../providers/googleSheets';
 import { isAround1 } from './common';
 import getBalance from './getBalance';
 import getPortfolios from './getPortfolios';
-import { AssetClass, Asset, Portfolio } from '../../../types';
-
-interface AssetBalance {
-  asset: Asset;
-  value: number;
-}
+import { AssetName, AssetClass, Portfolio } from '../../../types';
+import {
+  AssetBalance,
+  Balance,
+  BalanceForSinglePortfolio,
+  BalanceWithTotal,
+} from './types';
 
 type AssetBalanceWithClass = AssetBalance & {
   assetClass: AssetClass;
 };
 
-interface Balance {
-  fixed: {
-    balance: AssetBalance[];
-    total: number;
-  };
-  stock: {
-    balance: AssetBalance[];
-    total: number;
-  };
-  crypto: {
-    balance: AssetBalance[];
-    total: number;
-  };
-}
-
-interface BalanceForSinglePortfolio {
-  balance: Balance;
-  total: number;
-}
-
-type BalanceByPortfolio = {
-  [key in Portfolio]: {
-    balance: Balance;
-    total: number;
-  };
-};
-
-interface BalanceWithTotal {
-  balance: BalanceByPortfolio;
-  total: number;
-}
-
 interface TargetShare {
   assetClass: AssetClass;
-  asset: Asset;
+  asset: AssetName;
   targetShare: number;
 }
 
 interface TargetShareWithValue {
   assetClass: AssetClass;
-  asset?: Asset;
+  asset?: AssetName;
   targetShare: number;
   value: number;
 }
@@ -146,7 +115,7 @@ const mapActualShares = (
 const findShare = (
   shares: TargetShare[],
   assetClass: AssetClass,
-  asset: Asset
+  asset: AssetName
 ) => {
   let share = shares.find(
     share => asset === share.asset && assetClass === share.assetClass

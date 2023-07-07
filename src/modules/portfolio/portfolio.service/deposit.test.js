@@ -17,6 +17,7 @@ const services = {
   crypto: cryptoService,
 };
 
+// TODO import it from common.js
 const getAssetValueFromBalance = ({ balance }, assetClass, assetName) => {
   const assetBalance = balance[assetClass].balance.find(
     item => item.asset === assetName
