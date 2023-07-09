@@ -1,7 +1,7 @@
 import database from '../../providers/database';
 import { FixedAsset } from '../../types';
 
-interface FixedAssetData {
+export interface FixedAssetData {
   asset: FixedAsset;
   value: number;
 }

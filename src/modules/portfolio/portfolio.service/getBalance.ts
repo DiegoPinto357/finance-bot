@@ -1,9 +1,42 @@
-import fixedService from '../../fixed/fixed.service';
+import fixedService, { FixedAssetData } from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, extractPortfolioNames } from './common';
+import { AssetBalance, Balance } from './types';
+import { AssetClass, AssetName, Portfolio } from '../../../types';
 
-const getAssetsDataFromPortfolio = portfolio =>
+interface ShareItem {
+  portfolio: Portfolio;
+  value: number;
+}
+
+interface PortfolioData {
+  assetClass: AssetClass;
+  assetName: AssetName;
+  shares: ShareItem[];
+}
+
+interface PortfolioShare {
+  class: AssetClass;
+  asset: AssetName;
+  share: number;
+}
+
+interface AssetShare {
+  asset: AssetName;
+  share: number;
+}
+
+type AssetsShares = {
+  [key in AssetClass]: AssetShare[];
+};
+
+interface FixedBalance {
+  balance: FixedAssetData[];
+  total: number;
+}
+
+const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
   portfolio.reduce((obj, item) => {
     let assetClass = obj[item.class];
     if (!assetClass) {
@@ -12,9 +45,12 @@ const getAssetsDataFromPortfolio = portfolio =>
     }
     assetClass.push({ asset: item.asset, share: item.share });
     return obj;
-  }, {});
+  }, {} as AssetsShares);
 
-const getAssetsFromPortfolioName = (portfolios, portfolioName) => {
+const getAssetsFromPortfolioName = (
+  portfolios: PortfolioData[],
+  portfolioName?: Portfolio | Portfolio[]
+) => {
   const portfolio = portfolios
     .map(item => {
       const portfolioShare = item.shares.find(
@@ -31,61 +67,82 @@ const getAssetsFromPortfolioName = (portfolios, portfolioName) => {
   return getAssetsDataFromPortfolio(portfolio);
 };
 
-const getAssetsList = assets =>
+const getAssetsList = (assets: AssetShare[]) =>
   assets ? assets.map(({ asset }) => asset) : [];
 
-const filterAssets = (balance, assets) => {
+const filterAssets = (balance: AssetBalance[], assets: AssetShare[]) => {
   const assetList = getAssetsList(assets);
   return balance.filter(item => assetList.includes(item.asset));
 };
 
-const getAssetShare = (assets, assetName) =>
-  assets.find(item => item.asset === assetName).share;
+const getAssetShare = (assets: AssetShare[], assetName: AssetName) =>
+  assets.find(item => item.asset === assetName)?.share || 0;
 
-const mapValuesByShares = (assetsWithTotalValues, assetsWithShares) =>
+const mapValuesByShares = (
+  assetsWithTotalValues: AssetBalance[],
+  assetShares: AssetShare[]
+) =>
   assetsWithTotalValues.map(item => {
     return {
       asset: item.asset,
-      value: item.value * getAssetShare(assetsWithShares, item.asset),
+      value: item.value * getAssetShare(assetShares, item.asset),
     };
   });
 
-const getFixedValues = (fixedTotalBalance, assets) => {
+const getFixedValues = (
+  fixedTotalBalance: FixedBalance,
+  assetShares: AssetShare[]
+) => {
   const { balance } = fixedTotalBalance;
-  const totalAssetValues = filterAssets(balance, assets);
-  return mapValuesByShares(totalAssetValues, assets);
+  const totalAssetValues = filterAssets(balance, assetShares);
+  return mapValuesByShares(totalAssetValues, assetShares);
 };
 
-const getStockValues = (stockTotalBalance, assets) => {
+const getStockValues = (
+  stockTotalBalance: number,
+  assetShares: AssetShare[]
+) => {
   const balance = Object.entries(stockTotalBalance).map(([asset, value]) => ({
     asset,
     value,
-  }));
-  const totalAssetValues = filterAssets(balance, assets);
-  return mapValuesByShares(totalAssetValues, assets);
+  })) as AssetBalance[];
+  const totalAssetValues = filterAssets(balance, assetShares);
+  return mapValuesByShares(totalAssetValues, assetShares);
 };
 
-const getCryptoValues = (cryptoTotalBalance, assets) => {
+const getCryptoValues = (
+  cryptoTotalBalance: number,
+  assetShares: AssetShare[]
+) => {
   const balance = Object.entries(cryptoTotalBalance).map(([asset, value]) => ({
     asset,
     value,
-  }));
-  const totalAssetValues = filterAssets(balance, assets);
-  return mapValuesByShares(totalAssetValues, assets);
+  })) as AssetBalance[];
+  const totalAssetValues = filterAssets(balance, assetShares);
+  return mapValuesByShares(totalAssetValues, assetShares);
 };
 
-const getTotalValue = assetValues =>
+const getTotalValue = (assetValues: AssetBalance[]) =>
   assetValues.reduce((total, current) => total + current.value, 0);
 
-const getBalancesByAssets = (assets, totalBalances) => {
-  const fixedBalance = assets.fixed
-    ? getFixedValues(totalBalances.fixed, assets.fixed)
+interface AssetsTotals {
+  fixed: FixedBalance;
+  stock: number;
+  crypto: number;
+}
+
+const getBalancesByAssets = (
+  shares: AssetsShares,
+  totalBalances: AssetsTotals
+) => {
+  const fixedBalance = shares.fixed
+    ? getFixedValues(totalBalances.fixed, shares.fixed)
     : [];
-  const stockBalance = assets.stock
-    ? getStockValues(totalBalances.stock, assets.stock)
+  const stockBalance = shares.stock
+    ? getStockValues(totalBalances.stock, shares.stock)
     : [];
-  const cryptoBalance = assets.crypto
-    ? getCryptoValues(totalBalances.crypto, assets.crypto)
+  const cryptoBalance = shares.crypto
+    ? getCryptoValues(totalBalances.crypto, shares.crypto)
     : [];
 
   const totals = {
@@ -106,8 +163,9 @@ const getBalancesByAssets = (assets, totalBalances) => {
   };
 };
 
-export default async portfolioName => {
-  const portfolios = await getPortfolioData();
+export default async (portfolioName?: Portfolio | Portfolio[]) => {
+  // TODO remove type cast as getPortfolioData type is defined
+  const portfolios = await (<Promise<PortfolioData[]>>getPortfolioData());
 
   const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
 
@@ -115,8 +173,10 @@ export default async portfolioName => {
     await Promise.all([
       // TODO provide assets to getters to prevent getting data from all assets
       assets.fixed ? fixedService.getBalance() : { balance: [], total: 0 },
-      assets.stock ? stockService.getTotalPosition() : { total: 0 },
-      assets.crypto ? cryptoService.getTotalPosition() : { total: 0 },
+      // TODO normalize return type and remove typecast
+      assets.stock ? <Promise<number>>stockService.getTotalPosition() : 0,
+      // TODO remove type cast as getTotalPosition type is defined
+      assets.crypto ? <Promise<number>>cryptoService.getTotalPosition() : 0,
     ]);
 
   if (portfolioName && !Array.isArray(portfolioName)) {
@@ -127,7 +187,7 @@ export default async portfolioName => {
     });
   }
 
-  let names;
+  let names: Portfolio[];
 
   if (Array.isArray(portfolioName)) {
     names = portfolioName;

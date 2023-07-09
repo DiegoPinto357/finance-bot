@@ -65,9 +65,13 @@ describe('portfolio service - distribute', () => {
     });
   });
 
-  it('does not distribute when status is ot ready', async () => {});
+  it('does not distribute when status is ot ready', async () => {
+    // update status after distribution is done
+  });
 
-  it('does not distributes when when selected month is not the current one', async () => {});
+  it('does not distributes when when selected month is not the current one', async () => {
+    // automatically distribute to the current month?
+  });
 
   it('returns a status error if something goes wrong', async () => {
     // portfolio does not exists
