@@ -100,7 +100,7 @@ const getBalance = async (portfolioType: PortfolioTypes) => {
   return { balance, total: totalPosition };
 };
 
-const getTotalPosition = async (portfolioType: PortfolioTypes) => {
+const getTotalPosition = async (portfolioType?: PortfolioTypes) => {
   if (portfolioType) {
     const balanceWithPrices = await getBalanceWithPrices(portfolioType);
     return getTotalFromPortfolio(balanceWithPrices);

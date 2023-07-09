@@ -41,7 +41,7 @@ const getBalance = async (portfolioType: PortfolioTypes) => {
   return service.getBalance();
 };
 
-const getTotalPosition = async (portfolioType: PortfolioTypes) => {
+const getTotalPosition = async (portfolioType?: PortfolioTypes) => {
   if (portfolioType) {
     const service = getServiceByPortfolioType(portfolioType);
     return service.getTotalPosition();

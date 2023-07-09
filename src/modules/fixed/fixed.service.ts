@@ -1,13 +1,13 @@
 import database from '../../providers/database';
 import { FixedAsset } from '../../types';
 
-interface AssetData {
+interface FixedAssetData {
   asset: FixedAsset;
   value: number;
 }
 
 const getDataFromDatabase = (assetName?: FixedAsset) =>
-  database.find<AssetData[]>(
+  database.find<FixedAssetData[]>(
     'assets',
     'fixed',
     assetName ? { asset: assetName } : {},
@@ -16,7 +16,7 @@ const getDataFromDatabase = (assetName?: FixedAsset) =>
     }
   );
 
-const getTotal = (balance: AssetData[]) =>
+const getTotal = (balance: FixedAssetData[]) =>
   balance.reduce((total, { value }) => total + value, 0);
 
 const getBalance = async (assetName?: FixedAsset) => {
@@ -41,8 +41,8 @@ const getAssetsList = async () => {
   return sheet.map(row => row.asset);
 };
 
-const setAssetValue = ({ asset, value }: AssetData) =>
-  database.updateOne<AssetData>(
+const setAssetValue = ({ asset, value }: FixedAssetData) =>
+  database.updateOne<FixedAssetData>(
     'assets',
     'fixed',
     { asset },
@@ -50,7 +50,7 @@ const setAssetValue = ({ asset, value }: AssetData) =>
     { upsert: true }
   );
 
-const deposit = async ({ asset, value }: AssetData) => {
+const deposit = async ({ asset, value }: FixedAssetData) => {
   const currentValue = await getTotalPosition(asset);
   const newValue = currentValue + value;
 
@@ -58,7 +58,7 @@ const deposit = async ({ asset, value }: AssetData) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await database.updateOne<AssetData>(
+  await database.updateOne<FixedAssetData>(
     'assets',
     'fixed',
     { asset },
