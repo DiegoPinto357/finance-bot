@@ -1,12 +1,23 @@
 import database from '../../../providers/database';
 import tradingView from '../../../providers/tradingView';
 import stock from '.';
+import stockData from '../../../../mockData/stock/balance.json';
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/tradingView');
 
 describe('stock service', () => {
   beforeEach(() => database.resetMockValues());
+
+  describe('getBalance', () => {
+    it('gets balance for provided portfolio type', async () => {
+      const portfolioType = 'br';
+      const { balance, total } = await stock.getBalance(portfolioType);
+
+      expect(balance).toEqual(stockData[portfolioType].balance);
+      expect(total).toBe(stockData[portfolioType].total);
+    });
+  });
 
   describe('getTotalPosition', () => {
     it('gets total stock position', async () => {
