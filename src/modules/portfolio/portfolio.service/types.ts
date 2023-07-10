@@ -5,7 +5,7 @@ export interface AssetBalance {
   value: number;
 }
 
-export interface Balance {
+export interface BalanceByAsset {
   fixed: {
     balance: AssetBalance[];
     total: number;
@@ -20,19 +20,16 @@ export interface Balance {
   };
 }
 
-type BalanceByPortfolio = {
-  [key in Portfolio]: {
-    balance: Balance;
-    total: number;
-  };
-};
-
-export interface BalanceForSinglePortfolio {
-  balance: Balance;
+export interface BalanceByAssetWithTotal {
+  balance: BalanceByAsset;
   total: number;
 }
 
-export interface BalanceWithTotal {
+type BalanceByPortfolio = {
+  [key in Portfolio]: BalanceByAssetWithTotal;
+};
+
+export interface BalanceByPortfolioWithTotal {
   balance: BalanceByPortfolio;
   total: number;
 }

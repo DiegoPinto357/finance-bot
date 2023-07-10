@@ -5,9 +5,9 @@ import getPortfolios from './getPortfolios';
 import { AssetName, AssetClass, Portfolio } from '../../../types';
 import {
   AssetBalance,
-  Balance,
-  BalanceForSinglePortfolio,
-  BalanceWithTotal,
+  BalanceByAsset,
+  BalanceByAssetWithTotal,
+  BalanceByPortfolioWithTotal,
 } from './types';
 
 type AssetBalanceWithClass = AssetBalance & {
@@ -27,7 +27,7 @@ interface TargetShareWithValue {
   value: number;
 }
 
-const flatPortfolioBalance = (balance: Balance) => [
+const flatPortfolioBalance = (balance: BalanceByAsset) => [
   ...balance.fixed.balance.map(item => ({
     assetClass: <AssetClass>'fixed',
     ...item,
@@ -142,7 +142,7 @@ export default async (portfolioName: Portfolio) => {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
     const [{ balance, total }, portfolioShares] = await Promise.all([
       // TODO remove type cast as getBalance type is defined
-      <Promise<BalanceForSinglePortfolio>>getBalance(portfolioName),
+      <Promise<BalanceByAssetWithTotal>>getBalance(portfolioName),
       googleSheets.loadSheet(sharesSheetTitle),
     ]);
 
@@ -154,7 +154,9 @@ export default async (portfolioName: Portfolio) => {
   }
 
   // TODO remove type cast as getBalance type is defined
-  const totalBalance = await (<Promise<BalanceWithTotal>>getBalance());
+  const totalBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
+    getBalance()
+  ));
   const totalBalanceFlat = Object.entries(totalBalance.balance).map(
     ([key, value]) => ({
       portfolio: key as Portfolio,

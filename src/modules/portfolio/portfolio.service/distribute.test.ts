@@ -3,7 +3,7 @@ import getBalance from './getBalance';
 import distribute from './distribute';
 import { getAssetValueFromBalance } from './common';
 import { fromCurrencyToNumber } from '../../../libs/stringFormat';
-import { BalanceWithTotal } from './types';
+import { BalanceByPortfolioWithTotal } from './types';
 import distributionData from '../../../../mockData/googleSheets/distribution.json';
 import { FixedAsset, Portfolio } from '../../../types';
 
@@ -40,12 +40,16 @@ describe('portfolio service - distribute', () => {
     const asset: FixedAsset = 'nubank';
 
     // TODO remove typecast as getBalance type is defined
-    const currentBalance = await (<Promise<BalanceWithTotal>>getBalance());
+    const currentBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
+      getBalance()
+    ));
 
     const { status } = await distribute(month, asset);
 
     // TODO remove typecast as getBalance type is defined
-    const newBalance = await (<Promise<BalanceWithTotal>>getBalance());
+    const newBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
+      getBalance()
+    ));
 
     expect(status).toBe('ok');
     monthlyDistributions.forEach(deposit => {

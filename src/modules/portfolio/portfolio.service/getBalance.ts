@@ -2,7 +2,11 @@ import fixedService, { FixedAssetData } from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, extractPortfolioNames } from './common';
-import { AssetBalance, Balance } from './types';
+import {
+  AssetBalance,
+  BalanceByAssetWithTotal,
+  BalanceByPortfolioWithTotal,
+} from './types';
 import { AssetClass, AssetName, Portfolio } from '../../../types';
 
 interface ShareItem {
@@ -184,7 +188,7 @@ export default async (portfolioName?: Portfolio | Portfolio[]) => {
       fixed: fixedTotalBalance,
       stock: stockTotalBalance,
       crypto: cryptoTotalBalance,
-    });
+    }) as BalanceByAssetWithTotal;
   }
 
   let names: Portfolio[];
@@ -217,7 +221,7 @@ export default async (portfolioName?: Portfolio | Portfolio[]) => {
       balance: { ...balance, ...item },
       total: total + Object.values(item)[0].total,
     }),
-    { balance: {}, total: 0 }
+    { balance: {}, total: 0 } as BalanceByPortfolioWithTotal
   );
 
   return {
