@@ -17,6 +17,7 @@ type AssetBalanceWithClass = AssetBalance & {
 interface TargetShare {
   assetClass: AssetClass;
   asset: AssetName;
+  // liquidity?: boolean;
   targetShare: number;
 }
 
@@ -46,49 +47,42 @@ const getShareValues = (
   portfolioTargetShares: TargetShare[],
   balanceFlat: AssetBalanceWithClass[]
 ) =>
-  balanceFlat.reduce((shares, { assetClass, asset, liquidity, value }) => {
-    const { share, status } = findShare(
-      portfolioTargetShares,
-      assetClass,
-      asset
-    );
+  balanceFlat.reduce((sharesWithValues, balanceAssetItem) => {
+    const filteredTargetShare = portfolioTargetShares.find(targetShareItem => {
+      return (
+        balanceAssetItem.assetClass === targetShareItem.assetClass &&
+        (<unknown>targetShareItem.asset !== ''
+          ? balanceAssetItem.asset === targetShareItem.asset
+          : true)
+      );
+    });
 
-    const shareItem = { assetClass, value };
+    const baseShareWithValueItem = {
+      assetClass: balanceAssetItem.assetClass,
+      targetShare: filteredTargetShare ? filteredTargetShare.targetShare : 0,
+      value: balanceAssetItem.value,
+    };
 
-    if (status === 'notFound') {
-      shares.push({
-        ...shareItem,
-        asset,
-        targetShare: 0,
-      });
-
-      return shares;
-    }
-
-    if (status === 'hasNoAssetName') {
-      const shareClassItem = shares.find(
+    if (filteredTargetShare && <unknown>filteredTargetShare.asset === '') {
+      const existingItem = sharesWithValues.find(
         ({ assetClass }) => assetClass === assetClass
       );
 
-      if (!shareClassItem) {
-        shares.push({
-          ...shareItem,
-          targetShare: share ? share.targetShare : 0,
-        });
+      if (!existingItem) {
+        sharesWithValues.push(baseShareWithValueItem);
       } else {
-        shareClassItem.value = shareClassItem.value + value;
+        existingItem.value = existingItem.value + balanceAssetItem.value;
       }
 
-      return shares;
+      return sharesWithValues;
     }
 
-    shares.push({
-      ...shareItem,
-      asset,
-      targetShare: share ? share.targetShare : 0,
+    sharesWithValues.push({
+      ...baseShareWithValueItem,
+      asset: balanceAssetItem.asset,
     });
 
-    return shares;
+    return sharesWithValues;
   }, [] as TargetShareWithValue[]);
 
 const getActualShares = (
@@ -114,31 +108,6 @@ const getActualShares = (
     .sort((a, b) =>
       isTargetSharesAvailable ? b.diffBRL - a.diffBRL : a.value - b.value
     );
-};
-
-const findShare = (
-  targetShares: TargetShare[],
-  assetClass: AssetClass,
-  asset: AssetName
-) => {
-  let share = targetShares.find(
-    share => asset === share.asset && assetClass === share.assetClass
-  );
-
-  if (!share) {
-    share = targetShares.find(
-      // FIXME remove unkown typecast
-      share => assetClass === share.assetClass && <unknown>share.asset === ''
-    );
-
-    if (!share) {
-      return { status: 'notFound' };
-    }
-
-    return { share, status: 'hasNoAssetName' };
-  }
-
-  return { share, status: 'hasAssetName' };
 };
 
 export default async (portfolioName?: Portfolio) => {
