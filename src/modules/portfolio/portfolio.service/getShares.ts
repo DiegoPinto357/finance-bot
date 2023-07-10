@@ -42,12 +42,16 @@ const flatPortfolioBalance = (balance: BalanceByAsset) => [
   })),
 ];
 
-const mapTargetShares = (
-  portfolioShares: TargetShare[],
+const getShareValues = (
+  portfolioTargetShares: TargetShare[],
   balanceFlat: AssetBalanceWithClass[]
 ) =>
-  balanceFlat.reduce((shares, { assetClass, asset, value }) => {
-    const { share, status } = findShare(portfolioShares, assetClass, asset);
+  balanceFlat.reduce((shares, { assetClass, asset, liquidity, value }) => {
+    const { share, status } = findShare(
+      portfolioTargetShares,
+      assetClass,
+      asset
+    );
 
     const shareItem = { assetClass, value };
 
@@ -87,22 +91,22 @@ const mapTargetShares = (
     return shares;
   }, [] as TargetShareWithValue[]);
 
-const mapActualShares = (
-  targetShares: TargetShareWithValue[],
-  total: number
+const getActualShares = (
+  targetSharesWithValues: TargetShareWithValue[],
+  totalBalance: number
 ) => {
-  const totalTargetShare = targetShares.reduce(
+  const totalTargetShare = targetSharesWithValues.reduce(
     (total, { targetShare }) => total + targetShare,
     0
   );
 
   const isTargetSharesAvailable = isAround1(totalTargetShare);
 
-  return targetShares
+  return targetSharesWithValues
     .map(share => {
-      const currentShare = share.value / total;
+      const currentShare = share.value / totalBalance;
       const diffBRL = isTargetSharesAvailable
-        ? share.targetShare * total - share.value
+        ? share.targetShare * totalBalance - share.value
         : 0;
 
       return { ...share, currentShare, diffBRL };
@@ -113,17 +117,17 @@ const mapActualShares = (
 };
 
 const findShare = (
-  shares: TargetShare[],
+  targetShares: TargetShare[],
   assetClass: AssetClass,
   asset: AssetName
 ) => {
-  let share = shares.find(
+  let share = targetShares.find(
     share => asset === share.asset && assetClass === share.assetClass
   );
 
   if (!share) {
-    share = shares.find(
-      // FIXME remove unkown cats
+    share = targetShares.find(
+      // FIXME remove unkown typecast
       share => assetClass === share.assetClass && <unknown>share.asset === ''
     );
 
@@ -137,18 +141,22 @@ const findShare = (
   return { share, status: 'hasAssetName' };
 };
 
-export default async (portfolioName: Portfolio) => {
+export default async (portfolioName?: Portfolio) => {
   if (portfolioName) {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
-    const [{ balance, total }, portfolioShares] = await Promise.all([
+    const [{ balance, total }, portfoliotTargetShares] = await Promise.all([
       // TODO remove type cast as getBalance type is defined
       <Promise<BalanceByAssetWithTotal>>getBalance(portfolioName),
-      googleSheets.loadSheet(sharesSheetTitle),
+      // TODO use generic on loadSheet method
+      <Promise<TargetShare[]>>googleSheets.loadSheet(sharesSheetTitle),
     ]);
 
     const balanceFlat = flatPortfolioBalance(balance);
-    const targetShares = mapTargetShares(portfolioShares, balanceFlat);
-    const shares = mapActualShares(targetShares, total);
+    const targetSharesWithValues = getShareValues(
+      portfoliotTargetShares,
+      balanceFlat
+    );
+    const shares = getActualShares(targetSharesWithValues, total);
 
     return { shares, total };
   }
@@ -182,8 +190,8 @@ export default async (portfolioName: Portfolio) => {
         ? totalBalance.balance[portfolio].total
         : 0;
 
-      const targetShares = mapTargetShares(portfolioShares, balanceFlat);
-      const shares = mapActualShares(targetShares, total);
+      const targetShares = getShareValues(portfolioShares, balanceFlat);
+      const shares = getActualShares(targetShares, total);
 
       return { portfolio, shares };
     })
