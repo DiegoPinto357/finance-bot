@@ -1,6 +1,7 @@
 [
   {
     "asset": "nubank",
+    "liquidity": true,
     "value": 50962.72
   },
   {

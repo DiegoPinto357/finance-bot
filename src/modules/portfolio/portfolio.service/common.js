@@ -127,3 +127,33 @@ export const swapOnAsset = async ({
 
   return { status: 'ok' };
 };
+
+// const flatPortfolioBalance = (balance: BalanceByAsset) => [
+//   ...balance.fixed.balance.map(item => ({
+//     assetClass: <AssetClass>'fixed',
+//     ...item,
+//   })),
+//   ...balance.stock.balance.map(item => ({
+//     assetClass: <AssetClass>'stock',
+//     ...item,
+//   })),
+//   ...balance.crypto.balance.map(item => ({
+//     assetClass: <AssetClass>'crypto',
+//     ...item,
+//   })),
+// ];
+
+export const flatPortfolioBalance = balance => [
+  ...balance.fixed.balance.map(item => ({
+    assetClass: 'fixed',
+    ...item,
+  })),
+  ...balance.stock.balance.map(item => ({
+    assetClass: 'stock',
+    ...item,
+  })),
+  ...balance.crypto.balance.map(item => ({
+    assetClass: 'crypto',
+    ...item,
+  })),
+];

@@ -1,6 +1,6 @@
 import inquirer from 'inquirer';
 import portfolioService from './portfolio.service';
-import { printBalance } from './cliUtils';
+import { printBalance, printLiquidity } from './cliUtils';
 
 const methods = Object.keys(portfolioService);
 
@@ -42,6 +42,22 @@ const getSharesMenu = async () => {
   console.log({ total });
 };
 
+const getLiquidityMenu = async () => {
+  const { portfolioName } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'portfolioName',
+      message: 'portfolioName?',
+      choices: ['all', ...portfolios],
+    },
+  ]);
+
+  const name = portfolioName !== 'all' ? portfolioName : undefined;
+  const liquidity = await portfolioService.getLiquidity(name);
+
+  printLiquidity(name, liquidity);
+};
+
 const init = async () => {
   portfolios = await portfolioService.getPortfolios();
 };
@@ -63,6 +79,10 @@ const execute = async () => {
 
     case 'getShares':
       await getSharesMenu();
+      break;
+
+    case 'getLiquidity':
+      await getLiquidityMenu();
       break;
 
     case 'updateAbsoluteTable':

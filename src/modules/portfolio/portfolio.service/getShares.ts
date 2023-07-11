@@ -2,22 +2,17 @@ import googleSheets from '../../../providers/googleSheets';
 import { isAround1 } from './common';
 import getBalance from './getBalance';
 import getPortfolios from './getPortfolios';
+import { flatPortfolioBalance } from './common';
 import { AssetName, AssetClass, Portfolio } from '../../../types';
 import {
-  AssetBalance,
-  BalanceByAsset,
+  AssetBalanceWithClass,
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
 } from './types';
 
-type AssetBalanceWithClass = AssetBalance & {
-  assetClass: AssetClass;
-};
-
 interface TargetShare {
   assetClass: AssetClass;
   asset: AssetName;
-  // liquidity?: boolean;
   targetShare: number;
 }
 
@@ -27,21 +22,6 @@ interface TargetShareWithValue {
   targetShare: number;
   value: number;
 }
-
-const flatPortfolioBalance = (balance: BalanceByAsset) => [
-  ...balance.fixed.balance.map(item => ({
-    assetClass: <AssetClass>'fixed',
-    ...item,
-  })),
-  ...balance.stock.balance.map(item => ({
-    assetClass: <AssetClass>'stock',
-    ...item,
-  })),
-  ...balance.crypto.balance.map(item => ({
-    assetClass: <AssetClass>'crypto',
-    ...item,
-  })),
-];
 
 const getShareValues = (
   portfolioTargetShares: TargetShare[],

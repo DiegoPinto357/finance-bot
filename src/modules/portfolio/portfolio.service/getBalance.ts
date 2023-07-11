@@ -89,6 +89,7 @@ const mapValuesByShares = (
   assetsWithTotalValues.map(item => {
     return {
       asset: item.asset,
+      liquidity: item.liquidity,
       value: item.value * getAssetShare(assetShares, item.asset),
     };
   });

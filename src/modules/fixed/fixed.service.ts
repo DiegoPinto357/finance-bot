@@ -3,6 +3,7 @@ import { FixedAsset } from '../../types';
 
 export interface FixedAssetData {
   asset: FixedAsset;
+  liquidity?: boolean;
   value: number;
 }
 

@@ -13,7 +13,9 @@ describe('fixed service', () => {
     it('gets balance for given asset', async () => {
       const { balance, total } = await fixed.getBalance('nubank');
 
-      expect(balance).toEqual([{ asset: 'nubank', value: 50962.72 }]);
+      expect(balance).toEqual([
+        { asset: 'nubank', liquidity: true, value: 50962.72 },
+      ]);
       expect(total).toBe(50962.72);
     });
 
@@ -21,7 +23,7 @@ describe('fixed service', () => {
       const { balance, total } = await fixed.getBalance();
 
       expect(balance).toEqual([
-        { asset: 'nubank', value: 50962.72 },
+        { asset: 'nubank', liquidity: true, value: 50962.72 },
         { asset: 'xpWesternAsset', value: 10393.77 },
         { asset: 'pagBankCDB120', value: 5254.21 },
         { asset: 'daycovalCDB110', value: 5000 },

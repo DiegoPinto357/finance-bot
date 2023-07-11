@@ -1,9 +1,14 @@
-import { AssetName, Portfolio } from '../../../types';
+import { AssetClass, AssetName, Portfolio } from '../../../types';
 
 export interface AssetBalance {
   asset: AssetName;
+  liquidity?: boolean;
   value: number;
 }
+
+export type AssetBalanceWithClass = AssetBalance & {
+  assetClass: AssetClass;
+};
 
 export interface BalanceByAsset {
   fixed: {

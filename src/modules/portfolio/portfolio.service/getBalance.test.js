@@ -22,7 +22,7 @@ describe('portfolio service - getBalance', () => {
         },
         fixed: {
           balance: [
-            { asset: 'nubank', value: 1295.807356032464 },
+            { asset: 'nubank', liquidity: true, value: 1295.807356032464 },
             { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
             { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
             { asset: 'nuInvestCDB12_5', value: 1128.63 },
@@ -58,7 +58,7 @@ describe('portfolio service - getBalance', () => {
         },
         fixed: {
           balance: [
-            { asset: 'nubank', value: 4370.80325478285 },
+            { asset: 'nubank', liquidity: true, value: 4370.80325478285 },
             { asset: 'pagBankCDB120', value: 406.70591249473637 },
           ],
           total: 4777.509167277586,

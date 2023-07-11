@@ -7,7 +7,7 @@
     "registry": "https://npm.pkg.github.com/@diegopinto357"
   },
   "scripts": {
-    "test": "NODE_ENV='test' jest --watch",
+    "test": "NODE_ENV='test' jest --watch --no-cache",
     "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "tsx ./src/cli.ts",
     "server": "tsx watch ./src/server.js"

@@ -11,6 +11,7 @@ import {
 
 import getBalance from './getBalance';
 import getShares from './getShares';
+import getLiquidity from './getLiquidity';
 import deposit from './deposit';
 import transfer from './transfer';
 
@@ -204,6 +205,7 @@ const updateTables = () =>
 export default {
   getBalance,
   getShares,
+  getLiquidity,
   deposit,
   transfer,
   swap,
