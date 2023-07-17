@@ -14,18 +14,18 @@ const getPortfolioLiquidity = async (
 ) => {
   // TODO remove typecast when flatPortfolioBalance return type is defined
   const balanceFlat = <AssetBalanceWithClass[]>flatPortfolioBalance(balance);
-  const liquidValue = balanceFlat.reduce(
+  const liquidityValue = balanceFlat.reduce(
     (total, assetBalance) =>
       assetBalance.liquidity ? total + assetBalance.value : total,
     0
   );
 
-  const liquidRatio = total !== 0 ? liquidValue / total : 0;
+  const liquidityRatio = total !== 0 ? liquidityValue / total : 0;
 
   return {
     portfolio: portfolioName,
-    liquidValue,
-    liquidRatio,
+    liquidityValue,
+    liquidityRatio,
     totalValue: total,
   };
 };
@@ -51,20 +51,20 @@ export default async (portfolioName?: Portfolio) => {
     )
   );
 
-  const totalLiquidValue = liquidityData.reduce(
-    (total, { liquidValue }) => total + liquidValue,
+  const totalliquidityValue = liquidityData.reduce(
+    (total, { liquidityValue }) => total + liquidityValue,
     0
   );
 
   const totalRow = {
     portfolio: 'total',
-    liquidValue: totalLiquidValue,
-    liquidRatio: total !== 0 ? totalLiquidValue / total : 0,
+    liquidityValue: totalliquidityValue,
+    liquidityRatio: total !== 0 ? totalliquidityValue / total : 0,
     totalValue: total,
   };
 
   return [
-    ...liquidityData.sort((a, b) => a.liquidRatio - b.liquidRatio),
+    ...liquidityData.sort((a, b) => a.liquidityRatio - b.liquidityRatio),
     totalRow,
   ];
 };
