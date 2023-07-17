@@ -20,9 +20,9 @@ export type FixedAsset =
   | 'sofisaCDBMax60'
   | 'sofisaCDB110';
 
-type StockAsset = 'float' | 'br' | 'us' | 'fii';
+export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
-type CryptoAsset = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
+export type CryptoAsset = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
 
 export type AssetName = FixedAsset | StockAsset | CryptoAsset;
 

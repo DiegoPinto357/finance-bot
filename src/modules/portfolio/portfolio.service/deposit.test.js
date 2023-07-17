@@ -100,7 +100,7 @@ describe('portfolio service - deposit', () => {
         : null;
 
       const service = services[assetClass];
-      const currentTotalAssetValue = await service.getTotalPosition(assetName);
+      const currentTotalAssetValue = await service.getAssetPosition(assetName);
 
       const result = await deposit({
         value: depositValue,
@@ -124,7 +124,7 @@ describe('portfolio service - deposit', () => {
         ? await getBalance(sidePortfolioName)
         : null;
 
-      const newTotalAssetValue = await service.getTotalPosition(assetName);
+      const newTotalAssetValue = await service.getAssetPosition(assetName);
 
       expect(result.status).toBe('ok');
       expect(newPortfolioAssetValue).toBe(
@@ -153,7 +153,7 @@ describe('portfolio service - deposit', () => {
       ? await getBalance(sidePortfolioName)
       : null;
 
-    const currentTotalAssetValue = await cryptoService.getTotalPosition(
+    const currentTotalAssetValue = await cryptoService.getAssetPosition(
       assetName
     );
 
@@ -178,7 +178,7 @@ describe('portfolio service - deposit', () => {
       ? await getBalance(sidePortfolioName)
       : null;
 
-    const newTotalAssetValue = await cryptoService.getTotalPosition(assetName);
+    const newTotalAssetValue = await cryptoService.getAssetPosition(assetName);
 
     expect(result.status).toBe('ok');
     expect(newPortfolioAssetValue).toBeCloseTo(

@@ -6,22 +6,27 @@
   },
   {
     "asset": "99pay",
+    "liquidity": true,
     "value": 519.83
   },
   {
     "asset": "pagBankCDB120",
+    "liquidity": true,
     "value": 5254.21
   },
   {
     "asset": "xpWesternAsset",
+    "liquidity": true,
     "value": 10393.77
   },
   {
     "asset": "daycovalCDB110",
+    "liquidity": true,
     "value": 5000
   },
   {
     "asset": "daycovalCDBCDI1_2",
+    "liquidity": true,
     "value": 5000
   },
   {

@@ -7,7 +7,13 @@ import {
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
 } from './types';
-import { AssetClass, AssetName, Portfolio } from '../../../types';
+import {
+  StockAsset,
+  CryptoAsset,
+  AssetClass,
+  AssetName,
+  Portfolio,
+} from '../../../types';
 
 interface ShareItem {
   portfolio: Portfolio;
@@ -38,6 +44,28 @@ type AssetsShares = {
 interface FixedBalance {
   balance: FixedAssetData[];
   total: number;
+}
+
+type StockAssetTotals = {
+  [key in StockAsset]: number;
+};
+
+interface StockTotals extends StockAssetTotals {
+  total: number;
+}
+
+type CryptoAssetTotals = {
+  [key in CryptoAsset]: number;
+};
+
+interface CryptoTotals extends CryptoAssetTotals {
+  total: number;
+}
+
+interface AssetsTotals {
+  fixed: FixedBalance;
+  stock: StockTotals;
+  crypto: CryptoTotals;
 }
 
 const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
@@ -104,7 +132,7 @@ const getFixedValues = (
 };
 
 const getStockValues = (
-  stockTotalBalance: number,
+  stockTotalBalance: StockTotals,
   assetShares: AssetShare[]
 ) => {
   const balance = Object.entries(stockTotalBalance).map(([asset, value]) => ({
@@ -116,7 +144,7 @@ const getStockValues = (
 };
 
 const getCryptoValues = (
-  cryptoTotalBalance: number,
+  cryptoTotalBalance: CryptoTotals,
   assetShares: AssetShare[]
 ) => {
   const balance = Object.entries(cryptoTotalBalance).map(([asset, value]) => ({
@@ -129,12 +157,6 @@ const getCryptoValues = (
 
 const getTotalValue = (assetValues: AssetBalance[]) =>
   assetValues.reduce((total, current) => total + current.value, 0);
-
-interface AssetsTotals {
-  fixed: FixedBalance;
-  stock: number;
-  crypto: number;
-}
 
 const getBalancesByAssets = (
   shares: AssetsShares,
@@ -178,10 +200,12 @@ export default async (portfolioName?: Portfolio | Portfolio[]) => {
     await Promise.all([
       // TODO provide assets to getters to prevent getting data from all assets
       assets.fixed ? fixedService.getBalance() : { balance: [], total: 0 },
-      // TODO normalize return type and remove typecast
-      assets.stock ? <Promise<number>>stockService.getTotalPosition() : 0,
-      // TODO remove type cast as getTotalPosition type is defined
-      assets.crypto ? <Promise<number>>cryptoService.getTotalPosition() : 0,
+      assets.stock
+        ? stockService.getTotalPosition()
+        : ({ total: 0 } as StockTotals),
+      assets.crypto
+        ? cryptoService.getTotalPosition()
+        : ({ total: 0 } as CryptoTotals),
     ]);
 
   if (portfolioName && !Array.isArray(portfolioName)) {

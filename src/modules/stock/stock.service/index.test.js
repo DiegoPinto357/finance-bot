@@ -19,6 +19,18 @@ describe('stock service', () => {
     });
   });
 
+  describe('getAssetPosition', () => {
+    it('gets total stock position for a given asset', async () => {
+      const value = await stock.getAssetPosition('br');
+      expect(value).toBe(3935.519970999999);
+    });
+
+    it('gets total stock floating position', async () => {
+      const value = await stock.getAssetPosition('float');
+      expect(value).toBe(654.97);
+    });
+  });
+
   describe('getTotalPosition', () => {
     it('gets total stock position', async () => {
       const value = await stock.getTotalPosition();
@@ -39,27 +51,17 @@ describe('stock service', () => {
           expectedTotals.float,
       });
     });
-
-    it('gets total stock position for a given asset', async () => {
-      const value = await stock.getTotalPosition('br');
-      expect(value).toBe(3935.519970999999);
-    });
-
-    it('gets total stock floating position', async () => {
-      const value = await stock.getTotalPosition('float');
-      expect(value).toBe(654.97);
-    });
   });
 
   describe('deposit', () => {
     it('deposits value on float', async () => {
       const value = 150;
       const asset = 'float';
-      const currentFloatValue = await stock.getTotalPosition(asset);
+      const currentFloatValue = await stock.getAssetPosition(asset);
 
       const result = await stock.deposit({ asset, value });
 
-      const newFloatValue = await stock.getTotalPosition(asset);
+      const newFloatValue = await stock.getAssetPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newFloatValue).toBe(currentFloatValue + value);
@@ -68,11 +70,11 @@ describe('stock service', () => {
     it('deposits value on float when asset param is not provided', async () => {
       const value = 357.98;
       const asset = 'float';
-      const currentFloatValue = await stock.getTotalPosition(asset);
+      const currentFloatValue = await stock.getAssetPosition(asset);
 
       const result = await stock.deposit({ value });
 
-      const newFloatValue = await stock.getTotalPosition(asset);
+      const newFloatValue = await stock.getAssetPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newFloatValue).toBe(currentFloatValue + value);
@@ -83,11 +85,11 @@ describe('stock service', () => {
       async asset => {
         const value = 500;
 
-        const currentValue = await stock.getTotalPosition(asset);
+        const currentValue = await stock.getAssetPosition(asset);
 
         const result = await stock.deposit({ asset, value });
 
-        const newValue = await stock.getTotalPosition(asset);
+        const newValue = await stock.getAssetPosition(asset);
 
         expect(result).toEqual({ status: 'cannotDepositValue' });
         expect(newValue).toBe(currentValue);
@@ -109,7 +111,7 @@ describe('stock service', () => {
       const value = 357.75;
       const result = await stock.setAssetValue({ asset: 'float', value });
 
-      const floatValue = await stock.getTotalPosition('float');
+      const floatValue = await stock.getAssetPosition('float');
 
       expect(result).toEqual({ status: 'ok' });
       expect(floatValue).toBe(value);
@@ -119,7 +121,7 @@ describe('stock service', () => {
       const value = 3467.34;
       const result = await stock.setAssetValue({ value });
 
-      const floatValue = await stock.getTotalPosition('float');
+      const floatValue = await stock.getAssetPosition('float');
 
       expect(result).toEqual({ status: 'ok' });
       expect(floatValue).toBe(value);
@@ -129,11 +131,11 @@ describe('stock service', () => {
       'does not sets asset value for "%s" portfolio type',
       async asset => {
         const value = 357.75;
-        const currentValue = await stock.getTotalPosition(asset);
+        const currentValue = await stock.getAssetPosition(asset);
 
         const result = await stock.setAssetValue({ asset, value });
 
-        const newValue = await stock.getTotalPosition(asset);
+        const newValue = await stock.getAssetPosition(asset);
 
         expect(result).toEqual({ status: 'cannotSetValue' });
         expect(newValue).toBe(currentValue);
@@ -147,12 +149,12 @@ describe('stock service', () => {
       const buyAmount = 12;
       const { lp: price } = await tradingView.getTicker(asset);
       const orderValue = buyAmount * price;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const currentFloatValue = await stock.getAssetPosition('float');
 
       const result = await stock.buy({ asset, amount: buyAmount, orderValue });
 
       const { balance, total } = await stock.getBalance('us');
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getAssetPosition('float');
 
       expect(result.status).toBe('ok');
       expect(balance).toEqual(
@@ -169,12 +171,12 @@ describe('stock service', () => {
       const buyAmount = 100;
       const price = 1000;
       const orderValue = buyAmount * price;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const currentFloatValue = await stock.getAssetPosition('float');
 
       const result = await stock.buy({ asset, amount: buyAmount, orderValue });
 
       const { balance, total } = await stock.getBalance('us');
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getAssetPosition('float');
 
       expect(result.status).toBe('assetNotFound');
       expect(balance).not.toEqual(
@@ -191,7 +193,7 @@ describe('stock service', () => {
       const sellAmount = 12;
       const { lp: price } = await tradingView.getTicker(asset);
       const orderValue = sellAmount * price;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const currentFloatValue = await stock.getAssetPosition('float');
 
       const result = await stock.sell({
         asset,
@@ -200,7 +202,7 @@ describe('stock service', () => {
       });
 
       const { balance, total } = await stock.getBalance('us');
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getAssetPosition('float');
 
       expect(result.status).toBe('ok');
       expect(balance).toEqual(
@@ -217,7 +219,7 @@ describe('stock service', () => {
       const sellAmount = 100;
       const price = 1000;
       const orderValue = sellAmount * price;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const currentFloatValue = await stock.getAssetPosition('float');
 
       const result = await stock.sell({
         asset,
@@ -226,7 +228,7 @@ describe('stock service', () => {
       });
 
       const { balance, total } = await stock.getBalance('us');
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getAssetPosition('float');
 
       expect(result.status).toBe('assetNotFound');
       expect(balance).not.toEqual(
@@ -241,7 +243,7 @@ describe('stock service', () => {
       const sellAmount = 1000;
       const { lp: price } = await tradingView.getTicker(asset);
       const orderValue = sellAmount * price;
-      const currentFloatValue = await stock.getTotalPosition('float');
+      const currentFloatValue = await stock.getAssetPosition('float');
 
       const result = await stock.sell({
         asset,
@@ -250,7 +252,7 @@ describe('stock service', () => {
       });
 
       const { balance, total } = await stock.getBalance('us');
-      const newFloatValue = await stock.getTotalPosition('float');
+      const newFloatValue = await stock.getAssetPosition('float');
 
       expect(result.status).toBe('notEnoughStocks');
       expect(balance).toEqual(

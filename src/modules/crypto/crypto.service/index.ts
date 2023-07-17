@@ -41,12 +41,12 @@ const getBalance = async (portfolioType: PortfolioTypes) => {
   return service.getBalance();
 };
 
-const getTotalPosition = async (portfolioType?: PortfolioTypes) => {
-  if (portfolioType) {
-    const service = getServiceByPortfolioType(portfolioType);
-    return service.getTotalPosition();
-  }
+const getAssetPosition = async (portfolioType: PortfolioTypes) => {
+  const service = getServiceByPortfolioType(portfolioType);
+  return service.getTotalPosition();
+};
 
+const getTotalPosition = async () => {
   const totals = await Promise.all(
     portfolioTypes.map(async type => {
       const service = getServiceByPortfolioType(type);
@@ -105,6 +105,7 @@ const getHistory = async (portfolioType: PortfolioTypes) => {
 
 export default {
   getBalance,
+  getAssetPosition,
   getTotalPosition,
   getPosition,
   setAssetValue,

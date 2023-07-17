@@ -24,37 +24,48 @@ describe('fixed service', () => {
 
       expect(balance).toEqual([
         { asset: 'nubank', liquidity: true, value: 50962.72 },
-        { asset: 'xpWesternAsset', value: 10393.77 },
-        { asset: 'pagBankCDB120', value: 5254.21 },
-        { asset: 'daycovalCDB110', value: 5000 },
-        { asset: 'daycovalCDBCDI1_2', value: 5000 },
+        { asset: 'xpWesternAsset', liquidity: true, value: 10393.77 },
+        { asset: 'pagBankCDB120', liquidity: true, value: 5254.21 },
+        { asset: 'daycovalCDB110', liquidity: true, value: 5000 },
+        { asset: 'daycovalCDBCDI1_2', liquidity: true, value: 5000 },
         { asset: 'nuInvestCDB8_5', value: 3260.39 },
         { asset: 'nuInvestCDB9_5', value: 2194.88 },
         { asset: 'nuInvestTDIPCA2035', value: 1489.11 },
         { asset: 'nuInvestCBDIPCA5_5', value: 1128.9 },
         { asset: 'nuInvestCDB12_5', value: 1128.63 },
-        { asset: '99pay', value: 519.83 },
+        { asset: '99pay', liquidity: true, value: 519.83 },
       ]);
       expect(total).toBe(86332.44);
     });
   });
 
-  describe('getTotalPosition', () => {
-    it('gets total fixed position', async () => {
-      const value = await fixed.getTotalPosition();
-      expect(value).toBe(86332.44);
-    });
-
-    it('gets total fixed position for a given asset', async () => {
-      const value = await fixed.getTotalPosition('nubank');
+  describe('getAssetPosition', () => {
+    it('gets position for a given asset', async () => {
+      const value = await fixed.getAssetPosition('nubank');
       expect(value).toBe(50962.72);
     });
 
-    it('gets 0 as total position for an asset that does not exists', async () => {
-      const value = await fixed.getTotalPosition(
+    it('gets 0 as position for an asset that does not exists', async () => {
+      const value = await fixed.getAssetPosition(
         'pupancaBamerindus' as FixedAsset
       );
       expect(value).toBe(0);
+    });
+  });
+
+  describe('getTotalPosition', () => {
+    it('gets total fixed position', async () => {
+      const totals = await fixed.getTotalPosition();
+
+      const expectedTotals = {
+        withLiquidity: 77130.53000000001,
+        withoutLiquidity: 9201.909999999989,
+      };
+
+      expect(totals).toEqual({
+        ...expectedTotals,
+        total: expectedTotals.withLiquidity + expectedTotals.withoutLiquidity,
+      });
     });
   });
 
@@ -112,7 +123,7 @@ describe('fixed service', () => {
       const value = 150;
       const assetName = 'nubank';
 
-      const currentPosition = await fixed.getTotalPosition(assetName);
+      const currentPosition = await fixed.getAssetPosition(assetName);
 
       const result = await fixed.deposit({ asset: assetName, value });
 
@@ -129,7 +140,7 @@ describe('fixed service', () => {
       const value = 99999;
       const assetName = 'nubank';
 
-      const currentPosition = await fixed.getTotalPosition(assetName);
+      const currentPosition = await fixed.getAssetPosition(assetName);
 
       const result = await fixed.deposit({ asset: assetName, value: -value });
 
@@ -146,7 +157,7 @@ describe('fixed service', () => {
       const value = 150;
       const assetName = 'poupancaBamerindus' as FixedAsset;
 
-      const currentPosition = await fixed.getTotalPosition(assetName);
+      const currentPosition = await fixed.getAssetPosition(assetName);
 
       const result = await fixed.deposit({ asset: assetName, value });
 

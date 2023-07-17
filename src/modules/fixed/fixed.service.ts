@@ -26,15 +26,18 @@ const getBalance = async (assetName?: FixedAsset) => {
   return { balance: balance.sort((a, b) => b.value - a.value), total };
 };
 
-const getTotalPosition = async (assetName?: FixedAsset) => {
-  const { balance, total } = await getBalance();
-  if (!assetName) {
-    return total;
-  }
+const getAssetPosition = async (assetName: FixedAsset) => {
+  const { balance } = await getBalance(assetName);
+  return balance && balance[0] ? balance[0].value : 0;
+};
 
-  // TODO when assetName is provided, get specific balance rather than get all and filter later
-  const filteredBalance = balance.find(({ asset }) => asset === assetName);
-  return filteredBalance ? filteredBalance.value : 0;
+const getTotalPosition = async () => {
+  const { balance, total } = await getBalance();
+  const withLiquidity = balance
+    .filter(({ liquidity }) => liquidity)
+    .reduce((total, { value }) => total + value, 0);
+  const withoutLiquidity = total - withLiquidity;
+  return { withLiquidity, withoutLiquidity, total };
 };
 
 const getAssetsList = async () => {
@@ -52,7 +55,7 @@ const setAssetValue = ({ asset, value }: FixedAssetData) =>
   );
 
 const deposit = async ({ asset, value }: FixedAssetData) => {
-  const currentValue = await getTotalPosition(asset);
+  const currentValue = await getAssetPosition(asset);
   const newValue = currentValue + value;
 
   if (newValue < 0) {
@@ -71,7 +74,7 @@ const deposit = async ({ asset, value }: FixedAssetData) => {
 };
 
 const removeAsset = async (asset: FixedAsset) => {
-  const funds = await getTotalPosition(asset);
+  const funds = await getAssetPosition(asset);
 
   if (funds !== 0) {
     return { status: 'assetHasFunds' };
@@ -84,6 +87,7 @@ const removeAsset = async (asset: FixedAsset) => {
 
 export default {
   getBalance,
+  getAssetPosition,
   getTotalPosition,
   getAssetsList,
   setAssetValue,

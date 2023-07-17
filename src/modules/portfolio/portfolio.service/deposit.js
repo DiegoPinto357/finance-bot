@@ -51,7 +51,7 @@ export default async ({
   if (assetClass === 'stock') assetName = 'float';
 
   const service = services[assetClass];
-  const totalAssetValue = await service.getTotalPosition(assetName);
+  const totalAssetValue = await service.getAssetPosition(assetName);
   const currentTotalAssetValue = executed
     ? totalAssetValue - value
     : totalAssetValue;

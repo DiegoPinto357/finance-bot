@@ -68,7 +68,7 @@ export const swapOnAsset = async ({
   destiny,
 }) => {
   const service = services[assetClass];
-  const totalAssetValue = await service.getTotalPosition(assetName);
+  const totalAssetValue = await service.getAssetPosition(assetName);
 
   const portfolioData = await getPortfolioData();
 

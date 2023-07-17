@@ -21,8 +21,8 @@ describe('portfolio service - getLiquidity', () => {
 
     expect(result).toEqual({
       portfolio: 'amortecedor',
-      liquidityValue: 3567.3904,
-      liquidityRatio: 0.1904580295708041,
+      liquidityValue: 9312.044808024899,
+      liquidityRatio: 0.4971571671582283,
       totalValue: 18730.585463049738,
     });
   });
@@ -63,24 +63,10 @@ describe('portfolio service - getLiquidity', () => {
       },
       {
         portfolio: 'amortecedor',
-        liquidityValue: 3567.3904,
-        liquidityRatio: 0.1904580295708041,
+        liquidityValue: 9312.044808024899,
+        liquidityRatio: 0.4971571671582283,
         totalValue: 18730.585463049738,
       },
-      {
-        portfolio: 'financiamento',
-        liquidityValue: 5153.352886268896,
-        liquidityRatio: 0.5851676304855423,
-        totalValue: 8806.626713088874,
-      },
-
-      {
-        portfolio: 'reformaCasa',
-        liquidityValue: 26009.01120556749,
-        liquidityRatio: 0.5907263883010009,
-        totalValue: 44028.862973893025,
-      },
-
       {
         portfolio: 'leni',
         liquidityValue: 528.316218100768,
@@ -89,15 +75,15 @@ describe('portfolio service - getLiquidity', () => {
       },
       {
         portfolio: 'seguroCarro',
-        liquidityValue: 1581.3179202991073,
-        liquidityRatio: 0.6761085918926617,
+        liquidityValue: 1873.346170519908,
+        liquidityRatio: 0.8009682463082121,
         totalValue: 2338.851982153417,
       },
       {
-        portfolio: 'suricat',
-        liquidityValue: 4370.80325478285,
-        liquidityRatio: 0.8298598180095992,
-        totalValue: 5266.917568398632,
+        portfolio: 'financiamento',
+        liquidityValue: 7078.717302553882,
+        liquidityRatio: 0.8037944076854215,
+        totalValue: 8806.626713088874,
       },
       {
         portfolio: 'impostos',
@@ -111,14 +97,24 @@ describe('portfolio service - getLiquidity', () => {
         liquidityRatio: 0.8827141820347739,
         totalValue: 5409.89237989419,
       },
-
+      {
+        portfolio: 'suricat',
+        liquidityValue: 4777.509167277586,
+        liquidityRatio: 0.9070787809443831,
+        totalValue: 5266.917568398632,
+      },
       {
         portfolio: 'manutencaoCarro',
         liquidityValue: 2677.9221739719746,
         liquidityRatio: 0.9296763746777649,
         totalValue: 2880.488573134032,
       },
-
+      {
+        portfolio: 'reformaCasa',
+        liquidityValue: 43808.068219067485,
+        liquidityRatio: 0.9949852269644923,
+        totalValue: 44028.862973893025,
+      },
       {
         portfolio: 'congelamentoSuricats',
         liquidityValue: 652.31312034252,
@@ -127,8 +123,8 @@ describe('portfolio service - getLiquidity', () => {
       },
       {
         portfolio: 'total',
-        liquidityValue: 51194.282638219986,
-        liquidityRatio: 0.40540430685103096,
+        liquidityValue: 77362.09263874541,
+        liquidityRatio: 0.6126255497003739,
         totalValue: 126279.57269588587,
       },
     ]);

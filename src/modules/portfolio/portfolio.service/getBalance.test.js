@@ -59,7 +59,11 @@ describe('portfolio service - getBalance', () => {
         fixed: {
           balance: [
             { asset: 'nubank', liquidity: true, value: 4370.80325478285 },
-            { asset: 'pagBankCDB120', value: 406.70591249473637 },
+            {
+              asset: 'pagBankCDB120',
+              liquidity: true,
+              value: 406.70591249473637,
+            },
           ],
           total: 4777.509167277586,
         },

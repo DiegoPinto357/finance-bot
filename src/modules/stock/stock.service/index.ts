@@ -28,6 +28,14 @@ interface BalanceWithPricesFloat extends AssetData {
   positionBRL: number;
 }
 
+type AssetTotals = {
+  [key in PortfolioTypes]: number;
+};
+
+interface Totals extends AssetTotals {
+  total: number;
+}
+
 const getBalanceWithPrices = async (
   portfolioType: PortfolioTypes
 ): Promise<(BalanceWithPrices | BalanceWithPricesFloat)[]> => {
@@ -100,12 +108,12 @@ const getBalance = async (portfolioType: PortfolioTypes) => {
   return { balance, total: totalPosition };
 };
 
-const getTotalPosition = async (portfolioType?: PortfolioTypes) => {
-  if (portfolioType) {
-    const balanceWithPrices = await getBalanceWithPrices(portfolioType);
-    return getTotalFromPortfolio(balanceWithPrices);
-  }
+const getAssetPosition = async (portfolioType: PortfolioTypes) => {
+  const balanceWithPrices = await getBalanceWithPrices(portfolioType);
+  return getTotalFromPortfolio(balanceWithPrices);
+};
 
+const getTotalPosition = async () => {
   const totals = await Promise.all(
     portfolioTypes.map(async type => {
       // TODO optimize to make a single request
@@ -113,11 +121,6 @@ const getTotalPosition = async (portfolioType?: PortfolioTypes) => {
       return getTotalFromPortfolio(balanceWithPrices);
     })
   );
-
-  interface Totals {
-    [key: string]: number;
-    total: number;
-  }
 
   return totals.reduce(
     (obj, current, index) => {
@@ -136,7 +139,7 @@ const deposit = async ({ asset, value }: { asset: string; value: number }) => {
     return { status: 'cannotDepositValue' };
   }
 
-  const currentValue = await (<Promise<number>>getTotalPosition(asset));
+  const currentValue = await getAssetPosition(asset);
   const newValue = currentValue + value;
 
   if (newValue < 0) {
@@ -264,6 +267,7 @@ const sell = async ({
 
 export default {
   getBalance,
+  getAssetPosition,
   getTotalPosition,
   deposit,
   setAssetValue,

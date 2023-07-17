@@ -37,27 +37,29 @@ describe('crypto service', () => {
     });
   });
 
-  describe('getTotalPosition', () => {
+  describe('getAssetPosition', () => {
     it('gets HODL total position', async () => {
-      const total = await cryptoService.getTotalPosition('hodl');
+      const total = await cryptoService.getAssetPosition('hodl');
       expect(total).toBe(expectedHodlBalance.total);
     });
 
     it('gets DeFi total position', async () => {
-      const total = await cryptoService.getTotalPosition('defi');
+      const total = await cryptoService.getAssetPosition('defi');
       expect(total).toBe(expectedDefiBalance.total);
     });
 
     it('gets backed tokens total position', async () => {
-      const total = await cryptoService.getTotalPosition('backed');
+      const total = await cryptoService.getAssetPosition('backed');
       expect(total).toBe(expectedBackedBalance.total);
     });
 
     it('gets Binance buffer total position', async () => {
-      const total = await cryptoService.getTotalPosition('binanceBuffer');
+      const total = await cryptoService.getAssetPosition('binanceBuffer');
       expect(total).toBe(2156.375642691);
     });
+  });
 
+  describe('getTotalPosition', () => {
     it('gets total position for all crypto assets', async () => {
       const total = await cryptoService.getTotalPosition();
       expect(total).toEqual({
@@ -126,13 +128,13 @@ describe('crypto service', () => {
     it('deposits value on binanceBuffer', async () => {
       const value = 150;
       const asset = 'binanceBuffer';
-      const currentBinanceBufferValue = await cryptoService.getTotalPosition(
+      const currentBinanceBufferValue = await cryptoService.getAssetPosition(
         asset
       );
 
       const result = await cryptoService.deposit({ asset, value });
 
-      const newBinanceBufferValue = await cryptoService.getTotalPosition(asset);
+      const newBinanceBufferValue = await cryptoService.getAssetPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newBinanceBufferValue).toBe(currentBinanceBufferValue + value);
@@ -142,13 +144,13 @@ describe('crypto service', () => {
     it('deposits value on binanceBuffer when asset param is not provided', async () => {
       const value = 357.98;
       const asset = 'binanceBuffer';
-      const currentBinanceBufferValue = await cryptoService.getTotalPosition(
+      const currentBinanceBufferValue = await cryptoService.getAssetPosition(
         asset
       );
 
       const result = await cryptoService.deposit({ value });
 
-      const newBinanceBufferValue = await cryptoService.getTotalPosition(asset);
+      const newBinanceBufferValue = await cryptoService.getAssetPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newBinanceBufferValue).toBe(currentBinanceBufferValue + value);
@@ -157,11 +159,11 @@ describe('crypto service', () => {
     it('deposits value on backed tokens', async () => {
       const value = 357;
       const asset = 'backed';
-      const currentBackedValue = await cryptoService.getTotalPosition(asset);
+      const currentBackedValue = await cryptoService.getAssetPosition(asset);
 
       const result = await cryptoService.deposit({ asset, value });
 
-      const newBackedValue = await cryptoService.getTotalPosition(asset);
+      const newBackedValue = await cryptoService.getAssetPosition(asset);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newBackedValue).toBe(currentBackedValue + value);
@@ -172,11 +174,11 @@ describe('crypto service', () => {
       async asset => {
         const value = 500;
 
-        const currentValue = await cryptoService.getTotalPosition(asset);
+        const currentValue = await cryptoService.getAssetPosition(asset);
 
         const result = await cryptoService.deposit({ asset, value });
 
-        const newValue = await cryptoService.getTotalPosition(asset);
+        const newValue = await cryptoService.getAssetPosition(asset);
 
         expect(result).toEqual({ status: 'cannotDepositValue' });
         expect(newValue).toBe(currentValue);
