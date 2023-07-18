@@ -45,4 +45,5 @@ export type Portfolio =
   | 'suricat'
   | 'congelamentoSuricats'
   | 'carro'
-  | 'macbookFirma';
+  | 'macbookFirma'
+  | 'rendaPassiva';
