@@ -3,6 +3,12 @@ import database from '../../../providers/database';
 import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
+import {
+  BalanceByAsset,
+  BalanceByAssetWithTotal,
+  PortfolioData,
+} from './types';
+import { Asset, AssetClass, AssetName, Portfolio } from '../../../types';
 
 const log = buildLogger('Portfolios');
 
@@ -13,13 +19,13 @@ export const services = {
 };
 
 const precision = 0.006;
-export const isAround0 = value =>
+export const isAround0 = (value: number) =>
   value >= 0 - precision && value <= 0 + precision;
-export const isAround1 = value =>
+export const isAround1 = (value: number) =>
   value >= 1 - precision && value <= 1 + precision;
-export const isNegative = value => value < -precision;
+export const isNegative = (value: number) => value < -precision;
 
-export const verifyShares = shares => {
+export const verifyShares = (shares: number[]) => {
   const sum = shares.reduce((acc, current) => acc + current, 0);
 
   if (!isAround1(sum) && !isAround0(sum))
@@ -27,10 +33,10 @@ export const verifyShares = shares => {
 };
 
 export const getAssetValueFromBalance = (
-  { balance },
+  { balance }: BalanceByAssetWithTotal,
   // TODO change asset param to { class, name }
-  assetClass,
-  assetName
+  assetClass: AssetClass,
+  assetName: AssetName
 ) => {
   const assetItem = balance[assetClass].balance.find(
     item => item.asset === assetName
@@ -38,7 +44,11 @@ export const getAssetValueFromBalance = (
   return assetItem ? assetItem.value : 0;
 };
 
-export const hasFunds = (balance, asset, value) => {
+export const hasFunds = (
+  balance: BalanceByAssetWithTotal,
+  asset: Asset,
+  value: number
+) => {
   const currentValue = getAssetValueFromBalance(
     balance,
     asset.class,
@@ -48,10 +58,12 @@ export const hasFunds = (balance, asset, value) => {
 };
 
 export const getPortfolioData = (filter = {}) =>
-  database.find('portfolio', 'shares', filter, { projection: { _id: 0 } });
+  database.find<PortfolioData[]>('portfolio', 'shares', filter, {
+    projection: { _id: 0 },
+  });
 
-export const extractPortfolioNames = portfolioData => {
-  const portfolios = new Set();
+export const extractPortfolioNames = (portfolioData: PortfolioData[]) => {
+  const portfolios = new Set<Portfolio>();
 
   portfolioData.forEach(asset =>
     asset.shares.forEach(({ portfolio }) => portfolios.add(portfolio))
@@ -66,15 +78,30 @@ export const swapOnAsset = async ({
   assetName,
   origin,
   destiny,
+}: {
+  value: number;
+  assetClass: AssetClass;
+  assetName: AssetName;
+  origin: Portfolio;
+  destiny: Portfolio;
 }) => {
   const service = services[assetClass];
-  const totalAssetValue = await service.getAssetPosition(assetName);
+  // TODO try to infer this one
+  type GetAssetPosition = (assetName: AssetName) => Promise<number>;
+  const totalAssetValue = await (<GetAssetPosition>service.getAssetPosition)(
+    assetName
+  );
 
   const portfolioData = await getPortfolioData();
 
   const asset = portfolioData.find(
     item => item.assetClass === assetClass && item.assetName === assetName
   );
+
+  if (!asset) {
+    log(`Asset ${assetName} not found on ${assetClass}`, { severity: 'warn' });
+    return { status: 'assetnotFound' };
+  }
 
   let originPortfolio = asset.shares.find(
     ({ portfolio }) => portfolio === origin
@@ -118,42 +145,28 @@ export const swapOnAsset = async ({
 
   verifyShares(asset.shares.map(({ value }) => value));
 
-  await database.updateOne(
+  await database.updateOne<PortfolioData>(
     'portfolio',
     'shares',
     { assetClass, assetName },
-    { $set: { shares: asset.shares } }
+    { $set: { shares: asset.shares } },
+    {}
   );
 
   return { status: 'ok' };
 };
 
-// const flatPortfolioBalance = (balance: BalanceByAsset) => [
-//   ...balance.fixed.balance.map(item => ({
-//     assetClass: <AssetClass>'fixed',
-//     ...item,
-//   })),
-//   ...balance.stock.balance.map(item => ({
-//     assetClass: <AssetClass>'stock',
-//     ...item,
-//   })),
-//   ...balance.crypto.balance.map(item => ({
-//     assetClass: <AssetClass>'crypto',
-//     ...item,
-//   })),
-// ];
-
-export const flatPortfolioBalance = balance => [
+export const flatPortfolioBalance = (balance: BalanceByAsset) => [
   ...balance.fixed.balance.map(item => ({
-    assetClass: 'fixed',
+    assetClass: <AssetClass>'fixed',
     ...item,
   })),
   ...balance.stock.balance.map(item => ({
-    assetClass: 'stock',
+    assetClass: <AssetClass>'stock',
     ...item,
   })),
   ...balance.crypto.balance.map(item => ({
-    assetClass: 'crypto',
+    assetClass: <AssetClass>'crypto',
     ...item,
   })),
 ];

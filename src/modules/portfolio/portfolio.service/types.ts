@@ -38,3 +38,14 @@ export interface BalanceByPortfolioWithTotal {
   balance: BalanceByPortfolio;
   total: number;
 }
+
+interface ShareItem {
+  portfolio: Portfolio;
+  value: number;
+}
+
+export interface PortfolioData {
+  assetClass: AssetClass;
+  assetName: AssetName;
+  shares: ShareItem[];
+}

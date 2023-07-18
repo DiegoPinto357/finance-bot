@@ -6,6 +6,7 @@ import {
   AssetBalance,
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
+  PortfolioData,
 } from './types';
 import {
   StockAsset,
@@ -14,17 +15,6 @@ import {
   AssetName,
   Portfolio,
 } from '../../../types';
-
-interface ShareItem {
-  portfolio: Portfolio;
-  value: number;
-}
-
-interface PortfolioData {
-  assetClass: AssetClass;
-  assetName: AssetName;
-  shares: ShareItem[];
-}
 
 interface PortfolioShare {
   class: AssetClass;
@@ -195,8 +185,7 @@ function getBalance(
   portfolioName?: Portfolio[]
 ): Promise<BalanceByPortfolioWithTotal>;
 async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
-  // TODO remove type cast as getPortfolioData type is defined
-  const portfolios = await (<Promise<PortfolioData[]>>getPortfolioData());
+  const portfolios = await getPortfolioData();
 
   const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
 
