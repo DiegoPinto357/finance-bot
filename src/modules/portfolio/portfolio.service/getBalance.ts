@@ -161,7 +161,7 @@ const getTotalValue = (assetValues: AssetBalance[]) =>
 const getBalancesByAssets = (
   shares: AssetsShares,
   totalBalances: AssetsTotals
-) => {
+): BalanceByAssetWithTotal => {
   const fixedBalance = shares.fixed
     ? getFixedValues(totalBalances.fixed, shares.fixed)
     : [];
@@ -190,7 +190,11 @@ const getBalancesByAssets = (
   };
 };
 
-export default async (portfolioName?: Portfolio | Portfolio[]) => {
+function getBalance(portfolioName: Portfolio): Promise<BalanceByAssetWithTotal>;
+function getBalance(
+  portfolioName?: Portfolio[]
+): Promise<BalanceByPortfolioWithTotal>;
+async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
   // TODO remove type cast as getPortfolioData type is defined
   const portfolios = await (<Promise<PortfolioData[]>>getPortfolioData());
 
@@ -213,7 +217,7 @@ export default async (portfolioName?: Portfolio | Portfolio[]) => {
       fixed: fixedTotalBalance,
       stock: stockTotalBalance,
       crypto: cryptoTotalBalance,
-    }) as BalanceByAssetWithTotal;
+    });
   }
 
   let names: Portfolio[];
@@ -246,11 +250,13 @@ export default async (portfolioName?: Portfolio | Portfolio[]) => {
       balance: { ...balance, ...item },
       total: total + Object.values(item)[0].total,
     }),
-    { balance: {}, total: 0 } as BalanceByPortfolioWithTotal
+    { balance: {}, total: 0 }
   );
 
   return {
     balance,
     total,
-  };
-};
+  } as BalanceByPortfolioWithTotal;
+}
+
+export default getBalance;

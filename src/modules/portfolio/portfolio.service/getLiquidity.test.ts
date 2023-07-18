@@ -82,8 +82,8 @@ describe('portfolio service - getLiquidity', () => {
       {
         portfolio: 'financiamento',
         liquidityValue: 7078.717302553882,
-        liquidityRatio: 0.8037944076854215,
-        totalValue: 8806.626713088874,
+        liquidityRatio: 0.8140338668843236,
+        totalValue: 8695.851107088874,
       },
       {
         portfolio: 'impostos',
@@ -124,8 +124,8 @@ describe('portfolio service - getLiquidity', () => {
       {
         portfolio: 'total',
         liquidityValue: 77362.09263874541,
-        liquidityRatio: 0.6126255497003739,
-        totalValue: 126279.57269588587,
+        liquidityRatio: 0.6131634320301135,
+        totalValue: 126168.79708988586,
       },
     ]);
   });

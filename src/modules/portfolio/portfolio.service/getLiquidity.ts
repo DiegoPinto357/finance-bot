@@ -32,15 +32,11 @@ const getPortfolioLiquidity = async (
 
 export default async (portfolioName?: Portfolio) => {
   if (portfolioName) {
-    const balance = await (<Promise<BalanceByAssetWithTotal>>(
-      getBalance(portfolioName)
-    ));
+    const balance = await getBalance(portfolioName);
     return await getPortfolioLiquidity(portfolioName, balance);
   }
 
-  const { balance, total } = await (<Promise<BalanceByPortfolioWithTotal>>(
-    getBalance()
-  ));
+  const { balance, total } = await getBalance();
 
   // TODO remove type cast as getPortfolios type is defined
   const portfolios = await (<Promise<Portfolio[]>>getPortfolios());

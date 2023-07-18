@@ -94,8 +94,7 @@ export default async (portfolioName?: Portfolio) => {
   if (portfolioName) {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
     const [{ balance, total }, portfoliotTargetShares] = await Promise.all([
-      // TODO remove type cast as getBalance type is defined
-      <Promise<BalanceByAssetWithTotal>>getBalance(portfolioName),
+      getBalance(portfolioName),
       // TODO use generic on loadSheet method
       <Promise<TargetShare[]>>googleSheets.loadSheet(sharesSheetTitle),
     ]);
@@ -110,10 +109,7 @@ export default async (portfolioName?: Portfolio) => {
     return { shares, total };
   }
 
-  // TODO remove type cast as getBalance type is defined
-  const totalBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
-    getBalance()
-  ));
+  const totalBalance = await getBalance();
   const totalBalanceFlat = Object.entries(totalBalance.balance).map(
     ([key, value]) => ({
       portfolio: key as Portfolio,
