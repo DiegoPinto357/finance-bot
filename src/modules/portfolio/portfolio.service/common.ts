@@ -4,6 +4,7 @@ import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import {
+  AssetBalanceWithClass,
   BalanceByAsset,
   BalanceByAssetWithTotal,
   PortfolioData,
@@ -156,7 +157,9 @@ export const swapOnAsset = async ({
   return { status: 'ok' };
 };
 
-export const flatPortfolioBalance = (balance: BalanceByAsset) => [
+export const flatPortfolioBalance = (
+  balance: BalanceByAsset
+): AssetBalanceWithClass[] => [
   ...balance.fixed.balance.map(item => ({
     assetClass: <AssetClass>'fixed',
     ...item,

@@ -4,11 +4,7 @@ import getBalance from './getBalance';
 import getPortfolios from './getPortfolios';
 import { flatPortfolioBalance } from './common';
 import { AssetName, AssetClass, Portfolio } from '../../../types';
-import {
-  AssetBalanceWithClass,
-  BalanceByAssetWithTotal,
-  BalanceByPortfolioWithTotal,
-} from './types';
+import { AssetBalanceWithClass } from './types';
 
 interface TargetShare {
   assetClass: AssetClass;
@@ -118,7 +114,7 @@ export default async (portfolioName?: Portfolio) => {
   );
 
   // TODO remove type cast as getPortfolios type is defined
-  const portfolios = await (<Promise<Portfolio[]>>getPortfolios());
+  const portfolios = await getPortfolios();
   const shares = await Promise.all(
     portfolios.map(async portfolio => {
       const sharesSheetTitle = `portfolio-${portfolio}-shares`;

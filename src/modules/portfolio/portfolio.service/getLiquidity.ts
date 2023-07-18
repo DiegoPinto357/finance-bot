@@ -2,18 +2,14 @@ import getBalance from './getBalance';
 import { flatPortfolioBalance } from './common';
 import getPortfolios from './getPortfolios';
 import { Portfolio } from '../../../types';
-import {
-  AssetBalanceWithClass,
-  BalanceByAssetWithTotal,
-  BalanceByPortfolioWithTotal,
-} from './types';
+import { BalanceByAssetWithTotal } from './types';
 
 const getPortfolioLiquidity = async (
   portfolioName: Portfolio,
   { balance, total }: BalanceByAssetWithTotal
 ) => {
   // TODO remove typecast when flatPortfolioBalance return type is defined
-  const balanceFlat = <AssetBalanceWithClass[]>flatPortfolioBalance(balance);
+  const balanceFlat = flatPortfolioBalance(balance);
   const liquidityValue = balanceFlat.reduce(
     (total, assetBalance) =>
       assetBalance.liquidity ? total + assetBalance.value : total,
@@ -37,9 +33,7 @@ export default async (portfolioName?: Portfolio) => {
   }
 
   const { balance, total } = await getBalance();
-
-  // TODO remove type cast as getPortfolios type is defined
-  const portfolios = await (<Promise<Portfolio[]>>getPortfolios());
+  const portfolios = await getPortfolios();
 
   const liquidityData = await Promise.all(
     portfolios.map(portfolio =>
