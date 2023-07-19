@@ -7,6 +7,7 @@ jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/tradingView');
 jest.mock('../../../providers/binance');
+jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
@@ -82,8 +83,8 @@ describe('portfolio service - getLiquidity', () => {
       {
         portfolio: 'financiamento',
         liquidityValue: 7078.717302553882,
-        liquidityRatio: 0.8140338668843236,
-        totalValue: 8695.851107088874,
+        liquidityRatio: 0.8189126501241224,
+        totalValue: 8644.044394088873,
       },
       {
         portfolio: 'impostos',
@@ -124,8 +125,8 @@ describe('portfolio service - getLiquidity', () => {
       {
         portfolio: 'total',
         liquidityValue: 77362.09263874541,
-        liquidityRatio: 0.6131634320301135,
-        totalValue: 126168.79708988586,
+        liquidityRatio: 0.6134153091312903,
+        totalValue: 126116.99037688586,
       },
     ]);
   });
