@@ -2,6 +2,7 @@ import database from '../../../providers/database';
 import tradingView from '../../../providers/tradingView';
 import stockAnalyser from './stockAnalyser';
 import { buildLogger } from '../../../libs/logger';
+import { StockAsset } from '../../../types';
 
 const log = buildLogger('Stock');
 
@@ -132,7 +133,13 @@ const getTotalPosition = async () => {
   );
 };
 
-const deposit = async ({ asset, value }: { asset: string; value: number }) => {
+const deposit = async ({
+  asset,
+  value,
+}: {
+  asset: StockAsset;
+  value: number;
+}) => {
   asset = asset ? asset : 'float';
 
   if (asset !== 'float') {

@@ -3,6 +3,7 @@ import defiService from './defi';
 import defi2Service from './defi2';
 import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
+import { CryptoAsset } from '../../../types';
 
 export const portfolioTypes = [
   'hodl',
@@ -87,7 +88,13 @@ const setAssetValue = async ({
   return await binanceBufferService.setAssetValue({ value });
 };
 
-const deposit = async ({ asset, value }: { asset: string; value: number }) => {
+const deposit = async ({
+  asset,
+  value,
+}: {
+  asset: CryptoAsset;
+  value: number;
+}) => {
   asset = asset ? asset : 'binanceBuffer';
 
   if (asset !== 'binanceBuffer' && asset !== 'backed') {

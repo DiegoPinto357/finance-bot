@@ -22,7 +22,12 @@ export type FixedAsset =
 
 export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
-export type CryptoAsset = 'float' | 'hodl' | 'backed' | 'defi' | 'defi2';
+export type CryptoAsset =
+  | 'binanceBuffer'
+  | 'hodl'
+  | 'backed'
+  | 'defi'
+  | 'defi2';
 
 export type AssetName = FixedAsset | StockAsset | CryptoAsset;
 

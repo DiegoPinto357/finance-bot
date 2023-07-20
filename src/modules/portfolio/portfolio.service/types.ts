@@ -39,7 +39,7 @@ export interface BalanceByPortfolioWithTotal {
   total: number;
 }
 
-interface ShareItem {
+export interface ShareItem {
   portfolio: Portfolio;
   value: number;
 }
