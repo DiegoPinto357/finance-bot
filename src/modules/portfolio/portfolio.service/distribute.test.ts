@@ -13,6 +13,7 @@ jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/tradingView');
 jest.mock('../../../providers/binance');
+jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 

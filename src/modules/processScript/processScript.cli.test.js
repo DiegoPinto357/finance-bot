@@ -11,6 +11,7 @@ jest.mock('fs');
 jest.mock('yargs');
 jest.mock('../portfolio/portfolio.service');
 jest.mock('../../libs/dynamicImport');
+jest.mock('../../providers/tradingView');
 
 jest.useFakeTimers('modern').setSystemTime(new Date(2020, 9, 1, 7));
 
