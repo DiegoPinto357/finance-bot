@@ -4,7 +4,7 @@ interface StringIndexed {
 
 let files: StringIndexed = {};
 
-export const mockFile = (filename: string, data: any) =>
+export const mockFile = (filename: string, data: unknown) =>
   (files[filename] = data);
 
 export const clearMockFiles = () => (files = {});
@@ -24,4 +24,9 @@ const writeFile = jest.fn((filename, data) =>
 export const promises = {
   readFile,
   writeFile,
+};
+
+export default {
+  mockFile,
+  clearMockFiles,
 };

@@ -1,5 +1,10 @@
-import { promises as fs, mockFile, clearMockFiles } from 'fs';
+import fsMock, { promises as fs } from 'fs';
 import cache, { withCache } from './cache';
+
+type MockFs = typeof fsMock & {
+  mockFile: (filename: string, data: unknown) => void;
+  clearMockFiles: () => void;
+};
 
 jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
 
@@ -13,13 +18,13 @@ describe('cache', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.resetModules();
-    clearMockFiles();
+    (fsMock as MockFs).clearMockFiles();
     cache.clear();
   });
 
   it('caches a function call with params', async () => {
     let iteration = 0;
-    const func = async (a, b) => {
+    const func = async (a: string, b: string) => {
       return new Promise(resolve => {
         const result =
           iteration === 0
@@ -46,7 +51,7 @@ describe('cache', () => {
 
   it('caches a function call with params from a provided data node', async () => {
     let iteration = 0;
-    const func = async (a, b) => {
+    const func = async (a: string, b: string) => {
       return new Promise(resolve => {
         const result =
           iteration === 0
@@ -93,7 +98,7 @@ describe('cache', () => {
     const cache = require('./cache');
 
     let iteration = 0;
-    const func = async (a, b) => {
+    const func = async (a: string, b: string) => {
       return new Promise(resolve => {
         const result =
           iteration === 0
@@ -114,8 +119,8 @@ describe('cache', () => {
   });
 
   describe('timeToLive', () => {
-    let iteration;
-    const func = async (a, b) => {
+    let iteration: number;
+    const func = async (a: string, b: string) => {
       return new Promise(resolve => {
         const result =
           iteration === 0
@@ -225,7 +230,7 @@ describe('cache', () => {
     it('loads cache file', async () => {
       const func = jest.fn(async () => Promise.resolve('realResult'));
 
-      mockFile(
+      (fsMock as MockFs).mockFile(
         './.cache/main.json',
         JSON.stringify({
           f6c1553c69e1ed4a172a469af57505bd26fc47c7: { data: 'cachedResult' },
