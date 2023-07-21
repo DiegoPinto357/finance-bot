@@ -1,6 +1,4 @@
-import { buildLogger } from '../../../libs/logger';
 import googleSheets from '../../../providers/googleSheets';
-import database from '../../../providers/database';
 
 import { services } from './common';
 
@@ -10,42 +8,10 @@ import getLiquidity from './getLiquidity';
 import deposit from './deposit';
 import transfer from './transfer';
 import swap from './swap';
-
 import moveToPortfolio from './moveToPortfolio';
-
+import getAssets from './getAssets';
+import removeAsset from './removeAsset';
 import getPortfolios from './getPortfolios';
-
-const log = buildLogger('Portfolios');
-
-const getAssets = () =>
-  database.find(
-    'portfolio',
-    'shares',
-    {},
-    { projection: { _id: 0, shares: 0 } }
-  );
-
-const removeAsset = async ({ assetClass, assetName }) => {
-  if (assetClass !== 'fixed') {
-    log(`removeAsset not implemented for ${assetClass} assets`, {
-      severity: 'error',
-    });
-  }
-
-  const service = services[assetClass];
-  const { status } = await service.removeAsset(assetName);
-
-  if (status !== 'ok') {
-    return { status };
-  }
-
-  await database.deleteOne('portfolio', 'shares', {
-    assetClass,
-    assetName,
-  });
-
-  return { status: 'ok' };
-};
 
 const flattenBalance = (balance, totals) =>
   balance.reduce((values, { asset, value }) => {
