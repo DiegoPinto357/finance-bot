@@ -18,16 +18,10 @@ type DistributionPortfolioItem = {
 
 type Status = 'notReady' | 'ready' | 'done';
 
-interface DistributeParams {
-  month: Month;
-  asset: FixedAsset;
-}
-
-export default async ({ month, asset }: DistributeParams) => {
-  const rawDistributionData = await (<Promise<DistributionPortfolioItem[]>>(
-    googleSheets.loadSheet('distribution')
-  ));
-
+const parseDistributionData = (
+  rawDistributionData: DistributionPortfolioItem[],
+  month: Month
+) => {
   const totalRow = rawDistributionData.find(
     ({ portfolios }: { portfolios: string }) => portfolios === 'total'
   );
@@ -40,10 +34,8 @@ export default async ({ month, asset }: DistributeParams) => {
   ) as Status;
 
   if (status !== 'ready') {
-    return { status: errorMessageMap[status] };
+    return { status };
   }
-
-  console.log(status);
 
   const firstDataRow = 1;
   const distributionData = rawDistributionData.slice(
@@ -55,6 +47,28 @@ export default async ({ month, asset }: DistributeParams) => {
     portfolio: item.portfolios,
     value: fromCurrencyToNumber(item[month][1]),
   }));
+
+  return { monthlyDistribution, status };
+};
+
+interface DistributeParams {
+  month: Month;
+  asset: FixedAsset;
+}
+
+export default async ({ month, asset }: DistributeParams) => {
+  const rawDistributionData = await (<Promise<DistributionPortfolioItem[]>>(
+    googleSheets.loadSheet('distribution')
+  ));
+
+  const { monthlyDistribution, status } = parseDistributionData(
+    rawDistributionData,
+    month
+  );
+
+  if (status !== 'ready') {
+    return { status: errorMessageMap[status] };
+  }
 
   const nonZeroMonthlyDistribution = monthlyDistribution.filter(
     ({ value }) => value

@@ -104,10 +104,6 @@ describe('portfolio service - distribute', () => {
     });
   });
 
-  it.skip('does not distributes when when selected month is not the current one', async () => {
-    // automatically distribute to the current month?
-  });
-
   it.skip('returns a status error if something goes wrong', async () => {
     // portfolio does not exists
     // not fixed asset?
