@@ -3,9 +3,8 @@ import getBalance from './getBalance';
 import distribute from './distribute';
 import { getAssetValueFromBalance } from './common';
 import { fromCurrencyToNumber } from '../../../libs/stringFormat';
-import { BalanceByPortfolioWithTotal } from './types';
 import distributionData from '../../../../mockData/googleSheets/distribution.json';
-import { FixedAsset, Portfolio } from '../../../types';
+import { Month, FixedAsset, Portfolio } from '../../../types';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
@@ -17,19 +16,24 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
+type RawDistributionData = typeof distributionData;
+
 interface MonthlyDistribution {
   portfolio: Portfolio;
   value: number;
 }
 
-const month = 'may';
-const monthlyDistributions = distributionData.slice(1, 16).map(
-  item =>
-    ({
-      portfolio: item.portfolios,
-      value: fromCurrencyToNumber(item[month]![1]),
-    } as MonthlyDistribution)
-);
+const getMothlyDistributions = (
+  distributionData: RawDistributionData,
+  month: Month
+) =>
+  distributionData.slice(1, 16).map(
+    item =>
+      ({
+        portfolio: item.portfolios ? item.portfolios : '',
+        value: fromCurrencyToNumber(item[month]![1]!),
+      } as MonthlyDistribution)
+  );
 
 describe('portfolio service - distribute', () => {
   beforeEach(() => {
@@ -38,19 +42,19 @@ describe('portfolio service - distribute', () => {
   });
 
   it('distributes values on portfolios', async () => {
+    const month = 'may';
     const asset: FixedAsset = 'nubank';
 
-    // TODO remove typecast as getBalance type is defined
-    const currentBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
-      getBalance()
-    ));
+    const currentBalance = await getBalance();
 
-    const { status } = await distribute(month, asset);
+    const { status } = await distribute({ month, asset });
 
-    // TODO remove typecast as getBalance type is defined
-    const newBalance = await (<Promise<BalanceByPortfolioWithTotal>>(
-      getBalance()
-    ));
+    const newBalance = await getBalance();
+
+    const monthlyDistributions = getMothlyDistributions(
+      distributionData,
+      month
+    );
 
     expect(status).toBe('ok');
     monthlyDistributions.forEach(deposit => {
@@ -70,15 +74,41 @@ describe('portfolio service - distribute', () => {
     });
   });
 
-  it('does not distribute when status is ot ready', async () => {
-    // update status after distribution is done
+  describe('distribution status', () => {
+    it('does not distribute if status is "notReady', async () => {
+      const month = 'sep';
+      const asset: FixedAsset = 'nubank';
+
+      const currentBalance = await getBalance();
+
+      const { status } = await distribute({ month, asset });
+
+      const newBalance = await getBalance();
+
+      expect(status).toBe('distributionNotReady');
+      expect(newBalance).toEqual(currentBalance);
+    });
+
+    it('does not distribute if status is "done', async () => {
+      const month = 'feb';
+      const asset: FixedAsset = 'nubank';
+
+      const currentBalance = await getBalance();
+
+      const { status } = await distribute({ month, asset });
+
+      const newBalance = await getBalance();
+
+      expect(status).toBe('distributionAlreadyDone');
+      expect(newBalance).toEqual(currentBalance);
+    });
   });
 
-  it('does not distributes when when selected month is not the current one', async () => {
+  it.skip('does not distributes when when selected month is not the current one', async () => {
     // automatically distribute to the current month?
   });
 
-  it('returns a status error if something goes wrong', async () => {
+  it.skip('returns a status error if something goes wrong', async () => {
     // portfolio does not exists
     // not fixed asset?
     // general dependency error

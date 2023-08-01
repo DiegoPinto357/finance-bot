@@ -9,6 +9,7 @@ import deposit from './deposit';
 import transfer from './transfer';
 import swap from './swap';
 import moveToPortfolio from './moveToPortfolio';
+import distribute from './distribute';
 import getAssets from './getAssets';
 import removeAsset from './removeAsset';
 import getPortfolios from './getPortfolios';
@@ -97,6 +98,7 @@ export default {
   transfer,
   swap,
   moveToPortfolio,
+  distribute,
   getAssets,
   removeAsset,
   getPortfolios,
