@@ -1,13 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import _ from 'lodash';
-import {
-  Filter,
-  UpdateFilter,
-  UpdateOptions,
-  AnyBulkWriteOperation,
-  BulkWriteOptions,
-} from 'mongodb';
+import { Filter, UpdateFilter, UpdateOptions } from 'mongodb';
 
 const mockDir = `${path.resolve()}/mockData/database/`;
 
