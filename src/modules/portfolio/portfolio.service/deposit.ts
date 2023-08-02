@@ -83,7 +83,7 @@ interface DepositParams {
   portfolio: Portfolio;
   assetClass: AssetClass;
   assetName: AssetName;
-  executed: boolean;
+  executed?: boolean;
 }
 
 export default async ({

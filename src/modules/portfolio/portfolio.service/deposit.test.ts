@@ -4,6 +4,12 @@ import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import getBalance from './getBalance';
 import deposit from './deposit';
+import { getAssetValueFromBalance } from './common';
+import { AssetClass, AssetName, Portfolio } from '../../../types';
+
+type MockBinance = typeof binance & {
+  simulateBRLDeposit: (value: number) => void;
+};
 
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/tradingView');
@@ -12,22 +18,24 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
+type GetAssetPosition = (assetName: AssetName) => Promise<number>;
+
 const services = {
   fixed: fixedService,
   stock: stockService,
   crypto: cryptoService,
 };
 
-// TODO import it from common.js
-const getAssetValueFromBalance = ({ balance }, assetClass, assetName) => {
-  const assetBalance = balance[assetClass].balance.find(
-    item => item.asset === assetName
-  );
-  return assetBalance ? assetBalance.value : 0;
-};
-
 describe('portfolio service - deposit', () => {
-  const deposits = [
+  interface Deposit {
+    depositValue: number;
+    portfolioName: Portfolio;
+    assetClass: AssetClass;
+    assetName: AssetName;
+    sidePortfolioName: Portfolio | null;
+  }
+
+  const deposits: Deposit[] = [
     {
       depositValue: 1000,
       portfolioName: 'suricat',
@@ -60,6 +68,7 @@ describe('portfolio service - deposit', () => {
       depositValue: 100,
       portfolioName: 'previdencia',
       assetClass: 'stock',
+      assetName: 'float',
       sidePortfolioName: null,
     },
     {
@@ -87,8 +96,6 @@ describe('portfolio service - deposit', () => {
       assetName,
       sidePortfolioName,
     }) => {
-      if (assetClass === 'stock') assetName = 'float';
-
       const currentPortfolioBalance = await getBalance(portfolioName);
       const currentPortfolioAssetValue = getAssetValueFromBalance(
         currentPortfolioBalance,
@@ -101,7 +108,10 @@ describe('portfolio service - deposit', () => {
         : null;
 
       const service = services[assetClass];
-      const currentTotalAssetValue = await service.getAssetPosition(assetName);
+      // TODO try to infer this one
+      const currentTotalAssetValue = await (<GetAssetPosition>(
+        service.getAssetPosition
+      ))(assetName);
 
       const result = await deposit({
         value: depositValue,
@@ -111,7 +121,7 @@ describe('portfolio service - deposit', () => {
       });
 
       if (assetClass === 'crypto') {
-        await binance.simulateBRLDeposit(depositValue);
+        await (binance as MockBinance).simulateBRLDeposit(depositValue);
       }
 
       const newPortfolioBalance = await getBalance(portfolioName);
@@ -125,7 +135,10 @@ describe('portfolio service - deposit', () => {
         ? await getBalance(sidePortfolioName)
         : null;
 
-      const newTotalAssetValue = await service.getAssetPosition(assetName);
+      // TODO try to infer this one
+      const newTotalAssetValue = await (<GetAssetPosition>(
+        service.getAssetPosition
+      ))(assetName);
 
       expect(result.status).toBe('ok');
       expect(newPortfolioAssetValue).toBe(
@@ -158,7 +171,7 @@ describe('portfolio service - deposit', () => {
       assetName
     );
 
-    await binance.simulateBRLDeposit(depositValue);
+    await (binance as MockBinance).simulateBRLDeposit(depositValue);
 
     const result = await deposit({
       value: depositValue,
