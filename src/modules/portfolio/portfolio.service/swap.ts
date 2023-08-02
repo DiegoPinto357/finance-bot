@@ -1,22 +1,42 @@
 import getBalance from './getBalance';
 import { getAssetValueFromBalance, hasFunds, swapOnAsset } from './common';
+import { Asset, Portfolio } from '../../../types';
 
-export default async ({
-  value,
-  portfolio,
-  asset,
-  origin,
-  destiny,
-  liquidity,
-}) => {
-  const withinSamePortfolio = portfolio && !asset;
+interface SwapOnAssetParams {
+  assets: [Asset, Asset];
+  originPortfolio: Portfolio;
+  destinyPortfolio: Portfolio;
+}
 
-  const params = {};
+interface SwapOnPortfolio {
+  value: number | 'all';
+  portfolio: Portfolio;
+  origin: Asset;
+  destiny: Asset;
+  liquidity: Portfolio;
+}
+
+interface SwapOnAsset {
+  value: number | 'all';
+  asset: Asset;
+  origin: Portfolio;
+  destiny: Portfolio;
+  liquidity: Asset;
+}
+
+type SwapParams = SwapOnPortfolio | SwapOnAsset;
+
+export default async (swapParams: SwapParams) => {
+  // const withinSamePortfolio = portfolio && !asset;
+  const withinSamePortfolio = 'portfolio' in swapParams;
+
+  const params = {} as SwapOnAssetParams;
 
   if (withinSamePortfolio) {
     // portfolio is constant
     // another portfolio is the liquidity
     // different assets are the origin and destiny
+    const { origin, destiny, portfolio, liquidity } = swapParams;
     params.assets = [origin, destiny];
     params.originPortfolio = portfolio;
     params.destinyPortfolio = liquidity;
@@ -25,6 +45,7 @@ export default async ({
     // asset is constant
     // another asset is the liquidity
     // different portfolios are the origin and destiny
+    const { asset, liquidity, origin, destiny } = swapParams;
     params.assets = [asset, liquidity];
     params.originPortfolio = origin;
     params.destinyPortfolio = destiny;
@@ -35,6 +56,8 @@ export default async ({
     getBalance(params.originPortfolio),
     getBalance(params.destinyPortfolio),
   ]);
+
+  const { value } = swapParams;
 
   const swapValue =
     value === 'all'

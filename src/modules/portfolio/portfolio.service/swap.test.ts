@@ -1,7 +1,10 @@
 import googleSheets from '../../../providers/googleSheets';
+import { Asset, AssetName, Portfolio } from '../../../types';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import swap from './swap';
+
+type MockGoogleSheets = typeof googleSheets & { resetMockValues: () => void };
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
@@ -12,14 +15,18 @@ jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
 describe('portfolio service - swap', () => {
-  beforeEach(() => googleSheets.resetMockValues());
+  beforeEach(() => (googleSheets as MockGoogleSheets).resetMockValues());
 
   it('swap funds within same portfolio', async () => {
     const value = 100;
-    const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'fixed', name: 'pagBankCDB120' };
-    const liquidity = 'amortecedor';
+    const portfolio: Portfolio = 'financiamento';
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = {
+      class: 'fixed',
+      // TODO map pagBankCDB120 as AssetName type?
+      name: 'pagBankCDB120' as AssetName,
+    };
+    const liquidity: Portfolio = 'amortecedor';
 
     const [currentPortfolioBalance, currentLiquidityBalance] =
       await Promise.all([getBalance(portfolio), getBalance(liquidity)]);
@@ -106,10 +113,14 @@ describe('portfolio service - swap', () => {
 
   it('swap funds when asset shares  misses origin portfolio info', async () => {
     const value = 100;
-    const portfolio = 'previdencia';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'fixed', name: 'pagBankCDB120' };
-    const liquidity = 'amortecedor';
+    const portfolio: Portfolio = 'previdencia';
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = {
+      class: 'fixed',
+      // TODO map pagBankCDB120 as AssetName type?
+      name: 'pagBankCDB120' as AssetName,
+    };
+    const liquidity: Portfolio = 'amortecedor';
 
     const [currentPortfolioBalance, currentLiquidityBalance] =
       await Promise.all([getBalance(portfolio), getBalance(liquidity)]);
@@ -196,10 +207,14 @@ describe('portfolio service - swap', () => {
 
   it('swap funds when asset shares misses destiny portfolio info', async () => {
     const value = -100;
-    const portfolio = 'previdencia';
-    const origin = { class: 'fixed', name: 'pagBankCDB120' };
-    const destiny = { class: 'fixed', name: 'nubank' };
-    const liquidity = 'amortecedor';
+    const portfolio: Portfolio = 'previdencia';
+    const origin: Asset = {
+      class: 'fixed',
+      // TODO map pagBankCDB120 as AssetName type?
+      name: 'pagBankCDB120' as AssetName,
+    };
+    const destiny: Asset = { class: 'fixed', name: 'nubank' };
+    const liquidity: Portfolio = 'amortecedor';
 
     const [currentPortfolioBalance, currentLiquidityBalance] =
       await Promise.all([getBalance(portfolio), getBalance(liquidity)]);
@@ -286,10 +301,11 @@ describe('portfolio service - swap', () => {
 
   it('swap funds within same asset', async () => {
     const value = 100;
-    const asset = { class: 'fixed', name: 'pagBankCDB120' };
-    const origin = 'amortecedor';
-    const destiny = 'suricat';
-    const liquidity = { class: 'fixed', name: 'nubank' };
+    // TODO map pagBankCDB120 as AssetName type?
+    const asset: Asset = { class: 'fixed', name: 'pagBankCDB120' as AssetName };
+    const origin: Portfolio = 'amortecedor';
+    const destiny: Portfolio = 'suricat';
+    const liquidity: Asset = { class: 'fixed', name: 'nubank' };
 
     const [currentOriginBalance, currentDestinyBalance] = await Promise.all([
       getBalance(origin),
@@ -378,10 +394,10 @@ describe('portfolio service - swap', () => {
 
   it('swaps all funds within same portfolio', async () => {
     const value = 'all';
-    const portfolio = 'impostos';
-    const origin = { class: 'crypto', name: 'hodl' };
-    const destiny = { class: 'fixed', name: 'nubank' };
-    const liquidity = 'amortecedor';
+    const portfolio: Portfolio = 'impostos';
+    const origin: Asset = { class: 'crypto', name: 'hodl' };
+    const destiny: Asset = { class: 'fixed', name: 'nubank' };
+    const liquidity: Portfolio = 'amortecedor';
 
     const [currentPortfolioBalance, currentLiquidityBalance] =
       await Promise.all([getBalance(portfolio), getBalance(liquidity)]);
@@ -464,10 +480,10 @@ describe('portfolio service - swap', () => {
   describe('no liquidity available', () => {
     it('does not swap funds within same portfolio', async () => {
       const value = 10000;
-      const portfolio = 'financiamento';
-      const origin = { class: 'fixed', name: 'nubank' };
-      const destiny = { class: 'crypto', name: 'defi' };
-      const liquidity = 'amortecedor';
+      const portfolio: Portfolio = 'financiamento';
+      const origin: Asset = { class: 'fixed', name: 'nubank' };
+      const destiny: Asset = { class: 'crypto', name: 'defi' };
+      const liquidity: Portfolio = 'amortecedor';
 
       const [currentOriginBalance, currentDestinyBalance] = await Promise.all([
         getBalance(portfolio),
@@ -544,10 +560,10 @@ describe('portfolio service - swap', () => {
 
     it('does not swap funds within same asset', async () => {
       const value = 10000;
-      const asset = { class: 'crypto', name: 'hodl' };
-      const origin = 'amortecedor';
-      const destiny = 'suricat';
-      const liquidity = { class: 'fixed', name: 'nubank' };
+      const asset: Asset = { class: 'crypto', name: 'hodl' };
+      const origin: Portfolio = 'amortecedor';
+      const destiny: Portfolio = 'suricat';
+      const liquidity: Asset = { class: 'fixed', name: 'nubank' };
 
       const [currentOriginBalance, currentDestinyBalance] = await Promise.all([
         getBalance(origin),
