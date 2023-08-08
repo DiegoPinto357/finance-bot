@@ -41,6 +41,7 @@ export default {
           contract: '0x9f8BB16f49393eeA4331A39B69071759e54e16ea',
           cmcId: 20408,
         },
+        SWYCH: { contract: '0x9334e37faD7c41Cd6C9565Bff3A97CE31CEE52a3' },
       },
       polygon: {
         SPHERE: {
