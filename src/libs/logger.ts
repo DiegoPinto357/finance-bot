@@ -40,9 +40,9 @@ const log = (message: string, severity: Severity) => {
 };
 
 interface Options {
-  breakLineAbove?: string;
-  breakLineBelow?: string;
-  separatoAbove?: string;
+  breakLineAbove?: boolean;
+  breakLineBelow?: boolean;
+  separatorAbove?: string;
   separatorBelow?: string;
   severity?: Severity;
 }
@@ -54,7 +54,7 @@ export const buildLogger =
     {
       breakLineAbove,
       breakLineBelow,
-      separatoAbove,
+      separatorAbove,
       separatorBelow,
       severity,
     }: Options = {}
@@ -69,8 +69,8 @@ export const buildLogger =
     severity = severity ? severity : 'info';
 
     if (breakLineAbove) log('', severity);
-    if (separatoAbove)
-      log(style[severity](separatoAbove.repeat(separatorLength)), severity);
+    if (separatorAbove)
+      log(style[severity](separatorAbove.repeat(separatorLength)), severity);
 
     log(
       style[severity](
