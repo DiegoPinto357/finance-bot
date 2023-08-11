@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import portfolioService from '../portfolio/portfolio.service';
 import processScript from './processScript.service';
+import { Script } from './types';
 
 jest.mock('../../providers/googleSheets');
 jest.mock('../../providers/tradingView');
@@ -18,7 +19,7 @@ describe('processScript', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('process script', async () => {
-    const script = {
+    const script: Script = {
       enable: true,
       actions: [
         {
@@ -43,7 +44,7 @@ describe('processScript', () => {
   });
 
   it('does not process script if enable field is not true', async () => {
-    const script = {
+    const script: Script = {
       enable: false,
       actions: [
         {
@@ -65,8 +66,9 @@ describe('processScript', () => {
     expect(portfolioService.transfer).not.toBeCalled();
   });
 
+  // TODO this condition is typesafe and might not be needed
   it('does not process script if enable field is missing', async () => {
-    const script = {
+    const script: Omit<Script, 'enable'> = {
       actions: [
         {
           module: 'portfolio',
@@ -81,14 +83,14 @@ describe('processScript', () => {
       ],
     };
 
-    const { status } = await processScript(script);
+    const { status } = await processScript(script as Script);
 
     expect(status).toBe('scriptNotEnabled');
     expect(portfolioService.transfer).not.toBeCalled();
   });
 
   it('process multiple actions', async () => {
-    const script = {
+    const script: Script = {
       enable: true,
       actions: [
         {
@@ -124,7 +126,7 @@ describe('processScript', () => {
   });
 
   it('process action with multiple params', async () => {
-    const script = {
+    const script: Script = {
       enable: true,
       actions: [
         {
@@ -145,11 +147,13 @@ describe('processScript', () => {
 
     const { status } = await processScript(script);
 
+    const depositParams = script.actions[0].params as Parameters<
+      typeof portfolioService.deposit
+    >[0][];
+
     expect(status).toBe('ok');
-    expect(portfolioService.deposit).toBeCalledTimes(
-      script.actions[0].params.length
-    );
-    script.actions[0].params.forEach(params =>
+    expect(portfolioService.deposit).toBeCalledTimes(depositParams.length);
+    depositParams.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
         _.merge({}, script.actions[0].defaultParams, params)
       )
@@ -157,7 +161,7 @@ describe('processScript', () => {
   });
 
   it('process multiple actions with multiple params', async () => {
-    const script = {
+    const script: Script = {
       enable: true,
       actions: [
         {
@@ -189,16 +193,24 @@ describe('processScript', () => {
 
     const { status } = await processScript(script);
 
+    const depositParams = script.actions[0].params as Parameters<
+      typeof portfolioService.deposit
+    >[0][];
+
     expect(status).toBe('ok');
     expect(portfolioService.deposit).toBeCalledTimes(2);
-    script.actions[0].params.forEach(params =>
+    depositParams.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
         _.merge({}, script.actions[0].defaultParams, params)
       )
     );
 
+    const transferParams = script.actions[1].params as Parameters<
+      typeof portfolioService.transfer
+    >[0][];
+
     expect(portfolioService.transfer).toBeCalledTimes(2);
-    script.actions[1].params.forEach(params =>
+    transferParams.forEach(params =>
       expect(portfolioService.transfer).toBeCalledWith(
         _.merge({}, script.actions[1].defaultParams, params)
       )

@@ -2,7 +2,6 @@ import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
 import portfolioService from '../portfolio/portfolio.service';
-import { Month, Portfolio, AssetClass, AssetName, Asset } from '../../types';
 
 export type Module = 'portfolio' | 'fixed' | 'stock' | 'crypto';
 
@@ -14,6 +13,8 @@ export type Method = PortfolioMethod | FixedMethod | StockMethod | CryptoMethod;
 
 type PortfolioAction =
   | PortfolioActions.Deposit
+  | PortfolioActions.Transfer
+  | PortfolioActions.Swap
   | PortfolioActions.Distribute
   | PortfolioActions.MoveToPortfolio
   | PortfolioActions.UpdateTables;
@@ -26,31 +27,36 @@ export interface Script {
 }
 
 export namespace PortfolioActions {
-  interface DepositParams {
-    assetClass: AssetClass;
-    assetName: AssetName;
-    portfolio: Portfolio;
-    value: number;
-  }
-
-  interface DistributeParams {
-    month: Month;
-    asset: AssetName;
-  }
-
-  interface MoveToPortfolioParams {
-    value: number | 'all';
-    asset: Asset;
-    origin: Portfolio;
-    destiny: Portfolio;
-  }
+  type DepositParams = Parameters<typeof portfolioService.deposit>[0];
+  type TransferParams = Parameters<typeof portfolioService.transfer>[0];
+  type SwapParams = Parameters<typeof portfolioService.swap>[0];
+  type DistributeParams = Parameters<typeof portfolioService.distribute>[0];
+  type MoveToPortfolioParams = Parameters<
+    typeof portfolioService.moveToPortfolio
+  >;
 
   export interface Deposit {
     skip?: boolean;
     module: 'portfolio';
     method: 'deposit';
     defaultParams?: Partial<DepositParams>;
-    params?: Partial<DepositParams>[];
+    params?: Partial<DepositParams> | Partial<DepositParams>[];
+  }
+
+  export interface Transfer {
+    skip?: boolean;
+    module: 'portfolio';
+    method: 'transfer';
+    defaultParams?: Partial<TransferParams>;
+    params?: Partial<TransferParams> | Partial<TransferParams>[];
+  }
+
+  export interface Swap {
+    skip?: boolean;
+    module: 'portfolio';
+    method: 'swap';
+    defaultParams?: Partial<SwapParams>;
+    params?: Partial<SwapParams> | Partial<SwapParams>[];
   }
 
   export interface Distribute {
@@ -58,7 +64,7 @@ export namespace PortfolioActions {
     module: 'portfolio';
     method: 'distribute';
     defaultParams?: Partial<DistributeParams>;
-    params?: Partial<DistributeParams>;
+    params?: Partial<DistributeParams> | Partial<DistributeParams>[];
   }
 
   export interface MoveToPortfolio {
@@ -66,7 +72,7 @@ export namespace PortfolioActions {
     module: 'portfolio';
     method: 'moveToPortfolio';
     defaultParams?: Partial<MoveToPortfolioParams>;
-    params?: Partial<MoveToPortfolioParams>;
+    params?: Partial<MoveToPortfolioParams> | Partial<MoveToPortfolioParams>[];
   }
 
   export interface UpdateTables {
