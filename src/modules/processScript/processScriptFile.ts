@@ -2,12 +2,12 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import processScript from './processScript.service';
 
-const requireUncached = module => {
+const requireUncached = (module: string) => {
   delete require.cache[require.resolve(module)];
   return require(module);
 };
 
-const loadScript = async filename => {
+const loadScript = async (filename: string) => {
   const rawFileBuffer = await fs.readFile(filename, 'utf-8');
   const rawFile = rawFileBuffer.toString();
 
@@ -29,7 +29,7 @@ const loadScript = async filename => {
   return script;
 };
 
-export default async filename => {
+export default async (filename: string) => {
   const script = await loadScript(filename);
   const results = await processScript(script);
 

@@ -4,15 +4,8 @@ import fixedService from '../fixed/fixed.service';
 import stockService from '../stock/stock.service';
 import cryptoService from '../crypto/crypto.service';
 import portfolioService from '../portfolio/portfolio.service';
+import { Module, Method, Script } from './types';
 import '../../../globals';
-
-type Module = 'portfolio' | 'fixed' | 'stock' | 'crypto';
-
-type PortfolioMethod = keyof typeof portfolioService;
-type FixedMethod = keyof typeof fixedService;
-type StockMethod = keyof typeof stockService;
-type CryptoMethod = keyof typeof cryptoService;
-type Method = PortfolioMethod | FixedMethod | StockMethod | CryptoMethod;
 
 const log = buildLogger('Process Script');
 
@@ -41,18 +34,6 @@ const runActionFunc = async <Params>(
   const actionFunc = service[method];
   return await actionFunc(params);
 };
-
-interface Action {
-  module: Module;
-  method: Method;
-  params: unknown;
-  defaultParams: unknown;
-}
-
-interface Script {
-  enable: boolean;
-  actions: Action[];
-}
 
 export default async (script: Script) => {
   const { enable, actions } = script;
