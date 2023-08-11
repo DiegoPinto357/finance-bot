@@ -3,6 +3,13 @@ import binance from '../../../providers/binance';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import transfer from './transfer';
+import { Asset, Portfolio, FixedAsset } from '../../../types';
+
+type MockDatabase = typeof database & { resetMockValues: () => void };
+
+type MockBinance = typeof binance & {
+  simulateBRLDeposit: (value: number) => void;
+};
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
@@ -14,10 +21,17 @@ jest.mock('../../../providers/blockchain');
 
 describe('portfolio service - transfer', () => {
   beforeEach(() => {
-    database.resetMockValues();
+    (database as MockDatabase).resetMockValues();
   });
 
-  const transfers = [
+  interface Transfer {
+    value: number;
+    portfolio: Portfolio;
+    origin: Asset;
+    destiny: Asset;
+  }
+
+  const transfers: Transfer[] = [
     {
       value: 100,
       portfolio: 'financiamento',
@@ -69,7 +83,7 @@ describe('portfolio service - transfer', () => {
       });
 
       if (destiny.class === 'crypto') {
-        await binance.simulateBRLDeposit(value);
+        (binance as MockBinance).simulateBRLDeposit(value);
       }
 
       const newPortfolioBalance = await getBalance(portfolio);
@@ -101,8 +115,8 @@ describe('portfolio service - transfer', () => {
   it('register a transfer to Binance HODL after the real trasfer was done', async () => {
     const value = 124.67;
     const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'crypto', name: 'hodl' };
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = { class: 'crypto', name: 'hodl' };
 
     const currentPortfolioBalance = await getBalance(portfolio);
 
@@ -118,7 +132,7 @@ describe('portfolio service - transfer', () => {
       destiny.name
     );
 
-    await binance.simulateBRLDeposit(value);
+    (binance as MockBinance).simulateBRLDeposit(value);
 
     const response = await transfer({
       value,
@@ -150,8 +164,8 @@ describe('portfolio service - transfer', () => {
   it('does not transfer when there is no funds available', async () => {
     const value = 10000;
     const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'crypto', name: 'defi' };
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = { class: 'crypto', name: 'defi' };
 
     const response = await transfer({
       value,
@@ -179,11 +193,15 @@ describe('portfolio service - transfer', () => {
     expect(portfolioDestinyValue).toBe(266.5505693764885);
   });
 
+  // TODO test case should be typesafe and might not be needed
   it('transfer funds to an asset without shares definition', async () => {
     const value = 100;
     const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'fixed', name: 'poupancaBamerindus' };
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = {
+      class: 'fixed',
+      name: 'poupancaBamerindus' as FixedAsset,
+    };
 
     const currentPortfolioBalance = await getBalance(portfolio);
 
@@ -234,8 +252,8 @@ describe('portfolio service - transfer', () => {
   it('transfer all funds from a portfolio', async () => {
     const value = 'all';
     const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: 'nubank' };
-    const destiny = { class: 'fixed', name: 'iti' };
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = { class: 'fixed', name: 'iti' };
 
     const currentPortfolioBalance = await getBalance(portfolio);
 
@@ -257,10 +275,6 @@ describe('portfolio service - transfer', () => {
       origin,
       destiny,
     });
-
-    if (destiny.class === 'crypto') {
-      await binance.simulateBRLDeposit(value);
-    }
 
     const newPortfolioBalance = await getBalance(portfolio);
 
@@ -286,8 +300,8 @@ describe('portfolio service - transfer', () => {
   it('transfer all funds from an asset', async () => {
     const value = 'all';
     const portfolio = 'financiamento';
-    const origin = { class: 'fixed', name: '99pay' };
-    const destiny = { class: 'fixed', name: 'iti' };
+    const origin: Asset = { class: 'fixed', name: '99pay' };
+    const destiny: Asset = { class: 'fixed', name: 'iti' };
 
     const currentPortfolioBalance = await getBalance(portfolio);
 
@@ -309,10 +323,6 @@ describe('portfolio service - transfer', () => {
       origin,
       destiny,
     });
-
-    if (destiny.class === 'crypto') {
-      await binance.simulateBRLDeposit(value);
-    }
 
     const newPortfolioBalance = await getBalance(portfolio);
 

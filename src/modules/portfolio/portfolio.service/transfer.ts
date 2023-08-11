@@ -1,6 +1,16 @@
 import getBalance from './getBalance';
 import deposit from './deposit';
 import { getAssetValueFromBalance, hasFunds } from './common';
+import { Asset, Portfolio } from '../../../types';
+
+interface TransferParams {
+  value: number | 'all';
+  portfolio: Portfolio;
+  origin: Asset;
+  destiny: Asset;
+  originExecuted?: boolean;
+  destinyExecuted?: boolean;
+}
 
 export default async ({
   value,
@@ -9,7 +19,7 @@ export default async ({
   destiny,
   originExecuted,
   destinyExecuted,
-}) => {
+}: TransferParams) => {
   const originBalance = await getBalance(portfolio);
 
   const transferValue =
