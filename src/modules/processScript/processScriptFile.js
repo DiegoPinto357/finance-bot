@@ -1,27 +1,13 @@
 import { promises as fs } from 'fs';
 import path from 'path';
-import * as fleece from 'golden-fleece';
 import processScript from './processScript.service';
-// import dynamicImport from '../../libs/dynamicImport';
-
-const getFileExtension = filename => filename.split('.').pop().toLowerCase();
 
 const requireUncached = module => {
   delete require.cache[require.resolve(module)];
   return require(module);
 };
 
-const loadJson5Script = async filename => {
-  const rawFile = await fs.readFile(filename, 'utf-8');
-  const script = await fleece.evaluate(rawFile);
-
-  const disabledScript = fleece.patch(rawFile, { ...script, enable: false });
-  await fs.writeFile(filename, disabledScript, 'utf-8');
-
-  return script;
-};
-
-const loadJsScript = async filename => {
+const loadScript = async filename => {
   const rawFileBuffer = await fs.readFile(filename, 'utf-8');
   const rawFile = rawFileBuffer.toString();
 
@@ -44,12 +30,7 @@ const loadJsScript = async filename => {
 };
 
 export default async filename => {
-  const fileExtension = getFileExtension(filename);
-
-  const script =
-    fileExtension === 'json5'
-      ? await loadJson5Script(filename)
-      : await loadJsScript(filename);
+  const script = await loadScript(filename);
   const results = await processScript(script);
 
   console.dir(results, { depth: null });
