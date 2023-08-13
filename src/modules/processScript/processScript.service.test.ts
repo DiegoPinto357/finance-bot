@@ -36,9 +36,15 @@ describe('processScript', () => {
       ],
     };
 
-    const { status } = await processScript(script);
+    const result = await processScript(script);
 
-    expect(status).toBe('ok');
+    expect(result.status).toBe('ok');
+    expect(result.actionResults).toHaveLength(1);
+    expect(result.actionResults?.[0]).toEqual({
+      module: 'portfolio',
+      method: 'swap',
+      status: 'ok',
+    });
     expect(portfolioService.swap).toBeCalledTimes(1);
     expect(portfolioService.swap).toBeCalledWith(script.actions[0].params);
   });
@@ -116,9 +122,22 @@ describe('processScript', () => {
       ],
     };
 
-    const { status } = await processScript(script);
+    const result = await processScript(script);
 
-    expect(status).toBe('ok');
+    expect(result.status).toBe('ok');
+    expect(result.actionResults).toHaveLength(script.actions.length);
+    expect(result.actionResults).toEqual([
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        status: 'ok',
+      },
+    ]);
     expect(portfolioService.deposit).toBeCalledTimes(1);
     expect(portfolioService.deposit).toBeCalledWith(script.actions[0].params);
     expect(portfolioService.transfer).toBeCalledTimes(1);
@@ -145,13 +164,32 @@ describe('processScript', () => {
       ],
     };
 
-    const { status } = await processScript(script);
+    const result = await processScript(script);
 
     const depositParams = script.actions[0].params as Parameters<
       typeof portfolioService.deposit
     >[0][];
 
-    expect(status).toBe('ok');
+    expect(result.status).toBe('ok');
+    expect(result.actionResults).toHaveLength(depositParams.length);
+    expect(result.actionResults).toEqual([
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+    ]);
+
     expect(portfolioService.deposit).toBeCalledTimes(depositParams.length);
     depositParams.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
@@ -191,23 +229,49 @@ describe('processScript', () => {
       ],
     };
 
-    const { status } = await processScript(script);
+    const result = await processScript(script);
 
     const depositParams = script.actions[0].params as Parameters<
       typeof portfolioService.deposit
     >[0][];
 
-    expect(status).toBe('ok');
+    const transferParams = script.actions[1].params as Parameters<
+      typeof portfolioService.transfer
+    >[0][];
+
+    expect(result.status).toBe('ok');
+    expect(result.actionResults).toHaveLength(
+      depositParams.length + transferParams.length
+    );
+    expect(result.actionResults).toEqual([
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        status: 'ok',
+      },
+    ]);
+
     expect(portfolioService.deposit).toBeCalledTimes(2);
     depositParams.forEach(params =>
       expect(portfolioService.deposit).toBeCalledWith(
         _.merge({}, script.actions[0].defaultParams, params)
       )
     );
-
-    const transferParams = script.actions[1].params as Parameters<
-      typeof portfolioService.transfer
-    >[0][];
 
     expect(portfolioService.transfer).toBeCalledTimes(2);
     transferParams.forEach(params =>

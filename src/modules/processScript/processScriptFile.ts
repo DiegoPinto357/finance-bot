@@ -31,7 +31,7 @@ const loadScript = async (filename: string) => {
 
 export default async (filename: string) => {
   const script = await loadScript(filename);
-  const results = await processScript(script);
+  const result = await processScript(script);
 
-  console.dir(results, { depth: null });
+  console.table(result.actionResults);
 };

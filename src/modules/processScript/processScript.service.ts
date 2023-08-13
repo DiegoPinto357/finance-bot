@@ -32,40 +32,54 @@ const runActionFunc = async <Params>(
   const service = modules[module];
   // @ts-ignore
   const actionFunc = service[method];
-  return await actionFunc(params);
+  const result = await actionFunc(params);
+  return result;
 };
+
+interface ActionResult {
+  module: Module;
+  method: Method;
+  status: string;
+}
+
+interface FuncResult {
+  status: string;
+}
 
 export default async (script: Script) => {
   const { enable, actions } = script;
 
   if (!enable) return { status: 'scriptNotEnabled' };
 
-  const actionStatus = [];
+  const actionResults: ActionResult[] = [];
 
   for await (let action of actions) {
     const { module, method, params, defaultParams } = action;
 
-    let result;
+    let funcResult: FuncResult = { status: 'pending' };
 
     try {
       if (Array.isArray(params)) {
         for await (let paramSet of params) {
-          // FIXME result will be overwritten
-          result = await runActionFunc(
+          funcResult = (await runActionFunc(
             module,
             method,
             _.merge({}, defaultParams, paramSet)
-          );
+          )) as FuncResult;
+          actionResults.push({ module, method, status: funcResult?.status });
         }
       } else {
-        result = await runActionFunc(module, method, params);
+        funcResult = (await runActionFunc(
+          module,
+          method,
+          params
+        )) as FuncResult;
+        actionResults.push({ module, method, status: funcResult?.status });
       }
     } catch (e) {
       console.error(e);
     }
-
-    actionStatus.push({ module, method, result });
   }
 
-  return { status: 'ok', actions: actionStatus };
+  return { status: 'ok', actionResults };
 };
