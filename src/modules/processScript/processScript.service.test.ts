@@ -291,13 +291,7 @@ describe('processScript', () => {
     );
   });
 
-  it('interrupts the processes if an error is raised', async () => {
-    (
-      portfolioService.transfer as jest.MockedFunction<
-        typeof portfolioService.transfer
-      >
-    ).mockRejectedValue('notEnoughFunds');
-
+  describe('error handling', () => {
     const script: Script = {
       enable: true,
       actions: [
@@ -332,8 +326,6 @@ describe('processScript', () => {
       ],
     };
 
-    const result = await processScript(script);
-
     const depositParams = script.actions[0].params as Parameters<
       typeof portfolioService.deposit
     >[0][];
@@ -342,8 +334,7 @@ describe('processScript', () => {
       typeof portfolioService.transfer
     >[0][];
 
-    expect(result.status).toBe('error');
-    expect(result.actionResults).toEqual([
+    const expectedActionResults = [
       {
         module: 'portfolio',
         method: 'deposit',
@@ -373,93 +364,34 @@ describe('processScript', () => {
         method: 'updateTables',
         status: 'notExecuted',
       },
-    ]);
+    ];
+
+    it('interrupts the processes if an error is raised', async () => {
+      (
+        portfolioService.transfer as jest.MockedFunction<
+          typeof portfolioService.transfer
+        >
+      ).mockRejectedValue('notEnoughFunds');
+
+      const result = await processScript(script);
+
+      expect(result.status).toBe('error');
+      expect(result.actionResults).toEqual(expectedActionResults);
+    });
+
+    it('interrupts the process if a merhod returns a non "ok" status', async () => {
+      (
+        portfolioService.transfer as jest.MockedFunction<
+          typeof portfolioService.transfer
+        >
+      ).mockResolvedValue({ status: 'notEnoughFunds' });
+
+      const result = await processScript(script);
+
+      expect(result.status).toBe('error');
+      expect(result.actionResults).toEqual(expectedActionResults);
+    });
+
+    // it('runs a method with a TBD property as true when an error is raised', () => {});
   });
-
-  it('interrupts the process if a merhod returns a non "ok" status', async () => {
-    (
-      portfolioService.transfer as jest.MockedFunction<
-        typeof portfolioService.transfer
-      >
-    ).mockResolvedValue({ status: 'notEnoughFunds' });
-
-    const script: Script = {
-      enable: true,
-      actions: [
-        {
-          module: 'portfolio',
-          method: 'deposit',
-          defaultParams: {
-            assetClass: 'fixed',
-            assetName: 'nubank',
-          },
-          params: [
-            { portfolio: 'previdencia', value: 100 },
-            { portfolio: 'amortecedor', value: 250 },
-          ],
-        },
-        {
-          module: 'portfolio',
-          method: 'transfer',
-          defaultParams: {
-            origin: { class: 'fixed', name: 'nubank' },
-            destiny: { class: 'crypto', name: 'hodl' },
-          },
-          params: [
-            { portfolio: 'previdencia', value: 100 },
-            { portfolio: 'amortecedor', value: 250 },
-          ],
-        },
-        {
-          module: 'portfolio',
-          method: 'updateTables',
-        },
-      ],
-    };
-
-    const result = await processScript(script);
-
-    const depositParams = script.actions[0].params as Parameters<
-      typeof portfolioService.deposit
-    >[0][];
-
-    const transferParams = script.actions[1].params as Parameters<
-      typeof portfolioService.transfer
-    >[0][];
-
-    expect(result.status).toBe('error');
-    expect(result.actionResults).toEqual([
-      {
-        module: 'portfolio',
-        method: 'deposit',
-        params: _.merge({}, script.actions[0].defaultParams, depositParams[0]),
-        status: 'ok',
-      },
-      {
-        module: 'portfolio',
-        method: 'deposit',
-        params: _.merge({}, script.actions[0].defaultParams, depositParams[1]),
-        status: 'ok',
-      },
-      {
-        module: 'portfolio',
-        method: 'transfer',
-        params: _.merge({}, script.actions[1].defaultParams, transferParams[0]),
-        status: 'notEnoughFunds',
-      },
-      {
-        module: 'portfolio',
-        method: 'transfer',
-        params: _.merge({}, script.actions[1].defaultParams, transferParams[1]),
-        status: 'notExecuted',
-      },
-      {
-        module: 'portfolio',
-        method: 'updateTables',
-        status: 'notExecuted',
-      },
-    ]);
-  });
-
-  // it('runs a method with a TBD property as true when an error is raised', () => {});
 });
