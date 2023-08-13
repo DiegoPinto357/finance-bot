@@ -45,6 +45,7 @@ interface Run {
 interface ActionResult {
   module: Module;
   method: Method;
+  params?: object;
   status: string;
 }
 
@@ -90,19 +91,30 @@ export default async (script: Script) => {
         throw new Error(result.status);
       }
 
-      actionResults.push({ module, method, status: result?.status });
+      actionResults.push({
+        module,
+        method,
+        params,
+        status: result?.status,
+      });
     } catch (error) {
       let errorMessage;
       if (error instanceof Error) errorMessage = error.message;
       else errorMessage = String(error);
 
-      actionResults.push({ module, method, status: errorMessage });
+      actionResults.push({
+        module,
+        method,
+        params,
+        status: errorMessage,
+      });
 
       const pendingRuns = runs.slice(actionResults.length);
       actionResults.push(
-        ...pendingRuns.map(({ module, method }) => ({
+        ...pendingRuns.map(({ module, method, params }) => ({
           module,
           method,
+          params,
           status: 'notExecuted',
         }))
       );

@@ -33,5 +33,10 @@ export default async (filename: string) => {
   const script = await loadScript(filename);
   const result = await processScript(script);
 
-  console.table(result.actionResults);
+  const resultReport = result.actionResults?.map(actionResult => ({
+    ...actionResult,
+    params: JSON.stringify(actionResult.params),
+  }));
+
+  console.table(resultReport);
 };

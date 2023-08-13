@@ -43,6 +43,7 @@ describe('processScript', () => {
     expect(result.actionResults?.[0]).toEqual({
       module: 'portfolio',
       method: 'swap',
+      params: script.actions[0].params,
       status: 'ok',
     });
     expect(portfolioService.swap).toBeCalledTimes(1);
@@ -130,11 +131,13 @@ describe('processScript', () => {
       {
         module: 'portfolio',
         method: 'deposit',
+        params: script.actions[0].params,
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: script.actions[1].params,
         status: 'ok',
       },
     ]);
@@ -176,16 +179,19 @@ describe('processScript', () => {
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[0]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[1]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[2]),
         status: 'ok',
       },
     ]);
@@ -247,21 +253,25 @@ describe('processScript', () => {
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[0]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[1]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[0]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[1]),
         status: 'ok',
       },
     ]);
@@ -324,26 +334,38 @@ describe('processScript', () => {
 
     const result = await processScript(script);
 
+    const depositParams = script.actions[0].params as Parameters<
+      typeof portfolioService.deposit
+    >[0][];
+
+    const transferParams = script.actions[1].params as Parameters<
+      typeof portfolioService.transfer
+    >[0][];
+
     expect(result.status).toBe('error');
     expect(result.actionResults).toEqual([
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[0]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[1]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[0]),
         status: 'notEnoughFunds',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[1]),
         status: 'notExecuted',
       },
       {
@@ -397,26 +419,38 @@ describe('processScript', () => {
 
     const result = await processScript(script);
 
+    const depositParams = script.actions[0].params as Parameters<
+      typeof portfolioService.deposit
+    >[0][];
+
+    const transferParams = script.actions[1].params as Parameters<
+      typeof portfolioService.transfer
+    >[0][];
+
     expect(result.status).toBe('error');
     expect(result.actionResults).toEqual([
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[0]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'deposit',
+        params: _.merge({}, script.actions[0].defaultParams, depositParams[1]),
         status: 'ok',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[0]),
         status: 'notEnoughFunds',
       },
       {
         module: 'portfolio',
         method: 'transfer',
+        params: _.merge({}, script.actions[1].defaultParams, transferParams[1]),
         status: 'notExecuted',
       },
       {
