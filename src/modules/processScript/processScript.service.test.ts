@@ -280,4 +280,80 @@ describe('processScript', () => {
       )
     );
   });
+
+  it('interrupts the processes if an error is raised', async () => {
+    (
+      portfolioService.transfer as jest.MockedFunction<
+        typeof portfolioService.transfer
+      >
+    ).mockRejectedValue('notEnoughFunds');
+
+    const script: Script = {
+      enable: true,
+      actions: [
+        {
+          module: 'portfolio',
+          method: 'deposit',
+          defaultParams: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+          },
+          params: [
+            { portfolio: 'previdencia', value: 100 },
+            { portfolio: 'amortecedor', value: 250 },
+          ],
+        },
+        {
+          module: 'portfolio',
+          method: 'transfer',
+          defaultParams: {
+            origin: { class: 'fixed', name: 'nubank' },
+            destiny: { class: 'crypto', name: 'hodl' },
+          },
+          params: [
+            { portfolio: 'previdencia', value: 100 },
+            { portfolio: 'amortecedor', value: 250 },
+          ],
+        },
+        {
+          module: 'portfolio',
+          method: 'updateTables',
+        },
+      ],
+    };
+
+    const result = await processScript(script);
+
+    expect(result.status).toBe('error');
+    expect(result.actionResults).toEqual([
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        status: 'ok',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        status: 'notEnoughFunds',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        status: 'notExecuted',
+      },
+      {
+        module: 'portfolio',
+        method: 'updateTables',
+        status: 'notExecuted',
+      },
+    ]);
+  });
+
+  // it('interupts the process if a merhod returns a non "ok" status', () => {});
+  // it('runs a method with a TBD property as true when an error is raised', () => {});
 });

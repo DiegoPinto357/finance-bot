@@ -33,7 +33,7 @@ export namespace PortfolioActions {
   type DistributeParams = Parameters<typeof portfolioService.distribute>[0];
   type MoveToPortfolioParams = Parameters<
     typeof portfolioService.moveToPortfolio
-  >;
+  >[0];
 
   export interface Deposit {
     skip?: boolean;
