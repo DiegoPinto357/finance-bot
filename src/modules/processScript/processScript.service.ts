@@ -85,6 +85,11 @@ export default async (script: Script) => {
         method,
         params
       )) as FuncResult;
+
+      if (result?.status && result.status !== 'ok') {
+        throw new Error(result.status);
+      }
+
       actionResults.push({ module, method, status: result?.status });
     } catch (error) {
       let errorMessage;
