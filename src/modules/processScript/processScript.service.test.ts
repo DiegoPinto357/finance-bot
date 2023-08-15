@@ -96,6 +96,55 @@ describe('processScript', () => {
     expect(portfolioService.transfer).not.toBeCalled();
   });
 
+  it('does not process action if "skip" field is true', async () => {
+    const script: Script = {
+      enable: true,
+      actions: [
+        {
+          skip: true,
+          module: 'portfolio',
+          method: 'deposit',
+          params: {
+            assetClass: 'fixed',
+            assetName: 'nubank',
+            portfolio: 'previdencia',
+            value: 100,
+          },
+        },
+        {
+          module: 'portfolio',
+          method: 'transfer',
+          params: {
+            portfolio: 'previdencia',
+            value: 100,
+            origin: { class: 'fixed', name: 'nubank' },
+            destiny: { class: 'crypto', name: 'hodl' },
+          },
+        },
+      ],
+    };
+
+    const result = await processScript(script);
+
+    expect(result.status).toBe('ok');
+    expect(portfolioService.deposit).not.toBeCalled();
+    expect(portfolioService.transfer).toBeCalledTimes(1);
+    expect(result.actionResults).toEqual([
+      {
+        module: 'portfolio',
+        method: 'deposit',
+        params: expect.any(Object),
+        status: 'skipped',
+      },
+      {
+        module: 'portfolio',
+        method: 'transfer',
+        params: expect.any(Object),
+        status: 'ok',
+      },
+    ]);
+  });
+
   it('process multiple actions', async () => {
     const script: Script = {
       enable: true,
@@ -391,7 +440,5 @@ describe('processScript', () => {
       expect(result.status).toBe('error');
       expect(result.actionResults).toEqual(expectedActionResults);
     });
-
-    // it('runs a method with a TBD property as true when an error is raised', () => {});
   });
 });

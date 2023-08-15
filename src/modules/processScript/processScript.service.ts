@@ -40,6 +40,7 @@ interface Run {
   module: Module;
   method: Method;
   params?: object;
+  skip?: boolean;
 }
 
 interface ActionResult {
@@ -59,26 +60,37 @@ export default async (script: Script) => {
   if (!enable) return { status: 'scriptNotEnabled' };
 
   const runs = actions.reduce((runs, action) => {
-    const { module, method, params, defaultParams } = action;
+    const { module, method, params, defaultParams, skip } = action;
     if (Array.isArray(params)) {
       runs.push(
         ...params.map(paramSet => ({
           module,
           method,
           params: _.merge({}, defaultParams, paramSet),
+          skip,
         }))
       );
       return runs;
     }
 
-    runs.push({ module, method, params });
+    runs.push({ module, method, params, skip });
     return runs;
   }, [] as Run[]);
 
   const actionResults: ActionResult[] = [];
 
   for await (const run of runs) {
-    const { module, method, params } = run;
+    const { module, method, params, skip } = run;
+
+    if (skip) {
+      actionResults.push({
+        module,
+        method,
+        params,
+        status: 'skipped',
+      });
+      continue;
+    }
 
     try {
       const result = (await runActionFunc(
