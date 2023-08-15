@@ -17,6 +17,10 @@ const verboseMode = false;
 
 const log = buildLogger('Database');
 
+if (debugMode) {
+  log('Debug mode enabled', { severity: 'warn' });
+}
+
 const dbPassword = process.env.MONGODB_PASSWORD;
 const url = `mongodb+srv://finance-bot-admin:${dbPassword}@finance-bot.24mvojo.mongodb.net`;
 const client = new MongoClient(url);
@@ -125,6 +129,9 @@ const bulkWrite = async <Schema extends Document>(
   options: BulkWriteOptions
 ) => {
   log(`Bulk writing on ${databaseName}/${collectionName}`);
+
+  if (debugMode) return;
+
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
   // @ts-ignore
