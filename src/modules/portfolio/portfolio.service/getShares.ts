@@ -86,7 +86,33 @@ const getActualShares = (
     );
 };
 
-export default async (portfolioName?: Portfolio) => {
+interface Share {
+  currentShare: number;
+  diffBRL: number;
+  assetClass: AssetClass;
+  asset?: AssetName;
+  targetShare: number;
+  value: number;
+}
+
+interface SharesWithTotal {
+  shares: Share[];
+  total: number;
+}
+
+interface ShareByPortfolio {
+  portfolio: Portfolio;
+  shares: Share[];
+}
+
+interface SharesByPortfolioWithTotal {
+  shares: ShareByPortfolio[];
+  total: number;
+}
+
+function getShares(): Promise<SharesByPortfolioWithTotal>;
+function getShares(portfolioName?: Portfolio): Promise<SharesWithTotal>;
+async function getShares(portfolioName?: Portfolio) {
   if (portfolioName) {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
     const [{ balance, total }, portfoliotTargetShares] = await Promise.all([
@@ -139,4 +165,6 @@ export default async (portfolioName?: Portfolio) => {
   );
 
   return { shares, total: totalBalance.total };
-};
+}
+
+export default getShares;
