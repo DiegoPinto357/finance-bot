@@ -1,4 +1,28 @@
-export default {
+import { CryptoNetwork } from './modules/crypto/types';
+interface Config {
+  cache: {
+    disabled: boolean;
+    defaultTimeToLive: number;
+  };
+  crypto: {
+    networks: {
+      [key in CryptoNetwork]: {
+        host: string;
+      };
+    };
+    tokens: {
+      [key in CryptoNetwork]: {
+        [key: string]: {
+          contract: string;
+          native?: boolean;
+          cmcId?: number;
+        };
+      };
+    };
+  };
+}
+
+const config: Config = {
   cache: {
     disabled: false,
     defaultTimeToLive: 20 * 60 * 1000,
@@ -53,3 +77,5 @@ export default {
     },
   },
 };
+
+export default config;

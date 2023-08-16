@@ -3,6 +3,19 @@ import httpClient from '../libs/httpClient';
 import { withCache } from '../libs/cache';
 import delay from '../libs/delay';
 import config from '../config';
+import { CryptoNetwork } from '../modules/crypto/types';
+
+type ApiKeyMapper = {
+  [key in CryptoNetwork]: string;
+};
+
+const apiKeyMapper: ApiKeyMapper = {
+  avalanche: 'SNOWTRACE_API_KEY',
+  bsc: 'BSCSCAN_API_KEY',
+  polygon: 'POLYGONSCAN_API_KEY',
+};
+
+type HttpParams = Record<string, any>;
 
 const log = buildLogger('Blockchain');
 
@@ -10,20 +23,22 @@ const getCached = withCache(params => httpClient.get(params), {
   dataNode: 'result',
 });
 
-const apiKeyMapper = {
-  avalanche: 'SNOWTRACE_API_KEY',
-  bsc: 'BSCSCAN_API_KEY',
-  polygon: 'POLYGONSCAN_API_KEY',
-};
+const getApiKey = (network: CryptoNetwork) =>
+  process.env[apiKeyMapper[network]];
 
-const getApiKey = network => process.env[apiKeyMapper[network]];
-
-const buildUrl = (network, { params }) => {
+// TODO optimize params
+const buildUrl = (network: CryptoNetwork, params: HttpParams) => {
   const { host } = config.crypto.networks[network];
   return `${host}/api?${params}`;
 };
 
-const getTokenBalance = async ({ asset, network, wallet }) => {
+interface GetTokenBalance {
+  asset: string;
+  network: CryptoNetwork;
+  wallet: string;
+}
+
+const getTokenBalance = async ({ asset, network, wallet }: GetTokenBalance) => {
   log(`Loading ${asset} token balance on ${network} network`);
   // TODO build a better rate limit system
   const min = 500;
@@ -42,9 +57,9 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
     address: wallet || process.env.CRYPTO_WALLET_ADDRESS,
     tag: 'latest',
     apikey: getApiKey(network),
-  });
+  } as HttpParams);
 
-  const url = buildUrl(network, { params });
+  const url = buildUrl(network, params);
   const { status, result } = await getCached(url);
 
   if (status === '0') {
@@ -60,19 +75,27 @@ const getTokenBalance = async ({ asset, network, wallet }) => {
   return result * tokenScale;
 };
 
-const getContractTokenTotalSupply = async ({ network, contractAddress }) => {
+interface GetContractTokenTotalSupply {
+  network: CryptoNetwork;
+  contractAddress: string;
+}
+
+const getContractTokenTotalSupply = async ({
+  network,
+  contractAddress,
+}: GetContractTokenTotalSupply) => {
   const totalSupplyParams = new URLSearchParams({
     module: 'stats',
     action: 'tokensupply',
     contractaddress: contractAddress,
     apikey: getApiKey(network),
-  });
+  } as HttpParams);
 
   log(
     `Loading total supply of contract ${contractAddress} on ${network} network`
   );
   const { status, result } = await getCached(
-    buildUrl(network, { params: totalSupplyParams })
+    buildUrl(network, totalSupplyParams)
   );
 
   if (status === '0') {
