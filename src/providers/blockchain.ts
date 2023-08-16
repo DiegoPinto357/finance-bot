@@ -1,7 +1,7 @@
 import { buildLogger } from '../libs/logger';
 import httpClient from '../libs/httpClient';
 import { withCache } from '../libs/cache';
-import delay from '../libs/delay';
+import { withRateLimit } from '../libs/rateLimiter';
 import config from '../config';
 import { CryptoNetwork } from '../modules/crypto/types';
 
@@ -19,14 +19,20 @@ type HttpParams = Record<string, any>;
 
 const log = buildLogger('Blockchain');
 
-const getCached = withCache(params => httpClient.get(params), {
+const tokenScale = 1e-18;
+
+const getWithRateLimit = withRateLimit(params => httpClient.get(params), {
+  numOfCalls: 5,
+  period: 1000,
+});
+
+const getCached = withCache(params => getWithRateLimit(params), {
   dataNode: 'result',
 });
 
 const getApiKey = (network: CryptoNetwork) =>
   process.env[apiKeyMapper[network]];
 
-// TODO optimize params
 const buildUrl = (network: CryptoNetwork, params: HttpParams) => {
   const { host } = config.crypto.networks[network];
   return `${host}/api?${params}`;
@@ -40,12 +46,6 @@ interface GetTokenBalance {
 
 const getTokenBalance = async ({ asset, network, wallet }: GetTokenBalance) => {
   log(`Loading ${asset} token balance on ${network} network`);
-  // TODO build a better rate limit system
-  const min = 500;
-  const max = 2500;
-  const diff = max - min;
-  const ms = Math.floor(Math.random() * diff) + min;
-  await delay(ms);
 
   const { contract, native } = config.crypto.tokens[network][asset];
   const action = native ? 'balance' : 'tokenbalance';
@@ -71,7 +71,6 @@ const getTokenBalance = async ({ asset, network, wallet }: GetTokenBalance) => {
     );
   }
 
-  const tokenScale = 1e-18;
   return result * tokenScale;
 };
 
@@ -104,7 +103,7 @@ const getContractTokenTotalSupply = async ({
     );
   }
 
-  return result * 1e-18;
+  return result * tokenScale;
 };
 
 export default {
