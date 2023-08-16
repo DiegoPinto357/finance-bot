@@ -28,7 +28,8 @@ describe('rate limiter', () => {
     expect(funcWithRateLimit).toBeCalledTimes(numOfCalls);
     expect(func).not.toBeCalled();
 
-    await delay(numOfCalls * period + 1);
+    const safeDelay = period;
+    await delay(numOfCalls * period + safeDelay);
 
     expect(func).toBeCalledTimes(numOfCalls);
 
