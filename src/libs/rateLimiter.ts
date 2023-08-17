@@ -21,7 +21,6 @@ export const withRateLimit = <T extends (...args: any) => any>(
 
   const limiter = new RateLimiter({
     tokensPerInterval: 1,
-    fireImmediately: true,
     interval: minTime,
   });
 
