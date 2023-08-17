@@ -1,8 +1,8 @@
 import mockSheetData from '../mockData/googleSheets/crypto-spot.json';
 
-let constructorArgs;
+let constructorArgs: unknown;
 
-export const testDataBuffer = mockSheetData.map(row => {
+const testDataBuffer = mockSheetData.map(row => {
   const headerValues = Object.keys(row);
   const _rawData = Object.values(row);
   return {
