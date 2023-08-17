@@ -1,9 +1,11 @@
-const { promises: fs } = require('fs');
-const path = require('path');
+import { promises as fs } from 'fs';
+import path from 'path';
 
 const mockDir = `${path.resolve()}/mockData/googleSheets/`;
 
-let dataBuffer = {};
+type Row = Record<string, unknown>;
+
+let dataBuffer: Record<string, Row[]> = {};
 
 const loadSheet = jest.fn(async sheetTitle => {
   const filename = `${mockDir}${sheetTitle}.json`;
@@ -23,17 +25,9 @@ const loadSheet = jest.fn(async sheetTitle => {
   return dataBuffer[sheetTitle];
 });
 
-const writeValue = async (sheetTitle, { index, target }) => {
-  const rows = dataBuffer[sheetTitle];
-  const rowIndex = rows.findIndex(row => row[index.key] === index.value);
-  rows[rowIndex][target.key] = target.value;
-  await rows[rowIndex].save();
-};
-
 const resetMockValues = () => (dataBuffer = {});
 
-module.exports = {
+export default {
   loadSheet,
-  writeValue,
   resetMockValues,
 };

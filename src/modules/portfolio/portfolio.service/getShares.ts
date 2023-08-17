@@ -117,8 +117,7 @@ async function getShares(portfolioName?: Portfolio) {
     const sharesSheetTitle = `portfolio-${portfolioName}-shares`;
     const [{ balance, total }, portfoliotTargetShares] = await Promise.all([
       getBalance(portfolioName),
-      // TODO use generic on loadSheet method
-      <Promise<TargetShare[]>>googleSheets.loadSheet(sharesSheetTitle),
+      googleSheets.loadSheet<TargetShare[]>(sharesSheetTitle),
     ]);
 
     const balanceFlat = flatPortfolioBalance(balance);
@@ -144,9 +143,9 @@ async function getShares(portfolioName?: Portfolio) {
   const shares = await Promise.all(
     portfolios.map(async portfolio => {
       const sharesSheetTitle = `portfolio-${portfolio}-shares`;
-      const portfolioShares = await (<Promise<TargetShare[]>>(
-        googleSheets.loadSheet(sharesSheetTitle)
-      ));
+      const portfolioShares = await googleSheets.loadSheet<TargetShare[]>(
+        sharesSheetTitle
+      );
 
       const balanceFlatItem = totalBalanceFlat.find(
         item => item.portfolio === portfolio

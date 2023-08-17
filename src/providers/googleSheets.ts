@@ -1,22 +1,31 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
+import {
+  GoogleSpreadsheet,
+  GoogleSpreadsheetWorksheet,
+} from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
 import { buildLogger } from '../libs/logger';
 
 const log = buildLogger('GoogleSheets');
 
-let doc;
+let doc: GoogleSpreadsheet;
 
-const docStatus = { authenticated: false, loaded: false };
+const serviceAccountAuth = new JWT({
+  email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  key: process.env.GOOGLE_PRIVATE_KEY,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+
+let docLoadedStatus = false;
 const spreadsheetId = '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo';
 
 const resetDoc = () => {
-  doc = new GoogleSpreadsheet(spreadsheetId);
-  docStatus.authenticated = false;
-  docStatus.loaded = false;
+  doc = new GoogleSpreadsheet(spreadsheetId, serviceAccountAuth);
+  docLoadedStatus = false;
 };
 
 resetDoc();
 
-const toNumberIfPossible = value => {
+const toNumberIfPossible = (value: string | number) => {
   if (
     typeof value === 'number' ||
     value === undefined ||
@@ -27,26 +36,16 @@ const toNumberIfPossible = value => {
   return isNaN(num) || value === '' ? value : num;
 };
 
-const getSheet = async sheetTitle => {
-  const { authenticated, loaded } = docStatus;
-
-  if (!authenticated) {
-    await doc.useServiceAccountAuth({
-      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY,
-    });
-    docStatus.authenticated = true;
-  }
-
-  if (!loaded) {
+const getSheet = async (sheetTitle: string) => {
+  if (!docLoadedStatus) {
     await doc.loadInfo();
-    docStatus.loaded = true;
+    docLoadedStatus = true;
   }
 
   return doc.sheetsByTitle[sheetTitle];
 };
 
-const getRows = async sheetTitle => {
+const getRows = async (sheetTitle: string) => {
   const sheet = await getSheet(sheetTitle);
 
   if (!sheet) {
@@ -56,34 +55,36 @@ const getRows = async sheetTitle => {
   return await sheet.getRows();
 };
 
-const loadSheet = async sheetTitle => {
+const loadSheet = async <T>(sheetTitle: string) => {
   log(`Loadindg sheet ${sheetTitle}`);
   const rows = await getRows(sheetTitle);
 
   if (!rows) {
     log(`Sheet ${sheetTitle} not found`, { severity: 'warn' });
-    return [];
+    return [] as T;
   }
 
   return rows.map(row => {
-    return row._sheet.headerValues.reduce((obj, key, index, keys) => {
+    return row._worksheet.headerValues.reduce((obj, key, index, keys) => {
       const isMergedCell = key === '';
       if (isMergedCell) {
         key = keys[index - 1];
       }
 
-      const value = toNumberIfPossible(row._rawData[index]);
+      const value = toNumberIfPossible(row.get(key));
       if (obj[key] != undefined) {
         obj[key] = [obj[key], value];
       } else {
         obj[key] = value;
       }
       return obj;
-    }, {});
-  });
+    }, {} as Record<string, unknown>);
+  }) as T;
 };
 
-const setSheet = async (sheetTitle, header, rows) => {
+type Rows = Parameters<GoogleSpreadsheetWorksheet['addRows']>[0];
+
+const setSheet = async (sheetTitle: string, header: string[], rows: Rows) => {
   log(`Setting sheet ${sheetTitle}`);
   const sheet = await getSheet(sheetTitle);
   await sheet.clearRows();
@@ -91,18 +92,8 @@ const setSheet = async (sheetTitle, header, rows) => {
   await sheet.addRows(rows);
 };
 
-const writeValue = async (sheetTitle, { index, target }) => {
-  log(`Writing on sheet ${sheetTitle}`);
-  const rows = await getRows(sheetTitle);
-
-  const rowIndex = rows.findIndex(row => row[index.key] === index.value);
-  rows[rowIndex][target.key] = target.value;
-  await rows[rowIndex].save();
-};
-
 export default {
   resetDoc,
   loadSheet,
   setSheet,
-  writeValue,
 };

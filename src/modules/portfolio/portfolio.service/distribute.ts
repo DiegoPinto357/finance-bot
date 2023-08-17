@@ -57,9 +57,9 @@ interface DistributeParams {
 }
 
 export default async ({ month, asset }: DistributeParams) => {
-  const rawDistributionData = await (<Promise<DistributionPortfolioItem[]>>(
-    googleSheets.loadSheet('distribution')
-  ));
+  const rawDistributionData = await googleSheets.loadSheet<
+    DistributionPortfolioItem[]
+  >('distribution');
 
   const { monthlyDistribution, status } = parseDistributionData(
     rawDistributionData,

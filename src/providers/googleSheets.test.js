@@ -1,4 +1,9 @@
-import { instance, testDataBuffer } from 'google-spreadsheet';
+import {
+  instance,
+  testDataBuffer,
+  getConstructorArgs,
+} from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
 import googleSheets from './googleSheets';
 import cache from '../libs/cache';
 import { mockLoggerInstance } from '../libs/logger';
@@ -35,19 +40,12 @@ describe('googleSheets provider', () => {
     await googleSheets.loadSheet('test-sheet');
     await googleSheets.loadSheet('test-sheet');
 
-    expect(instance.useServiceAccountAuth).toBeCalledTimes(1);
+    const constructorArgs = getConstructorArgs();
+
+    expect(constructorArgs).toEqual([
+      '1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo',
+      expect.any(JWT),
+    ]);
     expect(instance.loadInfo).toBeCalledTimes(1);
-  });
-
-  it('writes a value in a cell', async () => {
-    await googleSheets.writeValue('test-sheet', {
-      index: { key: 'asset', value: 'BTC' },
-      target: { key: 'score', value: 20 },
-    });
-
-    const changedRow = testDataBuffer.find(row => row.asset === 'BTC');
-
-    expect(changedRow.save).toBeCalledTimes(1);
-    expect(changedRow.score).toEqual(20);
   });
 });
