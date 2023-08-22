@@ -1,7 +1,7 @@
 import database from '../../../providers/database';
 import getBalance from './getBalance';
 import distribute from './distribute';
-import { getAssetValueFromBalance } from './common';
+import { getPortfolioPositionOnAsset } from './common';
 import { fromCurrencyToNumber } from '../../../libs/stringFormat';
 import distributionData from '../../../../mockData/googleSheets/distribution.json';
 import { Month, FixedAsset, Portfolio } from '../../../types';
@@ -45,32 +45,39 @@ describe('portfolio service - distribute', () => {
     const month = 'may';
     const asset: FixedAsset = 'nubank';
 
-    const currentBalance = await getBalance();
-
-    const { status } = await distribute({ month, asset });
-
-    const newBalance = await getBalance();
-
     const monthlyDistributions = getMothlyDistributions(
       distributionData,
       month
     );
 
+    const currentValues = await Promise.all(
+      monthlyDistributions.map(
+        async distribution =>
+          await getPortfolioPositionOnAsset(distribution.portfolio, {
+            class: 'fixed',
+            name: asset,
+          })
+      )
+    );
+
+    const { status } = await distribute({ month, asset });
+
+    const newValues = await Promise.all(
+      monthlyDistributions.map(
+        async distribution =>
+          await getPortfolioPositionOnAsset(distribution.portfolio, {
+            class: 'fixed',
+            name: asset,
+          })
+      )
+    );
+
     expect(status).toBe('ok');
-    monthlyDistributions.forEach(deposit => {
-      const currentValue = getAssetValueFromBalance(
-        currentBalance.balance[deposit.portfolio],
-        'fixed',
-        asset
+    monthlyDistributions.forEach((deposit, index) => {
+      expect(newValues[index]).toBeCloseTo(
+        currentValues[index] + deposit.value,
+        5
       );
-
-      const newValue = getAssetValueFromBalance(
-        newBalance.balance[deposit.portfolio],
-        'fixed',
-        asset
-      );
-
-      expect(newValue).toBeCloseTo(currentValue + deposit.value, 5);
     });
   });
 

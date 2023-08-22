@@ -83,6 +83,27 @@ export const getAssetPosition = async (
   return await (<GetAssetPosition>service.getAssetPosition)(assetName);
 };
 
+export const getPortfolioPositionOnAsset = async (
+  portfolio: Portfolio,
+  asset: Asset
+) => {
+  const totalAssetValue = await getAssetPosition(asset.class, asset.name);
+  const portfolioData = await getPortfolioData({
+    assetClass: asset.class,
+    assetName: asset.name,
+  });
+
+  const currentShare = portfolioData[0].shares.find(
+    share => share.portfolio === portfolio
+  );
+
+  if (!currentShare) {
+    throw new Error(`Portfolio ${portfolio} not found.`);
+  }
+
+  return currentShare?.value * totalAssetValue;
+};
+
 export const swapOnAsset = async ({
   value,
   assetClass,

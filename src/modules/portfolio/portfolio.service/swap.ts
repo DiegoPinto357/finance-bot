@@ -1,5 +1,4 @@
-import getBalance from './getBalance';
-import { getAssetValueFromBalance, hasFunds, swapOnAsset } from './common';
+import { getPortfolioPositionOnAsset, swapOnAsset } from './common';
 import { Asset, Portfolio } from '../../../types';
 
 interface SwapOnAssetParams {
@@ -52,28 +51,17 @@ export default async (swapParams: SwapParams) => {
   }
 
   // TODO get balances in a single call
-  const [originBalance, liquidityBalance] = await Promise.all([
-    getBalance(params.originPortfolio),
-    getBalance(params.destinyPortfolio),
+  const [originCurrentValue, liquidityCurrentValue] = await Promise.all([
+    getPortfolioPositionOnAsset(params.originPortfolio, params.assets[0]),
+    getPortfolioPositionOnAsset(params.destinyPortfolio, params.assets[1]),
   ]);
 
   const { value } = swapParams;
 
-  const swapValue =
-    value === 'all'
-      ? getAssetValueFromBalance(
-          originBalance,
-          params.assets[0].class,
-          params.assets[0].name
-        )
-      : value;
+  const swapValue = value === 'all' ? originCurrentValue : value;
 
-  const hasOriginFunds = hasFunds(originBalance, params.assets[0], swapValue);
-  const hasLiquidityFunds = hasFunds(
-    liquidityBalance,
-    params.assets[1],
-    swapValue
-  );
+  const hasOriginFunds = originCurrentValue >= swapValue;
+  const hasLiquidityFunds = liquidityCurrentValue >= swapValue;
 
   if (!hasOriginFunds || !hasLiquidityFunds) {
     return { status: 'notEnoughFunds' };

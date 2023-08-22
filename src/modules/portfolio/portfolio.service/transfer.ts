@@ -1,5 +1,5 @@
 import deposit from './deposit';
-import { getAssetPosition, getPortfolioData } from './common';
+import { getPortfolioPositionOnAsset } from './common';
 import { Asset, Portfolio } from '../../../types';
 
 interface TransferParams {
@@ -19,22 +19,10 @@ export default async ({
   originExecuted,
   destinyExecuted,
 }: TransferParams) => {
-  const totalAssetValue = await getAssetPosition(origin.class, origin.name);
-  const portfolioData = await getPortfolioData({
-    assetClass: origin.class,
-    assetName: origin.name,
-  });
-
-  // TODO candidate to common method
-  const currentShare = portfolioData[0].shares.find(
-    share => share.portfolio === portfolio
+  const currentOriginValue = await getPortfolioPositionOnAsset(
+    portfolio,
+    origin
   );
-
-  if (!currentShare) {
-    throw new Error(`Portfolio ${portfolio} not found.`);
-  }
-
-  const currentOriginValue = currentShare?.value * totalAssetValue;
 
   const transferValue = value === 'all' ? currentOriginValue : value;
   const hasOriginFunds = currentOriginValue >= transferValue;
