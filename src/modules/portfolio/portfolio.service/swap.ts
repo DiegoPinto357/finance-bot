@@ -50,7 +50,6 @@ export default async (swapParams: SwapParams) => {
     params.destinyPortfolio = destiny;
   }
 
-  // TODO get balances in a single call
   const [originCurrentValue, liquidityCurrentValue] = await Promise.all([
     getPortfolioPositionOnAsset(params.originPortfolio, params.assets[0]),
     getPortfolioPositionOnAsset(params.destinyPortfolio, params.assets[1]),
