@@ -4,7 +4,7 @@ import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import getBalance from './getBalance';
 import deposit from './deposit';
-import { getAssetValueFromBalance } from './common';
+import { getAssetValueFromBalance, getAssetPosition } from './common';
 import { AssetClass, AssetName, Portfolio } from '../../../types';
 
 type MockBinance = typeof binance & {
@@ -17,8 +17,6 @@ jest.mock('../../../providers/binance');
 jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
-
-type GetAssetPosition = (assetName: AssetName) => Promise<number>;
 
 const services = {
   fixed: fixedService,
@@ -107,11 +105,10 @@ describe('portfolio service - deposit', () => {
         ? await getBalance(sidePortfolioName)
         : null;
 
-      const service = services[assetClass];
-      // TODO try to infer this one
-      const currentTotalAssetValue = await (<GetAssetPosition>(
-        service.getAssetPosition
-      ))(assetName);
+      const currentTotalAssetValue = await getAssetPosition(
+        assetClass,
+        assetName
+      );
 
       const result = await deposit({
         value: depositValue,
@@ -135,10 +132,7 @@ describe('portfolio service - deposit', () => {
         ? await getBalance(sidePortfolioName)
         : null;
 
-      // TODO try to infer this one
-      const newTotalAssetValue = await (<GetAssetPosition>(
-        service.getAssetPosition
-      ))(assetName);
+      const newTotalAssetValue = await getAssetPosition(assetClass, assetName);
 
       expect(result.status).toBe('ok');
       expect(newPortfolioAssetValue).toBe(
@@ -171,7 +165,7 @@ describe('portfolio service - deposit', () => {
       assetName
     );
 
-    await (binance as MockBinance).simulateBRLDeposit(depositValue);
+    (binance as MockBinance).simulateBRLDeposit(depositValue);
 
     const result = await deposit({
       value: depositValue,

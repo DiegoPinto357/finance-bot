@@ -73,6 +73,16 @@ export const extractPortfolioNames = (portfolioData: PortfolioData[]) => {
   return Array.from(portfolios);
 };
 
+export const getAssetPosition = async (
+  assetClass: AssetClass,
+  assetName: AssetName
+) => {
+  const service = services[assetClass];
+  // TODO try to infer this one
+  type GetAssetPosition = (assetName: AssetName) => Promise<number>;
+  return await (<GetAssetPosition>service.getAssetPosition)(assetName);
+};
+
 export const swapOnAsset = async ({
   value,
   assetClass,
@@ -86,12 +96,7 @@ export const swapOnAsset = async ({
   origin: Portfolio;
   destiny: Portfolio;
 }) => {
-  const service = services[assetClass];
-  // TODO try to infer this one
-  type GetAssetPosition = (assetName: AssetName) => Promise<number>;
-  const totalAssetValue = await (<GetAssetPosition>service.getAssetPosition)(
-    assetName
-  );
+  const totalAssetValue = await getAssetPosition(assetClass, assetName);
 
   const portfolioData = await getPortfolioData();
 

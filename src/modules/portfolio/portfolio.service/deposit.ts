@@ -2,7 +2,7 @@ import database from '../../../providers/database';
 import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
-import { getPortfolioData, verifyShares } from './common';
+import { getPortfolioData, verifyShares, getAssetPosition } from './common';
 import { ShareItem, PortfolioData } from './types';
 import { AssetClass, AssetName, Portfolio } from '../../../types';
 
@@ -95,12 +95,8 @@ export default async ({
 }: DepositParams) => {
   if (assetClass === 'stock') assetName = 'float';
 
-  const service = services[assetClass];
-  // TODO try to infer this one
-  type GetAssetPosition = (assetName: AssetName) => Promise<number>;
-  const totalAssetValue = await (<GetAssetPosition>service.getAssetPosition)(
-    assetName
-  );
+  const totalAssetValue = await getAssetPosition(assetClass, assetName);
+
   const currentTotalAssetValue = executed
     ? totalAssetValue - value
     : totalAssetValue;

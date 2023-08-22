@@ -1,6 +1,5 @@
-import getBalance from './getBalance';
 import deposit from './deposit';
-import { getAssetValueFromBalance, hasFunds } from './common';
+import { getAssetPosition, getPortfolioData } from './common';
 import { Asset, Portfolio } from '../../../types';
 
 interface TransferParams {
@@ -20,15 +19,28 @@ export default async ({
   originExecuted,
   destinyExecuted,
 }: TransferParams) => {
-  const originBalance = await getBalance(portfolio);
+  const totalAssetValue = await getAssetPosition(origin.class, origin.name);
+  const portfolioData = await getPortfolioData({
+    assetClass: origin.class,
+    assetName: origin.name,
+  });
 
-  const transferValue =
-    value === 'all'
-      ? getAssetValueFromBalance(originBalance, origin.class, origin.name)
-      : value;
-  const hasOriginFunds = hasFunds(originBalance, origin, transferValue);
+  // TODO candidate to common method
+  const currentShare = portfolioData[0].shares.find(
+    share => share.portfolio === portfolio
+  );
+
+  if (!currentShare) {
+    throw new Error(`Portfolio ${portfolio} not found.`);
+  }
+
+  const currentOriginValue = currentShare?.value * totalAssetValue;
+
+  const transferValue = value === 'all' ? currentOriginValue : value;
+  const hasOriginFunds = currentOriginValue >= transferValue;
 
   if (!hasOriginFunds) {
+    // FIXME throw error
     return { status: 'notEnoughFunds' };
   }
 
