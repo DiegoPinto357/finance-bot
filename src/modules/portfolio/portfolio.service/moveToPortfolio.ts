@@ -1,5 +1,4 @@
-import { getAssetValueFromBalance, swapOnAsset } from './common';
-import getBalance from './getBalance';
+import { getPortfolioPositionOnAsset, swapOnAsset } from './common';
 import { Asset, Portfolio } from '../../../types';
 
 export interface MoveToPortfolioParams {
@@ -19,18 +18,8 @@ export default async ({
   origin,
   destiny,
 }: MoveToPortfolioParams): Promise<MoveToPortfolioResult> => {
-  let transferValue: number;
-
-  if (value === 'all') {
-    const originBalance = await getBalance(origin);
-    transferValue = getAssetValueFromBalance(
-      originBalance,
-      asset.class,
-      asset.name
-    );
-  } else {
-    transferValue = value;
-  }
+  const transferValue =
+    value === 'all' ? await getPortfolioPositionOnAsset(origin, asset) : value;
 
   return (await swapOnAsset({
     value: transferValue,
