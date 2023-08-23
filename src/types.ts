@@ -45,10 +45,19 @@ export type CryptoAsset =
 
 export type AssetName = FixedAsset | StockAsset | CryptoAsset;
 
-export interface Asset {
-  class: AssetClass;
-  name: AssetName;
-}
+export type Asset =
+  | {
+      class: 'fixed';
+      name: FixedAsset;
+    }
+  | {
+      class: 'stock';
+      name: StockAsset;
+    }
+  | {
+      class: 'crypto';
+      name: CryptoAsset;
+    };
 
 export type Portfolio =
   | 'reservaEmergencia'

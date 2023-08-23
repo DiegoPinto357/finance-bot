@@ -1,5 +1,5 @@
 import googleSheets from '../../../providers/googleSheets';
-import { Asset, AssetName, Portfolio } from '../../../types';
+import { Asset, AssetName, FixedAsset, Portfolio } from '../../../types';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import swap from './swap';
@@ -24,7 +24,7 @@ describe('portfolio service - swap', () => {
     const destiny: Asset = {
       class: 'fixed',
       // TODO map pagBankCDB120 as AssetName type?
-      name: 'pagBankCDB120' as AssetName,
+      name: 'pagBankCDB120' as FixedAsset,
     };
     const liquidity: Portfolio = 'amortecedor';
 
@@ -118,7 +118,7 @@ describe('portfolio service - swap', () => {
     const destiny: Asset = {
       class: 'fixed',
       // TODO map pagBankCDB120 as AssetName type?
-      name: 'pagBankCDB120' as AssetName,
+      name: 'pagBankCDB120' as FixedAsset,
     };
     const liquidity: Portfolio = 'amortecedor';
 
@@ -211,7 +211,7 @@ describe('portfolio service - swap', () => {
     const origin: Asset = {
       class: 'fixed',
       // TODO map pagBankCDB120 as AssetName type?
-      name: 'pagBankCDB120' as AssetName,
+      name: 'pagBankCDB120' as FixedAsset,
     };
     const destiny: Asset = { class: 'fixed', name: 'nubank' };
     const liquidity: Portfolio = 'amortecedor';
@@ -302,7 +302,10 @@ describe('portfolio service - swap', () => {
   it('swap funds within same asset', async () => {
     const value = 100;
     // TODO map pagBankCDB120 as AssetName type?
-    const asset: Asset = { class: 'fixed', name: 'pagBankCDB120' as AssetName };
+    const asset: Asset = {
+      class: 'fixed',
+      name: 'pagBankCDB120' as FixedAsset,
+    };
     const origin: Portfolio = 'amortecedor';
     const destiny: Portfolio = 'suricat';
     const liquidity: Asset = { class: 'fixed', name: 'nubank' };
