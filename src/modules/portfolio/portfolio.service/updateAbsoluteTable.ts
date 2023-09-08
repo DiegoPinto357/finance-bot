@@ -23,7 +23,9 @@ const flattenBalance = (balance: AssetBalance[], totals: TotalRow) =>
 
 export default async () => {
   const fixedAssets = await services['fixed'].getAssetsList();
+  // TODO import from stock service
   const stockAssets: StockAsset[] = ['float', 'br', 'fii', 'us'];
+  // TODO import from crypto service
   const cryptoAssets: CryptoAsset[] = [
     'binanceBuffer',
     'hodl',
