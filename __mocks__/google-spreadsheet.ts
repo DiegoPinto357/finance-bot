@@ -1,6 +1,7 @@
-import mockSheetData from '../mockData/googleSheets/raw/crypto-defi-staking.json';
+import cryptoDefiStakingSheet from '../mockData/googleSheets/raw/crypto-defi-staking.json';
+import distributionSheet from '../mockData/googleSheets/raw/distribution.json';
 
-type RawSheetData = typeof mockSheetData;
+type RawSheetData = typeof cryptoDefiStakingSheet | typeof distributionSheet;
 
 let constructorArgs: unknown;
 
@@ -25,8 +26,11 @@ const populateRawData = (rawData: RawSheetData) => {
 export const instance = {
   loadInfo: jest.fn(),
   sheetsByTitle: {
-    'test-sheet': {
-      getRows: jest.fn(() => populateRawData(mockSheetData)),
+    'crypto-defi-staking': {
+      getRows: jest.fn(() => populateRawData(cryptoDefiStakingSheet)),
+    },
+    distribution: {
+      getRows: jest.fn(() => populateRawData(distributionSheet)),
     },
   },
 };

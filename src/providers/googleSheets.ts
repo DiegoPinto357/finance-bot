@@ -5,6 +5,10 @@ import {
 import { JWT } from 'google-auth-library';
 import { buildLogger } from '../libs/logger';
 
+interface RowWithRawData {
+  _rawData: string[];
+}
+
 const log = buildLogger('GoogleSheets');
 
 let doc: GoogleSpreadsheet;
@@ -25,7 +29,7 @@ const resetDoc = () => {
 
 resetDoc();
 
-const toNumberIfPossible = (value: string | number) => {
+const toNumberIfPossible = (value: string | number | undefined) => {
   if (
     typeof value === 'number' ||
     value === undefined ||
@@ -71,12 +75,17 @@ const loadSheet = async <T>(sheetTitle: string) => {
         key = keys[index - 1];
       }
 
-      const value = toNumberIfPossible(row.get(key));
-      if (obj[key] != undefined) {
-        obj[key] = [obj[key], value];
-      } else {
-        obj[key] = value;
+      const rawValue = (row as unknown as RowWithRawData)._rawData[index];
+      const value = toNumberIfPossible(rawValue);
+
+      if (value !== undefined) {
+        if (obj[key] != undefined) {
+          obj[key] = [obj[key], value];
+        } else {
+          obj[key] = value;
+        }
       }
+
       return obj;
     }, {} as Record<string, unknown>);
   }) as T;

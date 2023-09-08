@@ -30,7 +30,11 @@ const parseDistributionData = (
   const { portfolios, save, ...statusRow } =
     rawDistributionData[totalRowIndex + 1];
   const status: Status = (
-    statusRow[month] ? statusRow[month][0] : 'notReady'
+    statusRow[month]
+      ? Array.isArray(statusRow[month])
+        ? statusRow[month][0]
+        : statusRow[month]
+      : 'notReady'
   ) as Status;
 
   if (status !== 'ready') {

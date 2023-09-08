@@ -3,7 +3,8 @@ import { JWT } from 'google-auth-library';
 import googleSheets from './googleSheets';
 import cache from '../libs/cache';
 import * as logger from '../libs/logger';
-import mockSheetData from '../../mockData/googleSheets/crypto-spot.json';
+import cryptoDefiStakingSheet from '../../mockData/googleSheets/crypto-defi-staking.json';
+import distributionSheet from '../../mockData/googleSheets/distribution.json';
 
 type MockGoogleSpreadsheet = typeof googleSpreadsheet & {
   instance: any;
@@ -27,8 +28,13 @@ describe('googleSheets provider', () => {
   });
 
   it('loads a sheet', async () => {
-    const sheetData = await googleSheets.loadSheet('test-sheet');
-    expect(sheetData).toEqual(mockSheetData);
+    const sheetData = await googleSheets.loadSheet('crypto-defi-staking');
+    expect(sheetData).toEqual(cryptoDefiStakingSheet);
+  });
+
+  it('loads as sheet with merged cells', async () => {
+    const sheetData = await googleSheets.loadSheet('distribution');
+    expect(sheetData).toEqual(distributionSheet);
   });
 
   it('returns an empty array when sheet does not exists', async () => {

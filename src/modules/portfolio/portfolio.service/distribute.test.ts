@@ -27,13 +27,13 @@ const getMothlyDistributions = (
   distributionData: RawDistributionData,
   month: Month
 ) =>
-  distributionData.slice(1, 16).map(
-    item =>
-      ({
-        portfolio: item.portfolios ? item.portfolios : '',
-        value: fromCurrencyToNumber(item[month]![1]!),
-      } as MonthlyDistribution)
-  );
+  distributionData.slice(1, 16).map(item => {
+    const { portfolios, total, ...monthlyData } = item;
+    return {
+      portfolio: portfolios ? portfolios : '',
+      value: fromCurrencyToNumber(monthlyData[month]![1]!),
+    } as MonthlyDistribution;
+  });
 
 describe('portfolio service - distribute', () => {
   beforeEach(() => {
@@ -42,7 +42,7 @@ describe('portfolio service - distribute', () => {
   });
 
   it('distributes values on portfolios', async () => {
-    const month = 'may';
+    const month = 'sep';
     const asset: FixedAsset = 'nubank';
 
     const monthlyDistributions = getMothlyDistributions(
@@ -83,7 +83,7 @@ describe('portfolio service - distribute', () => {
 
   describe('distribution status', () => {
     it('does not distribute if status is "notReady', async () => {
-      const month = 'sep';
+      const month = 'nov';
       const asset: FixedAsset = 'nubank';
 
       const currentBalance = await getBalance();
@@ -111,9 +111,9 @@ describe('portfolio service - distribute', () => {
     });
   });
 
-  it.skip('returns a status error if something goes wrong', async () => {
-    // portfolio does not exists
-    // not fixed asset?
-    // general dependency error
-  });
+  // it.skip('returns a status error if something goes wrong', async () => {
+  //   // portfolio does not exists
+  //   // not fixed asset?
+  //   // general dependency error
+  // });
 });

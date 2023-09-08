@@ -2,6 +2,7 @@
   {
     "asset": "AXS",
     "description": "Binance locked staking",
+    "network": "bsc",
     "depositBRL": 730,
     "depositAmount": 1.02,
     "currentAmount": 1.6537144,
@@ -11,6 +12,7 @@
   {
     "asset": "BNB",
     "description": "My Diamond Team V2",
+    "network": "bsc",
     "depositBRL": 600,
     "depositAmount": 0.28,
     "currentAmount": 0.3506239,
@@ -19,6 +21,7 @@
   {
     "asset": "CAKE",
     "description": "Binance locked staking",
+    "network": "bsc",
     "depositBRL": 591.41,
     "depositAmount": 1.215758,
     "currentAmount": 3.21301066,
@@ -28,6 +31,7 @@
   {
     "asset": "DRIP",
     "description": "Drip Faucet",
+    "network": "bsc",
     "depositBRL": 1184,
     "depositAmount": 3.016876636,
     "currentAmount": 4.027,
@@ -36,6 +40,7 @@
   {
     "asset": "KLIMA",
     "description": "Klima DAO",
+    "network": "polygon",
     "depositBRL": 575,
     "depositAmount": 0.068061444,
     "currentAmount": 0.468217934,
@@ -44,6 +49,7 @@
   {
     "asset": "WMEMO",
     "description": "Wonderland Time",
+    "network": "avalanche",
     "depositBRL": 1754.32,
     "depositAmount": 0.000937,
     "currentAmount": 0.002723148517,
