@@ -1,7 +1,7 @@
-const { TradingViewAPI } = require('tradingview-scraper');
+import { TradingViewAPI } from 'tradingview-scraper';
 // const pRetry = require('p-retry');
-const { withCache } = require('../libs/cache');
-const { buildLogger } = require('../libs/logger');
+import { withCache } from '../libs/cache';
+import { buildLogger } from '../libs/logger';
 
 const getTickerCached = withCache(params => tradingView.getTicker(params));
 
@@ -17,11 +17,11 @@ const getTickerRetry = async ticker => {
   }
 };
 
-const onFailedAttempt = ticker => error =>
-  log(
-    `Loading ticker ${ticker}: Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
-    { severity: 'warn' }
-  );
+// const onFailedAttempt = ticker => error =>
+//   log(
+//     `Loading ticker ${ticker}: Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
+//     { severity: 'warn' }
+//   );
 
 const getTicker = async ticker => {
   log(`Loading ticker ${ticker}`);
@@ -37,6 +37,6 @@ const getTicker = async ticker => {
   }
 };
 
-module.exports = {
+export default {
   getTicker,
 };
