@@ -1,27 +1,32 @@
-import mockSheetData from '../mockData/googleSheets/crypto-spot.json';
+import mockSheetData from '../mockData/googleSheets/raw/crypto-defi-staking.json';
+
+type RawSheetData = typeof mockSheetData;
 
 let constructorArgs: unknown;
 
-const testDataBuffer = mockSheetData.map(row => {
-  const headerValues = Object.keys(row);
-  const _rawData = Object.values(row);
-  return {
-    ...row,
-    _worksheet: { headerValues },
-    _rawData,
-    save: jest.fn(),
-    get: jest.fn(key => {
-      const index = headerValues.indexOf(key);
-      return _rawData[index];
-    }),
-  };
-});
+const populateRawData = (rawData: RawSheetData) => {
+  return rawData.map(row => {
+    const headerValues = row._worksheet._headerValues;
+
+    return {
+      ...row,
+      _worksheet: {
+        ...row._worksheet,
+        headerValues,
+      },
+      get: jest.fn(key => {
+        const index = headerValues.indexOf(key);
+        return row._rawData[index];
+      }),
+    };
+  });
+};
 
 export const instance = {
   loadInfo: jest.fn(),
   sheetsByTitle: {
     'test-sheet': {
-      getRows: jest.fn(() => testDataBuffer),
+      getRows: jest.fn(() => populateRawData(mockSheetData)),
     },
   },
 };

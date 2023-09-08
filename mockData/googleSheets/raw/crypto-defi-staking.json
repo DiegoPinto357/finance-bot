@@ -1,0 +1,3176 @@
+[
+  {
+    "_deleted": false,
+    "_rawData": [
+      "AXS",
+      "Binance locked staking",
+      "bsc",
+      "730",
+      "1,02",
+      "1,6537144",
+      "0",
+      "2022-09-24"
+    ],
+    "_rowNumber": 2,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        "[Circular]",
+        {
+          "_deleted": false,
+          "_rawData": [
+            "BNB",
+            "My Diamond Team V2",
+            "bsc",
+            "600",
+            "0,28",
+            "0,3506239",
+            "0,1"
+          ],
+          "_rowNumber": 3,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "CAKE",
+            "Binance locked staking",
+            "bsc",
+            "591,41",
+            "1,215758",
+            "3,21301066",
+            "0",
+            "2022-07-09"
+          ],
+          "_rowNumber": 4,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "DRIP",
+            "Drip Faucet",
+            "bsc",
+            "1184",
+            "3,016876636",
+            "4.027",
+            "0,1"
+          ],
+          "_rowNumber": 5,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "KLIMA",
+            "Klima DAO",
+            "polygon",
+            "575",
+            "0,068061444",
+            "0,468217934",
+            "0"
+          ],
+          "_rowNumber": 6,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "WMEMO",
+            "Wonderland Time",
+            "avalanche",
+            "1754,32",
+            "0,000937",
+            "0,002723148517",
+            "0"
+          ],
+          "_rowNumber": 7,
+          "_worksheet": "[Circular]"
+        }
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  },
+  {
+    "_deleted": false,
+    "_rawData": [
+      "BNB",
+      "My Diamond Team V2",
+      "bsc",
+      "600",
+      "0,28",
+      "0,3506239",
+      "0,1"
+    ],
+    "_rowNumber": 3,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        {
+          "_deleted": false,
+          "_rawData": [
+            "AXS",
+            "Binance locked staking",
+            "bsc",
+            "730",
+            "1,02",
+            "1,6537144",
+            "0",
+            "2022-09-24"
+          ],
+          "_rowNumber": 2,
+          "_worksheet": "[Circular]"
+        },
+        "[Circular]",
+        {
+          "_deleted": false,
+          "_rawData": [
+            "CAKE",
+            "Binance locked staking",
+            "bsc",
+            "591,41",
+            "1,215758",
+            "3,21301066",
+            "0",
+            "2022-07-09"
+          ],
+          "_rowNumber": 4,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "DRIP",
+            "Drip Faucet",
+            "bsc",
+            "1184",
+            "3,016876636",
+            "4.027",
+            "0,1"
+          ],
+          "_rowNumber": 5,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "KLIMA",
+            "Klima DAO",
+            "polygon",
+            "575",
+            "0,068061444",
+            "0,468217934",
+            "0"
+          ],
+          "_rowNumber": 6,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "WMEMO",
+            "Wonderland Time",
+            "avalanche",
+            "1754,32",
+            "0,000937",
+            "0,002723148517",
+            "0"
+          ],
+          "_rowNumber": 7,
+          "_worksheet": "[Circular]"
+        }
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  },
+  {
+    "_deleted": false,
+    "_rawData": [
+      "CAKE",
+      "Binance locked staking",
+      "bsc",
+      "591,41",
+      "1,215758",
+      "3,21301066",
+      "0",
+      "2022-07-09"
+    ],
+    "_rowNumber": 4,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        {
+          "_deleted": false,
+          "_rawData": [
+            "AXS",
+            "Binance locked staking",
+            "bsc",
+            "730",
+            "1,02",
+            "1,6537144",
+            "0",
+            "2022-09-24"
+          ],
+          "_rowNumber": 2,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "BNB",
+            "My Diamond Team V2",
+            "bsc",
+            "600",
+            "0,28",
+            "0,3506239",
+            "0,1"
+          ],
+          "_rowNumber": 3,
+          "_worksheet": "[Circular]"
+        },
+        "[Circular]",
+        {
+          "_deleted": false,
+          "_rawData": [
+            "DRIP",
+            "Drip Faucet",
+            "bsc",
+            "1184",
+            "3,016876636",
+            "4.027",
+            "0,1"
+          ],
+          "_rowNumber": 5,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "KLIMA",
+            "Klima DAO",
+            "polygon",
+            "575",
+            "0,068061444",
+            "0,468217934",
+            "0"
+          ],
+          "_rowNumber": 6,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "WMEMO",
+            "Wonderland Time",
+            "avalanche",
+            "1754,32",
+            "0,000937",
+            "0,002723148517",
+            "0"
+          ],
+          "_rowNumber": 7,
+          "_worksheet": "[Circular]"
+        }
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  },
+  {
+    "_deleted": false,
+    "_rawData": [
+      "DRIP",
+      "Drip Faucet",
+      "bsc",
+      "1184",
+      "3,016876636",
+      "4.027",
+      "0,1"
+    ],
+    "_rowNumber": 5,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        {
+          "_deleted": false,
+          "_rawData": [
+            "AXS",
+            "Binance locked staking",
+            "bsc",
+            "730",
+            "1,02",
+            "1,6537144",
+            "0",
+            "2022-09-24"
+          ],
+          "_rowNumber": 2,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "BNB",
+            "My Diamond Team V2",
+            "bsc",
+            "600",
+            "0,28",
+            "0,3506239",
+            "0,1"
+          ],
+          "_rowNumber": 3,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "CAKE",
+            "Binance locked staking",
+            "bsc",
+            "591,41",
+            "1,215758",
+            "3,21301066",
+            "0",
+            "2022-07-09"
+          ],
+          "_rowNumber": 4,
+          "_worksheet": "[Circular]"
+        },
+        "[Circular]",
+        {
+          "_deleted": false,
+          "_rawData": [
+            "KLIMA",
+            "Klima DAO",
+            "polygon",
+            "575",
+            "0,068061444",
+            "0,468217934",
+            "0"
+          ],
+          "_rowNumber": 6,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "WMEMO",
+            "Wonderland Time",
+            "avalanche",
+            "1754,32",
+            "0,000937",
+            "0,002723148517",
+            "0"
+          ],
+          "_rowNumber": 7,
+          "_worksheet": "[Circular]"
+        }
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  },
+  {
+    "_deleted": false,
+    "_rawData": [
+      "KLIMA",
+      "Klima DAO",
+      "polygon",
+      "575",
+      "0,068061444",
+      "0,468217934",
+      "0"
+    ],
+    "_rowNumber": 6,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        {
+          "_deleted": false,
+          "_rawData": [
+            "AXS",
+            "Binance locked staking",
+            "bsc",
+            "730",
+            "1,02",
+            "1,6537144",
+            "0",
+            "2022-09-24"
+          ],
+          "_rowNumber": 2,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "BNB",
+            "My Diamond Team V2",
+            "bsc",
+            "600",
+            "0,28",
+            "0,3506239",
+            "0,1"
+          ],
+          "_rowNumber": 3,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "CAKE",
+            "Binance locked staking",
+            "bsc",
+            "591,41",
+            "1,215758",
+            "3,21301066",
+            "0",
+            "2022-07-09"
+          ],
+          "_rowNumber": 4,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "DRIP",
+            "Drip Faucet",
+            "bsc",
+            "1184",
+            "3,016876636",
+            "4.027",
+            "0,1"
+          ],
+          "_rowNumber": 5,
+          "_worksheet": "[Circular]"
+        },
+        "[Circular]",
+        {
+          "_deleted": false,
+          "_rawData": [
+            "WMEMO",
+            "Wonderland Time",
+            "avalanche",
+            "1754,32",
+            "0,000937",
+            "0,002723148517",
+            "0"
+          ],
+          "_rowNumber": 7,
+          "_worksheet": "[Circular]"
+        }
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  },
+  {
+    "_deleted": false,
+    "_rawData": [
+      "WMEMO",
+      "Wonderland Time",
+      "avalanche",
+      "1754,32",
+      "0,000937",
+      "0,002723148517",
+      "0"
+    ],
+    "_rowNumber": 7,
+    "_worksheet": {
+      "_cells": [],
+      "_columnMetadata": [],
+      "_headerRowIndex": 1,
+      "_headerValues": [
+        "asset",
+        "description",
+        "network",
+        "depositBRL",
+        "depositAmount",
+        "currentAmount",
+        "sellFee",
+        "endDate"
+      ],
+      "_rawProperties": {
+        "gridProperties": {
+          "columnCount": 25,
+          "rowCount": 1004
+        },
+        "index": 3,
+        "sheetId": 1682780265,
+        "sheetType": "GRID",
+        "title": "crypto-defi-staking-2"
+      },
+      "_rowCache": [
+        null,
+        null,
+        {
+          "_deleted": false,
+          "_rawData": [
+            "AXS",
+            "Binance locked staking",
+            "bsc",
+            "730",
+            "1,02",
+            "1,6537144",
+            "0",
+            "2022-09-24"
+          ],
+          "_rowNumber": 2,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "BNB",
+            "My Diamond Team V2",
+            "bsc",
+            "600",
+            "0,28",
+            "0,3506239",
+            "0,1"
+          ],
+          "_rowNumber": 3,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "CAKE",
+            "Binance locked staking",
+            "bsc",
+            "591,41",
+            "1,215758",
+            "3,21301066",
+            "0",
+            "2022-07-09"
+          ],
+          "_rowNumber": 4,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "DRIP",
+            "Drip Faucet",
+            "bsc",
+            "1184",
+            "3,016876636",
+            "4.027",
+            "0,1"
+          ],
+          "_rowNumber": 5,
+          "_worksheet": "[Circular]"
+        },
+        {
+          "_deleted": false,
+          "_rawData": [
+            "KLIMA",
+            "Klima DAO",
+            "polygon",
+            "575",
+            "0,068061444",
+            "0,468217934",
+            "0"
+          ],
+          "_rowNumber": 6,
+          "_worksheet": "[Circular]"
+        },
+        "[Circular]"
+      ],
+      "_rowMetadata": [],
+      "_spreadsheet": {
+        "_deleted": false,
+        "_rawProperties": {
+          "autoRecalc": "ON_CHANGE",
+          "defaultFormat": {
+            "backgroundColor": {
+              "blue": 1,
+              "green": 1,
+              "red": 1
+            },
+            "backgroundColorStyle": {
+              "rgbColor": {
+                "blue": 1,
+                "green": 1,
+                "red": 1
+              }
+            },
+            "padding": {
+              "bottom": 2,
+              "left": 3,
+              "right": 3,
+              "top": 2
+            },
+            "textFormat": {
+              "bold": false,
+              "fontFamily": "arial,sans,sans-serif",
+              "fontSize": 10,
+              "foregroundColor": {},
+              "foregroundColorStyle": {
+                "rgbColor": {}
+              },
+              "italic": false,
+              "strikethrough": false,
+              "underline": false
+            },
+            "verticalAlignment": "BOTTOM",
+            "wrapStrategy": "OVERFLOW_CELL"
+          },
+          "locale": "pt_BR",
+          "spreadsheetTheme": {
+            "primaryFontFamily": "Arial",
+            "themeColors": [
+              {
+                "color": {
+                  "rgbColor": {}
+                },
+                "colorType": "TEXT"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 1,
+                    "green": 1,
+                    "red": 1
+                  }
+                },
+                "colorType": "BACKGROUND"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.95686275,
+                    "green": 0.52156866,
+                    "red": 0.25882354
+                  }
+                },
+                "colorType": "ACCENT1"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.20784314,
+                    "green": 0.2627451,
+                    "red": 0.91764706
+                  }
+                },
+                "colorType": "ACCENT2"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.015686275,
+                    "green": 0.7372549,
+                    "red": 0.9843137
+                  }
+                },
+                "colorType": "ACCENT3"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.3254902,
+                    "green": 0.65882355,
+                    "red": 0.20392157
+                  }
+                },
+                "colorType": "ACCENT4"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.003921569,
+                    "green": 0.42745098,
+                    "red": 1
+                  }
+                },
+                "colorType": "ACCENT5"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.7764706,
+                    "green": 0.7411765,
+                    "red": 0.27450982
+                  }
+                },
+                "colorType": "ACCENT6"
+              },
+              {
+                "color": {
+                  "rgbColor": {
+                    "blue": 0.8,
+                    "green": 0.33333334,
+                    "red": 0.06666667
+                  }
+                },
+                "colorType": "LINK"
+              }
+            ]
+          },
+          "timeZone": "America/Sao_Paulo",
+          "title": "finance-bot-assets"
+        },
+        "_rawSheets": {
+          "0": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1000
+              },
+              "index": 0,
+              "sheetId": 0,
+              "sheetType": "GRID",
+              "title": "default"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1006305889": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1002
+              },
+              "index": 7,
+              "sheetId": 1006305889,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1020200452": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1011
+              },
+              "index": 1,
+              "sheetId": 1020200452,
+              "sheetType": "GRID",
+              "title": "crypto-hodl-history"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1074793279": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 45,
+                "frozenColumnCount": 1,
+                "rowCount": 1002
+              },
+              "index": 8,
+              "sheetId": 1074793279,
+              "sheetType": "GRID",
+              "title": "distribution"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1078561482": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1010
+              },
+              "index": 2,
+              "sheetId": 1078561482,
+              "sheetType": "GRID",
+              "title": "crypto-defi-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1346861228": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 24,
+                "rowCount": 999
+              },
+              "index": 4,
+              "sheetId": 1346861228,
+              "sheetType": "GRID",
+              "title": "crypto-defi-liquiditypool"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1391689081": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 28,
+                "rowCount": 1003
+              },
+              "index": 5,
+              "sheetId": 1391689081,
+              "sheetType": "GRID",
+              "title": "crypto-defi-float"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1408241162": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 11,
+              "sheetId": 1408241162,
+              "sheetType": "GRID",
+              "title": "portfolio-reservaEmergencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1423535875": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 37,
+                "frozenColumnCount": 1,
+                "frozenRowCount": 1,
+                "rowCount": 1000
+              },
+              "index": 10,
+              "sheetId": 1423535875,
+              "sheetType": "GRID",
+              "title": "portfolio-shares-diff"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1531069806": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 14,
+              "sheetId": 1531069806,
+              "sheetType": "GRID",
+              "title": "portfolio-financiamento-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1565028039": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 46,
+                "frozenColumnCount": 1,
+                "rowCount": 1000
+              },
+              "index": 9,
+              "sheetId": 1565028039,
+              "sheetType": "GRID",
+              "title": "portfolio-absolute"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "1682780265": "[Circular]",
+          "220441546": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 25,
+                "rowCount": 1004
+              },
+              "index": 6,
+              "sheetId": 220441546,
+              "sheetType": "GRID",
+              "title": "crypto-defi2-staking"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "226638927": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 1002
+              },
+              "index": 13,
+              "sheetId": 226638927,
+              "sheetType": "GRID",
+              "title": "portfolio-previdencia-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "436973736": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 998
+              },
+              "index": 15,
+              "sheetId": 436973736,
+              "sheetType": "GRID",
+              "title": "portfolio-reformaCasa-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          },
+          "682775363": {
+            "_cells": [],
+            "_columnMetadata": [],
+            "_headerRowIndex": 1,
+            "_rawProperties": {
+              "gridProperties": {
+                "columnCount": 26,
+                "rowCount": 995
+              },
+              "index": 12,
+              "sheetId": 682775363,
+              "sheetType": "GRID",
+              "title": "portfolio-amortecedor-shares"
+            },
+            "_rowCache": [],
+            "_rowMetadata": [],
+            "_spreadsheet": "[Circular]"
+          }
+        },
+        "_spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo/edit",
+        "spreadsheetId": "1dXeI-yZL4xbjzDBlKxnCyrFbDkJRGsEiq-wRLdNZlFo"
+      }
+    }
+  }
+]
