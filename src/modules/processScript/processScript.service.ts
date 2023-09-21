@@ -7,6 +7,9 @@ import portfolioService from '../portfolio/portfolio.service';
 import { Module, Method, Script } from './types';
 import '../../../globals';
 
+const debug = false;
+const verbose = true;
+
 const log = buildLogger('Process Script');
 
 const logOptions = {
@@ -28,6 +31,12 @@ const runActionFunc = async <Params>(
   params: Params
 ): Promise<unknown> => {
   log(`Executing ${method} method on ${module} module`, logOptions);
+
+  if (debug || verbose) {
+    console.dir({ params }, { depth: null });
+  }
+
+  if (debug) return { status: 'debug' };
 
   const service = modules[module];
   // @ts-ignore
@@ -99,7 +108,11 @@ export default async (script: Script) => {
         params
       )) as FuncResult;
 
-      if (result?.status && result.status !== 'ok') {
+      if (
+        result?.status &&
+        result.status !== 'ok' &&
+        result.status !== 'debug'
+      ) {
         throw new Error(result.status);
       }
 
