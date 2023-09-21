@@ -43,6 +43,21 @@ export namespace FixedActions {
   }
 }
 
+export namespace StockActions {
+  type BuyParams = Parameters<typeof stockService.buy>[0];
+
+  interface Base {
+    skip?: boolean;
+    module: 'stock';
+  }
+
+  export interface Buy extends Base {
+    method: 'buy';
+    defaultParams?: Partial<BuyParams>;
+    params?: Partial<BuyParams> | Partial<BuyParams>[];
+  }
+}
+
 export namespace PortfolioActions {
   type DepositParams = Parameters<typeof portfolioService.deposit>[0];
   type TransferParams = Parameters<typeof portfolioService.transfer>[0];

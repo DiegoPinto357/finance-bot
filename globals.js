@@ -45,7 +45,9 @@ const StockAssets = {
     ITUB3: 'ITUB3',
     MDIA3: 'MDIA3',
     MRVE3: 'MRVE3',
+    ROMI3: 'ROMI3',
     SQIA3: 'SQIA3',
+    WEGE3: 'WEGE3',
     WIZC3: 'WIZC3',
   },
   US: {
