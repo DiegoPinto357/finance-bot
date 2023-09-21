@@ -1,8 +1,13 @@
 import database from '../../../providers/database';
 import mercadoBitcoin from '../../../providers/mercadoBitcoin';
 
+interface AssetData {
+  asset: string;
+  amount: number;
+}
+
 const getBalance = async () => {
-  const assets = await database.find(
+  const assets = await database.find<AssetData[]>(
     'assets',
     'crypto',
     { location: 'mercadoBitcoin', type: 'backed' },
@@ -24,7 +29,7 @@ const getBalance = async () => {
   );
 
   const [float] = (
-    await database.find(
+    await database.find<AssetData[]>(
       'assets',
       'crypto',
       { location: 'mercadoBitcoin', type: 'float' },
@@ -44,17 +49,18 @@ const getBalance = async () => {
   return { balance, total };
 };
 
-const getTotalPosition = async asset => {
+const getTotalPosition = async (asset?: string) => {
   const { balance, total } = await getBalance();
 
   if (!asset) {
     return total;
   }
 
-  return balance.find(item => item.asset === asset).positionBRL;
+  const assetBalance = balance.find(item => item.asset === asset);
+  return assetBalance ? assetBalance.positionBRL : 0;
 };
 
-const deposit = async ({ asset, value }) => {
+const deposit = async ({ asset, value }: { asset?: string; value: number }) => {
   asset = asset ? asset : 'BRL';
 
   if (asset !== 'BRL') {
@@ -68,11 +74,12 @@ const deposit = async ({ asset, value }) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await database.updateOne(
+  await database.updateOne<AssetData>(
     'assets',
     'crypto',
     { asset, location: 'mercadoBitcoin', type: 'float' },
-    { $set: { amount: newValue } }
+    { $set: { amount: newValue } },
+    {}
   );
 
   return { status: 'ok' };

@@ -22,7 +22,7 @@ describe('crypto backed tokens service', () => {
       const asset = 'BRL';
       const totalPosition = await backed.getTotalPosition(asset);
       expect(totalPosition).toEqual(
-        expectedBalance.balance.find(item => item.asset === asset).positionBRL
+        expectedBalance.balance.find(item => item.asset === asset)?.positionBRL
       );
     });
   });
