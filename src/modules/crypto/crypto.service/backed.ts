@@ -1,5 +1,8 @@
 import database from '../../../providers/database';
 import mercadoBitcoin from '../../../providers/mercadoBitcoin';
+import { buildLogger } from '../../../libs/logger';
+
+const log = buildLogger('Crypto - Backed');
 
 interface AssetData {
   asset: string;
@@ -85,6 +88,55 @@ const deposit = async ({ asset, value }: { asset?: string; value: number }) => {
   return { status: 'ok' };
 };
 
+const sell = async ({
+  asset,
+  amount,
+  orderValue,
+}: {
+  asset: string;
+  amount: number;
+  orderValue: number;
+}) => {
+  const currentAssetData = await database.findOne<AssetData>(
+    'assets',
+    'crypto',
+    { location: 'mercadoBitcoin', asset },
+    { projection: { _id: 0, type: 0 } }
+  );
+
+  if (!currentAssetData) {
+    log(`Asset ${asset} not found while trying to register a sell action`, {
+      severity: 'warn',
+    });
+    return { status: 'assetNotFound' };
+  }
+
+  if (amount > currentAssetData.amount) {
+    log(`Not enought stocks to sell ${asset}`, {
+      severity: 'warn',
+    });
+    return { status: 'notEnoughAssets' };
+  }
+
+  await database.updateOne<AssetData>(
+    'assets',
+    'crypto',
+    { location: 'mercadoBitcoin', asset },
+    { $inc: { amount: -amount } },
+    {}
+  );
+
+  await database.updateOne<AssetData>(
+    'assets',
+    'crypto',
+    { location: 'mercadoBitcoin', type: 'float' },
+    { $inc: { amount: orderValue } },
+    {}
+  );
+
+  return { status: 'ok' };
+};
+
 export default {
   getBalance,
   getTotalPosition,
@@ -92,4 +144,5 @@ export default {
     throw new Error('Not implemented');
   },
   deposit,
+  sell,
 };
