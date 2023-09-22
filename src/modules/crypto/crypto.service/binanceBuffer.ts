@@ -97,4 +97,7 @@ export default {
   getTotalPosition,
   setAssetValue,
   deposit,
+  sell: (_params: any) => {
+    throw new Error('Not implemented');
+  },
 };

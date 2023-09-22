@@ -92,7 +92,7 @@ const deposit = async ({
   asset,
   value,
 }: {
-  asset: CryptoAsset;
+  asset?: CryptoAsset;
   value: number;
 }) => {
   asset = asset ? asset : 'binanceBuffer';
@@ -103,6 +103,21 @@ const deposit = async ({
 
   const service = getServiceByPortfolioType(asset);
   return await service.deposit({ value });
+};
+
+const sell = async ({
+  portfolioType,
+  asset,
+  amount,
+  orderValue,
+}: {
+  portfolioType: PortfolioTypes;
+  asset: string;
+  amount: number;
+  orderValue: number;
+}) => {
+  const service = getServiceByPortfolioType(portfolioType);
+  return await service.sell({ asset, amount, orderValue });
 };
 
 const getHistory = async (portfolioType: PortfolioTypes) => {
@@ -117,5 +132,6 @@ export default {
   getPosition,
   setAssetValue,
   deposit,
+  sell,
   getHistory,
 };

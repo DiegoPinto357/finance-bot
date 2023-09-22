@@ -1,9 +1,13 @@
 import database from '../../../providers/database';
-import cryptoService from './index.ts';
+import cryptoService from '.';
+import backedService from './backed';
 import expectedHodlBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
 import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalance.json';
 import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';
 import expectedBackedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
+import { CryptoAsset } from '../../../types';
+
+type MockDatabase = typeof database & { resetMockValues: () => void };
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
@@ -14,7 +18,7 @@ jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
 describe('crypto service', () => {
-  beforeEach(() => database.resetMockValues());
+  beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getBalance', () => {
     it('gets HODL balance', async () => {
@@ -170,7 +174,7 @@ describe('crypto service', () => {
       expect(newBackedValue).toBe(currentBackedValue + value);
     });
 
-    it.each(['hodl', 'defi'])(
+    it.each(['hodl', 'defi'] as CryptoAsset[])(
       'does not deposits value for "%s" asset',
       async asset => {
         const value = 500;
@@ -193,6 +197,29 @@ describe('crypto service', () => {
       const result = await cryptoService.deposit({ asset, value });
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
+    });
+  });
+
+  describe('sell', () => {
+    it('sells backed asset', async () => {
+      const backedSellSpy = jest.spyOn(backedService, 'sell');
+
+      const portfolioType = 'backed';
+      const asset = 'MBPRK07';
+      const amount = 1.324;
+      const price = 120;
+      const orderValue = amount * price;
+
+      const result = await cryptoService.sell({
+        portfolioType,
+        asset,
+        amount,
+        orderValue,
+      });
+
+      expect(result).toEqual({ status: 'ok' });
+      expect(backedSellSpy).toBeCalledTimes(1);
+      expect(backedSellSpy).toBeCalledWith({ asset, amount, orderValue });
     });
   });
 });

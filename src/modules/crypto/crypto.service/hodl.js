@@ -178,4 +178,7 @@ export default {
   deposit: _value => {
     throw new Error('Not implemented');
   },
+  sell: _params => {
+    throw new Error('Not implemented');
+  },
 };
