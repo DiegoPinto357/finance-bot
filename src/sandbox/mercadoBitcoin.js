@@ -1,6 +1,7 @@
-import mercadoBitcoin from '../providers/mercadoBitcoin.js';
+// npx ts-node src/sandbox/mercadoBitcoin.js
+import mercadoBitcoin from '../providers/mercadoBitcoin.ts';
 
-const ticker = 'MBPRK07';
+const ticker = 'MBCCSH18';
 
 (async () => {
   console.log(await mercadoBitcoin.getTicker(ticker));

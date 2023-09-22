@@ -58,6 +58,21 @@ export namespace StockActions {
   }
 }
 
+export namespace CryptoActions {
+  type SellParams = Parameters<typeof cryptoService.sell>[0];
+
+  interface Base {
+    skip?: boolean;
+    module: 'crypto';
+  }
+
+  export interface Sell extends Base {
+    method: 'sell';
+    defaultParams?: Partial<SellParams>;
+    params?: Partial<SellParams> | Partial<SellParams>[];
+  }
+}
+
 export namespace PortfolioActions {
   type DepositParams = Parameters<typeof portfolioService.deposit>[0];
   type TransferParams = Parameters<typeof portfolioService.transfer>[0];
