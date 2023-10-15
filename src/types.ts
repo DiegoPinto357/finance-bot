@@ -60,6 +60,7 @@ export type Asset =
     };
 
 export type Portfolio =
+  | 'temp' // TODO for testing only, changes tests to remove this one
   | 'reservaEmergencia'
   | 'amortecedor'
   | 'financiamento'
