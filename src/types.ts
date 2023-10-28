@@ -32,7 +32,8 @@ export type FixedAsset =
   | 'nuInvestTDIPCA2045'
   | 'interArcaPGBL'
   | 'sofisaCDBMax60'
-  | 'sofisaCDB110';
+  | 'sofisaCDB110'
+  | 'sofisaCDBIPCA7_5';
 
 export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
@@ -60,13 +61,14 @@ export type Asset =
     };
 
 export type Portfolio =
-  | 'temp' // TODO for testing only, changes tests to remove this one
+  | 'temp' // TODO for testing only, change tests to remove this one
   | 'reservaEmergencia'
   | 'amortecedor'
   | 'financiamento'
   | 'viagem'
   | 'reformaCasa'
   | 'previdencia'
+  | 'leni'
   | 'mae'
   | 'seguroCarro'
   | 'impostos'
