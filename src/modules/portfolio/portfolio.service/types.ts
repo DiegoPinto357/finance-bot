@@ -1,25 +1,19 @@
-import { AssetClass, AssetName, Portfolio } from '../../../types';
-
-export interface AssetBalance {
-  asset: AssetName;
-  liquidity?: boolean;
-  value: number;
-}
+import { AssetClass, AssetName, AssetBalance, Portfolio } from '../../../types';
 
 export type AssetBalanceWithClass = AssetBalance & {
   assetClass: AssetClass;
 };
 
 export interface BalanceByAsset {
-  fixed: {
+  fixed?: {
     balance: AssetBalance[];
     total: number;
   };
-  stock: {
+  stock?: {
     balance: AssetBalance[];
     total: number;
   };
-  crypto: {
+  crypto?: {
     balance: AssetBalance[];
     total: number;
   };

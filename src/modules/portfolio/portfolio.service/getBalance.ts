@@ -1,9 +1,8 @@
-import fixedService, { FixedAssetData } from '../../fixed/fixed.service';
+import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, extractPortfolioNames } from './common';
 import {
-  AssetBalance,
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
   PortfolioData,
@@ -13,6 +12,8 @@ import {
   CryptoAsset,
   AssetClass,
   AssetName,
+  AssetBalance,
+  FixedAssetBalance,
   Portfolio,
 } from '../../../types';
 
@@ -31,10 +32,10 @@ type AssetsShares = {
   [key in AssetClass]: AssetShare[];
 };
 
-interface FixedBalance {
-  balance: FixedAssetData[];
+type FixedBalanceWithTotal = {
+  balance: FixedAssetBalance[];
   total: number;
-}
+};
 
 type StockAssetTotals = {
   [key in StockAsset]: number;
@@ -53,9 +54,9 @@ interface CryptoTotals extends CryptoAssetTotals {
 }
 
 interface AssetsTotals {
-  fixed: FixedBalance;
-  stock: StockTotals;
-  crypto: CryptoTotals;
+  fixed?: FixedBalanceWithTotal;
+  stock?: StockTotals;
+  crypto?: CryptoTotals;
 }
 
 const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
@@ -113,7 +114,7 @@ const mapValuesByShares = (
   });
 
 const getFixedValues = (
-  fixedTotalBalance: FixedBalance,
+  fixedTotalBalance: FixedBalanceWithTotal,
   assetShares: AssetShare[]
 ) => {
   const { balance } = fixedTotalBalance;
@@ -145,21 +146,36 @@ const getCryptoValues = (
   return mapValuesByShares(totalAssetValues, assetShares);
 };
 
-const getTotalValue = (assetValues: AssetBalance[]) =>
-  assetValues.reduce((total, current) => total + current.value, 0);
+const getTotalValue = (assetValues?: AssetBalance[]) =>
+  (assetValues || []).reduce((total, current) => total + current.value, 0);
 
-const getBalancesByAssets = (
-  shares: AssetsShares,
-  totalBalances: AssetsTotals
-): BalanceByAssetWithTotal => {
-  const fixedBalance = shares.fixed
-    ? getFixedValues(totalBalances.fixed, shares.fixed)
+const fetchBalances = async (shares: AssetsShares) => {
+  const [fixed, stock, crypto] = await Promise.all([
+    // TODO provide assets to getters to prevent getting data from all assets
+    shares.fixed ? fixedService.getBalance() : undefined,
+    shares.stock
+      ? stockService.getTotalPosition()
+      : ({ total: 0 } as StockTotals),
+    shares.crypto
+      ? cryptoService.getTotalPosition()
+      : ({ total: 0 } as CryptoTotals),
+  ]);
+
+  return { fixed, stock, crypto };
+};
+
+const getBalancesByAssetShares = async (
+  balances: AssetsTotals,
+  assets: AssetsShares
+): Promise<BalanceByAssetWithTotal> => {
+  const fixedBalance = balances.fixed
+    ? getFixedValues(balances.fixed, assets.fixed)
     : [];
-  const stockBalance = shares.stock
-    ? getStockValues(totalBalances.stock, shares.stock)
+  const stockBalance = balances.stock
+    ? getStockValues(balances.stock, assets.stock)
     : [];
-  const cryptoBalance = shares.crypto
-    ? getCryptoValues(totalBalances.crypto, shares.crypto)
+  const cryptoBalance = balances.crypto
+    ? getCryptoValues(balances.crypto, assets.crypto)
     : [];
 
   const totals = {
@@ -168,10 +184,27 @@ const getBalancesByAssets = (
     crypto: getTotalValue(cryptoBalance),
   };
 
+  const emptyBalance = { balance: [], total: 0 };
+
   const balance = {
-    fixed: { balance: fixedBalance, total: totals.fixed },
-    stock: { balance: stockBalance, total: totals.stock },
-    crypto: { balance: cryptoBalance, total: totals.crypto },
+    fixed: balances.fixed
+      ? {
+          balance: fixedBalance,
+          total: totals.fixed,
+        }
+      : emptyBalance,
+    stock: balances.stock
+      ? {
+          balance: stockBalance,
+          total: totals.stock,
+        }
+      : emptyBalance,
+    crypto: balances.crypto
+      ? {
+          balance: cryptoBalance,
+          total: totals.crypto,
+        }
+      : emptyBalance,
   };
 
   return {
@@ -180,42 +213,22 @@ const getBalancesByAssets = (
   };
 };
 
-function getBalance(portfolioName: Portfolio): Promise<BalanceByAssetWithTotal>;
-function getBalance(
-  portfolioName?: Portfolio[]
-): Promise<BalanceByPortfolioWithTotal>;
-async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
+const getBalanceSingle = async (portfolioName: Portfolio) => {
+  const portfolios = await getPortfolioData();
+  const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
+  const balances = await fetchBalances(assets);
+  return await getBalancesByAssetShares(balances, assets);
+};
+
+const getBalanceMulti = async (portfolioNames?: Portfolio[]) => {
   const portfolios = await getPortfolioData();
 
-  const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
+  const names = portfolioNames
+    ? portfolioNames
+    : extractPortfolioNames(portfolios);
 
-  const [fixedTotalBalance, stockTotalBalance, cryptoTotalBalance] =
-    await Promise.all([
-      // TODO provide assets to getters to prevent getting data from all assets
-      assets.fixed ? fixedService.getBalance() : { balance: [], total: 0 },
-      assets.stock
-        ? stockService.getTotalPosition()
-        : ({ total: 0 } as StockTotals),
-      assets.crypto
-        ? cryptoService.getTotalPosition()
-        : ({ total: 0 } as CryptoTotals),
-    ]);
-
-  if (portfolioName && !Array.isArray(portfolioName)) {
-    return getBalancesByAssets(assets, {
-      fixed: fixedTotalBalance,
-      stock: stockTotalBalance,
-      crypto: cryptoTotalBalance,
-    });
-  }
-
-  let names: Portfolio[];
-
-  if (Array.isArray(portfolioName)) {
-    names = portfolioName;
-  } else {
-    names = extractPortfolioNames(portfolios);
-  }
+  const assets = getAssetsFromPortfolioName(portfolios, portfolioNames);
+  const balances = await fetchBalances(assets);
 
   const balanceArray = await Promise.all(
     names.map(async portfolioName => {
@@ -225,11 +238,10 @@ async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
       );
 
       return {
-        [portfolioName]: getBalancesByAssets(currentAssets, {
-          fixed: fixedTotalBalance,
-          stock: stockTotalBalance,
-          crypto: cryptoTotalBalance,
-        }),
+        [portfolioName]: await getBalancesByAssetShares(
+          balances,
+          currentAssets
+        ),
       };
     })
   );
@@ -246,6 +258,18 @@ async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
     balance,
     total,
   } as BalanceByPortfolioWithTotal;
+};
+
+function getBalance(portfolioName: Portfolio): Promise<BalanceByAssetWithTotal>;
+function getBalance(
+  portfolioName?: Portfolio[]
+): Promise<BalanceByPortfolioWithTotal>;
+async function getBalance(portfolioName?: Portfolio | Portfolio[]) {
+  if (portfolioName && !Array.isArray(portfolioName)) {
+    return await getBalanceSingle(portfolioName);
+  }
+
+  return getBalanceMulti(portfolioName);
 }
 
 export default getBalance;

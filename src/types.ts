@@ -35,6 +35,12 @@ export type FixedAsset =
   | 'sofisaCDB110'
   | 'sofisaCDBIPCA7_5';
 
+export type FixedAssetBalance = {
+  asset: FixedAsset;
+  liquidity?: boolean;
+  value: number;
+};
+
 export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
 export type CryptoAsset =
@@ -58,6 +64,14 @@ export type Asset =
   | {
       class: 'crypto';
       name: CryptoAsset;
+    };
+
+export type AssetBalance =
+  | FixedAssetBalance
+  | {
+      asset: AssetName;
+      liquidity?: boolean;
+      value: number;
     };
 
 export type Portfolio =

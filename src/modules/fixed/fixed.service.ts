@@ -1,14 +1,8 @@
 import database from '../../providers/database';
-import { FixedAsset } from '../../types';
-
-export interface FixedAssetData {
-  asset: FixedAsset;
-  liquidity?: boolean;
-  value: number;
-}
+import { FixedAsset, FixedAssetBalance } from '../../types';
 
 const getDataFromDatabase = (assetName?: FixedAsset) =>
-  database.find<FixedAssetData[]>(
+  database.find<FixedAssetBalance[]>(
     'assets',
     'fixed',
     assetName ? { asset: assetName } : {},
@@ -17,7 +11,7 @@ const getDataFromDatabase = (assetName?: FixedAsset) =>
     }
   );
 
-const getTotal = (balance: FixedAssetData[]) =>
+const getTotal = (balance: FixedAssetBalance[]) =>
   balance.reduce((total, { value }) => total + value, 0);
 
 const getBalance = async (assetName?: FixedAsset) => {
@@ -45,8 +39,8 @@ const getAssetsList = async () => {
   return sheet.map(row => row.asset);
 };
 
-const setAssetValue = ({ asset, value }: FixedAssetData) =>
-  database.updateOne<FixedAssetData>(
+const setAssetValue = ({ asset, value }: FixedAssetBalance) =>
+  database.updateOne<FixedAssetBalance>(
     'assets',
     'fixed',
     { asset },
@@ -54,7 +48,7 @@ const setAssetValue = ({ asset, value }: FixedAssetData) =>
     { upsert: true }
   );
 
-const deposit = async ({ asset, value }: FixedAssetData) => {
+const deposit = async ({ asset, value }: FixedAssetBalance) => {
   const currentValue = await getAssetPosition(asset);
   const newValue = currentValue + value;
 
@@ -62,7 +56,7 @@ const deposit = async ({ asset, value }: FixedAssetData) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await database.updateOne<FixedAssetData>(
+  await database.updateOne<FixedAssetBalance>(
     'assets',
     'fixed',
     { asset },

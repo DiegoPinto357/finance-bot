@@ -39,9 +39,9 @@ export const getAssetValueFromBalance = (
   assetClass: AssetClass,
   assetName: AssetName
 ) => {
-  const assetItem = balance[assetClass].balance.find(
-    item => item.asset === assetName
-  );
+  const classBalance = balance[assetClass];
+  if (!classBalance) return 0;
+  const assetItem = classBalance.balance.find(item => item.asset === assetName);
   return assetItem ? assetItem.value : 0;
 };
 
@@ -186,15 +186,15 @@ export const swapOnAsset = async ({
 export const flatPortfolioBalance = (
   balance: BalanceByAsset
 ): AssetBalanceWithClass[] => [
-  ...balance.fixed.balance.map(item => ({
+  ...(balance.fixed?.balance || []).map(item => ({
     assetClass: <AssetClass>'fixed',
     ...item,
   })),
-  ...balance.stock.balance.map(item => ({
+  ...(balance.stock?.balance || []).map(item => ({
     assetClass: <AssetClass>'stock',
     ...item,
   })),
-  ...balance.crypto.balance.map(item => ({
+  ...(balance.crypto?.balance || []).map(item => ({
     assetClass: <AssetClass>'crypto',
     ...item,
   })),
