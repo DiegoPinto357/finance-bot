@@ -15,6 +15,14 @@ jest.spyOn(portfolioService, 'deposit');
 jest.spyOn(portfolioService, 'transfer');
 jest.spyOn(portfolioService, 'swap');
 
+global.console = {
+  ...global.console,
+  log: jest.fn(),
+  dir: jest.fn(),
+  error: jest.fn(),
+  table: jest.fn(),
+};
+
 describe('processScript', () => {
   beforeEach(() => jest.clearAllMocks());
 
