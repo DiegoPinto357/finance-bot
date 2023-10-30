@@ -3,6 +3,7 @@ import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, extractPortfolioNames } from './common';
 import {
+  BalanceByAsset,
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
   PortfolioData,
@@ -13,10 +14,10 @@ import {
   AssetClass,
   AssetName,
   AssetBalance,
+  Portfolio,
   FixedAssetBalance,
   StockAssetBalance,
   CryptoAssetBalance,
-  Portfolio,
 } from '../../../types';
 
 interface PortfolioShare {
@@ -32,21 +33,6 @@ interface AssetShare {
 
 type AssetsShares = {
   [key in AssetClass]: AssetShare[];
-};
-
-type FixedBalanceWithTotal = {
-  balance: FixedAssetBalance[];
-  total: number;
-};
-
-type StockAssetBalanceWithTotal = {
-  balance: StockAssetBalance[];
-  total: number;
-};
-
-type CryptoAssetBalanceWithTotal = {
-  balance: CryptoAssetBalance[];
-  total: number;
 };
 
 type StockAssetTotals = {
@@ -65,14 +51,12 @@ interface CryptoTotals extends CryptoAssetTotals {
   total: number;
 }
 
-interface AssetsTotals {
-  fixed?: FixedBalanceWithTotal;
-  stock?: StockAssetBalanceWithTotal;
-  crypto?: CryptoAssetBalanceWithTotal;
-}
+type FixedBalanceWithTotal = Required<BalanceByAsset>['fixed'];
+type StockBalanceWithTotal = Required<BalanceByAsset>['stock'];
+type CryptoBalanceWithTotal = Required<BalanceByAsset>['crypto'];
 
-const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
-  portfolio.reduce((obj, item) => {
+const getAssetsDataFromPortfolio = (portfolioShares: PortfolioShare[]) =>
+  portfolioShares.reduce((obj, item) => {
     let assetClass = obj[item.class];
     if (!assetClass) {
       assetClass = [];
@@ -83,10 +67,10 @@ const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
   }, {} as AssetsShares);
 
 const getPortfolioShares = (
-  portfolios: PortfolioData[],
+  portfolioData: PortfolioData[],
   portfolioName?: Portfolio | Portfolio[]
 ) => {
-  const portfolio = portfolios
+  const portfolioShares = portfolioData
     .map(item => {
       const portfolioShare = item.shares.find(
         share => share.portfolio === portfolioName
@@ -99,7 +83,7 @@ const getPortfolioShares = (
     })
     .filter(item => !portfolioName || item.share);
 
-  return getAssetsDataFromPortfolio(portfolio);
+  return getAssetsDataFromPortfolio(portfolioShares);
 };
 
 const getAssetsList = (assets: AssetShare[]) =>
@@ -131,25 +115,34 @@ const getFixedValues = (
 ) => {
   const { balance } = fixedTotalBalance;
   const totalAssetValues = filterAssets(balance, assetShares);
-  return mapValuesByShares(totalAssetValues, assetShares);
+  return mapValuesByShares(
+    totalAssetValues,
+    assetShares
+  ) as FixedAssetBalance[];
 };
 
 const getStockValues = (
-  stockTotalBalance: StockAssetBalanceWithTotal,
+  stockTotalBalance: StockBalanceWithTotal,
   assetShares: AssetShare[]
 ) => {
   const { balance } = stockTotalBalance;
   const totalAssetValues = filterAssets(balance, assetShares);
-  return mapValuesByShares(totalAssetValues, assetShares);
+  return mapValuesByShares(
+    totalAssetValues,
+    assetShares
+  ) as StockAssetBalance[];
 };
 
 const getCryptoValues = (
-  cryptoTotalBalance: CryptoAssetBalanceWithTotal,
+  cryptoTotalBalance: CryptoBalanceWithTotal,
   assetShares: AssetShare[]
 ) => {
   const { balance } = cryptoTotalBalance;
   const totalAssetValues = filterAssets(balance, assetShares);
-  return mapValuesByShares(totalAssetValues, assetShares);
+  return mapValuesByShares(
+    totalAssetValues,
+    assetShares
+  ) as CryptoAssetBalance[];
 };
 
 const getTotalValue = (assetValues?: AssetBalance[]) =>
@@ -181,13 +174,13 @@ const fetchBalances = async (shares: AssetsShares) => {
 
   return {
     fixed,
-    stock: formatBalance(rawStock) as StockAssetBalanceWithTotal,
-    crypto: formatBalance(rawCrypto) as CryptoAssetBalanceWithTotal,
+    stock: formatBalance(rawStock) as StockBalanceWithTotal,
+    crypto: formatBalance(rawCrypto) as CryptoBalanceWithTotal,
   };
 };
 
 const getBalancesByAssetShares = async (
-  balances: AssetsTotals,
+  balances: BalanceByAsset,
   assets: AssetsShares
 ): Promise<BalanceByAssetWithTotal> => {
   const fixedBalance = balances.fixed
