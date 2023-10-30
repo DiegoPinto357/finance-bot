@@ -14,6 +14,8 @@ import {
   AssetName,
   AssetBalance,
   FixedAssetBalance,
+  StockAssetBalance,
+  CryptoAssetBalance,
   Portfolio,
 } from '../../../types';
 
@@ -37,13 +39,23 @@ type FixedBalanceWithTotal = {
   total: number;
 };
 
+type StockAssetBalanceWithTotal = {
+  balance: StockAssetBalance[];
+  total: number;
+};
+
+type CryptoAssetBalanceWithTotal = {
+  balance: CryptoAssetBalance[];
+  total: number;
+};
+
 type StockAssetTotals = {
   [key in StockAsset]: number;
 };
 
-interface StockTotals extends StockAssetTotals {
+type StockTotals = StockAssetTotals & {
   total: number;
-}
+};
 
 type CryptoAssetTotals = {
   [key in CryptoAsset]: number;
@@ -55,8 +67,8 @@ interface CryptoTotals extends CryptoAssetTotals {
 
 interface AssetsTotals {
   fixed?: FixedBalanceWithTotal;
-  stock?: StockTotals;
-  crypto?: CryptoTotals;
+  stock?: StockAssetBalanceWithTotal;
+  crypto?: CryptoAssetBalanceWithTotal;
 }
 
 const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
@@ -70,7 +82,7 @@ const getAssetsDataFromPortfolio = (portfolio: PortfolioShare[]) =>
     return obj;
   }, {} as AssetsShares);
 
-const getAssetsFromPortfolioName = (
+const getPortfolioShares = (
   portfolios: PortfolioData[],
   portfolioName?: Portfolio | Portfolio[]
 ) => {
@@ -123,25 +135,19 @@ const getFixedValues = (
 };
 
 const getStockValues = (
-  stockTotalBalance: StockTotals,
+  stockTotalBalance: StockAssetBalanceWithTotal,
   assetShares: AssetShare[]
 ) => {
-  const balance = Object.entries(stockTotalBalance).map(([asset, value]) => ({
-    asset,
-    value,
-  })) as AssetBalance[];
+  const { balance } = stockTotalBalance;
   const totalAssetValues = filterAssets(balance, assetShares);
   return mapValuesByShares(totalAssetValues, assetShares);
 };
 
 const getCryptoValues = (
-  cryptoTotalBalance: CryptoTotals,
+  cryptoTotalBalance: CryptoAssetBalanceWithTotal,
   assetShares: AssetShare[]
 ) => {
-  const balance = Object.entries(cryptoTotalBalance).map(([asset, value]) => ({
-    asset,
-    value,
-  })) as AssetBalance[];
+  const { balance } = cryptoTotalBalance;
   const totalAssetValues = filterAssets(balance, assetShares);
   return mapValuesByShares(totalAssetValues, assetShares);
 };
@@ -149,19 +155,35 @@ const getCryptoValues = (
 const getTotalValue = (assetValues?: AssetBalance[]) =>
   (assetValues || []).reduce((total, current) => total + current.value, 0);
 
+const formatBalance = (rawBalance?: StockTotals | CryptoTotals) => {
+  if (!rawBalance) return;
+  return Object.entries(rawBalance).reduce(
+    ({ balance, total }, [asset, value]) => {
+      if (asset === 'total') return { balance, total };
+      balance.push({ asset: asset as StockAsset, value });
+      total += value;
+      return { balance, total };
+    },
+    { balance: [], total: 0 } as {
+      balance: { asset: StockAsset | CryptoAsset; value: number }[];
+      total: number;
+    }
+  );
+};
+
 const fetchBalances = async (shares: AssetsShares) => {
-  const [fixed, stock, crypto] = await Promise.all([
+  const [fixed, rawStock, rawCrypto] = await Promise.all([
     // TODO provide assets to getters to prevent getting data from all assets
     shares.fixed ? fixedService.getBalance() : undefined,
-    shares.stock
-      ? stockService.getTotalPosition()
-      : ({ total: 0 } as StockTotals),
-    shares.crypto
-      ? cryptoService.getTotalPosition()
-      : ({ total: 0 } as CryptoTotals),
+    shares.stock ? stockService.getTotalPosition() : undefined,
+    shares.crypto ? cryptoService.getTotalPosition() : undefined,
   ]);
 
-  return { fixed, stock, crypto };
+  return {
+    fixed,
+    stock: formatBalance(rawStock) as StockAssetBalanceWithTotal,
+    crypto: formatBalance(rawCrypto) as CryptoAssetBalanceWithTotal,
+  };
 };
 
 const getBalancesByAssetShares = async (
@@ -215,9 +237,9 @@ const getBalancesByAssetShares = async (
 
 const getBalanceSingle = async (portfolioName: Portfolio) => {
   const portfolios = await getPortfolioData();
-  const assets = getAssetsFromPortfolioName(portfolios, portfolioName);
-  const balances = await fetchBalances(assets);
-  return await getBalancesByAssetShares(balances, assets);
+  const shares = getPortfolioShares(portfolios, portfolioName);
+  const balances = await fetchBalances(shares);
+  return await getBalancesByAssetShares(balances, shares);
 };
 
 const getBalanceMulti = async (portfolioNames?: Portfolio[]) => {
@@ -227,15 +249,12 @@ const getBalanceMulti = async (portfolioNames?: Portfolio[]) => {
     ? portfolioNames
     : extractPortfolioNames(portfolios);
 
-  const assets = getAssetsFromPortfolioName(portfolios, portfolioNames);
+  const assets = getPortfolioShares(portfolios, portfolioNames);
   const balances = await fetchBalances(assets);
 
   const balanceArray = await Promise.all(
     names.map(async portfolioName => {
-      const currentAssets = getAssetsFromPortfolioName(
-        portfolios,
-        portfolioName
-      );
+      const currentAssets = getPortfolioShares(portfolios, portfolioName);
 
       return {
         [portfolioName]: await getBalancesByAssetShares(

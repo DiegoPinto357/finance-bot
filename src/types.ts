@@ -43,12 +43,22 @@ export type FixedAssetBalance = {
 
 export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
+export type StockAssetBalance = {
+  asset: StockAsset;
+  value: number;
+};
+
 export type CryptoAsset =
   | 'binanceBuffer'
   | 'hodl'
   | 'backed'
   | 'defi'
   | 'defi2';
+
+export type CryptoAssetBalance = {
+  asset: CryptoAsset;
+  value: number;
+};
 
 export type AssetName = FixedAsset | StockAsset | CryptoAsset;
 
