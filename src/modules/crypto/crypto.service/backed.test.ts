@@ -63,7 +63,7 @@ describe('crypto backed tokens service', () => {
       expect(newBRLValue).toBe(currentBRLValue + value);
     });
 
-    it('does not "withdrawn" value whe funds are not available', async () => {
+    it('does not "withdrawn" value when funds are not available', async () => {
       const value = 5000;
       const asset = 'BRL';
       const currentBRLValue = await backed.getTotalPosition(asset);
