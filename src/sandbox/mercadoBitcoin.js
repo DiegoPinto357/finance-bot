@@ -1,8 +1,33 @@
 // npx ts-node src/sandbox/mercadoBitcoin.js
-import mercadoBitcoin from '../providers/mercadoBitcoin.ts';
+import 'dotenv/config';
+import axios from 'axios';
 
-const ticker = 'MBCCSH18';
+const host = 'https://api.mercadobitcoin.net/api/v4';
+const login = process.env.MERCADO_BITCOIN_API_KEY;
+const password = process.env.MERCADO_BITCOIN_API_SECRET;
+
+// console.log({ login, password });
 
 (async () => {
-  console.log(await mercadoBitcoin.getTicker(ticker));
+  const authRes = await axios.post(`${host}/authorize`, { login, password });
+  const { access_token } = authRes.data;
+  console.log({ access_token });
+
+  const headers = { Authorization: `Bearer ${access_token}` };
+
+  const accountRes = await axios.get(`${host}/accounts`, {
+    headers,
+  });
+  const { id: accountId } = accountRes.data[0];
+  // console.log(accountRes.data);
+  console.log({ accountId });
+
+  const balancesRes = await axios.get(
+    `${host}/accounts/${accountId}/balances`,
+    {
+      headers,
+    }
+  );
+  const balances = balancesRes.data.filter(balance => balance.total > 0);
+  console.log({ balances });
 })();

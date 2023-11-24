@@ -97,7 +97,7 @@ const deposit = async ({
 }) => {
   asset = asset ? asset : 'binanceBuffer';
 
-  if (asset !== 'binanceBuffer' && asset !== 'backed') {
+  if (asset !== 'binanceBuffer') {
     return { status: 'cannotDepositValue' };
   }
 

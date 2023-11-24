@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "MBCCSH05",
+    "total": "2",
+    "available": "2",
+    "on_hold": "0"
+  },
+  {
+    "symbol": "MBCCSH06",
+    "total": "2",
+    "available": "2",
+    "on_hold": "0"
+  },
+  {
+    "symbol": "MBPRK06",
+    "total": "2.487",
+    "available": "2.487",
+    "on_hold": "0"
+  },
+  {
+    "symbol": "MBPRK07",
+    "total": "1.7683",
+    "available": "1.7683",
+    "on_hold": "0"
+  },
+  {
+    "symbol": "BRL",
+    "total": "206.13",
+    "available": "206.13",
+    "on_hold": "0"
+  }
+]

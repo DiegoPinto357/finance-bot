@@ -161,19 +161,6 @@ describe('crypto service', () => {
       expect(newBinanceBufferValue).toBe(currentBinanceBufferValue + value);
     });
 
-    it('deposits value on backed tokens', async () => {
-      const value = 357;
-      const asset = 'backed';
-      const currentBackedValue = await cryptoService.getAssetPosition(asset);
-
-      const result = await cryptoService.deposit({ asset, value });
-
-      const newBackedValue = await cryptoService.getAssetPosition(asset);
-
-      expect(result).toEqual({ status: 'ok' });
-      expect(newBackedValue).toBe(currentBackedValue + value);
-    });
-
     it.each(['hodl', 'defi'] as CryptoAsset[])(
       'does not deposits value for "%s" asset',
       async asset => {
@@ -197,29 +184,6 @@ describe('crypto service', () => {
       const result = await cryptoService.deposit({ asset, value });
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
-    });
-  });
-
-  describe('sell', () => {
-    it('sells backed asset', async () => {
-      const backedSellSpy = jest.spyOn(backedService, 'sell');
-
-      const portfolioType = 'backed';
-      const asset = 'MBPRK07';
-      const amount = 1.324;
-      const price = 120;
-      const orderValue = amount * price;
-
-      const result = await cryptoService.sell({
-        portfolioType,
-        asset,
-        amount,
-        orderValue,
-      });
-
-      expect(result).toEqual({ status: 'ok' });
-      expect(backedSellSpy).toBeCalledTimes(1);
-      expect(backedSellSpy).toBeCalledWith({ asset, amount, orderValue });
     });
   });
 });

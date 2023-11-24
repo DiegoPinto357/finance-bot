@@ -1,5 +1,6 @@
 import database from '../../../providers/database';
 import binance from '../../../providers/binance';
+import mercadoBitcoin from '../../../providers/mercadoBitcoin';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import transfer from './transfer';
@@ -8,6 +9,10 @@ import { Asset, Portfolio, FixedAsset } from '../../../types';
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
 type MockBinance = typeof binance & {
+  simulateBRLDeposit: (value: number) => void;
+};
+
+type MockMercadoBitcoin = typeof mercadoBitcoin & {
   simulateBRLDeposit: (value: number) => void;
 };
 
@@ -83,7 +88,12 @@ describe('portfolio service - transfer', () => {
       });
 
       if (destiny.class === 'crypto') {
-        (binance as MockBinance).simulateBRLDeposit(value);
+        if (destiny.name === 'hodl') {
+          (binance as MockBinance).simulateBRLDeposit(value);
+        }
+        if (destiny.name === 'backed') {
+          (mercadoBitcoin as MockMercadoBitcoin).simulateBRLDeposit(value);
+        }
       }
 
       const newPortfolioBalance = await getBalance(portfolio);
