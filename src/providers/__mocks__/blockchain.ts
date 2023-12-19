@@ -13,12 +13,21 @@ interface Contract {
 
 const mockDir = `${path.resolve()}/mockData/blockchain/`;
 
+let accountBalance: Record<string, Token[]> | undefined;
+
+const loadWalletData = async (walletPath: string) => {
+  const filename = `${mockDir}tokenBalances/${walletPath}.json`;
+  accountBalance = {
+    [walletPath]: JSON.parse(await fs.readFile(filename, 'utf-8')),
+  };
+};
+
 const getTokenBalance = jest.fn(async ({ asset, wallet }) => {
-  const filename = `${mockDir}tokenBalances/${
-    wallet || process.env.CRYPTO_WALLET_ADDRESS
-  }.json`;
-  const tokens: Token[] = JSON.parse(await fs.readFile(filename, 'utf-8'));
-  const token = tokens.find(item => item.asset === asset);
+  const walletPath = wallet || process.env.CRYPTO_WALLET_ADDRESS;
+  if (!accountBalance || !accountBalance[walletPath]) {
+    await loadWalletData(walletPath);
+  }
+  const token = accountBalance![walletPath].find(item => item.asset === asset);
 
   if (!token) return 0;
   return token.amount;
@@ -38,7 +47,11 @@ const getContractTokenTotalSupply = jest.fn(async ({ contractAddress }) => {
   return contract.totalSupply;
 });
 
+const resetMockValues = () => (accountBalance = undefined);
+
 export default {
   getTokenBalance,
   getContractTokenTotalSupply,
+
+  resetMockValues,
 };

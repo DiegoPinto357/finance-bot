@@ -1,5 +1,6 @@
 import getBalance from './getBalance';
 import { Asset } from '../../../types';
+import blockchain from '../../../providers/blockchain';
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
@@ -9,7 +10,13 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
+type MockBlockchain = typeof blockchain & { resetMockValues: () => void };
+
 describe('portfolio service - getBalance', () => {
+  beforeEach(() => {
+    (blockchain as MockBlockchain).resetMockValues();
+  });
+
   describe('no portfolios provided', () => {
     it('gets the balance of all portfolios when no portfolio name is provided', async () => {
       const balance = await getBalance();
