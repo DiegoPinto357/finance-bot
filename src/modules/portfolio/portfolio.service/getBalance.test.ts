@@ -62,9 +62,9 @@ describe('portfolio service - getBalance', () => {
           crypto: {
             balance: [
               { asset: 'hodl', value: 1434.671471380134 },
-              { asset: 'defi', value: 609.1621219710817 },
+              { asset: 'defi', value: 743.2472767477176 },
             ],
-            total: 1434.671471380134 + 609.1621219710817,
+            total: 1434.671471380134 + 743.2472767477176,
           },
           fixed: {
             balance: [
@@ -89,7 +89,7 @@ describe('portfolio service - getBalance', () => {
               154.059917105392,
           },
         },
-        total: 21134.01086448907,
+        total: 21268.096019265708,
       });
     });
 
@@ -101,9 +101,9 @@ describe('portfolio service - getBalance', () => {
           crypto: {
             balance: [
               { asset: 'hodl', value: 244.33867596477316 },
-              { asset: 'defi', value: 245.06972515627345 },
+              { asset: 'defi', value: 299.0130201239906 },
             ],
-            total: 244.33867596477316 + 245.06972515627345,
+            total: 244.33867596477316 + 299.0130201239906,
           },
           fixed: {
             balance: [
@@ -118,7 +118,7 @@ describe('portfolio service - getBalance', () => {
           },
           stock: { balance: [], total: 0 },
         },
-        total: 5266.917568398632,
+        total: 5320.86086336635,
       });
     });
 

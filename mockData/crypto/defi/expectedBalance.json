@@ -126,14 +126,14 @@
     },
     {
       "asset": "BUSD",
-      "currentAmount": 1.7333047060862912,
+      "currentAmount": 200.7333047060862912,
       "depositAmount": 0,
       "depositBRL": 0,
       "description": "BUSD token",
-      "positionBRL": 8.323938469222746,
+      "positionBRL": 963.9918885756599,
       "priceBRL": 4.802351508072548,
       "type": "float"
     }
   ],
-  "total": 4341.694032843303
+  "total": 5297.36198294974
 }
