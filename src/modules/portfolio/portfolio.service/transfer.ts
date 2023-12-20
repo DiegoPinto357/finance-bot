@@ -7,8 +7,6 @@ interface TransferParams {
   portfolio: Portfolio;
   origin: Asset;
   destiny: Asset;
-  originExecuted?: boolean;
-  destinyExecuted?: boolean;
 }
 
 export default async ({
@@ -16,8 +14,6 @@ export default async ({
   portfolio,
   origin,
   destiny,
-  originExecuted,
-  destinyExecuted,
 }: TransferParams) => {
   const currentOriginValue = await getPortfolioPositionOnAsset(
     portfolio,

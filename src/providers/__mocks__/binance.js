@@ -41,6 +41,12 @@ const getEarnPosition = jest.fn(async () => {
   ];
 });
 
+const simulateDeposit = async (assetName, amount) => {
+  const balances = accountData ? accountData : await loadAccountData();
+  const asset = balances.find(item => item.asset === assetName);
+  asset.free = `${parseFloat(asset.free) + amount}`;
+};
+
 const simulateBRLDeposit = async value => {
   const balances = accountData ? accountData : await loadAccountData();
   const asset = balances.find(({ asset }) => asset === 'BRL');
@@ -54,6 +60,8 @@ module.exports = {
   getSymbolPriceTicker,
   getAssetPrice,
   getEarnPosition,
+
+  simulateDeposit,
   simulateBRLDeposit,
   resetMockValues,
 };

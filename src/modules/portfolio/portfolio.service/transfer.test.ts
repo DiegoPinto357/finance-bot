@@ -1,6 +1,8 @@
 import database from '../../../providers/database';
 import binance from '../../../providers/binance';
+import blockchain from '../../../providers/blockchain';
 import mercadoBitcoin from '../../../providers/mercadoBitcoin';
+import coinMarketCap from '../../../providers/coinMarketCap';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import transfer from './transfer';
@@ -9,7 +11,13 @@ import { Asset, Portfolio, FixedAsset } from '../../../types';
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
 type MockBinance = typeof binance & {
+  simulateDeposit: (assetName: string, amount: number) => void;
   simulateBRLDeposit: (value: number) => void;
+};
+
+type MockBlockchain = typeof blockchain & {
+  simulateDeposit: (wallet: string, assetname: string, amount: number) => void;
+  resetMockValues: () => void;
 };
 
 type MockMercadoBitcoin = typeof mercadoBitcoin & {
@@ -27,6 +35,7 @@ jest.mock('../../../providers/blockchain');
 describe('portfolio service - transfer', () => {
   beforeEach(() => {
     (database as MockDatabase).resetMockValues();
+    (blockchain as MockBlockchain).resetMockValues();
   });
 
   interface Transfer {
@@ -149,7 +158,6 @@ describe('portfolio service - transfer', () => {
       portfolio,
       origin,
       destiny,
-      destinyExecuted: true,
     });
 
     const newPortfolioBalance = await getBalance(portfolio);
@@ -169,6 +177,70 @@ describe('portfolio service - transfer', () => {
     expect(response.status).toBe('ok');
     expect(newPortfolioOriginValue).toBe(currentPortfolioOriginValue - value);
     expect(newPortfolioDestinyValue).toBe(currentPortfolioDestinyValue + value);
+  });
+
+  it('register a transfer to Binance buffer from defi after the real trasfer was done', async () => {
+    const assetName = 'BUSD';
+    const amount = 100;
+    const portfolio = 'amortecedor';
+    const origin: Asset = { class: 'crypto', name: 'defi' };
+    const destiny: Asset = { class: 'crypto', name: 'binanceBuffer' };
+
+    const currentPortfolioBalance = await getBalance(portfolio);
+
+    const currentPortfolioOriginValue = getAssetValueFromBalance(
+      currentPortfolioBalance,
+      origin.class,
+      origin.name
+    );
+
+    const currentPortfolioDestinyValue = getAssetValueFromBalance(
+      currentPortfolioBalance,
+      destiny.class,
+      destiny.name
+    );
+
+    (blockchain as MockBlockchain).simulateDeposit(
+      '0x48sdfivn02hcbvrpal8765awbc45333mn46dfdsn',
+      assetName,
+      -amount
+    );
+    (binance as MockBinance).simulateDeposit(assetName, amount);
+
+    const value =
+      amount * (await coinMarketCap.getSymbolPrice(assetName, 'bsc'));
+
+    const response = await transfer({
+      value,
+      portfolio,
+      origin,
+      destiny,
+    });
+
+    const newPortfolioBalance = await getBalance(portfolio);
+
+    const newPortfolioOriginValue = getAssetValueFromBalance(
+      newPortfolioBalance,
+      origin.class,
+      origin.name
+    );
+
+    const newPortfolioDestinyValue = getAssetValueFromBalance(
+      newPortfolioBalance,
+      destiny.class,
+      destiny.name
+    );
+
+    expect(response.status).toBe('ok');
+    expect(response.status).toBe('ok');
+    expect(newPortfolioOriginValue).toBeCloseTo(
+      currentPortfolioOriginValue - value,
+      5
+    );
+    expect(newPortfolioDestinyValue).toBeCloseTo(
+      currentPortfolioDestinyValue + value,
+      5
+    );
   });
 
   it('does not transfer when there is no funds available', async () => {
