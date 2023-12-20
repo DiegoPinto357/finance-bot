@@ -85,7 +85,6 @@ export default async ({ month, asset }: DistributeParams) => {
         portfolio: depositItem.portfolio,
         assetClass: 'fixed',
         assetName: asset,
-        executed: false,
       });
     } else {
       console.log(

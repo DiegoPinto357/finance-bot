@@ -37,14 +37,12 @@ export default async ({
     portfolio,
     assetClass: origin.class,
     assetName: origin.name,
-    executed: originExecuted,
   });
   await deposit({
     value: transferValue,
     portfolio,
     assetClass: destiny.class,
     assetName: destiny.name,
-    executed: destinyExecuted,
   });
 
   return { status: 'ok' };

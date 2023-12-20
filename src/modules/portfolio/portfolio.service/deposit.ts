@@ -3,14 +3,11 @@ import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, verifyShares, getAssetPosition } from './common';
-import { ShareItem, PortfolioData } from './types';
-import { AssetClass, AssetName, Portfolio } from '../../../types';
 
-interface ShareItemWithValue {
-  portfolio: Portfolio;
-  share: number;
-  value: number;
-}
+import type { ShareItem, PortfolioData } from './types';
+import type { AssetClass, AssetName, Portfolio } from '../../../types';
+
+const CryptoAutoBalanceFetch = ['hodl', 'defi', 'defi2', 'backed'];
 
 const services = {
   fixed: fixedService,
@@ -18,11 +15,17 @@ const services = {
   crypto: cryptoService,
 };
 
-interface DepositValueToAssetParams {
+type ShareItemWithValue = {
+  portfolio: Portfolio;
+  share: number;
+  value: number;
+};
+
+type DepositValueToAssetParams = {
   assetClass: AssetClass;
   assetName: AssetName;
   value: number;
-}
+};
 
 const depositValueToAsset = async ({
   assetClass,
@@ -78,24 +81,25 @@ const addValueToPortfolioItem = (
   return { status: 'ok' };
 };
 
-interface DepositParams {
+type DepositParams = {
   value: number;
   portfolio: Portfolio;
   assetClass: AssetClass;
   assetName: AssetName;
-  executed?: boolean;
-}
+};
 
 export default async ({
   value,
   portfolio,
   assetClass,
   assetName,
-  executed,
 }: DepositParams) => {
   if (assetClass === 'stock') assetName = 'float';
 
   const totalAssetValue = await getAssetPosition(assetClass, assetName);
+
+  const executed =
+    assetClass === 'crypto' && CryptoAutoBalanceFetch.includes(assetName);
 
   const currentTotalAssetValue = executed
     ? totalAssetValue - value

@@ -110,16 +110,16 @@ describe('portfolio service - deposit', () => {
         assetName
       );
 
+      if (assetClass === 'crypto') {
+        (binance as MockBinance).simulateBRLDeposit(depositValue);
+      }
+
       const result = await deposit({
         value: depositValue,
         portfolio: portfolioName,
         assetClass,
         assetName,
       });
-
-      if (assetClass === 'crypto') {
-        await (binance as MockBinance).simulateBRLDeposit(depositValue);
-      }
 
       const newPortfolioBalance = await getBalance(portfolioName);
       const newPortfolioAssetValue = getAssetValueFromBalance(
@@ -172,7 +172,6 @@ describe('portfolio service - deposit', () => {
       portfolio: portfolioName,
       assetClass,
       assetName,
-      executed: true,
     });
 
     const newPortfolioBalance = await getBalance(portfolioName);

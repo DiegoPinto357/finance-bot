@@ -80,13 +80,6 @@ describe('portfolio service - transfer', () => {
         destiny.name
       );
 
-      const response = await transfer({
-        value,
-        portfolio,
-        origin,
-        destiny,
-      });
-
       if (destiny.class === 'crypto') {
         if (destiny.name === 'hodl') {
           (binance as MockBinance).simulateBRLDeposit(value);
@@ -95,6 +88,13 @@ describe('portfolio service - transfer', () => {
           (mercadoBitcoin as MockMercadoBitcoin).simulateBRLDeposit(value);
         }
       }
+
+      const response = await transfer({
+        value,
+        portfolio,
+        origin,
+        destiny,
+      });
 
       const newPortfolioBalance = await getBalance(portfolio);
 
