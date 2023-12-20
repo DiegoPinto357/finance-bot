@@ -36,6 +36,7 @@ const StockAssets = {
   BR: {
     ARZZ3: 'ARZZ3',
     B3SA3: 'B3SA3',
+    BBSE3: 'BBSE3',
     CRPG5: 'CRPG5',
     ENBR3: 'ENBR3',
     EZTC3: 'EZTC3',
