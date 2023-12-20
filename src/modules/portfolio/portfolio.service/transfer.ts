@@ -21,25 +21,24 @@ export default async ({
   );
 
   const transferValue = value === 'all' ? currentOriginValue : value;
-  const hasOriginFunds = currentOriginValue >= transferValue;
 
-  if (!hasOriginFunds) {
-    // FIXME throw error
-    return { status: 'notEnoughFunds' };
-  }
-
-  await deposit({
+  const { status: originDepositStatus } = await deposit({
     value: -transferValue,
     portfolio,
     assetClass: origin.class,
     assetName: origin.name,
   });
-  await deposit({
+
+  if (originDepositStatus !== 'ok') return { status: originDepositStatus };
+
+  const { status: destinyDepositStatus } = await deposit({
     value: transferValue,
     portfolio,
     assetClass: destiny.class,
     assetName: destiny.name,
   });
+
+  if (destinyDepositStatus !== 'ok') return { status: destinyDepositStatus };
 
   return { status: 'ok' };
 };
