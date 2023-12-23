@@ -34,13 +34,28 @@ const setData = (
   dataBuffer[filename] = _.cloneDeep(data);
 };
 
+type Query =
+  | {
+      $or: unknown[];
+    }
+  | object;
+
+const processQuery = (item: StringIndexed, query: Query): boolean =>
+  Object.entries(query).every(([key, value]) => {
+    if (key === '$or') {
+      return (value as unknown[]).some(subQuery =>
+        processQuery(item, subQuery as object)
+      );
+    }
+
+    return item[key] === value;
+  });
+
 const find = jest.fn(async (databaseName, collectionName, query, options) => {
   const data = await getData(databaseName, collectionName);
 
   const filteredData = [
-    ...data.filter((item: StringIndexed) =>
-      Object.entries(query).every(([key, value]) => item[key] === value)
-    ),
+    ...data.filter((item: StringIndexed) => processQuery(item, query)),
   ];
 
   const { projection } = options;

@@ -1,20 +1,21 @@
 import database from '../../providers/database';
 import { FixedAsset, FixedAssetBalance } from '../../types';
 
-const getDataFromDatabase = (assetName?: FixedAsset) =>
-  database.find<FixedAssetBalance[]>(
-    'assets',
-    'fixed',
-    assetName ? { asset: assetName } : {},
-    {
-      projection: { _id: 0 },
-    }
-  );
+const getDataFromDatabase = (assetName?: FixedAsset | FixedAsset[]) => {
+  const query = Array.isArray(assetName)
+    ? { $or: assetName.map(asset => ({ asset })) }
+    : assetName
+    ? { asset: assetName }
+    : {};
+  return database.find<FixedAssetBalance[]>('assets', 'fixed', query, {
+    projection: { _id: 0 },
+  });
+};
 
 const getTotal = (balance: FixedAssetBalance[]) =>
   balance.reduce((total, { value }) => total + value, 0);
 
-const getBalance = async (assetName?: FixedAsset) => {
+const getBalance = async (assetName?: FixedAsset | FixedAsset[]) => {
   const balance = await getDataFromDatabase(assetName);
   const total = getTotal(balance);
   return { balance: balance.sort((a, b) => b.value - a.value), total };

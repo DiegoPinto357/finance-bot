@@ -10,7 +10,7 @@ describe('fixed service', () => {
   beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getBalance', () => {
-    it('gets balance for given asset', async () => {
+    it('gets the balance for given asset', async () => {
       const { balance, total } = await fixed.getBalance('nubank');
 
       expect(balance).toEqual([
@@ -36,6 +36,21 @@ describe('fixed service', () => {
         { asset: '99pay', liquidity: true, value: 519.83 },
       ]);
       expect(total).toBe(86332.44);
+    });
+
+    it('gets the balance for a list of given assets', async () => {
+      const { balance, total } = await fixed.getBalance([
+        'nubank',
+        'xpWesternAsset',
+        '99pay',
+      ]);
+
+      expect(balance).toEqual([
+        { asset: 'nubank', liquidity: true, value: 50962.72 },
+        { asset: 'xpWesternAsset', liquidity: true, value: 10393.77 },
+        { asset: '99pay', liquidity: true, value: 519.83 },
+      ]);
+      expect(total).toBe(50962.72 + 10393.77 + 519.83);
     });
   });
 
