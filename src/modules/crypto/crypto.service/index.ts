@@ -13,7 +13,7 @@ export const portfolioTypes = [
   'binanceBuffer',
 ] as const;
 
-type PortfolioTypes = (typeof portfolioTypes)[number];
+export type PortfolioTypes = (typeof portfolioTypes)[number];
 
 const getServiceByPortfolioType = (portfolioType: PortfolioTypes) => {
   switch (portfolioType) {
