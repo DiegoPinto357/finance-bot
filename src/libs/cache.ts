@@ -2,20 +2,21 @@ import { promises as fs } from 'fs';
 import hash from 'object-hash';
 import stringify from 'json-stringify-safe';
 import { buildLogger } from './logger';
+import { isErrnoException } from './errorhandling';
 import config from '../config';
 
 const log = buildLogger('Cache');
 
 const cacheFilename = './.cache/main.json';
 
-interface CacheEntry {
+type CacheEntry = {
   timestamp: number;
   data: Object;
-}
+};
 
-interface StringIndexed {
+type StringIndexed = {
   [key: string]: CacheEntry;
-}
+};
 
 let cache: StringIndexed = {};
 
@@ -27,7 +28,11 @@ const init = async () => {
       cache = JSON.parse(cacheFile);
     }
   } catch (error) {
-    log('Cache file does not exists', { severity: 'warn' });
+    if (isErrnoException(error) && error.code === 'ENOENT') {
+      log('Cache file not found', { severity: 'warn' });
+      log('Creating new cache file');
+      await fs.writeFile(cacheFilename, JSON.stringify({}), 'utf-8');
+    } else console.error(error);
   }
 };
 
@@ -38,13 +43,14 @@ const saveData = async () => {
   await fs.writeFile(cacheFilename, stringify(cache, null, 2), 'utf-8');
 };
 
-interface Options {
+type Options = {
   dataNode?: string;
   timeToLive?: number;
-}
+};
 
 export const withCache =
   // TODO use generic type
+
 
     (func: (...params: any) => any, options: Options = {}) =>
     async (...params: any) => {
