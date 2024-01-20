@@ -7,7 +7,8 @@ import config from '../config';
 
 const log = buildLogger('Cache');
 
-const cacheFilename = './.cache/main.json';
+const cacheDirectory = './.cache/';
+const cacheFilename = `${cacheDirectory}main.json`;
 
 type CacheEntry = {
   timestamp: number;
@@ -20,6 +21,12 @@ type StringIndexed = {
 
 let cache: StringIndexed = {};
 
+const createCacheFile = async () => {
+  log('Creating new cache file');
+  await fs.mkdir(cacheDirectory, { recursive: true });
+  await fs.writeFile(cacheFilename, JSON.stringify({}), 'utf-8');
+};
+
 const init = async () => {
   log('Loading cache file');
   try {
@@ -30,8 +37,7 @@ const init = async () => {
   } catch (error) {
     if (isErrnoException(error) && error.code === 'ENOENT') {
       log('Cache file not found', { severity: 'warn' });
-      log('Creating new cache file');
-      await fs.writeFile(cacheFilename, JSON.stringify({}), 'utf-8');
+      await createCacheFile();
     } else console.error(error);
   }
 };
