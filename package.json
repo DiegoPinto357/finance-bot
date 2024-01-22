@@ -10,7 +10,8 @@
     "test": "NODE_ENV='test' jest --watch --no-cache",
     "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "tsx ./src/cli.ts",
-    "server": "tsx watch ./src/server.ts"
+    "server": "tsx watch ./src/server.ts",
+    "auto": "tsx ./src/autoLauncher.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/DiegoPinto357/finance-bot#readme",
   "dependencies": {
     "@binance/connector": "^1.13.0",
+    "@notionhq/client": "^2.2.14",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "axios": "^1.2.3",
