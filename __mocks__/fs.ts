@@ -1,6 +1,6 @@
-interface StringIndexed {
+type StringIndexed = {
   [key: string]: any;
-}
+};
 
 let files: StringIndexed = {};
 
