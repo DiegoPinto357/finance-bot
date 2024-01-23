@@ -11,3 +11,5 @@ export const fromCurrencyToNumber = (value: string) =>
   value !== ''
     ? parseFloat(value.replace('R$', '').replace('.', '').replace(',', '.'))
     : 0;
+
+export const formatPrecision = (value: number) => value.toPrecision(5);

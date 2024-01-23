@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const cryptoService = require('./crypto.service');
-const { printBalance } = require('./cliUtils');
+const { formatBalance } = require('./uiUtils');
 const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
 const { formatTable } = require('../../libs/cliFormat');
 
@@ -10,7 +10,9 @@ module.exports = async (command, args) => {
   switch (command) {
     case 'balance':
       const { balance, total } = await cryptoService.getBalance(type);
-      printBalance(type, balance, total);
+      const formattedBalance = formatBalance(type, balance);
+      console.table(formattedBalance);
+      console.log({ total });
       break;
 
     case 'total':

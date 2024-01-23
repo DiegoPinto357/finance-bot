@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import _ from 'lodash';
 import cryptoService, { portfolioTypes } from './crypto.service';
-import { printBalance } from './cliUtils';
+import { formatBalance } from './uiUtils';
 
 const methods = Object.keys(cryptoService);
 
@@ -17,7 +17,9 @@ const getBalanceMenu = async () => {
 
   const type = portfolioName !== 'all' ? portfolioName : undefined;
   const { balance, total } = await cryptoService.getBalance(type);
-  printBalance(type, balance, total);
+  const formattedBalance = formatBalance(type, balance);
+  console.table(formattedBalance);
+  console.log({ total });
 };
 
 const execute = async () => {
