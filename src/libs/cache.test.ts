@@ -14,6 +14,14 @@ jest.mock('../config', () => ({
   cache: { defaultTimeToLive: 5 * 60 * 1000 },
 }));
 
+global.console = {
+  ...global.console,
+  log: jest.fn(),
+  dir: jest.fn(),
+  error: jest.fn(),
+  table: jest.fn(),
+};
+
 describe('cache', () => {
   beforeEach(() => {
     jest.clearAllMocks();
