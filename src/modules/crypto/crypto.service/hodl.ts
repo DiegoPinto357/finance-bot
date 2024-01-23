@@ -2,27 +2,54 @@ import binance from '../../../providers/binance';
 import database from '../../../providers/database';
 import googleSheets from '../../../providers/googleSheets';
 
+import type { AssetData } from '../types';
+
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
 
-const mapEarnValue = async (asset, earnPortfolio) => {
+type BalanceItem = {
+  asset: string;
+  spot: number;
+  earn: number;
+  total: number;
+  portfolioScore: number;
+};
+
+type HistoryEntry = {
+  date: string;
+  value: number;
+  deposit: number;
+  yieldBRL: number;
+  yieldPercentage: number;
+};
+
+const mapEarnValue = async (
+  asset: string,
+  earnPortfolio: { asset: string; amount: number }[]
+) => {
   const earnItem = earnPortfolio.find(item => item.asset === asset);
   if (!earnItem) return 0;
   return earnItem.amount;
 };
 
-const mapBufferValues = async (asset, spotBufferPortfolio) => {
+const mapBufferValues = async (
+  asset: string,
+  spotBufferPortfolio: AssetData[]
+) => {
   const item = spotBufferPortfolio.find(item => item.asset === asset);
-  if (!item) return { spot: 0 };
+  if (!item || !item.amount) return { spot: 0 };
   return { spot: item.amount };
 };
 
-const mapPortfolioScore = async (asset, portfolio) => {
+const mapPortfolioScore = async (asset: string, portfolio: AssetData[]) => {
   const portfolioItem = portfolio.find(item => item.asset === asset);
-  return portfolioItem ? portfolioItem.score : 0;
+  return portfolioItem && portfolioItem.score ? portfolioItem.score : 0;
 };
 
-const getAssetPrices = async (portfolioBalance, targetAsset) => {
+const getAssetPrices = async (
+  portfolioBalance: BalanceItem[],
+  targetAsset: string
+) => {
   const assets = portfolioBalance.map(({ asset }) => asset);
 
   const prices = await Promise.all(
@@ -42,7 +69,7 @@ const getAssetPrices = async (portfolioBalance, targetAsset) => {
 };
 
 const getAssetData = async () => {
-  const assets = await database.find(
+  const assets = await database.find<AssetData[]>(
     'assets',
     'crypto',
     { location: 'binance' },
@@ -56,7 +83,10 @@ const getAssetData = async () => {
 
       return result;
     },
-    { portfolio: [], binanceSpotBuffer: [] }
+    { portfolio: [], binanceSpotBuffer: [] } as {
+      portfolio: AssetData[];
+      binanceSpotBuffer: AssetData[];
+    }
   );
 };
 
@@ -99,17 +129,19 @@ const getPortfolioWithPrices = async () => {
   return portfolioBalance.map(item => {
     const isTargetAsset = item.asset === targetAsset;
 
-    const { price: priceBRL } = isTargetAsset
-      ? { price: 1 }
-      : assetPrices.find(({ asset }) => asset === item.asset);
+    if (isTargetAsset) {
+      return { ...item, priceBRL: 1, positionBRL: item.total };
+    }
 
+    const existingAsset = assetPrices.find(({ asset }) => asset === item.asset);
+    const priceBRL = existingAsset ? existingAsset.price : 0;
     const positionBRL = item.total * priceBRL;
 
     return { ...item, priceBRL, positionBRL };
   });
 };
 
-const getTotalFromPortfolio = portfolio =>
+const getTotalFromPortfolio = (portfolio: { positionBRL: number }[]) =>
   portfolio.reduce((total, current) => total + current.positionBRL, 0);
 
 const getBalance = async () => {
@@ -150,7 +182,9 @@ const getTotalPosition = async () => {
 };
 
 const getHistory = async () => {
-  const historyData = await googleSheets.loadSheet('crypto-hodl-history');
+  const historyData = await googleSheets.loadSheet<HistoryEntry[]>(
+    'crypto-hodl-history'
+  );
   const currentTotal = await getTotalPosition();
 
   const current = historyData[historyData.length - 1];
@@ -175,10 +209,10 @@ export default {
   getBalance,
   getTotalPosition,
   getHistory,
-  deposit: _value => {
+  deposit: (_value: number) => {
     throw new Error('Not implemented');
   },
-  sell: _params => {
+  sell: (_params: any) => {
     throw new Error('Not implemented');
   },
 };

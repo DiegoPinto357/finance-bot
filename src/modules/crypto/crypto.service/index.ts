@@ -13,6 +13,7 @@ export const portfolioTypes = [
   'binanceBuffer',
 ] as const;
 
+// TODO rename to PortflioType?
 export type PortfolioTypes = (typeof portfolioTypes)[number];
 
 const getServiceByPortfolioType = (portfolioType: PortfolioTypes) => {

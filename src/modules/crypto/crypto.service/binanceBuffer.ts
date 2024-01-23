@@ -2,24 +2,18 @@ import _ from 'lodash';
 import database from '../../../providers/database';
 import binance from '../../../providers/binance';
 
+import type { AssetData } from '../types';
+
 const targetAsset = 'BRL';
 const bridgeAsset = 'BUSD';
 
-interface AssetData {
-  asset: string;
-  location: string;
-  type: string;
-  amount: number;
-}
-
 const getTotalPosition = async (asset?: string) => {
+  const baseFilter = { location: 'binance', type: 'float' };
+  const filter = asset ? { ...baseFilter, asset } : baseFilter;
   const binanceSpotBuffer = await database.find<AssetData[]>(
     'assets',
     'crypto',
-    _.omitBy(
-      <AssetData>{ location: 'binance', type: 'float', ...{ asset } },
-      _.isNil
-    ),
+    filter,
     { projection: { _id: 0 } }
   );
 
@@ -32,7 +26,8 @@ const getTotalPosition = async (asset?: string) => {
   );
 
   return binanceSpotBuffer.reduce((total, item, index) => {
-    const value = item.amount * assetPrices[index];
+    const amount = item.amount ?? 0;
+    const value = amount * assetPrices[index];
     return total + value;
   }, 0);
 };
