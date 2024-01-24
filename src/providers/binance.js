@@ -1,6 +1,8 @@
-import { Spot } from '@binance/connector';
+// import { Spot } from '@binance/connector';
 import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
+
+const { Spot } = require('@binance/connector');
 
 const log = buildLogger('Binance');
 
@@ -23,35 +25,27 @@ const getAccountInformation = async () => {
 };
 
 // TODO remove the object from param
-const getSymbolPriceTicker = async ({ symbol }: { symbol: string }) => {
+const getSymbolPriceTicker = async ({ symbol }) => {
   log(`Loading price ticker for ${symbol}`);
   const { data } = await getTickerPriceCached(symbol);
   return data;
 };
 
-const getSymbolPrice = async (symbol: string) =>
+const getSymbolPrice = async symbol =>
   +(await getSymbolPriceTicker({ symbol })).price;
 
 const getAssetPriceWithBridge = async (
-  symbol: string,
-  bridgeAsset: string,
-  asset: string,
-  targetAsset: string
+  symbol,
+  bridgeAsset,
+  asset,
+  targetAsset
 ) => {
   log(`Symbol ${symbol} not available. Using ${bridgeAsset} token as bridge.`);
   const bridgePrice = await getSymbolPrice(`${asset}${bridgeAsset}`);
   return (await getSymbolPrice(`${bridgeAsset}${targetAsset}`)) * bridgePrice;
 };
 
-const getAssetPrice = async ({
-  asset,
-  targetAsset,
-  bridgeAsset,
-}: {
-  asset: string;
-  targetAsset: string;
-  bridgeAsset: string;
-}) => {
+const getAssetPrice = async ({ asset, targetAsset, bridgeAsset }) => {
   if (asset === targetAsset) return 1;
 
   const symbol = `${asset}${targetAsset}`;
@@ -94,9 +88,7 @@ const getSavingsPosition = async () => {
   return responses.map(({ data }) => data[0]);
 };
 
-const processEarnData = (
-  rawData: { asset: string; totalAmount: string; amount: string }[]
-) =>
+const processEarnData = rawData =>
   rawData.reduce((prev, current) => {
     if (!current) return prev;
     const { asset, totalAmount, amount } = current;
@@ -108,7 +100,7 @@ const processEarnData = (
       prev.push({ asset, amount: parseFloat(amount || totalAmount) });
     }
     return prev;
-  }, [] as { asset: string; amount: number }[]);
+  }, []);
 
 const getEarnPosition = async () => {
   log('Loading staking account info');

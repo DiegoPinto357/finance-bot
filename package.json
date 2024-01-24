@@ -51,7 +51,6 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/google-spreadsheet": "^4.0.0",
     "@types/inquirer": "^9.0.3",
     "@types/jest": "^29.5.1",
     "@types/json-stringify-safe": "^5.0.0",
