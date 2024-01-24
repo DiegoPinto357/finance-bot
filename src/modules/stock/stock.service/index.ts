@@ -37,6 +37,7 @@ interface Totals extends AssetTotals {
   total: number;
 }
 
+// TODO accept array of portfolio types
 const getBalanceWithPrices = async (
   portfolioType: PortfolioTypes
 ): Promise<(BalanceWithPrices | BalanceWithPricesFloat)[]> => {
