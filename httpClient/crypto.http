@@ -1,10 +1,11 @@
+@host = 192.168.1.200
 @port = 3001
 
 ###
 
-GET http://localhost:{{port}}/api/crypto/balance/hodl
+GET http://{{host}}:{{port}}/api/crypto/balance/hodl
 
 ###
 
-GET http://localhost:{{port}}/api/crypto/total
+GET http://{{host}}:{{port}}/api/crypto/total
 
