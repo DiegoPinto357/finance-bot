@@ -6,14 +6,14 @@ interface Options {
 }
 
 const funcWithRateLimite =
-  <T extends (...args: any[]) => any>(func: T, limiter: RateLimiter) =>
+  <F extends (...args: any[]) => any>(func: F, limiter: RateLimiter) =>
   async (...args: Parameters<typeof func>) => {
     await limiter.removeTokens(1);
     return await func(...args);
   };
 
-export const withRateLimit = <T extends (...args: any) => any>(
-  func: T,
+export const withRateLimit = <F extends (...args: any) => any>(
+  func: F,
   options: Options
 ) => {
   const { numOfCalls, period } = options;
@@ -24,5 +24,5 @@ export const withRateLimit = <T extends (...args: any) => any>(
     interval: minTime,
   });
 
-  return funcWithRateLimite<T>(func, limiter);
+  return funcWithRateLimite(func, limiter);
 };

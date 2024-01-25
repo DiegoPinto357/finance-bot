@@ -21,7 +21,7 @@ const log = buildLogger('Blockchain');
 
 const tokenScale = 1e-18;
 
-const getWithRateLimit = withRateLimit(params => httpClient.get(params), {
+const getWithRateLimit = withRateLimit(httpClient.get, {
   numOfCalls: 4,
   period: 1000,
 });
