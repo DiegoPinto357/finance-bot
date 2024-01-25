@@ -24,5 +24,5 @@ export const withRateLimit = <T extends (...args: any) => any>(
     interval: minTime,
   });
 
-  return funcWithRateLimite(func, limiter);
+  return funcWithRateLimite<T>(func, limiter);
 };

@@ -7,14 +7,6 @@ import type { AssetData } from '../types';
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';
 
-type BalanceItem = {
-  asset: string;
-  spot: number;
-  earn: number;
-  total: number;
-  portfolioScore: number;
-};
-
 type HistoryEntry = {
   date: string;
   value: number;
@@ -47,7 +39,7 @@ const mapPortfolioScore = async (asset: string, portfolio: AssetData[]) => {
 };
 
 const getAssetPrices = async (
-  portfolioBalance: BalanceItem[],
+  portfolioBalance: { asset: string }[],
   targetAsset: string
 ) => {
   const assets = portfolioBalance.map(({ asset }) => asset);

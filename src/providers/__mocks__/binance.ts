@@ -27,8 +27,6 @@ const getAccountInformation = jest.fn(async () => {
   return { balances };
 });
 
-const getSymbolPriceTicker = jest.fn();
-
 const getAssetPrice = jest.fn(async ({ asset }: { asset: string }) => {
   const filename = `${mockDir}assetPrices.json`;
   const prices: AssetPrice[] = JSON.parse(await fs.readFile(filename, 'utf-8'));
@@ -82,7 +80,6 @@ const resetMockValues = () => (accountData = null);
 
 export default {
   getAccountInformation,
-  getSymbolPriceTicker,
   getAssetPrice,
   getEarnPosition,
 

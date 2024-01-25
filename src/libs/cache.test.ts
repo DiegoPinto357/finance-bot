@@ -72,12 +72,21 @@ describe('cache', () => {
 
     const funcCached = withCache(func, { dataNode: 'data' });
 
-    const { data: firstResult } = await funcCached('param1', 'param2');
-    const { data: cachedResult } = await funcCached('param1', 'param2');
+    const { data: firstResult } = await funcCached<{ data: string }>(
+      'param1',
+      'param2'
+    );
+    const { data: cachedResult } = await funcCached<{ data: string }>(
+      'param1',
+      'param2'
+    );
 
     cache.clear();
 
-    const { data: secondResult } = await funcCached('param1', 'param2');
+    const { data: secondResult } = await funcCached<{ data: string }>(
+      'param1',
+      'param2'
+    );
 
     expect(firstResult).toBe('firstResult - param1, param2');
     expect(cachedResult).toBe('firstResult - param1, param2');

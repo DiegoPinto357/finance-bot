@@ -4,11 +4,6 @@ import { buildLogger } from '../../../libs/logger';
 
 const log = buildLogger('Crypto - Backed');
 
-interface AssetData {
-  asset: string;
-  amount: number;
-}
-
 const getBalance = async () => {
   const assets = await mercadoBitcoin.getAccountBalance();
   const tickers = await mercadoBitcoin.getTickers(

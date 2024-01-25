@@ -1,6 +1,5 @@
 import database from '../../../providers/database';
 import cryptoService from '.';
-import backedService from './backed';
 import expectedHodlBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
 import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalance.json';
 import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';

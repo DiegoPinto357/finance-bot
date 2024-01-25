@@ -76,8 +76,8 @@ const getTickers = async (tickers: string[]) => {
     ''
   );
   const url = `${host}/tickers?symbols=${symbols}`;
-  const data = await getCached(url);
-  return data as Ticker[];
+  const data = await getCached<Ticker[]>(url);
+  return data;
 };
 
 export default {

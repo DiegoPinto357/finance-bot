@@ -26,7 +26,7 @@ const getWithRateLimit = withRateLimit(params => httpClient.get(params), {
   period: 1000,
 });
 
-const getCached = withCache(params => getWithRateLimit(params), {
+const getCached = withCache(getWithRateLimit, {
   dataNode: 'result',
 });
 
@@ -60,7 +60,10 @@ const getTokenBalance = async ({ asset, network, wallet }: GetTokenBalance) => {
   } as HttpParams);
 
   const url = buildUrl(network, params);
-  const { status, result } = await getCached(url);
+  const { status, result } = await getCached<{
+    status: string;
+    result: number;
+  }>(url);
 
   if (status === '0') {
     log(`Failed to load ${asset} balance on ${network} network: ${result}`, {
@@ -93,9 +96,10 @@ const getContractTokenTotalSupply = async ({
   log(
     `Loading total supply of contract ${contractAddress} on ${network} network`
   );
-  const { status, result } = await getCached(
-    buildUrl(network, totalSupplyParams)
-  );
+  const { status, result } = await getCached<{
+    status: string;
+    result: number;
+  }>(buildUrl(network, totalSupplyParams));
 
   if (status === '0') {
     throw new Error(

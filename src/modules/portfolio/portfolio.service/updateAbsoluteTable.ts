@@ -1,8 +1,13 @@
 import googleSheets from '../../../providers/googleSheets';
 import getBalance from './getBalance';
 import { services } from './common';
-import { CryptoAsset, StockAsset, AssetName } from '../../../types';
-import { AssetBalance } from './types';
+
+import type {
+  CryptoAsset,
+  StockAsset,
+  AssetName,
+  AssetBalance,
+} from '../../../types';
 
 type TotalRowPortfolios = {
   [key in AssetName]: number;
@@ -13,13 +18,23 @@ interface TotalRow extends TotalRowPortfolios {
   total: number;
 }
 
-const flattenBalance = (balance: AssetBalance[], totals: TotalRow) =>
-  balance.reduce((values, { asset, value }) => {
-    // TODO values and totals can be Maps
-    values[asset] = value;
-    totals[asset] = totals[asset] + value;
-    return values;
-  }, {} as { [key in AssetName]: number });
+const flattenBalance = (
+  balance: AssetBalance[] | undefined,
+  totals: TotalRow
+) => {
+  if (!balance) return [];
+  return balance.reduce(
+    (values, { asset, value }) => {
+      // TODO values and totals can be Maps
+      values[asset] = value;
+      totals[asset] = totals[asset] + value;
+      return values;
+    },
+    {} as {
+      [key in AssetName]: number;
+    }
+  );
+};
 
 export default async () => {
   const fixedAssets = await services['fixed'].getAssetsList();
@@ -49,9 +64,9 @@ export default async () => {
 
   const rows = Object.entries(balance).map(
     ([portfolio, { balance, total }]) => {
-      const fixedValues = flattenBalance(balance.fixed.balance, totalRow);
-      const stockValues = flattenBalance(balance.stock.balance, totalRow);
-      const cryptoValues = flattenBalance(balance.crypto.balance, totalRow);
+      const fixedValues = flattenBalance(balance.fixed?.balance, totalRow);
+      const stockValues = flattenBalance(balance.stock?.balance, totalRow);
+      const cryptoValues = flattenBalance(balance.crypto?.balance, totalRow);
 
       totalRow.total = totalRow.total + total;
       return {
