@@ -7,7 +7,7 @@ interface Options {
 
 const funcWithRateLimite =
   <F extends (...args: any[]) => any>(func: F, limiter: RateLimiter) =>
-  async (...args: Parameters<typeof func>) => {
+  async (...args: Parameters<F>) => {
     await limiter.removeTokens(1);
     return await func(...args);
   };

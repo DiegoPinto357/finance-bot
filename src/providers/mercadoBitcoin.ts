@@ -29,7 +29,7 @@ const host = 'https://api.mercadobitcoin.net/api/v4';
 const login = process.env.MERCADO_BITCOIN_API_KEY;
 const password = process.env.MERCADO_BITCOIN_API_SECRET;
 
-const getCached = withCache(params => httpClient.get(params));
+const getCached = withCache(httpClient.get);
 
 const log = buildLogger('MercadoBitcoin');
 

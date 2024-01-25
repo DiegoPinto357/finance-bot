@@ -3,6 +3,7 @@ import { TradingViewAPI } from 'tradingview-scraper';
 import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
 
+// TODO remove anonymous function
 const getTickerCached = withCache(params => tradingView.getTicker(params));
 
 const tradingView = new TradingViewAPI();

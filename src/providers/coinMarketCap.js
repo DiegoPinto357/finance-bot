@@ -18,9 +18,7 @@ const fetchSymbolQuote = async (symbol, network) => {
   return response.data[id || symbol].quote.BRL.price;
 };
 
-const fetchSymbolQuoteCached = withCache((...params) =>
-  fetchSymbolQuote(...params)
-);
+const fetchSymbolQuoteCached = withCache(fetchSymbolQuote);
 
 const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);

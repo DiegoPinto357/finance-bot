@@ -6,7 +6,7 @@ import type { Ticker } from './mercadoBitcoin';
 
 const host = 'https://www.mercadobitcoin.net';
 
-const getCached = withCache(params => httpClient.get(params));
+const getCached = withCache(httpClient.get);
 
 const log = buildLogger('MercadoBitcoinLegacy');
 

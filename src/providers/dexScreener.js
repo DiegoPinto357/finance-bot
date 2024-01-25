@@ -38,9 +38,7 @@ const fetchSymbolPrice = async (symbol, network) => {
   return result.priceUsd * usdToBrl;
 };
 
-const fetchSymbolPriceCached = withCache((...params) =>
-  fetchSymbolPrice(...params)
-);
+const fetchSymbolPriceCached = withCache(fetchSymbolPrice);
 
 const getSymbolPrice = async (symbol, network) => {
   log(`Loading ${symbol} token price`);
