@@ -32,17 +32,7 @@ const mapTableRowCell = (cell: unknown) => {
       type: 'text' as const,
       text: {
         content,
-        // link: null, // TODO add link to Binance asset
       },
-      // annotations: {
-      //   // TODO make annotation optional via params
-      //   bold: false,
-      //   italic: false,
-      //   strikethrough: false,
-      //   underline: false,
-      //   code: false,
-      //   color: 'default',
-      // },
     },
   ];
 };
@@ -57,29 +47,51 @@ const mapTableRow = (row: object) => {
   };
 };
 
-const clearTableRows = async (tableId: string) => {
-  const { results: currentRows } = await notion.blocks.children.list({
-    block_id: tableId,
+const updateChildTable = async (tableContainerId: string, rows: object[]) => {
+  const children = await notion.blocks.children.list({
+    block_id: tableContainerId,
   });
-  const currentRowsId = currentRows.map(({ id }) => id).slice(1);
-  for (const id of currentRowsId) {
-    log(`Deleting row ${id} from table ${tableId}`);
+  const table = children.results.find(
+    child => 'type' in child && child.type === 'table'
+  );
+
+  if (table) {
+    const { id } = table;
     await notion.blocks.delete({ block_id: id });
   }
-};
 
-const appendRowsToTable = async (tableId: string, rows: object[]) => {
-  await clearTableRows(tableId);
-  const mappedRows = rows.map(mapTableRow);
+  const header = [
+    'asset',
+    'spot',
+    'earn',
+    'total',
+    'portfolioScore',
+    'priceBRL',
+    'positionBRL',
+    'positionTarget',
+    'position',
+    'positionDiff',
+    'diffBRL',
+    'diffTokens',
+  ];
 
-  log(`Appending rows to table ${tableId}`);
   await notion.blocks.children.append({
-    block_id: tableId,
-    children: mappedRows,
+    block_id: tableContainerId,
+    children: [
+      {
+        type: 'table',
+        table: {
+          table_width: 12,
+          has_column_header: true,
+          has_row_header: false,
+          children: [header, ...rows].map(mapTableRow),
+        },
+      },
+    ],
   });
 };
 
 export default {
   appendParagraph,
-  appendRowsToTable,
+  updateChildTable,
 };
