@@ -2,19 +2,37 @@ import database from '../../../../providers/database';
 import blockchain from '../../../../providers/blockchain';
 import getSymbolPrice from './getSymbolPrice';
 
-const wallets = {
-  walletPrimary: process.env.CRYPTO_WALLET_ADDRESS,
-  walletSecondary: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS,
+import type { CryptoNetwork } from '../../types';
+
+type Token = {
+  asset: string;
+  description: string;
+  deposits: { BRL: number; token: number };
+  token: { network: CryptoNetwork };
+  fees: { sell: number };
+};
+
+type Wallet = 'walletPrimary' | 'walletSecondary';
+
+type WalletAddress = Record<Wallet, string>;
+
+const walletAddresss: WalletAddress = {
+  walletPrimary: process.env.CRYPTO_WALLET_ADDRESS!,
+  walletSecondary: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS!,
 };
 
 const getTokenBalanceFromBlockchain = async (
-  wallet,
-  asset,
-  network,
-  sellFee
+  wallet: Wallet,
+  asset: string,
+  network: CryptoNetwork,
+  sellFee: number
 ) => {
   const [currentAmount, priceBRL] = await Promise.all([
-    blockchain.getTokenBalance({ wallet: wallets[wallet], asset, network }),
+    blockchain.getTokenBalance({
+      wallet: walletAddresss[wallet],
+      asset,
+      network,
+    }),
     getSymbolPrice(asset, network),
   ]);
 
@@ -27,8 +45,8 @@ const getTokenBalanceFromBlockchain = async (
   };
 };
 
-const getBalance = async wallet => {
-  const tokens = await database.find(
+const getBalance = async (wallet: Wallet) => {
+  const tokens = await database.find<Token[]>(
     'assets',
     'crypto',
     { location: wallet, type: 'autostaking' },

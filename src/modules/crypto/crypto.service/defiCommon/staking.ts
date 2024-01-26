@@ -1,8 +1,25 @@
 import googleSheets from '../../../../providers/googleSheets';
 import getSymbolPrice from './getSymbolPrice';
 
-const getBalance = async assetName => {
-  const balance = await googleSheets.loadSheet(`crypto-${assetName}-staking`);
+import type { CryptoNetwork } from '../../types';
+
+type AssetName = 'defi' | 'defi2';
+
+type BalanceItem = {
+  asset: string;
+  description: string;
+  network: CryptoNetwork;
+  depositBRL: number;
+  depositAmount: number;
+  currentAmount: number;
+  sellFee: number;
+  endDate: string;
+};
+
+const getBalance = async (assetName: AssetName) => {
+  const balance = await googleSheets.loadSheet<BalanceItem[]>(
+    `crypto-${assetName}-staking`
+  );
 
   const prices = await Promise.all(
     balance.map(({ asset, network }) => getSymbolPrice(asset, network))

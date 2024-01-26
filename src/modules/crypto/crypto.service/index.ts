@@ -16,42 +16,42 @@ export const portfolioTypes = [
 // TODO rename to PortflioType?
 export type PortfolioTypes = (typeof portfolioTypes)[number];
 
-const getServiceByPortfolioType = (portfolioType: PortfolioTypes) => {
-  switch (portfolioType) {
-    case 'hodl':
-      return hodlService;
+type Service<T> = T extends 'hodl'
+  ? typeof hodlService
+  : T extends 'defi'
+  ? typeof defiService
+  : T extends 'defi2'
+  ? typeof defi2Service
+  : T extends 'backed'
+  ? typeof backedService
+  : T extends 'binanceBuffer'
+  ? typeof binanceBufferService
+  : never;
 
-    case 'defi':
-      return defiService;
-
-    case 'defi2':
-      return defi2Service;
-
-    case 'backed':
-      return backedService;
-
-    case 'binanceBuffer':
-      return binanceBufferService;
-
-    default:
-      throw new Error('Invalid portfolio type.');
-  }
+const services: Record<PortfolioTypes, Service<PortfolioTypes>> = {
+  hodl: hodlService,
+  defi: defiService,
+  defi2: defi2Service,
+  backed: backedService,
+  binanceBuffer: binanceBufferService,
 };
 
-const getBalance = async (portfolioType: PortfolioTypes) => {
-  const service = getServiceByPortfolioType(portfolioType);
-  return await service.getBalance();
+const getBalance = async <T extends PortfolioTypes>(portfolioType: T) => {
+  const service = services[portfolioType];
+  return (await service.getBalance()) as unknown as ReturnType<
+    Service<T>['getBalance']
+  >;
 };
 
 const getAssetPosition = async (portfolioType: PortfolioTypes) => {
-  const service = getServiceByPortfolioType(portfolioType);
+  const service = services[portfolioType];
   return service.getTotalPosition();
 };
 
 const getTotalPosition = async () => {
   const totals = await Promise.all(
     portfolioTypes.map(async type => {
-      const service = getServiceByPortfolioType(type);
+      const service = services[type];
       return await service.getTotalPosition();
     })
   );
@@ -59,7 +59,7 @@ const getTotalPosition = async () => {
   return totals.reduce((obj, current, index) => {
     obj[portfolioTypes[index]] = current;
     return obj;
-  }, {});
+  }, {} as Record<PortfolioTypes | 'total', number>);
 };
 
 const getPosition = async ({
@@ -69,7 +69,7 @@ const getPosition = async ({
   type: PortfolioTypes;
   asset: string;
 }) => {
-  const service = getServiceByPortfolioType(type);
+  const service = services[type];
   return await service.getTotalPosition(asset);
 };
 
@@ -102,7 +102,7 @@ const deposit = async ({
     return { status: 'cannotDepositValue' };
   }
 
-  const service = getServiceByPortfolioType(asset);
+  const service = services[asset];
   return await service.deposit({ value });
 };
 
@@ -117,12 +117,12 @@ const sell = async ({
   amount: number;
   orderValue: number;
 }) => {
-  const service = getServiceByPortfolioType(portfolioType);
+  const service = services[portfolioType];
   return await service.sell({ asset, amount, orderValue });
 };
 
 const getHistory = async (portfolioType: PortfolioTypes) => {
-  const service = getServiceByPortfolioType(portfolioType);
+  const service = services[portfolioType];
   return service.getHistory();
 };
 

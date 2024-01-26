@@ -1,4 +1,4 @@
-import defi2 from '../defi2';
+import defi2 from '.';
 import expectedBalance from '../../../../../mockData/crypto/defi2/expectedBalance.json';
 
 jest.mock('../../../../providers/googleSheets');

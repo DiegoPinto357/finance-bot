@@ -56,7 +56,9 @@ type Options = {
 
 export const withCache =
   <F extends (...params: any[]) => any>(func: F, options: Options = {}) =>
-  async <T>(...params: Parameters<F>): Promise<T> => {
+  async <T extends Awaited<ReturnType<F>>>(
+    ...params: Parameters<F>
+  ): Promise<T> => {
     if (config.cache.disabled) {
       return await func(...params);
     }

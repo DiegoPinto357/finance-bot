@@ -4,8 +4,23 @@ import autostaking from '../defiCommon/autostaking';
 import float from '../defiCommon/float';
 import liquidityPool from '../defiCommon/liquidityPool';
 
+import type { CryptoNetwork } from '../../types';
+
+type LiquidityPool = {
+  asset: string;
+  depositBRL: number;
+  depositAmount: number;
+  currentAmount: number;
+  withdrawalFee: number;
+  performanceFee: number;
+  network: CryptoNetwork;
+  contractAddress: string;
+};
+
 const getLiquidityPoolBalance = async () => {
-  const pools = await googleSheets.loadSheet('crypto-defi-liquiditypool');
+  const pools = await googleSheets.loadSheet<LiquidityPool[]>(
+    'crypto-defi-liquiditypool'
+  );
 
   return await Promise.all(
     pools.map(async pool => {
@@ -78,10 +93,10 @@ export default {
   getHistory: () => {
     throw new Error('Not implemented');
   },
-  deposit: _value => {
+  deposit: (_params: any) => {
     throw new Error('Not implemented');
   },
-  sell: _params => {
+  sell: (_params: any) => {
     throw new Error('Not implemented');
   },
 };

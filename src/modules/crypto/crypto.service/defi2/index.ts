@@ -24,10 +24,10 @@ export default {
   getHistory: () => {
     throw new Error('Not implemented');
   },
-  deposit: _value => {
+  deposit: (_params: any) => {
     throw new Error('Not implemented');
   },
-  sell: _params => {
+  sell: (_params: any) => {
     throw new Error('Not implemented');
   },
 };

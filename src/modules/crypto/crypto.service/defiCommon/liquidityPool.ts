@@ -1,19 +1,37 @@
 import blockchain from '../../../../providers/blockchain';
 import getSymbolPrice from './getSymbolPrice';
 
-const getTokens = lpToken => lpToken.split('-').slice(0, 2);
+import type { CryptoNetwork } from '../../types';
 
-const getTokenTotalValue = async ({ token, network, wallet }) => {
+const getTokens = (lpToken: string) => lpToken.split('-').slice(0, 2);
+
+const getTokenTotalValue = async ({
+  token,
+  network,
+  walletAddress,
+}: {
+  token: string;
+  network: CryptoNetwork;
+  walletAddress: string;
+}) => {
   const balance = await blockchain.getTokenBalance({
     asset: token,
     network,
-    wallet,
+    wallet: walletAddress,
   });
   const price = await getSymbolPrice(token, network);
   return balance * price;
 };
 
-const getLPTokenPrice = async ({ lpToken, network, contractAddress }) => {
+const getLPTokenPrice = async ({
+  lpToken,
+  network,
+  contractAddress,
+}: {
+  lpToken: string;
+  network: CryptoNetwork;
+  contractAddress: string;
+}) => {
   const totalSupply = await blockchain.getContractTokenTotalSupply({
     network,
     contractAddress,
@@ -26,7 +44,7 @@ const getLPTokenPrice = async ({ lpToken, network, contractAddress }) => {
       getTokenTotalValue({
         token,
         network,
-        wallet: contractAddress,
+        walletAddress: contractAddress,
       })
     )
   );

@@ -4,14 +4,26 @@ import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
 import config from '../config';
 
+import type { CryptoNetwork } from '../modules/crypto/types';
+
 const host = 'https://api.dexscreener.com';
 
 const log = buildLogger('DexScreener');
 
-const fetchSymbolPrice = async (symbol, network) => {
+type PairData = {
+  baseToken: {
+    address: string;
+  };
+  volume: {
+    h24: number;
+  };
+  priceUsd: number;
+};
+
+const fetchSymbolPrice = async (symbol: string, network: CryptoNetwork) => {
   const { contract } = config.crypto.tokens[network][symbol];
   const url = `${host}/latest/dex/tokens/${contract}`;
-  const { pairs } = await httpClient.get(url);
+  const { pairs } = await httpClient.get<{ pairs: PairData[] }>(url);
 
   if (!pairs) {
     log(`No trading pairs found for ${symbol} on ${network} network`, {
@@ -40,7 +52,7 @@ const fetchSymbolPrice = async (symbol, network) => {
 
 const fetchSymbolPriceCached = withCache(fetchSymbolPrice);
 
-const getSymbolPrice = async (symbol, network) => {
+const getSymbolPrice = async (symbol: string, network: CryptoNetwork) => {
   log(`Loading ${symbol} token price`);
   return await fetchSymbolPriceCached(symbol, network);
 };

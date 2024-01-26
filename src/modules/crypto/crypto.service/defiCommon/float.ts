@@ -2,13 +2,28 @@ import googleSheets from '../../../../providers/googleSheets';
 import blockchain from '../../../../providers/blockchain';
 import getSymbolPrice from './getSymbolPrice';
 
-const wallets = {
-  defi: process.env.CRYPTO_WALLET_ADDRESS,
-  defi2: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS,
+import type { CryptoNetwork } from '../../types';
+
+type BalanceItem = {
+  asset: string;
+  depositBRL: string;
+  depositAmount: string;
+  network: CryptoNetwork;
 };
 
-const getBalance = async assetName => {
-  const balance = await googleSheets.loadSheet(`crypto-${assetName}-float`);
+type AssetName = 'defi' | 'defi2';
+
+type WalletAddress = Record<AssetName, string>;
+
+const wallets: WalletAddress = {
+  defi: process.env.CRYPTO_WALLET_ADDRESS!,
+  defi2: process.env.CRYPTO_SECONDARY_WALLET_ADDRESS!,
+};
+
+const getBalance = async (assetName: AssetName) => {
+  const balance = await googleSheets.loadSheet<BalanceItem[]>(
+    `crypto-${assetName}-float`
+  );
   return await Promise.all(
     balance.map(async ({ asset, depositBRL, depositAmount, network }) => {
       const priceBRL = await getSymbolPrice(asset, network);

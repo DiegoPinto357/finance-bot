@@ -1,11 +1,13 @@
 import database from '../../../providers/database';
 import binanceBuffer from './binanceBuffer';
 
+type MockDatabase = typeof database & { resetMockValues: () => void };
+
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/binance');
 
 describe('crypto binanceBuffer service', () => {
-  beforeEach(() => database.resetMockValues());
+  beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getTotalPosition', () => {
     it('gets total position', async () => {

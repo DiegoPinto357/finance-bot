@@ -5,7 +5,7 @@ interface Options {
   period: number;
 }
 
-const funcWithRateLimite =
+const funcWithRateLimit =
   <F extends (...args: any[]) => any>(func: F, limiter: RateLimiter) =>
   async (...args: Parameters<F>) => {
     await limiter.removeTokens(1);
@@ -24,5 +24,5 @@ export const withRateLimit = <F extends (...args: any) => any>(
     interval: minTime,
   });
 
-  return funcWithRateLimite(func, limiter);
+  return funcWithRateLimit(func, limiter);
 };
