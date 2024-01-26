@@ -1,22 +1,25 @@
 import 'dotenv/config';
+import cron from 'node-cron';
 import { buildLogger } from './libs/logger';
 import cryptoService from './modules/crypto/crypto.service';
 import notionDashboard from './modules/notionDashboard';
 
 const log = buildLogger('Auto Launcher');
 
-(async () => {
+const updateCryptoHodlTable = async () => {
+  await notionDashboard.log(
+    `${new Date().toISOString()} - [Auto Launcher]: Updating crypto HODL table`
+  );
+
+  const { balance } = await cryptoService.getBalance('hodl');
+  await notionDashboard.updateCryptoHodlTable(balance);
+};
+
+const run = async () => {
   log('Auto Launcher started');
 
   try {
-    await notionDashboard.log(
-      `${new Date().toISOString()} - [Auto Launcher]: Updating crypto HODL table`
-    );
-
-    const { balance } = await cryptoService.getBalance('hodl');
-    await notionDashboard.updateCryptoHodlTable(balance);
-
-    process.exit(0);
+    await updateCryptoHodlTable();
   } catch (error) {
     let errorMessage;
     if (error instanceof Error) errorMessage = error.message;
@@ -28,4 +31,10 @@ const log = buildLogger('Auto Launcher');
     log(errorMessage);
     process.exit(1);
   }
+};
+
+(async () => {
+  cron.schedule('*/30 * * * *', async () => {
+    await run();
+  });
 })();

@@ -48,6 +48,7 @@ const mapTableRow = (row: object) => {
 };
 
 const updateChildTable = async (tableContainerId: string, rows: object[]) => {
+  log(`Updating table inside ${tableContainerId} container`);
   const children = await notion.blocks.children.list({
     block_id: tableContainerId,
   });
