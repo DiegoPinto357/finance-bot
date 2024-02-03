@@ -1,10 +1,10 @@
 import database from '../../../providers/database';
-import tradingView from '../../../providers/tradingView';
+import brapi from '../../../providers/brapi';
 import stock from '.';
 import stockData from '../../../../mockData/stock/balance.json';
 
 jest.mock('../../../providers/database');
-jest.mock('../../../providers/tradingView');
+jest.mock('../../../providers/brapi');
 
 describe('stock service', () => {
   beforeEach(() => database.resetMockValues());
@@ -147,7 +147,7 @@ describe('stock service', () => {
     it('registers a buy operation', async () => {
       const asset = 'NASD11';
       const buyAmount = 12;
-      const { lp: price } = await tradingView.getTicker(asset);
+      const { price } = await brapi.getQuote(asset);
       const orderValue = buyAmount * price;
       const currentFloatValue = await stock.getAssetPosition('float');
 
@@ -191,7 +191,7 @@ describe('stock service', () => {
     it('registers a sell operation', async () => {
       const asset = 'NASD11';
       const sellAmount = 12;
-      const { lp: price } = await tradingView.getTicker(asset);
+      const { price } = await brapi.getQuote(asset);
       const orderValue = sellAmount * price;
       const currentFloatValue = await stock.getAssetPosition('float');
 
@@ -241,7 +241,7 @@ describe('stock service', () => {
     it('does not register a sell operation if there are not enough stocks', async () => {
       const asset = 'NASD11';
       const sellAmount = 1000;
-      const { lp: price } = await tradingView.getTicker(asset);
+      const { price } = await brapi.getQuote(asset);
       const orderValue = sellAmount * price;
       const currentFloatValue = await stock.getAssetPosition('float');
 

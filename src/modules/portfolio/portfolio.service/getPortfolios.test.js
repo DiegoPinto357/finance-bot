@@ -1,7 +1,7 @@
 import getPortfolios from './getPortfolios';
 
 jest.mock('../../../providers/database');
-jest.mock('../../../providers/tradingView');
+jest.mock('../../../providers/brapi');
 
 describe('portfolio service - getPortfolios', () => {
   it('returns list of portfolios', async () => {

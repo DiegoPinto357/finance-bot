@@ -9,7 +9,7 @@ const { mockUserInput } = yargs();
 jest.mock('fs');
 jest.mock('yargs');
 jest.mock('../portfolio/portfolio.service');
-jest.mock('../../providers/tradingView');
+jest.mock('../../providers/brapi');
 
 jest.useFakeTimers('modern').setSystemTime(new Date(2020, 9, 1, 7));
 

@@ -4,7 +4,7 @@ import blockchain from '../../../providers/blockchain';
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');
-jest.mock('../../../providers/tradingView');
+jest.mock('../../../providers/brapi');
 jest.mock('../../../providers/binance');
 jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');

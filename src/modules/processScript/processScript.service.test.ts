@@ -4,7 +4,7 @@ import processScript from './processScript.service';
 import { Script } from './types';
 
 jest.mock('../../providers/googleSheets');
-jest.mock('../../providers/tradingView');
+jest.mock('../../providers/brapi');
 jest.mock('../../providers/binance');
 jest.mock('../../providers/mercadoBitcoin');
 jest.mock('../../providers/coinMarketCap');

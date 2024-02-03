@@ -3,7 +3,7 @@ import expectedBalance from '../../../../../mockData/crypto/defi2/expectedBalanc
 
 jest.mock('../../../../providers/googleSheets');
 jest.mock('../../../../providers/database');
-jest.mock('../../../../providers/tradingView');
+jest.mock('../../../../providers/brapi');
 jest.mock('../../../../providers/blockchain');
 jest.mock('../../../../providers/coinMarketCap');
 

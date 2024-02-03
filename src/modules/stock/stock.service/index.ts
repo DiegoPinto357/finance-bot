@@ -1,5 +1,5 @@
 import database from '../../../providers/database';
-import tradingView from '../../../providers/tradingView';
+import brapi from '../../../providers/brapi';
 import stockAnalyser from './stockAnalyser';
 import { buildLogger } from '../../../libs/logger';
 import { StockAsset } from '../../../types';
@@ -62,7 +62,7 @@ const getBalanceWithPrices = async (
   return await Promise.all(
     portfolio.map(async item => {
       const { asset, amount, score } = item;
-      const { lp: price, chp: change } = await tradingView.getTicker(asset);
+      const { price, change } = await brapi.getQuote(asset);
       const positionBRL = amount * price;
       const positionTarget = score / totalScore;
 

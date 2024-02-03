@@ -3,7 +3,7 @@ import getAssets from './getAssets';
 import removeAsset from './removeAsset';
 
 jest.mock('../../../providers/database');
-jest.mock('../../../providers/tradingView');
+jest.mock('../../../providers/brapi');
 
 describe('portfolio service - removeAsset', () => {
   beforeEach(() => {

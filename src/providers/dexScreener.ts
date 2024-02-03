@@ -1,4 +1,4 @@
-import tradingView from './tradingView';
+import currency from './currency';
 import httpClient from '../libs/httpClient';
 import { withCache } from '../libs/cache';
 import { buildLogger } from '../libs/logger';
@@ -46,7 +46,7 @@ const fetchSymbolPrice = async (symbol: string, network: CryptoNetwork) => {
     return 0;
   }
 
-  const { lp: usdToBrl } = await tradingView.getTicker('USDBRL');
+  const usdToBrl = await currency.getQuote('USD');
   return result.priceUsd * usdToBrl;
 };
 
