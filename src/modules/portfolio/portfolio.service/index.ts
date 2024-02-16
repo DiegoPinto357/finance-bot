@@ -13,6 +13,10 @@ import updateAbsoluteTable from './updateAbsoluteTable';
 import updateSharesDiffTable from './updateSharesDiffTable';
 import updateTables from './updateTables';
 
+import type { Portfolio } from '../../../types';
+
+export type PortfolioName = Portfolio;
+
 export default {
   getBalance,
   getShares,

@@ -29,4 +29,11 @@ router.post('/api/portfolio/deposit', async (req: Request, res: Response) =>
   res.json(await portfolioService.deposit(req.body))
 );
 
+router.post('/api/portfolio/transfer', async (req: Request, res: Response) => {
+  // return res.json(await portfolioService.transfer(req.body));
+  console.log('/api/portfolio/transfer');
+  console.log(req.body);
+  res.send();
+});
+
 export default router;
