@@ -53,7 +53,6 @@ const getAccountBalance = async () => {
   const nowWithMargin = Date.now() + 10 * 1000;
   const isTokenExpired =
     accessTokenExpiration && nowWithMargin > accessTokenExpiration;
-  console.log({ isTokenExpired });
   if (!accessToken || isTokenExpired) {
     await authorize();
   }
