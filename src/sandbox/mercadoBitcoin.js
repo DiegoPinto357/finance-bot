@@ -10,8 +10,8 @@ const password = process.env.MERCADO_BITCOIN_API_SECRET;
 
 (async () => {
   const authRes = await axios.post(`${host}/authorize`, { login, password });
-  const { access_token } = authRes.data;
-  console.log({ access_token });
+  const { access_token, expiration } = authRes.data;
+  console.log({ access_token, expiration, now: Date.now() });
 
   const headers = { Authorization: `Bearer ${access_token}` };
 

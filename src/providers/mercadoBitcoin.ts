@@ -34,18 +34,27 @@ const getCached = withCache(httpClient.get);
 const log = buildLogger('MercadoBitcoin');
 
 let accessToken: string | undefined;
+let accessTokenExpiration: number | undefined;
 
 const authorize = async () => {
   log('Authorizing');
-  const { access_token } = await httpClient.post(`${host}/authorize`, {
-    login,
-    password,
-  });
+  const { access_token, expiration } = await httpClient.post(
+    `${host}/authorize`,
+    {
+      login,
+      password,
+    }
+  );
   accessToken = access_token;
+  accessTokenExpiration = expiration * 1000;
 };
 
 const getAccountBalance = async () => {
-  if (!accessToken) {
+  const nowWithMargin = Date.now() + 10 * 1000;
+  const isTokenExpired =
+    accessTokenExpiration && nowWithMargin > accessTokenExpiration;
+  console.log({ isTokenExpired });
+  if (!accessToken || isTokenExpired) {
     await authorize();
   }
 
