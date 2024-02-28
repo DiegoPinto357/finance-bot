@@ -1,0 +1,10 @@
+# @host = 192.168.1.200
+@host = localhost
+@port = 3001
+
+###
+
+GET http://{{host}}:{{port}}/api/fixed/balance
+  ?assetName=nubank
+  &assetName=iti
+  &assetName=inco
