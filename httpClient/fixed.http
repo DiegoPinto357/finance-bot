@@ -8,7 +8,7 @@ GET http://{{host}}:{{port}}/api/fixed/balance
   ?assetName=nubank
   &assetName=iti
   &assetName=inco
-  &dryRun=test
+  &dryRun=true
 
 ###
 

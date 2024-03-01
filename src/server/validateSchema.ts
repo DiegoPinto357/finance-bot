@@ -25,7 +25,7 @@ const deppStrictWithDryRunSchema = (schema: RequestSchema) => {
   const extendeBody = schema.shape.body
     ? schema.shape.body
         .extend({
-          dryRun: z.coerce.boolean().optional(),
+          dryRun: z.boolean().optional(),
         })
         .strict()
     : z.object({});
