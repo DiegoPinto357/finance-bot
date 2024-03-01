@@ -10,7 +10,7 @@
     "test": "NODE_ENV='test' jest --watch --no-cache",
     "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "tsx ./src/cli.ts",
-    "server": "tsx watch ./src/server.ts",
+    "server": "tsx watch ./src/server/index.ts",
     "auto": "tsx ./src/autoLauncher.ts"
   },
   "repository": {
@@ -48,7 +48,8 @@
     "object-hash": "^3.0.0",
     "p-retry": "^5.1.2",
     "tradingview-scraper": "^0.3.0",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.3",

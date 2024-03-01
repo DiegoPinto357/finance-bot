@@ -8,3 +8,15 @@ GET http://{{host}}:{{port}}/api/fixed/balance
   ?assetName=nubank
   &assetName=iti
   &assetName=inco
+  &dryRun=test
+
+###
+
+POST http://{{host}}:{{port}}/api/fixed/asset-value
+content-type: application/json
+
+{
+    "asset": "iti",
+    "value": 100,
+    "dryRun": true
+}

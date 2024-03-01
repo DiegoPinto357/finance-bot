@@ -3,11 +3,11 @@ import 'dotenv/config';
 import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
-import core from './core';
-import { buildLogger } from './libs/logger';
-import fixedRouter from './modules/fixed/fixed.router';
-import cryptoRouter from './modules/crypto/crypto.router';
-import portfolioRouter from './modules/portfolio/portfolio.router';
+import core from '../core';
+import { buildLogger } from '../libs/logger';
+import fixedRouter from '../modules/fixed/fixed.router';
+import cryptoRouter from '../modules/crypto/crypto.router';
+import portfolioRouter from '../modules/portfolio/portfolio.router';
 
 import type { Request, Response, NextFunction } from 'express';
 
