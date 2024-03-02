@@ -16,9 +16,9 @@ export default (
   const bodyDryRun = req.body.dryRun;
 
   if (queryDryRun || bodyDryRun) {
-    const { path, params, query, body } = req;
-    const info = { path, params, query, body };
-    log(JSON.stringify(info));
+    const { method, path, params, query, body } = req;
+    const info = { method, path, params, query, body };
+    log(info, { severity: 'warn' });
     return res.send({ ...info, description: 'Dry run mode' });
   }
 
