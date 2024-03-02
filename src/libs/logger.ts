@@ -2,29 +2,21 @@ import chalk from 'chalk';
 
 const separatorLength = 100;
 
-interface SeverityMessage {
-  [key: string]: string;
-}
-
-const severityMessage: SeverityMessage = {
+const severityMessage = {
   info: '',
   warn: 'WARNING ',
   error: 'ERROR ',
-};
+} as const;
 
-interface Style {
-  [key: string]: (m: string) => string;
-}
-
-const style: Style = {
+const style = {
   info: (m: string) => m,
   warn: chalk.bold.yellow,
   error: chalk.bold.red,
-};
+} as const;
 
 type Severity = 'info' | 'warn' | 'error';
 
-const log = (message: string, severity: Severity) => {
+const log = (message: unknown, severity: Severity) => {
   switch (severity) {
     case 'error':
       console.error(message);
@@ -39,18 +31,18 @@ const log = (message: string, severity: Severity) => {
   }
 };
 
-interface Options {
+type Options = {
   breakLineAbove?: boolean;
   breakLineBelow?: boolean;
   separatorAbove?: string;
   separatorBelow?: string;
   severity?: Severity;
-}
+};
 
 export const buildLogger =
   (module: string) =>
   (
-    message: string,
+    message: unknown,
     {
       breakLineAbove,
       breakLineBelow,
@@ -72,12 +64,19 @@ export const buildLogger =
     if (separatorAbove)
       log(style[severity](separatorAbove.repeat(separatorLength)), severity);
 
+    const isStringMessage = typeof message === 'string';
+
     log(
       style[severity](
-        `${timestamp}: ${severityMessage[severity]}[${module}] ${message}`
+        `${timestamp}: ${severityMessage[severity]}[${module}] ${
+          isStringMessage ? message : ''
+        }`.trim()
       ),
       severity
     );
+    if (!isStringMessage) {
+      log(message, severity);
+    }
 
     if (separatorBelow)
       log(style[severity](separatorBelow.repeat(separatorLength)), severity);
