@@ -1,7 +1,10 @@
 import { z } from 'zod';
+import { buildLogger } from '../libs/logger';
 
 import type { Request, Response, NextFunction } from 'express';
 import type { AnyZodObject, ZodObject } from 'zod';
+
+const log = buildLogger('HTTP Server - Schema Validation');
 
 type RequestSchema = ZodObject<{
   params?: ZodObject<{}>;
@@ -45,8 +48,20 @@ export default (schema: AnyZodObject) =>
         query: req.query,
         params: req.params,
       });
+
+      const queryDryRun = req.query.dryRun;
+      const bodyDryRun = req.body.dryRun;
+
+      if (queryDryRun || bodyDryRun) {
+        const { method, path, params, query, body } = req;
+        const info = { method, path, params, query, body };
+        log(info, { severity: 'warn' });
+        return res.send({ ...info, description: 'Dry run mode' });
+      }
+
       return next();
     } catch (error) {
+      log(error, { severity: 'error' });
       return res.status(400).json(error);
     }
   };
