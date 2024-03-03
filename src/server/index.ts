@@ -5,7 +5,6 @@ import express from 'express';
 import cors from 'cors';
 import core from '../core';
 import { buildLogger } from '../libs/logger';
-import dryRun from './dryRun';
 import fixedRouter from '../modules/fixed/fixed.router';
 import cryptoRouter from '../modules/crypto/crypto.router';
 import portfolioRouter from '../modules/portfolio/portfolio.router';
@@ -24,8 +23,6 @@ app.all('*', (req, _res, next) => {
   log(`Request at "${req.originalUrl}"`);
   next();
 });
-
-app.use(dryRun);
 
 app.use(fixedRouter);
 app.use(cryptoRouter);

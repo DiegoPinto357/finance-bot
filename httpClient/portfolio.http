@@ -1,0 +1,16 @@
+# @host = 192.168.1.200
+@host = localhost
+@port = 3001
+
+###
+
+POST http://{{host}}:{{port}}/api/portfolio/transfer
+content-type: application/json
+
+{
+  "portfolio": "amortecedor",
+  "origin": { "class": "fixed", "name": "nubank" },
+  "destiny": { "class": "fixed", "name": "iti" },
+  "value": 300,
+  "dryRun": true
+}

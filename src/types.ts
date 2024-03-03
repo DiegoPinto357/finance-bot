@@ -14,6 +14,9 @@ export type Month =
 
 export type AssetClass = 'fixed' | 'stock' | 'crypto';
 
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 export type FixedAsset =
   | 'nubank'
   | 'iti'
@@ -41,6 +44,9 @@ export type FixedAssetBalance = {
   value: number;
 };
 
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 export type StockAsset = 'float' | 'br' | 'us' | 'fii';
 
 export type StockAssetBalance = {
@@ -48,6 +54,9 @@ export type StockAssetBalance = {
   value: number;
 };
 
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 export type CryptoAsset =
   | 'binanceBuffer'
   | 'hodl'
@@ -62,6 +71,9 @@ export type CryptoAssetBalance = {
 
 export type AssetName = FixedAsset | StockAsset | CryptoAsset;
 
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 export type Asset =
   | {
       class: 'fixed';
@@ -84,6 +96,9 @@ export type AssetBalance =
       value: number;
     };
 
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 export type Portfolio =
   | 'temp' // TODO for testing only, change tests to remove this one
   | 'reservaEmergencia'
