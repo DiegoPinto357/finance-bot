@@ -75,7 +75,7 @@ export const buildLogger =
       severity
     );
     if (!isStringMessage) {
-      log(message, severity);
+      console.dir(message, { depth: null });
     }
 
     if (separatorBelow)
