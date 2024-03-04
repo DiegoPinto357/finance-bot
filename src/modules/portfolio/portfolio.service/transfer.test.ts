@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import database from '../../../providers/database';
 import binance from '../../../providers/binance';
 import blockchain from '../../../providers/blockchain';
@@ -5,8 +6,9 @@ import mercadoBitcoin from '../../../providers/mercadoBitcoin';
 import coinMarketCap from '../../../providers/coinMarketCap';
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
-import transfer from './transfer';
-import { Asset, Portfolio, FixedAsset } from '../../../types';
+import transfer, { transferSchema } from './transfer';
+
+import type { FixedAsset, Asset } from '../../../schemas';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
@@ -38,12 +40,7 @@ describe('portfolio service - transfer', () => {
     (blockchain as MockBlockchain).resetMockValues();
   });
 
-  interface Transfer {
-    value: number;
-    portfolio: Portfolio;
-    origin: Asset;
-    destiny: Asset;
-  }
+  type Transfer = z.infer<typeof transferSchema>;
 
   const transfers: Transfer[] = [
     {
@@ -91,10 +88,12 @@ describe('portfolio service - transfer', () => {
 
       if (destiny.class === 'crypto') {
         if (destiny.name === 'hodl') {
-          (binance as MockBinance).simulateBRLDeposit(value);
+          (binance as MockBinance).simulateBRLDeposit(value as number);
         }
         if (destiny.name === 'backed') {
-          (mercadoBitcoin as MockMercadoBitcoin).simulateBRLDeposit(value);
+          (mercadoBitcoin as MockMercadoBitcoin).simulateBRLDeposit(
+            value as number
+          );
         }
       }
 
@@ -121,11 +120,11 @@ describe('portfolio service - transfer', () => {
 
       expect(response.status).toBe('ok');
       expect(newPortfolioOriginValue).toBeCloseTo(
-        currentPortfolioOriginValue - value,
+        currentPortfolioOriginValue - (value as number),
         5
       );
       expect(newPortfolioDestinyValue).toBeCloseTo(
-        currentPortfolioDestinyValue + value,
+        currentPortfolioDestinyValue + (value as number),
         5
       );
     }

@@ -1,20 +1,25 @@
+import { z } from 'zod';
 import deposit from './deposit';
 import { getPortfolioPositionOnAsset } from './common';
-import { Asset, Portfolio } from '../../../types';
+import {
+  positiveCurrencySchema,
+  portfolioSchema,
+  assetSchema,
+} from '../../../schemas';
 
-interface TransferParams {
-  value: number | 'all';
-  portfolio: Portfolio;
-  origin: Asset;
-  destiny: Asset;
-}
+export const transferSchema = z.object({
+  value: z.union([positiveCurrencySchema, z.literal('all')]),
+  portfolio: portfolioSchema,
+  origin: assetSchema,
+  destiny: assetSchema,
+});
 
 export default async ({
   value,
   portfolio,
   origin,
   destiny,
-}: TransferParams) => {
+}: z.infer<typeof transferSchema>) => {
   const currentOriginValue = await getPortfolioPositionOnAsset(
     portfolio,
     origin

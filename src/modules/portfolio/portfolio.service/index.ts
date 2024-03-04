@@ -3,6 +3,7 @@ import getShares from './getShares';
 import getLiquidity from './getLiquidity';
 import deposit from './deposit';
 import transfer from './transfer';
+export { transferSchema } from './transfer';
 import swap from './swap';
 import moveToPortfolio from './moveToPortfolio';
 import distribute from './distribute';

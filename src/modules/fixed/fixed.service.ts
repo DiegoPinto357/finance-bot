@@ -1,5 +1,9 @@
+import { z } from 'zod';
 import database from '../../providers/database';
-import { FixedAsset, FixedAssetBalance } from '../../types';
+import { positiveCurrencySchema, fixedAssetSchema } from '../../schemas';
+
+import type { FixedAssetBalance } from '../../types';
+import type { FixedAsset } from '../../schemas';
 
 const getDataFromDatabase = (assetName?: FixedAsset | FixedAsset[]) => {
   const query = Array.isArray(assetName)
@@ -15,7 +19,11 @@ const getDataFromDatabase = (assetName?: FixedAsset | FixedAsset[]) => {
 const getTotal = (balance: FixedAssetBalance[]) =>
   balance.reduce((total, { value }) => total + value, 0);
 
-const getBalance = async (assetName?: FixedAsset | FixedAsset[]) => {
+export const getBalanceSchema = z
+  .union([fixedAssetSchema, fixedAssetSchema.array()])
+  .optional();
+
+const getBalance = async (assetName?: z.infer<typeof getBalanceSchema>) => {
   const balance = await getDataFromDatabase(assetName);
   const total = getTotal(balance);
   return { balance: balance.sort((a, b) => b.value - a.value), total };
@@ -40,7 +48,12 @@ const getAssetsList = async () => {
   return sheet.map(row => row.asset);
 };
 
-const setAssetValue = ({ asset, value }: FixedAssetBalance) =>
+export const setAssetValueSchema = z.object({
+  asset: fixedAssetSchema,
+  value: positiveCurrencySchema,
+});
+
+const setAssetValue = ({ asset, value }: z.infer<typeof setAssetValueSchema>) =>
   database.updateOne<FixedAssetBalance>(
     'assets',
     'fixed',

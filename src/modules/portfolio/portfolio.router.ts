@@ -1,7 +1,10 @@
 import express from 'express';
-import portfolioService, { PortfolioName } from './portfolio.service';
+import { z } from 'zod';
+import validateSchema from '../../server/validateSchema';
+import portfolioService, { transferSchema } from './portfolio.service';
 
 import type { Request, Response } from 'express';
+import type { PortfolioName } from './portfolio.service';
 
 const router = express.Router();
 
@@ -29,11 +32,11 @@ router.post('/api/portfolio/deposit', async (req: Request, res: Response) =>
   res.json(await portfolioService.deposit(req.body))
 );
 
-router.post('/api/portfolio/transfer', async (req: Request, res: Response) => {
-  // return res.json(await portfolioService.transfer(req.body));
-  console.log('/api/portfolio/transfer');
-  console.log(req.body);
-  res.send();
-});
+router.post(
+  '/api/portfolio/transfer',
+  validateSchema(z.object({ body: transferSchema })),
+  async (req: Request, res: Response) =>
+    res.json(await portfolioService.transfer(req.body))
+);
 
 export default router;

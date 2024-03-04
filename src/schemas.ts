@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const currencySchema = z.number().multipleOf(0.01).min(1);
+
+export const positiveCurrencySchema = z
+  .number()
+  .multipleOf(0.01)
+  .positive()
+  .min(1);
+
 const FIXED_ASSET = [
   'nubank',
   'iti',
@@ -22,18 +30,20 @@ const FIXED_ASSET = [
   'sofisaCDBIPCA7_5',
 ] as const;
 
-export type FixedAsset = (typeof FIXED_ASSET)[number];
+export const fixedAssetSchema = z.enum(FIXED_ASSET);
 
-export const fixedAssetSchema = z.object({
+export type FixedAsset = z.infer<typeof fixedAssetSchema>;
+
+const fixedAssetClassSchema = z.object({
   class: z.literal('fixed'),
-  name: z.enum(FIXED_ASSET),
+  name: fixedAssetSchema,
 });
 
 const STOCK_ASSET = ['float', 'br', 'us', 'fii'] as const;
 
 // type StockAsset = (typeof STOCK_ASSET)[number];
 
-export const stockAssetSchema = z.object({
+const stockAssetClassSchema = z.object({
   class: z.literal('stock'),
   name: z.enum(STOCK_ASSET),
 });
@@ -48,15 +58,15 @@ const CRYPTO_ASSET = [
 
 // type CryptoAsset = (typeof CRYPTO_ASSET)[number];
 
-export const cryptoAssetSchema = z.object({
+const cryptoAssetClassSchema = z.object({
   class: z.literal('crypto'),
   name: z.enum(CRYPTO_ASSET),
 });
 
 export const assetSchema = z.union([
-  fixedAssetSchema,
-  stockAssetSchema,
-  cryptoAssetSchema,
+  fixedAssetClassSchema,
+  stockAssetClassSchema,
+  cryptoAssetClassSchema,
 ]);
 
 export type Asset = z.infer<typeof assetSchema>;
