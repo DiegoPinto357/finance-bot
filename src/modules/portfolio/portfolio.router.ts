@@ -1,7 +1,10 @@
 import express from 'express';
 import { z } from 'zod';
 import validateSchema from '../../server/validateSchema';
-import portfolioService, { transferSchema } from './portfolio.service';
+import portfolioService, {
+  transferSchema,
+  swapSchema,
+} from './portfolio.service';
 
 import type { Request, Response } from 'express';
 import type { PortfolioName } from './portfolio.service';
@@ -37,6 +40,13 @@ router.post(
   validateSchema(z.object({ body: transferSchema })),
   async (req: Request, res: Response) =>
     res.json(await portfolioService.transfer(req.body))
+);
+
+router.post(
+  '/api/portfolio/swap',
+  validateSchema(z.object({ body: swapSchema })),
+  async (req: Request, res: Response) =>
+    res.json(await portfolioService.swap(req.body))
 );
 
 export default router;

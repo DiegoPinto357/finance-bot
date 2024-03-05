@@ -1,32 +1,40 @@
+import { z } from 'zod';
 import { getPortfolioPositionOnAsset, swapOnAsset } from './common';
-import { Asset, Portfolio } from '../../../types';
+import {
+  positiveCurrencySchema,
+  portfolioSchema,
+  assetSchema,
+} from '../../../schemas';
 
-interface SwapOnAssetParams {
+import type { Asset, Portfolio } from '../../../schemas';
+
+type SwapOnAssetParams = {
   assets: [Asset, Asset];
   originPortfolio: Portfolio;
   destinyPortfolio: Portfolio;
-}
+};
 
-interface SwapOnPortfolio {
-  value: number | 'all';
-  portfolio: Portfolio;
-  origin: Asset;
-  destiny: Asset;
-  liquidity: Portfolio;
-}
+const swapOnPortfolioSchema = z.object({
+  value: z.union([positiveCurrencySchema, z.literal('all')]),
+  portfolio: portfolioSchema,
+  origin: assetSchema,
+  destiny: assetSchema,
+  liquidity: portfolioSchema,
+});
 
-interface SwapOnAsset {
-  value: number | 'all';
-  asset: Asset;
-  origin: Portfolio;
-  destiny: Portfolio;
-  liquidity: Asset;
-}
+// TODO consider swap on asset (?)
+// const swapOnAssetSchema = z.object({
+//   value: z.union([positiveCurrencySchema, z.literal('all')]),
+//   asset: assetSchema,
+//   origin: portfolioSchema,
+//   destiny: portfolioSchema,
+//   liquidity: assetSchema,
+// });
 
-type SwapParams = SwapOnPortfolio | SwapOnAsset;
+// export const swapSchema = z.union([swapOnPortfolioSchema, swapOnAssetSchema]);
+export const swapSchema = swapOnPortfolioSchema;
 
-export default async (swapParams: SwapParams) => {
-  // const withinSamePortfolio = portfolio && !asset;
+export default async (swapParams: z.infer<typeof swapSchema>) => {
   const withinSamePortfolio = 'portfolio' in swapParams;
 
   const params = {} as SwapOnAssetParams;

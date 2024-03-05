@@ -5,6 +5,7 @@ import deposit from './deposit';
 import transfer from './transfer';
 export { transferSchema } from './transfer';
 import swap from './swap';
+export { swapSchema } from './swap';
 import moveToPortfolio from './moveToPortfolio';
 import distribute from './distribute';
 import getAssets from './getAssets';
