@@ -54,9 +54,16 @@ export default (schema: AnyZodObject) =>
 
       if (queryDryRun || bodyDryRun) {
         const { method, path, params, query, body } = req;
-        const info = { method, path, params, query, body };
+        const info = {
+          method,
+          path,
+          params,
+          query,
+          body,
+          description: 'Dry run mode',
+        };
         log(info, { severity: 'warn' });
-        return res.send({ ...info, description: 'Dry run mode' });
+        return res.send(info);
       }
 
       return next();
