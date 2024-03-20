@@ -18,20 +18,14 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
-const services = {
-  fixed: fixedService,
-  stock: stockService,
-  crypto: cryptoService,
-};
-
 describe('portfolio service - deposit', () => {
-  interface Deposit {
+  type Deposit = {
     depositValue: number;
     portfolioName: Portfolio;
     assetClass: AssetClass;
     assetName: AssetName;
     sidePortfolioName: Portfolio | null;
-  }
+  };
 
   const deposits: Deposit[] = [
     {
@@ -229,4 +223,8 @@ describe('portfolio service - deposit', () => {
     expect(result.status).toBe('notEnoughFunds');
     expect(newAssetValue).toBe(currentAssetValue);
   });
+
+  it.todo('consider share value as 0 when it i super small');
+
+  it.todo('consider deposit value as 0 when it i super small');
 });

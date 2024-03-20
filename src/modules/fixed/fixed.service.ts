@@ -64,6 +64,7 @@ const setAssetValue = ({ asset, value }: z.infer<typeof setAssetValueSchema>) =>
 
 const deposit = async ({ asset, value }: FixedAssetBalance) => {
   const currentValue = await getAssetPosition(asset);
+  // TODO adjust values close to zero
   const newValue = currentValue + value;
 
   if (newValue < 0) {

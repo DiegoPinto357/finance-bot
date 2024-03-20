@@ -2,7 +2,12 @@ import database from '../../../providers/database';
 import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
-import { getPortfolioData, verifyShares, getAssetPosition } from './common';
+import {
+  getPortfolioData,
+  verifyShares,
+  getAssetPosition,
+  isAround0,
+} from './common';
 
 import type { ShareItem, PortfolioData } from './types';
 import type { AssetClass, AssetName, Portfolio } from '../../../types';
@@ -105,6 +110,9 @@ export default async ({
     ? totalAssetValue - value
     : totalAssetValue;
   const newTotalAssetValue = currentTotalAssetValue + value;
+  const newTotalAssetValueAdjusted = isAround0(newTotalAssetValue)
+    ? 0
+    : newTotalAssetValue;
 
   const portfolioData = await getPortfolioData({ assetClass, assetName });
 
@@ -128,10 +136,17 @@ export default async ({
     return { status: addValueStatus };
   }
 
-  const newShares = portfolioList.map(item => ({
-    portfolio: item.portfolio,
-    value: newTotalAssetValue !== 0 ? item.value / newTotalAssetValue : 0,
-  }));
+  const newShares = portfolioList.map(item => {
+    const itemValue = isAround0(item.value) ? 0 : item.value;
+    const value =
+      newTotalAssetValueAdjusted !== 0
+        ? itemValue / newTotalAssetValueAdjusted
+        : 0;
+    return {
+      portfolio: item.portfolio,
+      value,
+    };
+  });
 
   verifyShares(newShares.map(({ value }) => value));
 
