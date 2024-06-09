@@ -48,6 +48,35 @@ const stockAssetClassSchema = z.object({
   name: z.enum(STOCK_ASSET),
 });
 
+export type StockAsset =
+  | 'ARZZ3F'
+  | 'B3SA3F'
+  | 'BBSE3F'
+  | 'CRPG5F'
+  | 'EGIE3F'
+  | 'ENBR3F'
+  | 'EZTC3F'
+  | 'FLRY3F'
+  | 'INBR32'
+  | 'ITSA3F'
+  | 'ITUB3F'
+  | 'MDIA3F'
+  | 'MRVE3F'
+  | 'ROMI3F'
+  | 'SQIA3F'
+  | 'WEGE3F'
+  | 'WIZC3F'
+  | 'IVVB11'
+  | 'NASD11'
+  | 'ALZR11'
+  | 'BCFF11'
+  | 'CPTS11'
+  | 'HGLG11'
+  | 'KNRI11'
+  | 'MXRF11'
+  | 'VISC11'
+  | 'XPLG11';
+
 const CRYPTO_ASSET = [
   'binanceBuffer',
   'hodl',
