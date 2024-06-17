@@ -2,13 +2,14 @@ import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import { getPortfolioData, extractPortfolioNames } from './common';
-import {
+
+import type {
   BalanceByAsset,
   BalanceByAssetWithTotal,
   BalanceByPortfolioWithTotal,
   PortfolioData,
 } from './types';
-import {
+import type {
   StockAsset,
   CryptoAsset,
   AssetClass,
@@ -19,17 +20,18 @@ import {
   StockAssetBalance,
   CryptoAssetBalance,
 } from '../../../types';
+// import type { Portfolio } from '../../../schemas';
 
-interface PortfolioShare {
+type PortfolioShare = {
   class: AssetClass;
   asset: AssetName;
   share: number;
-}
+};
 
-interface AssetShare {
+type AssetShare = {
   asset: AssetName;
   share: number;
-}
+};
 
 type AssetsShares = {
   [key in AssetClass]: AssetShare[];
@@ -47,9 +49,9 @@ type CryptoAssetTotals = {
   [key in CryptoAsset]: number;
 };
 
-interface CryptoTotals extends CryptoAssetTotals {
+type CryptoTotals = CryptoAssetTotals & {
   total: number;
-}
+};
 
 type FixedBalanceWithTotal = Required<BalanceByAsset>['fixed'];
 type StockBalanceWithTotal = Required<BalanceByAsset>['stock'];

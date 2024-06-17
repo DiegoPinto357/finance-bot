@@ -74,6 +74,49 @@ describe('portfolio service - getShares', () => {
     });
   });
 
+  it('gets shares for portfolio "viagem"', async () => {
+    const shares = await getShares('viagem');
+
+    expect(shares).toEqual({
+      shares: [
+        {
+          assetClass: 'crypto',
+          targetShare: 0.05,
+          asset: 'backed',
+          value: 0,
+          currentShare: 0,
+          diffBRL: 89.83221556588768,
+        },
+        {
+          assetClass: 'crypto',
+          targetShare: 0.1,
+          asset: 'hodl',
+          value: 101.60701568934138,
+          currentShare: 0.05655377363748612,
+          diffBRL: 78.05741544243398,
+        },
+        {
+          assetClass: 'fixed',
+          targetShare: 0.85,
+          asset: undefined,
+          value: 1580.990000088408,
+          currentShare: 0.8799682775990461,
+          diffBRL: -53.84233546831729,
+        },
+        {
+          assetClass: 'crypto',
+          asset: 'defi',
+          liquidity: undefined,
+          value: 114.04729554000433,
+          targetShare: 0,
+          currentShare: 0.06347794876346784,
+          diffBRL: -114.04729554000433,
+        },
+      ],
+      total: 1796.6443113177536,
+    });
+  });
+
   it('gets shares for a portfolio without target definition', async () => {
     const shares = await getShares('financiamento');
 

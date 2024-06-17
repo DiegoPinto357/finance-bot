@@ -3,63 +3,106 @@ import { isAround1 } from './common';
 import getBalance from './getBalance';
 import getPortfolios from './getPortfolios';
 import { flatPortfolioBalance } from './common';
-import { AssetName, AssetClass, Portfolio } from '../../../types';
-import { AssetBalanceWithClass } from './types';
 
-interface TargetShare {
+import type { AssetName, AssetClass } from '../../../types';
+import type { Portfolio } from '../../../schemas';
+import type { AssetBalanceWithClass } from './types';
+
+type GroupedBalance = Omit<AssetBalanceWithClass, 'asset'> & {
+  asset?: AssetName;
+};
+
+type TargetShare = {
   assetClass: AssetClass;
   asset: AssetName;
   targetShare: number;
-}
+};
 
-interface TargetShareWithValue {
+type TargetShareWithValue = {
   assetClass: AssetClass;
   asset?: AssetName;
   targetShare: number;
   value: number;
-}
+};
 
 const getShareValues = (
   portfolioTargetShares: TargetShare[],
   balanceFlat: AssetBalanceWithClass[]
-) =>
-  balanceFlat.reduce((sharesWithValues, balanceAssetItem) => {
-    const filteredTargetShare = portfolioTargetShares.find(targetShareItem => {
-      return (
-        balanceAssetItem.assetClass === targetShareItem.assetClass &&
-        (<unknown>targetShareItem.asset !== ''
-          ? balanceAssetItem.asset === targetShareItem.asset
-          : true)
+): TargetShareWithValue[] => {
+  const targetShares = portfolioTargetShares.map(({ asset, ...entries }) => ({
+    ...entries,
+    asset: <unknown>asset !== '' ? asset : undefined,
+  }));
+
+  const targetClassGroups = targetShares
+    .filter(({ asset }) => asset === undefined)
+    .map(({ assetClass }) => assetClass);
+
+  const assetList = [
+    ...targetShares.map(({ assetClass, asset }) => ({
+      assetClass,
+      asset,
+    })),
+    ...balanceFlat
+      .map(({ assetClass, asset }) => ({ assetClass, asset }))
+      .filter(({ assetClass }) => !targetClassGroups.includes(assetClass)),
+  ].filter(
+    (item, index, list) =>
+      index ===
+      list.findIndex(
+        t => t.assetClass === item.assetClass && t.asset === item.asset
+      )
+  );
+
+  const groupedBalance = balanceFlat.reduce((grouped, balanceItem) => {
+    if (targetClassGroups.includes(balanceItem.assetClass)) {
+      const existingItem = grouped.find(
+        ({ assetClass }) => balanceItem.assetClass === assetClass
       );
-    });
+      if (existingItem) {
+        existingItem.value = existingItem.value + balanceItem.value;
+        return grouped;
+      }
+      return [...grouped, { ...balanceItem, asset: undefined }];
+    }
+    return [...grouped, balanceItem];
+  }, [] as GroupedBalance[]);
 
-    const baseShareWithValueItem = {
-      assetClass: balanceAssetItem.assetClass,
-      targetShare: filteredTargetShare ? filteredTargetShare.targetShare : 0,
-      value: balanceAssetItem.value,
-    };
+  return assetList.reduce((result, assetItem) => {
+    const targetShareItem = targetShares.find(
+      ({ assetClass, asset }) =>
+        assetItem.assetClass === assetClass &&
+        (assetItem.asset === asset || asset === undefined)
+    );
 
-    if (filteredTargetShare && <unknown>filteredTargetShare.asset === '') {
-      const existingItem = sharesWithValues.find(
-        ({ assetClass }) => assetClass === assetClass
-      );
+    const balanceItem = groupedBalance.find(
+      ({ assetClass, asset }) =>
+        assetItem.assetClass === assetClass &&
+        (assetItem.asset === asset || asset === undefined)
+    );
 
-      if (!existingItem) {
-        sharesWithValues.push(baseShareWithValueItem);
-      } else {
-        existingItem.value = existingItem.value + balanceAssetItem.value;
+    if (!targetShareItem) {
+      if (!balanceItem) {
+        return [];
       }
 
-      return sharesWithValues;
+      return [
+        ...result,
+        { ...balanceItem, targetShare: 0, liquidity: undefined },
+      ];
     }
 
-    sharesWithValues.push({
-      ...baseShareWithValueItem,
-      asset: balanceAssetItem.asset,
-    });
+    if (!balanceItem) {
+      if (!targetShareItem) {
+        return [];
+      }
 
-    return sharesWithValues;
+      return [...result, { ...targetShareItem, value: 0 }];
+    }
+
+    return [...result, { ...targetShareItem, value: balanceItem.value }];
   }, [] as TargetShareWithValue[]);
+};
 
 const getActualShares = (
   targetSharesWithValues: TargetShareWithValue[],
@@ -86,29 +129,29 @@ const getActualShares = (
     );
 };
 
-interface Share {
+type Share = {
   currentShare: number;
   diffBRL: number;
   assetClass: AssetClass;
   asset?: AssetName;
   targetShare: number;
   value: number;
-}
+};
 
-interface SharesWithTotal {
+type SharesWithTotal = {
   shares: Share[];
   total: number;
-}
+};
 
-interface ShareByPortfolio {
+type ShareByPortfolio = {
   portfolio: Portfolio;
   shares: Share[];
-}
+};
 
-interface SharesByPortfolioWithTotal {
+type SharesByPortfolioWithTotal = {
   shares: ShareByPortfolio[];
   total: number;
-}
+};
 
 function getShares(): Promise<SharesByPortfolioWithTotal>;
 function getShares(portfolioName?: Portfolio): Promise<SharesWithTotal>;

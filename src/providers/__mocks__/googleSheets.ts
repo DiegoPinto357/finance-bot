@@ -13,10 +13,6 @@ const loadSheet = jest.fn(async sheetTitle => {
   if (!dataBuffer[sheetTitle]) {
     try {
       dataBuffer[sheetTitle] = JSON.parse(await fs.readFile(filename, 'utf-8'));
-      dataBuffer[sheetTitle] = dataBuffer[sheetTitle].map(row => ({
-        ...row,
-        save: jest.fn(),
-      }));
     } catch (e) {
       return [];
     }

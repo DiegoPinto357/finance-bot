@@ -4,7 +4,7 @@ const accessToken = '';
 const headers = { Authorization: `Bearer ${accessToken}` };
 
 (async () => {
-  const urlQ = `https://brapi.dev/api/quote/WIZC3`;
+  const urlQ = `https://brapi.dev/api/quote/MXRF11`;
   const responseQ = await httpClient.get(urlQ, { headers });
   console.log(responseQ);
 

@@ -1,4 +1,4 @@
-import {
+import type {
   AssetClass,
   AssetName,
   AssetBalance,
@@ -7,12 +7,13 @@ import {
   CryptoAssetBalance,
   Portfolio,
 } from '../../../types';
+// import type { Portfolio } from '../../../schemas';
 
 export type AssetBalanceWithClass = AssetBalance & {
   assetClass: AssetClass;
 };
 
-export interface BalanceByAsset {
+export type BalanceByAsset = {
   fixed?: {
     balance: FixedAssetBalance[];
     total: number;
@@ -25,29 +26,29 @@ export interface BalanceByAsset {
     balance: CryptoAssetBalance[];
     total: number;
   };
-}
+};
 
-export interface BalanceByAssetWithTotal {
+export type BalanceByAssetWithTotal = {
   balance: BalanceByAsset;
   total: number;
-}
+};
 
 type BalanceByPortfolio = {
   [key in Portfolio]: BalanceByAssetWithTotal;
 };
 
-export interface BalanceByPortfolioWithTotal {
+export type BalanceByPortfolioWithTotal = {
   balance: BalanceByPortfolio;
   total: number;
-}
+};
 
-export interface ShareItem {
+export type ShareItem = {
   portfolio: Portfolio;
   value: number;
-}
+};
 
-export interface PortfolioData {
+export type PortfolioData = {
   assetClass: AssetClass;
   assetName: AssetName;
   shares: ShareItem[];
-}
+};
