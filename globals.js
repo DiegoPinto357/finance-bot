@@ -7,12 +7,10 @@ const AssetClasses = {
 const FixedAssets = {
   NUBANK: 'nubank',
   ITI: 'iti',
-  PAY99: '99pay',
   INCO: 'inco',
   XP_WESTERN_ASSET: 'xpWesternAsset',
   XP_TREND_INVESTBACK: 'xpTrendInvestback',
   DAYCOVAL_CDB_110: 'daycovalCDB110',
-  DAYCOVAL_CDB_CDI_1_2: 'daycovalCDBCDI1_2',
   NUINVEST_CDB_8_5: 'nuInvestCDB8_5',
   NUINVEST_CDB_9_5: 'nuInvestCDB9_5',
   NUINVEST_CDB_12_5: 'nuInvestCDB12_5',

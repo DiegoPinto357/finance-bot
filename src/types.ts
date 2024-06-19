@@ -1,3 +1,5 @@
+import type { FixedAsset } from './schemas';
+
 export type Month =
   | 'jan'
   | 'feb'
@@ -13,30 +15,6 @@ export type Month =
   | 'dec';
 
 export type AssetClass = 'fixed' | 'stock' | 'crypto';
-
-/**
- * @deprecated Moved to schemas file for runtime schema validation
- */
-export type FixedAsset =
-  | 'nubank'
-  | 'iti'
-  | '99pay'
-  | 'inco'
-  | 'xpWesternAsset'
-  | 'xpTrendInvestback'
-  | 'daycovalCDB110'
-  | 'daycovalCDBCDI1_2'
-  | 'nuInvestCDB8_5'
-  | 'nuInvestCDB9_5'
-  | 'nuInvestCDB12_5'
-  | 'nuInvestCBDIPCA5_5'
-  | 'nuInvestTDIPCA2035'
-  | 'nuInvestTDPre2029'
-  | 'nuInvestTDIPCA2045'
-  | 'interArcaPGBL'
-  | 'sofisaCDBMax60'
-  | 'sofisaCDB110'
-  | 'sofisaCDBIPCA7_5';
 
 export type FixedAssetBalance = {
   asset: FixedAsset;

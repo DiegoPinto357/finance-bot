@@ -1,5 +1,5 @@
 import database from '../../providers/database';
-import { FixedAsset } from '../../types';
+import { FixedAsset } from '../../schemas';
 import fixed from './fixed.service';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
@@ -42,15 +42,15 @@ describe('fixed service', () => {
       const { balance, total } = await fixed.getBalance([
         'nubank',
         'xpWesternAsset',
-        '99pay',
+        'nuInvestCDB12_5',
       ]);
 
       expect(balance).toEqual([
         { asset: 'nubank', liquidity: true, value: 50962.72 },
         { asset: 'xpWesternAsset', liquidity: true, value: 10393.77 },
-        { asset: '99pay', liquidity: true, value: 519.83 },
+        { asset: 'nuInvestCDB12_5', value: 1128.63 },
       ]);
-      expect(total).toBe(50962.72 + 10393.77 + 519.83);
+      expect(total).toBe(50962.72 + 10393.77 + 1128.63);
     });
   });
 

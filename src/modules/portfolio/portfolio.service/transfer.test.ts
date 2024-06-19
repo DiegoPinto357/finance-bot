@@ -395,7 +395,7 @@ describe('portfolio service - transfer', () => {
   it('transfer all funds from an asset', async () => {
     const value = 'all';
     const portfolio = 'financiamento';
-    const origin: Asset = { class: 'fixed', name: '99pay' };
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
     const destiny: Asset = { class: 'fixed', name: 'iti' };
 
     const currentPortfolioBalance = await getBalance(portfolio);
