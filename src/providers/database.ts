@@ -121,7 +121,9 @@ const deleteOne = async <Schema>(
   return await collection.deleteOne(filter);
 };
 
-// TODO add backup
+/**
+ * @deprecated Moved to schemas file for runtime schema validation
+ */
 const bulkWrite = async <Schema extends Document>(
   databaseName: string,
   collectionName: string,
@@ -135,6 +137,7 @@ const bulkWrite = async <Schema extends Document>(
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
   // @ts-ignore
+  // TODO add backup
   return await collection.bulkWrite(operations, options);
 };
 
