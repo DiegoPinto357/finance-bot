@@ -21,6 +21,7 @@ const FIXED_ASSET = [
   'nuInvestCBDIPCA5_5',
   'nuInvestTDIPCA2035',
   'nuInvestTDPre2029',
+  'nuInvestTDPre2031',
   'nuInvestTDIPCA2045',
   'interArcaPGBL',
   'sofisaCDBMax60',

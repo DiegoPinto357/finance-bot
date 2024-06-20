@@ -8,7 +8,7 @@ import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
 import transfer, { transferSchema } from './transfer';
 
-import type { FixedAsset, Asset } from '../../../schemas';
+import type { FixedAsset, Asset, Portfolio } from '../../../schemas';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
@@ -437,6 +437,58 @@ describe('portfolio service - transfer', () => {
     expect(newPortfolioOriginValue).toBe(0);
     expect(newPortfolioDestinyValue).toBe(
       currentPortfolioDestinyValue + currentPortfolioOriginValue
+    );
+  });
+
+  it('transfers to new asset', async () => {
+    const portfolio: Portfolio = 'amortecedor';
+    const origin: Asset = { class: 'fixed', name: 'nubank' };
+    const destiny: Asset = { class: 'fixed', name: 'nuInvestTDPre2031' };
+    const value = 100;
+
+    const currentPortfolioBalance = await getBalance(portfolio);
+
+    const currentPortfolioOriginValue = getAssetValueFromBalance(
+      currentPortfolioBalance,
+      origin.class,
+      origin.name
+    );
+
+    const currentPortfolioDestinyValue = getAssetValueFromBalance(
+      currentPortfolioBalance,
+      destiny.class,
+      destiny.name
+    );
+
+    const response = await transfer({
+      value,
+      portfolio,
+      origin,
+      destiny,
+    });
+
+    const newPortfolioBalance = await getBalance(portfolio);
+
+    const newPortfolioOriginValue = getAssetValueFromBalance(
+      newPortfolioBalance,
+      origin.class,
+      origin.name
+    );
+
+    const newPortfolioDestinyValue = getAssetValueFromBalance(
+      newPortfolioBalance,
+      destiny.class,
+      destiny.name
+    );
+
+    expect(response.status).toBe('ok');
+    expect(newPortfolioOriginValue).toBeCloseTo(
+      currentPortfolioOriginValue - value,
+      5
+    );
+    expect(newPortfolioDestinyValue).toBeCloseTo(
+      currentPortfolioDestinyValue + value,
+      5
     );
   });
 });

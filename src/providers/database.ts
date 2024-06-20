@@ -35,19 +35,30 @@ const close = () => {
   log('MongoDB connection closed');
 };
 
+type WithId<Schema> = Schema & { _id: string };
+
 const saveBackup = async <Schema>(
   db: Db,
   collection: Collection,
   collectionName: string,
   filter: Filter<Schema>
 ) => {
-  // @ts-ignore
-  const { _id, ...actualDocument } = await collection.findOne<Schema>(filter);
-  // const actualDocument = await collection.findOne<Schema>(filter);
+  const existingDocument = await collection.findOne<WithId<Schema>>(filter);
+
+  if (!existingDocument) {
+    log('No existing document for backup.', { severity: 'warn' });
+    return;
+  }
+
   const backupCollection = db.collection(`${collectionName}-backup`);
   const createdAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
+
+  const { _id, ...data } = existingDocument;
+
+  if (debugMode) return;
+
   await backupCollection.insertOne({
-    ...actualDocument,
+    ...data,
     createdAt,
   });
 };
@@ -91,12 +102,12 @@ const updateOne = async <Schema>(
       { depth: null }
     );
   }
-  if (debugMode) return;
 
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-
   await saveBackup(db, collection, collectionName, filter);
+
+  if (debugMode) return;
 
   return await collection.updateOne(filter, update, options);
 };
@@ -111,12 +122,12 @@ const deleteOne = async <Schema>(
   if (debugMode || verboseMode) {
     console.dir({ databaseName, collectionName, filter }, { depth: null });
   }
-  if (debugMode) return;
 
   const db = client.db(databaseName);
   const collection = db.collection(collectionName);
-
   await saveBackup(db, collection, collectionName, filter);
+
+  if (debugMode) return;
 
   return await collection.deleteOne(filter);
 };
