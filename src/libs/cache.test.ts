@@ -230,6 +230,54 @@ describe('cache', () => {
       jest.advanceTimersByTime(20);
       await expect(funcCached()).resolves.toEqual('staleResult');
     });
+
+    it('returns stale cache if required result fields are missing', async () => {
+      const successResult = {
+        results: [
+          {
+            regularMarketChange: 0,
+            regularMarketPrice: 10.11,
+            priceEarnings: null,
+            earningsPerShare: null,
+          },
+        ],
+      } as const;
+
+      const errorResult = {
+        results: [
+          {
+            priceEarnings: null,
+            earningsPerShare: null,
+          },
+        ],
+      } as const;
+
+      let iteration = 0;
+      const func = async (): Promise<{ results: object }> => {
+        return new Promise(resolve => {
+          const result = iteration === 0 ? successResult : errorResult;
+          iteration++;
+          resolve(result);
+        });
+      };
+
+      const cacheOptions = {
+        dataNode: 'results',
+        requiredFields: ['[0].regularMarketChange', '[0].regularMarketPrice'],
+        timeToLive: 10,
+      };
+
+      const funcCached = withCache(func, cacheOptions);
+
+      const result1 = await funcCached();
+      jest.advanceTimersByTime(20);
+      const result2 = await funcCached();
+      const result3 = await funcCached();
+
+      expect(result1).toEqual(successResult);
+      expect(result2).toEqual(successResult);
+      expect(result3).toEqual(successResult);
+    });
   });
 
   describe('non volatile cache', () => {
@@ -278,7 +326,7 @@ describe('cache', () => {
           {
             f6c1553c69e1ed4a172a469af57505bd26fc47c7: {
               data: 'realResult',
-              timestamp: 1577837160045,
+              timestamp: 1577837160065, // FIXME this is affected by adding more tests above
             },
           },
           null,

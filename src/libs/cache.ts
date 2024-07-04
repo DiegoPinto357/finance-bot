@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import hash from 'object-hash';
 import stringify from 'json-stringify-safe';
+import _ from 'lodash';
 import { buildLogger } from './logger';
 import { isErrnoException } from './errorhandling';
 import config from '../config';
@@ -51,6 +52,7 @@ const saveData = async () => {
 
 type Options = {
   dataNode?: string;
+  requiredFields?: string[];
   timeToLive?: number;
 };
 
@@ -65,7 +67,7 @@ export const withCache =
 
     const key = hash({ func, params });
     const cacheEntry = cache[key];
-    const { dataNode } = options;
+    const { dataNode, requiredFields } = options;
 
     if (cacheEntry) {
       const now = Date.now();
@@ -85,12 +87,24 @@ export const withCache =
     try {
       const result = await func(...params);
       const data = dataNode ? result[dataNode] : result;
+
+      if (requiredFields) {
+        requiredFields.forEach(requiredField => {
+          if (_.get(data, requiredField) === undefined) {
+            log(`Missing requiredField ${requiredField}.`, {
+              severity: 'warn',
+            });
+            throw new Error(`Missing requiredField ${requiredField}.`);
+          }
+        });
+      }
+
       cache[key] = { data, timestamp: Date.now() };
       return result;
     } catch (error) {
       if (cacheEntry) {
         // TODO identify function
-        log(`Error calling function. Loading stale cache.`, {
+        log('Error calling function. Loading stale cache.', {
           severity: 'warn',
         });
         return Promise.resolve(

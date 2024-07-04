@@ -11,6 +11,7 @@ const baseUrl = 'https://brapi.dev/api';
 
 const getCached = withCache(httpClient.get, {
   dataNode: 'results',
+  requiredFields: ['[0].regularMarketChange', '[0].regularMarketPrice'],
 });
 
 type Quote = {
