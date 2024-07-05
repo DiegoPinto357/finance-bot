@@ -138,7 +138,7 @@ const deposit = async ({
   asset,
   value,
 }: {
-  asset: StockAsset;
+  asset?: StockAsset;
   value: number;
 }) => {
   asset = asset ? asset : 'float';
@@ -169,7 +169,7 @@ const setAssetValue = async ({
   asset,
   value,
 }: {
-  asset: string;
+  asset?: string;
   value: number;
 }) => {
   asset = asset ? asset : 'float';

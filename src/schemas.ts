@@ -38,13 +38,15 @@ const fixedAssetClassSchema = z.object({
   name: fixedAssetSchema,
 });
 
-const STOCK_ASSET = ['float', 'br', 'us', 'fii'] as const;
+const STOCK_ASSET_TYPE = ['float', 'br', 'us', 'fii'] as const;
 
-// type StockAsset = (typeof STOCK_ASSET)[number];
+export const stockAssetSchema = z.enum(STOCK_ASSET_TYPE);
+
+export type StockAssetType = z.infer<typeof stockAssetSchema>;
 
 const stockAssetClassSchema = z.object({
   class: z.literal('stock'),
-  name: z.enum(STOCK_ASSET),
+  name: z.enum(STOCK_ASSET_TYPE),
 });
 
 export type StockAsset =

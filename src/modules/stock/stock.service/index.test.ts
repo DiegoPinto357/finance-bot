@@ -3,11 +3,15 @@ import brapi from '../../../providers/brapi';
 import stock from '.';
 import stockData from '../../../../mockData/stock/balance.json';
 
+import type { StockAssetType } from '../../../schemas';
+
+type MockDatabase = typeof database & { resetMockValues: () => void };
+
 jest.mock('../../../providers/database');
 jest.mock('../../../providers/brapi');
 
 describe('stock service', () => {
-  beforeEach(() => database.resetMockValues());
+  beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getBalance', () => {
     it('gets balance for provided portfolio type', async () => {
@@ -80,7 +84,7 @@ describe('stock service', () => {
       expect(newFloatValue).toBe(currentFloatValue + value);
     });
 
-    it.each(['br', 'us', 'fii'])(
+    it.each(['br', 'us', 'fii'] as StockAssetType[])(
       'does not deposits value for "%s" asset',
       async asset => {
         const value = 500;
@@ -127,7 +131,7 @@ describe('stock service', () => {
       expect(floatValue).toBe(value);
     });
 
-    it.each(['br', 'us', 'fii'])(
+    it.each(['br', 'us', 'fii'] as StockAssetType[])(
       'does not sets asset value for "%s" portfolio type',
       async asset => {
         const value = 357.75;
