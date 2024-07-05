@@ -77,19 +77,15 @@ describe('portfolio service - getBalance', () => {
           },
           stock: {
             balance: [
+              { asset: 'float', value: 154.059917105392 },
               { asset: 'br', value: 3935.519970999999 },
               { asset: 'us', value: 5407.97 },
               { asset: 'fii', value: 4550.180026999999 },
-              { asset: 'float', value: 154.059917105392 },
             ],
-            total:
-              3935.519970999999 +
-              5407.97 +
-              4550.180026999999 +
-              154.059917105392,
+            total: 14047.729915105388,
           },
         },
-        total: 21268.096019265708,
+        total: 21268.096019265704,
       });
     });
 

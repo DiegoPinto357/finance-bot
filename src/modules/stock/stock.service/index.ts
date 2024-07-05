@@ -2,53 +2,49 @@ import database from '../../../providers/database';
 import brapi from '../../../providers/brapi';
 import stockAnalyser from './stockAnalyser';
 import { buildLogger } from '../../../libs/logger';
-import { StockAsset } from '../../../types';
+import { STOCK_ASSET_TYPE } from '../../../schemas';
+
+import type { StockAssetType } from '../../../schemas';
 
 const log = buildLogger('Stock');
 
-export const portfolioTypes = ['br', 'us', 'fii', 'float'] as const;
-
-type PortfolioTypes = (typeof portfolioTypes)[number];
-
-interface AssetData {
+type AssetData = {
   asset: string;
   score: number;
   amount: number;
   // TODO use amount instead of value for float type
   value: number;
-}
+};
 
-interface BalanceWithPrices extends AssetData {
+type BalanceWithPrices = AssetData & {
   change: number;
   price: number;
   positionBRL: number;
   positionTarget: number;
-}
-
-interface BalanceWithPricesFloat extends AssetData {
-  positionBRL: number;
-}
-
-type AssetTotals = {
-  [key in PortfolioTypes]: number;
 };
 
-interface Totals extends AssetTotals {
+type BalanceWithPricesFloat = AssetData & {
+  positionBRL: number;
+};
+
+type AssetTotals = Record<StockAssetType, number>;
+
+type Totals = AssetTotals & {
   total: number;
-}
+};
 
 // TODO accept array of portfolio types
 const getBalanceWithPrices = async (
-  portfolioType: PortfolioTypes
+  assetType: StockAssetType
 ): Promise<(BalanceWithPrices | BalanceWithPricesFloat)[]> => {
   const portfolio = await database.find<AssetData[]>(
     'assets',
     'stock',
-    { type: portfolioType },
+    { type: assetType },
     { projection: { _id: 0, type: 0 } }
   );
 
-  if (portfolioType === 'float') {
+  if (assetType === 'float') {
     return <BalanceWithPricesFloat[]>(
       portfolio.map(({ asset, value }) => ({ asset, positionBRL: value }))
     );
@@ -86,11 +82,11 @@ const getTotalFromPortfolio = (
     0
   );
 
-const getBalance = async (portfolioType: PortfolioTypes) => {
-  const balanceWithPrices = await getBalanceWithPrices(portfolioType);
+const getBalance = async (assetType: StockAssetType) => {
+  const balanceWithPrices = await getBalanceWithPrices(assetType);
   const totalPosition = getTotalFromPortfolio(balanceWithPrices);
 
-  if (portfolioType === 'float') {
+  if (assetType === 'float') {
     return { total: totalPosition };
   }
 
@@ -110,14 +106,14 @@ const getBalance = async (portfolioType: PortfolioTypes) => {
   return { balance, total: totalPosition };
 };
 
-const getAssetPosition = async (portfolioType: PortfolioTypes) => {
-  const balanceWithPrices = await getBalanceWithPrices(portfolioType);
+const getAssetPosition = async (assetType: StockAssetType) => {
+  const balanceWithPrices = await getBalanceWithPrices(assetType);
   return getTotalFromPortfolio(balanceWithPrices);
 };
 
 const getTotalPosition = async () => {
   const totals = await Promise.all(
-    portfolioTypes.map(async type => {
+    STOCK_ASSET_TYPE.map(async type => {
       // TODO optimize to make a single request
       const balanceWithPrices = await getBalanceWithPrices(type);
       return getTotalFromPortfolio(balanceWithPrices);
@@ -126,7 +122,7 @@ const getTotalPosition = async () => {
 
   return totals.reduce(
     (obj, current, index) => {
-      obj[portfolioTypes[index]] = current;
+      obj[STOCK_ASSET_TYPE[index]] = current;
       obj.total = obj.total + current;
       return obj;
     },
@@ -135,19 +131,19 @@ const getTotalPosition = async () => {
 };
 
 const deposit = async ({
-  asset,
+  assetType,
   value,
 }: {
-  asset?: StockAsset;
+  assetType?: StockAssetType;
   value: number;
 }) => {
-  asset = asset ? asset : 'float';
+  assetType = assetType ? assetType : 'float';
 
-  if (asset !== 'float') {
+  if (assetType !== 'float') {
     return { status: 'cannotDepositValue' };
   }
 
-  const currentValue = await getAssetPosition(asset);
+  const currentValue = await getAssetPosition(assetType);
   const newValue = currentValue + value;
 
   if (newValue < 0) {
@@ -157,7 +153,7 @@ const deposit = async ({
   await database.updateOne<AssetData>(
     'assets',
     'stock',
-    { type: asset },
+    { type: assetType },
     { $set: { value: newValue } },
     {}
   );
@@ -166,22 +162,22 @@ const deposit = async ({
 };
 
 const setAssetValue = async ({
-  asset,
+  assetType,
   value,
 }: {
-  asset?: string;
+  assetType?: StockAssetType;
   value: number;
 }) => {
-  asset = asset ? asset : 'float';
+  assetType = assetType ? assetType : 'float';
 
-  if (asset !== 'float') {
+  if (assetType !== 'float') {
     return { status: 'cannotSetValue' };
   }
 
   await database.updateOne<AssetData>(
     'assets',
     'stock',
-    { type: asset },
+    { type: assetType },
     { $set: { value } },
     {}
   );

@@ -1,22 +1,16 @@
 import googleSheets from '../../../providers/googleSheets';
 import getBalance from './getBalance';
 import { services } from './common';
+import { STOCK_ASSET_TYPE } from '../../../schemas';
 
-import type {
-  CryptoAsset,
-  StockAsset,
-  AssetName,
-  AssetBalance,
-} from '../../../types';
+import type { CryptoAsset, AssetName, AssetBalance } from '../../../types';
 
-type TotalRowPortfolios = {
-  [key in AssetName]: number;
-};
+type TotalRowPortfolios = Record<AssetName, number>;
 
-interface TotalRow extends TotalRowPortfolios {
+type TotalRow = TotalRowPortfolios & {
   portfolios: 'total';
   total: number;
-}
+};
 
 const flattenBalance = (
   balance: AssetBalance[] | undefined,
@@ -38,8 +32,6 @@ const flattenBalance = (
 
 export default async () => {
   const fixedAssets = await services['fixed'].getAssetsList();
-  // TODO import from stock service
-  const stockAssets: StockAsset[] = ['float', 'br', 'fii', 'us'];
   // TODO import from crypto service
   const cryptoAssets: CryptoAsset[] = [
     'binanceBuffer',
@@ -48,7 +40,7 @@ export default async () => {
     'defi2',
     'backed',
   ];
-  const assets = [...fixedAssets, ...stockAssets, ...cryptoAssets];
+  const assets = [...fixedAssets, ...STOCK_ASSET_TYPE, ...cryptoAssets];
   const header = ['portfolios', ...assets, 'total'];
 
   const { balance } = await getBalance();

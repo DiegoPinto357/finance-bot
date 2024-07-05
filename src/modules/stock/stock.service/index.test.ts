@@ -14,17 +14,17 @@ describe('stock service', () => {
   beforeEach(() => (database as MockDatabase).resetMockValues());
 
   describe('getBalance', () => {
-    it('gets balance for provided portfolio type', async () => {
-      const portfolioType = 'br';
-      const { balance, total } = await stock.getBalance(portfolioType);
+    it('gets balance for provided asset type', async () => {
+      const assetType = 'br';
+      const { balance, total } = await stock.getBalance(assetType);
 
-      expect(balance).toEqual(stockData[portfolioType].balance);
-      expect(total).toBe(stockData[portfolioType].total);
+      expect(balance).toEqual(stockData[assetType].balance);
+      expect(total).toBe(stockData[assetType].total);
     });
   });
 
   describe('getAssetPosition', () => {
-    it('gets total stock position for a given asset', async () => {
+    it('gets total stock position for a given asset type', async () => {
       const value = await stock.getAssetPosition('br');
       expect(value).toBe(3935.519970999999);
     });
@@ -48,11 +48,7 @@ describe('stock service', () => {
 
       expect(value).toEqual({
         ...expectedTotals,
-        total:
-          expectedTotals.br +
-          expectedTotals.fii +
-          expectedTotals.us +
-          expectedTotals.float,
+        total: 14548.639997999999,
       });
     });
   });
@@ -60,40 +56,40 @@ describe('stock service', () => {
   describe('deposit', () => {
     it('deposits value on float', async () => {
       const value = 150;
-      const asset = 'float';
-      const currentFloatValue = await stock.getAssetPosition(asset);
+      const assetType = 'float';
+      const currentFloatValue = await stock.getAssetPosition(assetType);
 
-      const result = await stock.deposit({ asset, value });
+      const result = await stock.deposit({ assetType, value });
 
-      const newFloatValue = await stock.getAssetPosition(asset);
+      const newFloatValue = await stock.getAssetPosition(assetType);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newFloatValue).toBe(currentFloatValue + value);
     });
 
-    it('deposits value on float when asset param is not provided', async () => {
+    it('deposits value on float when assetType param is not provided', async () => {
       const value = 357.98;
-      const asset = 'float';
-      const currentFloatValue = await stock.getAssetPosition(asset);
+      const assetType = 'float';
+      const currentFloatValue = await stock.getAssetPosition(assetType);
 
       const result = await stock.deposit({ value });
 
-      const newFloatValue = await stock.getAssetPosition(asset);
+      const newFloatValue = await stock.getAssetPosition(assetType);
 
       expect(result).toEqual({ status: 'ok' });
       expect(newFloatValue).toBe(currentFloatValue + value);
     });
 
     it.each(['br', 'us', 'fii'] as StockAssetType[])(
-      'does not deposits value for "%s" asset',
-      async asset => {
+      'does not deposits value for "%s" asset type',
+      async assetType => {
         const value = 500;
 
-        const currentValue = await stock.getAssetPosition(asset);
+        const currentValue = await stock.getAssetPosition(assetType);
 
-        const result = await stock.deposit({ asset, value });
+        const result = await stock.deposit({ assetType, value });
 
-        const newValue = await stock.getAssetPosition(asset);
+        const newValue = await stock.getAssetPosition(assetType);
 
         expect(result).toEqual({ status: 'cannotDepositValue' });
         expect(newValue).toBe(currentValue);
@@ -102,9 +98,9 @@ describe('stock service', () => {
 
     it('does not withdrawn a value when funds are not enough', async () => {
       const value = -150000;
-      const asset = 'float';
+      const assetType = 'float';
 
-      const result = await stock.deposit({ asset, value });
+      const result = await stock.deposit({ assetType, value });
 
       expect(result).toEqual({ status: 'notEnoughFunds' });
     });
@@ -113,7 +109,7 @@ describe('stock service', () => {
   describe('setAssetValue', () => {
     it('sets float value', async () => {
       const value = 357.75;
-      const result = await stock.setAssetValue({ asset: 'float', value });
+      const result = await stock.setAssetValue({ assetType: 'float', value });
 
       const floatValue = await stock.getAssetPosition('float');
 
@@ -121,7 +117,7 @@ describe('stock service', () => {
       expect(floatValue).toBe(value);
     });
 
-    it('sets float value when asset param is not provided', async () => {
+    it('sets float value when assetType param is not provided', async () => {
       const value = 3467.34;
       const result = await stock.setAssetValue({ value });
 
@@ -132,14 +128,14 @@ describe('stock service', () => {
     });
 
     it.each(['br', 'us', 'fii'] as StockAssetType[])(
-      'does not sets asset value for "%s" portfolio type',
-      async asset => {
+      'does not sets value for "%s" asset type',
+      async assetType => {
         const value = 357.75;
-        const currentValue = await stock.getAssetPosition(asset);
+        const currentValue = await stock.getAssetPosition(assetType);
 
-        const result = await stock.setAssetValue({ asset, value });
+        const result = await stock.setAssetValue({ assetType, value });
 
-        const newValue = await stock.getAssetPosition(asset);
+        const newValue = await stock.getAssetPosition(assetType);
 
         expect(result).toEqual({ status: 'cannotSetValue' });
         expect(newValue).toBe(currentValue);

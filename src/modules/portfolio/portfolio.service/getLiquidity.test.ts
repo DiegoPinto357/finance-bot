@@ -59,8 +59,8 @@ describe('portfolio service - getLiquidity', () => {
       {
         portfolio: 'previdencia',
         liquidityValue: 1295.807356032464,
-        liquidityRatio: 0.06092728539774584,
-        totalValue: 21268.096019265708,
+        liquidityRatio: 0.06092728539774585,
+        totalValue: 21268.096019265704,
       },
       {
         portfolio: 'amortecedor',

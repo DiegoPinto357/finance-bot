@@ -10,7 +10,6 @@ import type {
   PortfolioData,
 } from './types';
 import type {
-  StockAsset,
   CryptoAsset,
   AssetClass,
   AssetName,
@@ -20,7 +19,7 @@ import type {
   StockAssetBalance,
   CryptoAssetBalance,
 } from '../../../types';
-// import type { Portfolio } from '../../../schemas';
+import { StockAssetType } from '../../../schemas';
 
 type PortfolioShare = {
   class: AssetClass;
@@ -37,9 +36,7 @@ type AssetsShares = {
   [key in AssetClass]: AssetShare[];
 };
 
-type StockAssetTotals = {
-  [key in StockAsset]: number;
-};
+type StockAssetTotals = Record<StockAssetType, number>;
 
 type StockTotals = StockAssetTotals & {
   total: number;
@@ -155,12 +152,12 @@ const formatBalance = (rawBalance?: StockTotals | CryptoTotals) => {
   return Object.entries(rawBalance).reduce(
     ({ balance, total }, [asset, value]) => {
       if (asset === 'total') return { balance, total };
-      balance.push({ asset: asset as StockAsset, value });
+      balance.push({ asset: asset as StockAssetType, value });
       total += value;
       return { balance, total };
     },
     { balance: [], total: 0 } as {
-      balance: { asset: StockAsset | CryptoAsset; value: number }[];
+      balance: { asset: StockAssetType | CryptoAsset; value: number }[];
       total: number;
     }
   );
