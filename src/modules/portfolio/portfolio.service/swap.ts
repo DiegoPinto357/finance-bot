@@ -37,7 +37,7 @@ export const swapSchema = swapOnPortfolioSchema;
 export default async (swapParams: z.infer<typeof swapSchema>) => {
   const withinSamePortfolio = 'portfolio' in swapParams;
 
-  const params = {} as SwapOnAssetParams;
+  const params: Partial<SwapOnAssetParams> = {};
 
   if (withinSamePortfolio) {
     // portfolio is constant
