@@ -1,8 +1,9 @@
 import inquirer from 'inquirer';
 import _ from 'lodash';
-import stockService, { portfolioTypes } from './stock.service';
+import stockService from './stock.service';
 import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
 import { formatTable } from '../../libs/cliFormat';
+import { STOCK_ASSET_TYPE } from '../../schemas';
 
 const methods = Object.keys(stockService);
 
@@ -12,7 +13,7 @@ const getBalanceMenu = async () => {
       type: 'list',
       name: 'portfolioName',
       message: 'portfolioName?',
-      choices: portfolioTypes,
+      choices: STOCK_ASSET_TYPE,
     },
   ]);
 
