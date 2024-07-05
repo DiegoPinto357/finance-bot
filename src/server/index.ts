@@ -7,6 +7,7 @@ import core from '../core';
 import { buildLogger } from '../libs/logger';
 import systemRouter from '../modules/system/system.router';
 import fixedRouter from '../modules/fixed/fixed.router';
+import stockRouter from '../modules/stock/stock.router';
 import cryptoRouter from '../modules/crypto/crypto.router';
 import portfolioRouter from '../modules/portfolio/portfolio.router';
 
@@ -27,6 +28,7 @@ app.all('*', (req, _res, next) => {
 
 app.use(systemRouter);
 app.use(fixedRouter);
+app.use(stockRouter);
 app.use(cryptoRouter);
 app.use(portfolioRouter);
 
