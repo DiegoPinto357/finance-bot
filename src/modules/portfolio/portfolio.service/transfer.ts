@@ -20,6 +20,7 @@ export default async ({
   origin,
   destiny,
 }: z.infer<typeof transferSchema>) => {
+  // TODO only needed when value is "all"
   const currentOriginValue = await getPortfolioPositionOnAsset(
     portfolio,
     origin
