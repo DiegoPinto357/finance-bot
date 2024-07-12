@@ -133,11 +133,11 @@ describe('stock service', () => {
         const value = 357.75;
         const currentValue = await stock.getAssetPosition(assetType);
 
-        const result = await stock.setAssetValue({ assetType, value });
+        expect(stock.setAssetValue({ assetType, value })).rejects.toThrow(
+          `Setting a value for stock of type "${assetType}" is not allowed.`
+        );
 
         const newValue = await stock.getAssetPosition(assetType);
-
-        expect(result).toEqual({ status: 'cannotSetValue' });
         expect(newValue).toBe(currentValue);
       }
     );

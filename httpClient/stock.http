@@ -5,3 +5,14 @@
 ###
 
 GET http://{{host}}:{{port}}/api/stock/total-position
+
+###
+
+POST http://{{host}}:{{port}}/api/stock/asset-value
+content-type: application/json
+
+{
+    "assetType": "float",
+    "value": 100,
+    "dryRun": true
+}

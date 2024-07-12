@@ -1,8 +1,13 @@
+import { z } from 'zod';
 import database from '../../../providers/database';
 import brapi from '../../../providers/brapi';
 import stockAnalyser from './stockAnalyser';
 import { buildLogger } from '../../../libs/logger';
-import { STOCK_ASSET_TYPE } from '../../../schemas';
+import {
+  STOCK_ASSET_TYPE,
+  stockAssetSchema,
+  positiveCurrencySchema,
+} from '../../../schemas';
 
 import type { StockAssetType } from '../../../schemas';
 
@@ -161,17 +166,21 @@ const deposit = async ({
   return { status: 'ok' };
 };
 
+export const setAssetValueSchema = z.object({
+  assetType: stockAssetSchema.optional(),
+  value: positiveCurrencySchema,
+});
+
 const setAssetValue = async ({
   assetType,
   value,
-}: {
-  assetType?: StockAssetType;
-  value: number;
-}) => {
+}: z.infer<typeof setAssetValueSchema>) => {
   assetType = assetType ? assetType : 'float';
 
   if (assetType !== 'float') {
-    return { status: 'cannotSetValue' };
+    throw new Error(
+      `Setting a value for stock of type "${assetType}" is not allowed.`
+    );
   }
 
   await database.updateOne<AssetData>(
