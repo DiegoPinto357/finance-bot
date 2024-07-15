@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { buildLogger } from '../libs/logger';
 
 import type { Request, Response, NextFunction } from 'express';
-import type { AnyZodObject, ZodObject } from 'zod';
+import type { ZodObject, ZodRawShape } from 'zod';
 
 const log = buildLogger('HTTP Server - Schema Validation');
 
@@ -12,9 +12,9 @@ type RequestSchema = ZodObject<{
   body?: ZodObject<{}>;
 }>;
 
-const deppStrictWithDryRunSchema = (schema: RequestSchema) => {
-  const extendeParams = schema.shape.query
-    ? schema.shape.query.strict()
+const deepStrictWithDryRunSchema = (schema: RequestSchema) => {
+  const extendeParams = schema.shape.params
+    ? schema.shape.params.strict()
     : z.object({});
 
   const extendeQuery = schema.shape.query
@@ -40,10 +40,10 @@ const deppStrictWithDryRunSchema = (schema: RequestSchema) => {
   });
 };
 
-export default (schema: AnyZodObject) =>
+export default (schema: ZodRawShape) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await deppStrictWithDryRunSchema(schema).parseAsync({
+      await deepStrictWithDryRunSchema(z.object(schema)).parseAsync({
         body: req.body,
         query: req.query,
         params: req.params,

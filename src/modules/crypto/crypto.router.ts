@@ -5,6 +5,8 @@ import type { Request, Response } from 'express';
 
 const router = express.Router();
 
+// TODO add validation schema
+
 router.get(
   '/api/crypto/balance/:type',
   async (req: Request<{ type: PortfolioTypes }>, res: Response) =>

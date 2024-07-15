@@ -7,7 +7,7 @@ import portfolioService, {
 } from './portfolio.service';
 
 import type { Request, Response } from 'express';
-import type { PortfolioName } from './portfolio.service';
+import type { Portfolio } from '../../schemas';
 
 const router = express.Router();
 
@@ -17,13 +17,13 @@ router.get('/api/portfolio/balance', async (_req: Request, res: Response) =>
 
 router.get(
   '/api/portfolio/balance/:portfolioName',
-  async (req: Request<{ portfolioName: PortfolioName }>, res: Response) =>
+  async (req: Request<{ portfolioName: Portfolio }>, res: Response) =>
     res.json(await portfolioService.getBalance(req.params.portfolioName))
 );
 
 router.get(
   '/api/portfolio/shares/:portfolioName',
-  async (req: Request<{ portfolioName: PortfolioName }>, res: Response) =>
+  async (req: Request<{ portfolioName: Portfolio }>, res: Response) =>
     res.json(await portfolioService.getShares(req.params.portfolioName))
 );
 
@@ -37,15 +37,15 @@ router.post('/api/portfolio/deposit', async (req: Request, res: Response) =>
 
 router.post(
   '/api/portfolio/transfer',
-  validateSchema(z.object({ body: transferSchema })),
-  async (req: Request, res: Response) =>
+  validateSchema({ body: transferSchema }),
+  async (req: Request<{}, z.infer<typeof transferSchema>>, res: Response) =>
     res.json(await portfolioService.transfer(req.body))
 );
 
 router.post(
   '/api/portfolio/swap',
-  validateSchema(z.object({ body: swapSchema })),
-  async (req: Request, res: Response) =>
+  validateSchema({ body: swapSchema }),
+  async (req: Request<{}, z.infer<typeof swapSchema>>, res: Response) =>
     res.json(await portfolioService.swap(req.body))
 );
 

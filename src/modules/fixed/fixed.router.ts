@@ -12,9 +12,7 @@ const router = express.Router();
 
 router.get(
   '/api/fixed/balance',
-  validateSchema(
-    z.object({ query: z.object({ assetName: getBalanceSchema }) })
-  ),
+  validateSchema({ query: z.object({ assetName: getBalanceSchema }) }),
   async (
     req: Request<{}, {}, {}, { assetName: z.infer<typeof getBalanceSchema> }>,
     res: Response
@@ -23,9 +21,11 @@ router.get(
 
 router.post(
   '/api/fixed/asset-value',
-  validateSchema(z.object({ body: setAssetValueSchema })),
-  async (req: Request, res: Response) =>
-    res.json(await fixedService.setAssetValue(req.body))
+  validateSchema({ body: setAssetValueSchema }),
+  async (
+    req: Request<{}, z.infer<typeof setAssetValueSchema>>,
+    res: Response
+  ) => res.json(await fixedService.setAssetValue(req.body))
 );
 
 export default router;

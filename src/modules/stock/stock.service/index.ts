@@ -111,7 +111,13 @@ const getBalance = async (assetType: StockAssetType) => {
   return { balance, total: totalPosition };
 };
 
-const getAssetPosition = async (assetType: StockAssetType) => {
+export const getAssetPositionSchema = z.object({
+  assetType: stockAssetSchema,
+});
+
+const getAssetPosition = async (
+  assetType: z.infer<typeof getAssetPositionSchema>['assetType']
+) => {
   const balanceWithPrices = await getBalanceWithPrices(assetType);
   return getTotalFromPortfolio(balanceWithPrices);
 };

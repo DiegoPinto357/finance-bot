@@ -14,3 +14,17 @@ content-type: application/json
   "value": 300,
   "dryRun": true
 }
+
+###
+
+POST http://{{host}}:{{port}}/api/portfolio/swap
+content-type: application/json
+
+{
+  "portfolio": "previdencia",
+  "origin": { "class": "fixed", "name": "nubank" },
+  "destiny": { "class": "fixed", "name": "iti" },
+  "value": 300,
+  "liquidity": "amortecedor",
+  "dryRun": true
+}
