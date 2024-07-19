@@ -74,7 +74,10 @@ export type StockAsset =
   | 'CPTS11'
   | 'HGLG11'
   | 'KNRI11'
+  | 'KNSC11'
   | 'MXRF11'
+  | 'RURA11'
+  | 'SNAG11'
   | 'VISC11'
   | 'XPLG11';
 
