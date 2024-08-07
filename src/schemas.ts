@@ -50,7 +50,7 @@ const stockAssetClassSchema = z.object({
 });
 
 export type StockAsset =
-  | 'ARZZ3F'
+  | 'AZZA3F'
   | 'B3SA3F'
   | 'BBSE3F'
   | 'CRPG5F'
