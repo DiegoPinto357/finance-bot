@@ -24,10 +24,15 @@ type Quote = {
 const getQuote = async (symbol: string) => {
   log(`Loading quote for ${symbol}`);
   const url = `${baseUrl}/quote/${symbol}`;
-  const { results } = await getCached<Quote>(url, { headers });
-  const price = results[0].regularMarketPrice;
-  const change = results[0].regularMarketChange;
-  return { price, change };
+  try {
+    const { results } = await getCached<Quote>(url, { headers });
+    const price = results[0].regularMarketPrice;
+    const change = results[0].regularMarketChange;
+    return { price, change };
+  } catch (e) {
+    log(`Error fetching symbol ${symbol}`, { severity: 'error' });
+    return { price: 0, change: 0 };
+  }
 };
 
 export default {
