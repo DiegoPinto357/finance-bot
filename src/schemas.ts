@@ -10,6 +10,7 @@ export const positiveCurrencySchema = z
 
 const FIXED_ASSET = [
   'nubank',
+  'nubankCashback',
   'iti',
   'inco',
   'xpWesternAsset',
