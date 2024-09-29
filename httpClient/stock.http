@@ -4,7 +4,11 @@
 
 ###
 
-# /api/stock/position/us
+GET http://{{host}}:{{port}}/api/stock/balance
+  ?assetType=br
+
+###
+
 GET http://{{host}}:{{port}}/api/stock/asset-position
   ?assetType=us
 

@@ -2,6 +2,7 @@ import express from 'express';
 import { z } from 'zod';
 import validateSchema from '../../server/validateSchema';
 import stockService, {
+  getBalanceSchema,
   getAssetPositionSchema,
   setAssetValueSchema,
 } from './stock.service';
@@ -9,6 +10,15 @@ import stockService, {
 import type { Request, Response } from 'express';
 
 const router = express.Router();
+
+router.get(
+  '/api/stock/balance',
+  validateSchema({ query: getBalanceSchema }),
+  async (
+    req: Request<{}, {}, {}, z.infer<typeof getBalanceSchema>>,
+    res: Response
+  ) => res.json(await stockService.getBalance(req.query.assetType))
+);
 
 router.get(
   '/api/stock/asset-position',
