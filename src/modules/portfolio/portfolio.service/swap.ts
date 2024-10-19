@@ -64,25 +64,21 @@ export default async (swapParams: z.infer<typeof swapSchema>) => {
   ]);
 
   const { value } = swapParams;
-
   const swapValue = value === 'all' ? originCurrentValue : value;
 
-  const hasOriginFunds = originCurrentValue >= swapValue;
-  const hasLiquidityFunds = liquidityCurrentValue >= swapValue;
-
-  if (!hasOriginFunds || !hasLiquidityFunds) {
+  if (originCurrentValue < swapValue || liquidityCurrentValue < swapValue) {
     return { status: 'notEnoughFunds' };
   }
 
   await Promise.all([
-    await swapOnAsset({
+    swapOnAsset({
       value: swapValue,
       assetClass: params.assets[0].class,
       assetName: params.assets[0].name,
       origin: params.originPortfolio,
       destiny: params.destinyPortfolio,
     }),
-    await swapOnAsset({
+    swapOnAsset({
       value: -swapValue,
       assetClass: params.assets[1].class,
       assetName: params.assets[1].name,
