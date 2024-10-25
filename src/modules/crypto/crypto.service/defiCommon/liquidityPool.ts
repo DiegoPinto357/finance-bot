@@ -37,6 +37,10 @@ const getLPTokenPrice = async ({
     contractAddress,
   });
 
+  if (totalSupply === 0) {
+    return 0;
+  }
+
   const tokens = getTokens(lpToken);
 
   const values = await Promise.all(

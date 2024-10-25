@@ -69,9 +69,7 @@ const getTokenBalance = async ({ asset, network, wallet }: GetTokenBalance) => {
     log(`Failed to load ${asset} balance on ${network} network: ${result}`, {
       severity: 'error',
     });
-    throw new Error(
-      `Failed to load ${asset} balance on ${network} network: ${result}`
-    );
+    return 0;
   }
 
   return result * tokenScale;
