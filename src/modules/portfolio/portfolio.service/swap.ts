@@ -70,22 +70,20 @@ export default async (swapParams: z.infer<typeof swapSchema>) => {
     return { status: 'notEnoughFunds' };
   }
 
-  await Promise.all([
-    swapOnAsset({
-      value: swapValue,
-      assetClass: params.assets[0].class,
-      assetName: params.assets[0].name,
-      origin: params.originPortfolio,
-      destiny: params.destinyPortfolio,
-    }),
-    swapOnAsset({
-      value: -swapValue,
-      assetClass: params.assets[1].class,
-      assetName: params.assets[1].name,
-      origin: params.originPortfolio,
-      destiny: params.destinyPortfolio,
-    }),
-  ]);
+  await swapOnAsset({
+    value: swapValue,
+    assetClass: params.assets[0].class,
+    assetName: params.assets[0].name,
+    origin: params.originPortfolio,
+    destiny: params.destinyPortfolio,
+  });
+  await swapOnAsset({
+    value: -swapValue,
+    assetClass: params.assets[1].class,
+    assetName: params.assets[1].name,
+    origin: params.originPortfolio,
+    destiny: params.destinyPortfolio,
+  });
 
   return { status: 'ok' };
 };
