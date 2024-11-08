@@ -4,6 +4,10 @@
 
 ###
 
+GET http://{{host}}:{{port}}/api/portfolio/shares
+
+###
+
 POST http://{{host}}:{{port}}/api/portfolio/transfer
 content-type: application/json
 

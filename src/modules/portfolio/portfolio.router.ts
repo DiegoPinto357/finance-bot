@@ -21,6 +21,10 @@ router.get(
     res.json(await portfolioService.getBalance(req.params.portfolioName))
 );
 
+router.get('/api/portfolio/shares', async (req: Request, res: Response) =>
+  res.json(await portfolioService.getShares())
+);
+
 router.get(
   '/api/portfolio/shares/:portfolioName',
   async (req: Request<{ portfolioName: Portfolio }>, res: Response) =>
@@ -31,6 +35,7 @@ router.get('/api/portfolio/assets', async (_req: Request, res: Response) =>
   res.json(await portfolioService.getAssets())
 );
 
+// TODO add validation schema
 router.post('/api/portfolio/deposit', async (req: Request, res: Response) =>
   res.json(await portfolioService.deposit(req.body))
 );
