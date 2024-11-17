@@ -30,4 +30,18 @@ const password = process.env.MERCADO_BITCOIN_API_SECRET;
   );
   const balances = balancesRes.data.filter(balance => balance.total > 0);
   console.log({ balances });
+
+  const symbols = balances
+    .map(({ symbol }) => symbol)
+    .reduce(
+      (symbols, ticker) =>
+        symbols === '' ? `${ticker}-BRL` : `${symbols},${ticker}-BRL`,
+      ''
+    );
+  console.log({ symbols });
+
+  const tickers = await axios.get(`${host}/tickers?symbols=${symbols}`, {
+    headers,
+  });
+  console.log(tickers.data);
 })();

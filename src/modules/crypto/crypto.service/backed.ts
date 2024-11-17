@@ -2,7 +2,31 @@ import mercadoBitcoin from '../../../providers/mercadoBitcoin';
 import mercadoBitcoinLegacy from '../../../providers/mercadoBitcoinLegacy';
 import { buildLogger } from '../../../libs/logger';
 
+import type { Ticker } from '../../../providers/mercadoBitcoin';
+
 const log = buildLogger('Crypto - Backed');
+
+const getPriceBRL = (ticker: Ticker) => {
+  const { last, sell, buy } = ticker;
+
+  const lastPriceBRL = parseFloat(last);
+  if (lastPriceBRL > 0) return lastPriceBRL;
+
+  log(`Last price not available for ${ticker.pair}`, {
+    severity: 'warn',
+  });
+
+  const sellPriceBRL = parseFloat(sell);
+  if (sellPriceBRL > 0) return sellPriceBRL;
+
+  const buyPriceBRL = parseFloat(buy);
+  if (buyPriceBRL > 0) return buyPriceBRL;
+
+  log(`Sell/buy price not available for ${ticker.pair}`, {
+    severity: 'error',
+  });
+  return 100 * 1.2;
+};
 
 const getBalance = async () => {
   const assets = await mercadoBitcoin.getAccountBalance();
@@ -29,14 +53,14 @@ const getBalance = async () => {
         log(`${symbol} data not available`, { severity: 'warn' });
         tickerData = await mercadoBitcoinLegacy.getTicker(symbol);
       }
-      const { last } = tickerData!;
-      const priceBRL = parseFloat(last);
-      const positionBRL = position * priceBRL;
+
+      const priceBRL = getPriceBRL(tickerData);
+
       return {
         asset: symbol,
         position,
         priceBRL,
-        positionBRL,
+        positionBRL: position * priceBRL,
       };
     })
   );
