@@ -66,8 +66,8 @@ const saveBackup = async <Schema>(
 const find = async <Schema>(
   databaseName: string,
   collectionName: string,
-  filter: Filter<Schema>,
-  options: FindOptions
+  filter: Filter<Schema> = {},
+  options?: FindOptions
 ) => {
   log(`Findind data on ${databaseName}/${collectionName}`);
   const db = client.db(databaseName);

@@ -10,6 +10,7 @@ import fixedRouter from '../modules/fixed/fixed.router';
 import stockRouter from '../modules/stock/stock.router';
 import cryptoRouter from '../modules/crypto/crypto.router';
 import portfolioRouter from '../modules/portfolio/portfolio.router';
+import { initializeBackupScheduler } from './backupScheduler';
 
 import type { Request, Response, NextFunction } from 'express';
 
@@ -39,6 +40,6 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 (async () => {
   await core.init();
-
+  initializeBackupScheduler();
   app.listen(port, () => log(`Finance Bot listening on port ${port}`));
 })();
