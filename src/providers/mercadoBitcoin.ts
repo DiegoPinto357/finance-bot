@@ -25,6 +25,15 @@ export type Ticker = {
   date: number;
 };
 
+export type Candles = {
+  c: string[];
+  h: string[];
+  l: string[];
+  o: string[];
+  t: number[];
+  v: string[];
+};
+
 const host = 'https://api.mercadobitcoin.net/api/v4';
 const login = process.env.MERCADO_BITCOIN_API_KEY;
 const password = process.env.MERCADO_BITCOIN_API_SECRET;
@@ -88,7 +97,17 @@ const getTickers = async (tickers: string[]) => {
   return data;
 };
 
+const getCandles = async (symbol: string) => {
+  log(`Loading candles for ${symbol}`);
+  const date = new Date();
+  const timestamp = date.getTime();
+  const url = `${host}/candles?symbol=${symbol}-BRL&resolution=1m&to=${timestamp}&countback=1`;
+  const data = await getCached<Candles>(url);
+  return data;
+};
+
 export default {
   getAccountBalance,
   getTickers,
+  getCandles,
 };

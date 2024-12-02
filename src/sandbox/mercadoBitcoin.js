@@ -6,9 +6,7 @@ const host = 'https://api.mercadobitcoin.net/api/v4';
 const login = process.env.MERCADO_BITCOIN_API_KEY;
 const password = process.env.MERCADO_BITCOIN_API_SECRET;
 
-// console.log({ login, password });
-
-(async () => {
+const getAccountBanlance = async () => {
   const authRes = await axios.post(`${host}/authorize`, { login, password });
   const { access_token, expiration } = authRes.data;
   console.log({ access_token, expiration, now: Date.now() });
@@ -44,4 +42,13 @@ const password = process.env.MERCADO_BITCOIN_API_SECRET;
     headers,
   });
   console.log(tickers.data);
+};
+
+(async () => {
+  const date = new Date();
+  const timestamp = date.getTime();
+  const { data } = await axios.get(
+    `${host}/candles?symbol=IMOB02-BRL&resolution=1m&to=${timestamp}&countback=1`
+  );
+  console.log(data);
 })();

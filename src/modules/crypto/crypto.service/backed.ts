@@ -6,15 +6,31 @@ import type { Ticker } from '../../../providers/mercadoBitcoin';
 
 const log = buildLogger('Crypto - Backed');
 
-const getPriceBRL = (ticker: Ticker) => {
-  const { last, sell, buy } = ticker;
+const valueOverrides = [{ ticker: 'IMOB02', value: 133.91 }];
+
+const getPriceBRL = async (ticker: string, tickerData: Ticker) => {
+  const valueOverride = valueOverrides.find(
+    override => override.ticker === ticker
+  );
+  if (valueOverride) {
+    log(`Overriding value for ${ticker}`, {
+      severity: 'warn',
+    });
+    return valueOverride?.value;
+  }
+
+  const { last, sell, buy } = tickerData;
 
   const lastPriceBRL = parseFloat(last);
   if (lastPriceBRL > 0) return lastPriceBRL;
 
-  log(`Last price not available for ${ticker.pair}`, {
+  log(`Last price not available for ${tickerData.pair}`, {
     severity: 'warn',
   });
+
+  const { l } = await mercadoBitcoin.getCandles(ticker);
+  const lastPriceCandleBRL = parseFloat(l[0]);
+  if (lastPriceCandleBRL > 0) return parseFloat(l[0]);
 
   const sellPriceBRL = parseFloat(sell);
   if (sellPriceBRL > 0) return sellPriceBRL;
@@ -22,10 +38,11 @@ const getPriceBRL = (ticker: Ticker) => {
   const buyPriceBRL = parseFloat(buy);
   if (buyPriceBRL > 0) return buyPriceBRL;
 
-  log(`Sell/buy price not available for ${ticker.pair}`, {
+  log(`Sell/buy price not available for ${tickerData.pair}`, {
     severity: 'error',
   });
-  return 100 * 1.2;
+
+  return 0;
 };
 
 const getBalance = async () => {
@@ -48,13 +65,12 @@ const getBalance = async () => {
       }
 
       let tickerData = tickersMap.get(`${symbol}-BRL`);
-      // FIXME re-validate mercado bitcoin api v4
       if (!tickerData) {
         log(`${symbol} data not available`, { severity: 'warn' });
         tickerData = await mercadoBitcoinLegacy.getTicker(symbol);
       }
 
-      const priceBRL = getPriceBRL(tickerData);
+      const priceBRL = await getPriceBRL(symbol, tickerData);
 
       return {
         asset: symbol,

@@ -14,20 +14,37 @@ const loadAccountData = async () => {
   return accountBalance;
 };
 
-const getAccountBalance = async () => {
+const getAccountBalance = jest.fn(async () => {
   if (!accountBalance) {
     await loadAccountData();
   }
   return accountBalance;
-};
+});
 
-const getTickers = (symbols: string[]) => {
+const getTickers = jest.fn((symbols: string[]) => {
   const allTickers: Ticker[] = tickers;
   const pairs = symbols.map(symbol => `${symbol}-BRL`);
   return Promise.resolve(
     allTickers.filter(ticker => pairs.includes(ticker.pair))
   );
-};
+});
+
+const getCandles = jest.fn(async (symbol: string) => {
+  const data = tickers.find(ticker => ticker.pair === `${symbol}-BRL`);
+  console.log(data);
+  if (!data) {
+    return {};
+  }
+  const { last, high, low, open, vol } = data;
+  return {
+    c: [last],
+    h: [high],
+    l: [low],
+    o: [open],
+    t: [0],
+    v: [vol],
+  };
+});
 
 const simulateBRLDeposit = async (value: number) => {
   if (!accountBalance) {
@@ -40,12 +57,10 @@ const simulateBRLDeposit = async (value: number) => {
   }
 };
 
-const resetMockValues = () => (accountBalance = undefined);
-
 export default {
   getAccountBalance,
   getTickers,
+  getCandles,
 
   simulateBRLDeposit,
-  resetMockValues,
 };
