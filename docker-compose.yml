@@ -9,6 +9,7 @@ services:
     volumes:
       - ./src:/home/node/app/src
       - ./nodemon.json:/home/node/app/nodemon.json
+      - ./backup:/home/node/app/backup
     container_name: finance-bot
     expose:
       - '3001'
