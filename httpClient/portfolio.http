@@ -32,3 +32,7 @@ content-type: application/json
   "liquidity": "amortecedor",
   "dryRun": true
 }
+
+###
+
+GET http://{{host}}:{{port}}/api/portfolio/history

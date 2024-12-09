@@ -11,6 +11,7 @@ import distribute from './distribute';
 import getAssets from './getAssets';
 import removeAsset from './removeAsset';
 import getPortfolios from './getPortfolios';
+import getHistory from './getHistory';
 import updateAbsoluteTable from './updateAbsoluteTable';
 import updateSharesDiffTable from './updateSharesDiffTable';
 import updateTables from './updateTables';
@@ -27,6 +28,7 @@ export default {
   getAssets,
   removeAsset,
   getPortfolios,
+  getHistory,
   updateAbsoluteTable,
   updateSharesDiffTable,
   updateTables,

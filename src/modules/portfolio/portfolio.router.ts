@@ -35,6 +35,10 @@ router.get('/api/portfolio/assets', async (_req: Request, res: Response) =>
   res.json(await portfolioService.getAssets())
 );
 
+router.get('/api/portfolio/history', async (_req: Request, res: Response) =>
+  res.json(await portfolioService.getHistory())
+);
+
 // TODO add validation schema
 router.post('/api/portfolio/deposit', async (req: Request, res: Response) =>
   res.json(await portfolioService.deposit(req.body))
