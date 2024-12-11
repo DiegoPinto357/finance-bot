@@ -11,7 +11,7 @@ const backupFolder = path.join(__dirname, '../../backup');
 
 const databases = [
   { name: 'assets', collections: ['fixed', 'stock', 'crypto'] },
-  { name: 'portfolio', collections: ['shares'] },
+  { name: 'portfolio', collections: ['shares', 'history'] },
 ];
 
 const fetchAndSaveBackup = async () => {
