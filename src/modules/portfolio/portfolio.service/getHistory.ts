@@ -7,6 +7,7 @@ export default async () => {
     {},
     {
       projection: { _id: 0 },
+      sort: { date: 1 },
     }
   );
   return data;
