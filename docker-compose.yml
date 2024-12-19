@@ -16,3 +16,4 @@ services:
     ports:
       - '3001:3001'
     command: npm run server
+    restart: unless-stopped
