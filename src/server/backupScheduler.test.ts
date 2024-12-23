@@ -44,7 +44,7 @@ describe('backupScheduler', () => {
     expect(fs.mkdir).toHaveBeenCalledWith(expect.stringContaining('/backup'), {
       recursive: true,
     });
-    expect(fs.writeFile).toHaveBeenCalledTimes(4);
+    expect(fs.writeFile).toHaveBeenCalledTimes(5);
 
     expect(fs.writeFile).toHaveBeenCalledWith(
       expect.stringContaining('/backup/assets-fixed-'),
@@ -63,6 +63,11 @@ describe('backupScheduler', () => {
     );
     expect(fs.writeFile).toHaveBeenCalledWith(
       expect.stringContaining('/backup/portfolio-shares-'),
+      JSON.stringify(mockData, null, 2),
+      'utf-8'
+    );
+    expect(fs.writeFile).toHaveBeenCalledWith(
+      expect.stringContaining('/backup/portfolio-history-'),
       JSON.stringify(mockData, null, 2),
       'utf-8'
     );
