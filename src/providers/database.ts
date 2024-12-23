@@ -12,6 +12,8 @@ import {
 import moment from 'moment';
 import { buildLogger } from '../libs/logger';
 
+import type { OptionalId } from 'mongodb';
+
 const debugMode = false;
 const verboseMode = false;
 
@@ -132,6 +134,25 @@ const deleteOne = async <Schema>(
   return await collection.deleteOne(filter);
 };
 
+const insertOne = async <Schema>(
+  databaseName: string,
+  collectionName: string,
+  document: OptionalId<Schema>
+) => {
+  log(`Inserting document on ${databaseName}/${collectionName}`);
+
+  if (debugMode || verboseMode) {
+    console.dir({ databaseName, collectionName, document }, { depth: null });
+  }
+
+  const db = client.db(databaseName);
+  const collection = db.collection(collectionName);
+
+  if (debugMode) return;
+
+  return await collection.insertOne(document);
+};
+
 /**
  * @deprecated Moved to schemas file for runtime schema validation
  */
@@ -159,5 +180,6 @@ export default {
   findOne,
   updateOne,
   deleteOne,
+  insertOne,
   bulkWrite,
 };

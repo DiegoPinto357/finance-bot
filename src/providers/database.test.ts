@@ -133,6 +133,29 @@ describe('database', () => {
     expect(mockDeleteOneFn).toBeCalledWith(query);
   });
 
+  it('inserts a single document', async () => {
+    const databaseName = 'portfolio';
+    const collectionName = 'history';
+    const document = {
+      date: '2024-12-23',
+      portfolios: {
+        amortecedor: 12194.64,
+        financiamento: 29380.02,
+        suricat: 20292.96,
+      },
+    };
+
+    await database.insertOne(databaseName, collectionName, document);
+
+    expect(mockDbFn).toBeCalledTimes(1);
+    expect(mockDbFn).toBeCalledWith(databaseName);
+
+    expect(mockCollectionFn).toBeCalledWith(collectionName);
+
+    expect(mockInsertOneFn).toBeCalledTimes(1);
+    expect(mockInsertOneFn).toBeCalledWith(document);
+  });
+
   // FIXME this test makes jest freeze
   // it('bulk writes operarions', async () => {
   //   const databaseName = 'assets';
