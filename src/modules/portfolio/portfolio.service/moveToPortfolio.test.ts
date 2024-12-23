@@ -1,7 +1,9 @@
 import { getAssetValueFromBalance } from './common';
 import getBalance from './getBalance';
-import { Asset, Portfolio } from '../../../types';
 import moveToPortfolio from './moveToPortfolio';
+
+import type { Asset } from '../../../types';
+import type { Portfolio } from '../../../schemas';
 
 jest.mock('../../../providers/googleSheets');
 jest.mock('../../../providers/database');

@@ -1,5 +1,7 @@
 import { getPortfolioPositionOnAsset, swapOnAsset } from './common';
-import { Asset, Portfolio } from '../../../types';
+
+import type { Asset } from '../../../types';
+import type { Portfolio } from '../../../schemas';
 
 export interface MoveToPortfolioParams {
   value: number | 'all';

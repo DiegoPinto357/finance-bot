@@ -1,8 +1,9 @@
 import getBalance from './getBalance';
 import { flatPortfolioBalance } from './common';
 import getPortfolios from './getPortfolios';
-import { Portfolio } from '../../../types';
-import { BalanceByAssetWithTotal } from './types';
+
+import type { Portfolio } from '../../../schemas';
+import type { BalanceByAssetWithTotal } from './types';
 
 const getPortfolioLiquidity = async (
   portfolioName: Portfolio,

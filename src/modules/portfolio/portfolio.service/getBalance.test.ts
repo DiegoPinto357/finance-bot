@@ -117,20 +117,6 @@ describe('portfolio service - getBalance', () => {
         total: 5320.86086336635,
       });
     });
-
-    // TODO temp is used for testing only, update to not rely on "temp" portfolio
-    it('gets the balance for portfolio "temp"', async () => {
-      const balance = await getBalance('temp');
-
-      expect(balance).toEqual({
-        balance: {
-          crypto: { balance: [], total: 0 },
-          fixed: { balance: [], total: 0 },
-          stock: { balance: [], total: 0 },
-        },
-        total: 0,
-      });
-    });
   });
 
   describe('multiple portfolios provided', () => {

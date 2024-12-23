@@ -10,7 +10,8 @@ import {
 } from './common';
 
 import type { ShareItem, PortfolioData } from './types';
-import type { AssetClass, AssetName, Portfolio } from '../../../types';
+import type { AssetClass, AssetName } from '../../../types';
+import type { Portfolio } from '../../../schemas';
 
 const CryptoAutoBalanceFetch = ['hodl', 'defi', 'defi2', 'backed'];
 

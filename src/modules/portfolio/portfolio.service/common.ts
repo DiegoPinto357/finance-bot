@@ -3,13 +3,15 @@ import database from '../../../providers/database';
 import fixedService from '../../fixed/fixed.service';
 import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
-import {
+
+import type {
   AssetBalanceWithClass,
   BalanceByAsset,
   BalanceByAssetWithTotal,
   PortfolioData,
 } from './types';
-import { Asset, AssetClass, AssetName, Portfolio } from '../../../types';
+import type { Asset, AssetClass, AssetName } from '../../../types';
+import type { Portfolio } from '../../../schemas';
 
 const log = buildLogger('Portfolios');
 

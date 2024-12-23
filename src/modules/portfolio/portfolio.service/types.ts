@@ -5,9 +5,8 @@ import type {
   FixedAssetBalance,
   StockAssetBalance,
   CryptoAssetBalance,
-  Portfolio,
 } from '../../../types';
-// import type { Portfolio } from '../../../schemas';
+import type { Portfolio } from '../../../schemas';
 
 export type AssetBalanceWithClass = AssetBalance & {
   assetClass: AssetClass;
@@ -33,9 +32,7 @@ export type BalanceByAssetWithTotal = {
   total: number;
 };
 
-type BalanceByPortfolio = {
-  [key in Portfolio]: BalanceByAssetWithTotal;
-};
+type BalanceByPortfolio = Record<Portfolio, BalanceByAssetWithTotal>;
 
 export type BalanceByPortfolioWithTotal = {
   balance: BalanceByPortfolio;

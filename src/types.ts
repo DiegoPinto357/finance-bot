@@ -68,25 +68,3 @@ export type AssetBalance =
       liquidity?: boolean;
       value: number;
     };
-
-/**
- * @deprecated Moved to schemas file for runtime schema validation
- */
-export type Portfolio =
-  | 'temp' // TODO for testing only, change tests to remove this one
-  | 'reservaEmergencia'
-  | 'amortecedor'
-  | 'financiamento'
-  | 'viagem'
-  | 'reformaCasa'
-  | 'previdencia'
-  | 'leni'
-  | 'mae'
-  | 'seguroCarro'
-  | 'impostos'
-  | 'manutencaoCarro'
-  | 'suricat'
-  | 'congelamentoSuricats'
-  | 'carro'
-  | 'macbookFirma'
-  | 'rendaPassiva';

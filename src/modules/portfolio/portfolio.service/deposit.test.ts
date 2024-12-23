@@ -1,11 +1,11 @@
 import binance from '../../../providers/binance';
-import fixedService from '../../fixed/fixed.service';
-import stockService from '../../stock/stock.service';
 import cryptoService from '../../crypto/crypto.service';
 import getBalance from './getBalance';
 import deposit from './deposit';
 import { getAssetValueFromBalance, getAssetPosition } from './common';
-import { AssetClass, AssetName, Portfolio } from '../../../types';
+
+import type { AssetClass, AssetName } from '../../../types';
+import type { Portfolio } from '../../../schemas';
 
 type MockBinance = typeof binance & {
   simulateBRLDeposit: (value: number) => void;

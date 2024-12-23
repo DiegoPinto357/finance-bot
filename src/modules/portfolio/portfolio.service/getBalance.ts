@@ -14,12 +14,11 @@ import type {
   AssetClass,
   AssetName,
   AssetBalance,
-  Portfolio,
   FixedAssetBalance,
   StockAssetBalance,
   CryptoAssetBalance,
 } from '../../../types';
-import { StockAssetType } from '../../../schemas';
+import type { StockAssetType, Portfolio } from '../../../schemas';
 
 type PortfolioShare = {
   class: AssetClass;
