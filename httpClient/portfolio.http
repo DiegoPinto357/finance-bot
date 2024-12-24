@@ -36,3 +36,12 @@ content-type: application/json
 ###
 
 GET http://{{host}}:{{port}}/api/portfolio/history
+
+###
+
+POST http://{{host}}:{{port}}/api/portfolio/history
+content-type: application/json
+
+{
+  "dryRun": true
+}

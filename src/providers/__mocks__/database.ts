@@ -153,6 +153,8 @@ const deleteOne = async <Schema>(
   return { matchedCount: 1 };
 };
 
+const insertOne = jest.fn();
+
 const resetMockValues = () => (dataBuffer = {});
 
 export default {
@@ -161,5 +163,6 @@ export default {
   findOne,
   updateOne,
   deleteOne,
+  insertOne,
   resetMockValues,
 };

@@ -40,7 +40,7 @@ const deepStrictWithDryRunSchema = (schema: RequestSchema) => {
   });
 };
 
-export default (schema: ZodRawShape) =>
+export default (schema: ZodRawShape = {}) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await deepStrictWithDryRunSchema(z.object(schema)).parseAsync({

@@ -12,6 +12,7 @@ import getAssets from './getAssets';
 import removeAsset from './removeAsset';
 import getPortfolios from './getPortfolios';
 import getHistory from './getHistory';
+import setHistory from './setHistory';
 import updateAbsoluteTable from './updateAbsoluteTable';
 import updateSharesDiffTable from './updateSharesDiffTable';
 import updateTables from './updateTables';
@@ -29,6 +30,7 @@ export default {
   removeAsset,
   getPortfolios,
   getHistory,
+  setHistory,
   updateAbsoluteTable,
   updateSharesDiffTable,
   updateTables,

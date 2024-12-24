@@ -1,7 +1,9 @@
 import database from '../../../providers/database';
 
+import type { PortfolioHistoryEntry } from './types';
+
 export default async () => {
-  const data = await database.find(
+  const data = await database.find<PortfolioHistoryEntry[]>(
     'portfolio',
     'history',
     {},

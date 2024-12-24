@@ -32,7 +32,7 @@ export type BalanceByAssetWithTotal = {
   total: number;
 };
 
-type BalanceByPortfolio = Record<Portfolio, BalanceByAssetWithTotal>;
+export type BalanceByPortfolio = Record<Portfolio, BalanceByAssetWithTotal>;
 
 export type BalanceByPortfolioWithTotal = {
   balance: BalanceByPortfolio;
@@ -48,4 +48,9 @@ export type PortfolioData = {
   assetClass: AssetClass;
   assetName: AssetName;
   shares: ShareItem[];
+};
+
+export type PortfolioHistoryEntry = {
+  date: string;
+  portfolios: Record<Portfolio, number>;
 };
