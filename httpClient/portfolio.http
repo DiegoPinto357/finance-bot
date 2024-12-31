@@ -35,6 +35,10 @@ content-type: application/json
 
 ###
 
+GET http://{{host}}:{{port}}/api/portfolio/liquidity
+
+###
+
 GET http://{{host}}:{{port}}/api/portfolio/history
 
 ###

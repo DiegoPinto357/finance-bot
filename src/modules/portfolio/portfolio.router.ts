@@ -35,6 +35,10 @@ router.get('/api/portfolio/assets', async (_req: Request, res: Response) =>
   res.json(await portfolioService.getAssets())
 );
 
+router.get('/api/portfolio/liquidity', async (_req: Request, res: Response) =>
+  res.json(await portfolioService.getLiquidity())
+);
+
 router.get('/api/portfolio/history', async (_req: Request, res: Response) =>
   res.json(await portfolioService.getHistory())
 );
