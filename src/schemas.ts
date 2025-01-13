@@ -71,7 +71,7 @@ export type StockAsset =
   | 'IVVB11'
   | 'NASD11'
   | 'ALZR11'
-  | 'BCFF11'
+  | 'BTHF11'
   | 'CPTS11'
   | 'HGLG11'
   | 'KNRI11'
