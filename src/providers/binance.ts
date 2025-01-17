@@ -6,7 +6,7 @@ import httpClient from '../libs/httpClient';
 const log = buildLogger('Binance');
 
 // needs to check on Binance which assets don't support BRL anymore
-const assetsWithBridge = ['ATOM', 'FTM', 'RUNE', 'USDC', 'VET'];
+const assetsWithBridge = ['ATOM', 'S', 'RUNE', 'USDC', 'VET'];
 
 const host = 'https://api.binance.com';
 
