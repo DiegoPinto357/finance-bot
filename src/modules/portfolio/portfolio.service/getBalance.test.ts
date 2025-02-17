@@ -1,5 +1,4 @@
 import getBalance from './getBalance';
-import { Asset } from '../../../types';
 import blockchain from '../../../providers/blockchain';
 
 jest.mock('../../../providers/googleSheets');
@@ -9,6 +8,10 @@ jest.mock('../../../providers/binance');
 jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
+
+jest.mock('../../system/system.service.ts', () => ({
+  getFlags: () => ({ cryptoDefiEnabled: true }),
+}));
 
 type MockBlockchain = typeof blockchain & { resetMockValues: () => void };
 

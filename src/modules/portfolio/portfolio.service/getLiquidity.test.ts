@@ -11,6 +11,10 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
+jest.mock('../../system/system.service.ts', () => ({
+  getFlags: () => ({ cryptoDefiEnabled: true }),
+}));
+
 describe('portfolio service - getLiquidity', () => {
   beforeEach(() => {
     jest.clearAllMocks();

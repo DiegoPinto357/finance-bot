@@ -1,10 +1,12 @@
 import database from '../../../providers/database';
+import { getFlags } from '../../system/system.service';
 import cryptoService from '.';
 import expectedHodlBalance from '../../../../mockData/crypto/hodl/expectedBalance.json';
 import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalance.json';
 import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';
 import expectedBackedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
-import { CryptoAsset } from '../../../types';
+
+import type { CryptoAsset } from '../../../types';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 
@@ -15,6 +17,8 @@ jest.mock('../../../providers/binance');
 jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
+
+jest.mock('../../system/system.service.ts');
 
 describe('crypto service', () => {
   beforeEach(() => (database as MockDatabase).resetMockValues());
@@ -65,11 +69,22 @@ describe('crypto service', () => {
 
   describe('getTotalPosition', () => {
     it('gets total position for all crypto assets', async () => {
+      jest.mocked(getFlags).mockReturnValueOnce({ cryptoDefiEnabled: true });
       const total = await cryptoService.getTotalPosition();
       expect(total).toEqual({
         hodl: expectedHodlBalance.total,
         defi: expectedDefiBalance.total,
         defi2: expectedDefi2Balance.total,
+        backed: expectedBackedBalance.total,
+        binanceBuffer: 2156.375642691,
+      });
+    });
+
+    it('gets total position for all crypto assets except defi and defi2 when cryptoDefiEnabled is disabled', async () => {
+      jest.mocked(getFlags).mockReturnValueOnce({ cryptoDefiEnabled: false });
+      const total = await cryptoService.getTotalPosition();
+      expect(total).toEqual({
+        hodl: expectedHodlBalance.total,
         backed: expectedBackedBalance.total,
         binanceBuffer: 2156.375642691,
       });

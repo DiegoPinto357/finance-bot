@@ -8,6 +8,10 @@ jest.mock('../../../providers/mercadoBitcoin');
 jest.mock('../../../providers/coinMarketCap');
 jest.mock('../../../providers/blockchain');
 
+jest.mock('../../system/system.service.ts', () => ({
+  getFlags: () => ({ cryptoDefiEnabled: true }),
+}));
+
 describe('portfolio service - getShares', () => {
   it('gets shares for portfolio "previdencia"', async () => {
     const shares = await getShares('previdencia');

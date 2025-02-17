@@ -3,7 +3,9 @@ import defiService from './defi';
 import defi2Service from './defi2';
 import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
-import { CryptoAsset } from '../../../types';
+import { getFlags } from '../../system/system.service';
+
+import type { CryptoAsset } from '../../../types';
 
 export const portfolioTypes = [
   'hodl',
@@ -49,15 +51,23 @@ const getAssetPosition = async (portfolioType: PortfolioTypes) => {
 };
 
 const getTotalPosition = async () => {
+  const { cryptoDefiEnabled } = getFlags();
+  const filteredPortfolioTypes = portfolioTypes.filter(type => {
+    if (!cryptoDefiEnabled) {
+      return type !== 'defi' && type !== 'defi2';
+    }
+    return true;
+  });
+
   const totals = await Promise.all(
-    portfolioTypes.map(async type => {
+    filteredPortfolioTypes.map(async type => {
       const service = services[type];
       return await service.getTotalPosition();
     })
   );
 
   return totals.reduce((obj, current, index) => {
-    obj[portfolioTypes[index]] = current;
+    obj[filteredPortfolioTypes[index]] = current;
     return obj;
   }, {} as Record<PortfolioTypes | 'total', number>);
 };
