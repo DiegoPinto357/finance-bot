@@ -6,7 +6,7 @@ import expectedDefiBalance from '../../../../mockData/crypto/defi/expectedBalanc
 import expectedDefi2Balance from '../../../../mockData/crypto/defi2/expectedBalance.json';
 import expectedBackedBalance from '../../../../mockData/crypto/backed/expectedBalance.json';
 
-import type { CryptoAsset } from '../../../types';
+import type { CryptoAsset } from '../../../schemas';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 

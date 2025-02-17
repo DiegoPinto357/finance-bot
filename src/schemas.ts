@@ -90,7 +90,7 @@ const CRYPTO_ASSET = [
   'defi2',
 ] as const;
 
-// type CryptoAsset = (typeof CRYPTO_ASSET)[number];
+export type CryptoAsset = (typeof CRYPTO_ASSET)[number];
 
 const cryptoAssetClassSchema = z.object({
   class: z.literal('crypto'),

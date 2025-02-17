@@ -1,4 +1,4 @@
-import type { FixedAsset, StockAssetType } from './schemas';
+import type { FixedAsset, StockAssetType, CryptoAsset } from './schemas';
 
 export type Month =
   | 'jan'
@@ -26,16 +26,6 @@ export type StockAssetBalance = {
   asset: StockAssetType;
   value: number;
 };
-
-/**
- * @deprecated Moved to schemas file for runtime schema validation
- */
-export type CryptoAsset =
-  | 'binanceBuffer'
-  | 'hodl'
-  | 'backed'
-  | 'defi'
-  | 'defi2';
 
 export type CryptoAssetBalance = {
   asset: CryptoAsset;

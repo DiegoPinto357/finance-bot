@@ -10,7 +10,6 @@ import type {
   PortfolioData,
 } from './types';
 import type {
-  CryptoAsset,
   AssetClass,
   AssetName,
   AssetBalance,
@@ -18,7 +17,7 @@ import type {
   StockAssetBalance,
   CryptoAssetBalance,
 } from '../../../types';
-import type { StockAssetType, Portfolio } from '../../../schemas';
+import type { CryptoAsset, StockAssetType, Portfolio } from '../../../schemas';
 
 type PortfolioShare = {
   class: AssetClass;

@@ -3,7 +3,8 @@ import getBalance from './getBalance';
 import { services } from './common';
 import { STOCK_ASSET_TYPE } from '../../../schemas';
 
-import type { CryptoAsset, AssetName, AssetBalance } from '../../../types';
+import type { AssetName, AssetBalance } from '../../../types';
+import type { CryptoAsset } from '../../../schemas';
 
 type TotalRowPortfolios = Record<AssetName, number>;
 

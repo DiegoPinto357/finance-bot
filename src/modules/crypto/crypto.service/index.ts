@@ -5,7 +5,7 @@ import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
 import { getFlags } from '../../system/system.service';
 
-import type { CryptoAsset } from '../../../types';
+import type { CryptoAsset } from '../../../schemas';
 
 export const portfolioTypes = [
   'hodl',
