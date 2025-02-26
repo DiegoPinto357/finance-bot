@@ -25,9 +25,9 @@ const FIXED_ASSET = [
   'nuInvestTDPre2031',
   'nuInvestTDIPCA2045',
   'interArcaPGBL',
-  'sofisaCDBMax60',
+  'sofisaCDBMax60', // deprecated
   'sofisaCDB110',
-  'sofisaCDBIPCA7_5',
+  'sofisaCDBIPCA7_5', // deprecated
 ] as const;
 
 export const fixedAssetSchema = z.enum(FIXED_ASSET);
