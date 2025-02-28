@@ -112,8 +112,6 @@ const PORTFOLIO = [
   'viagem',
   'reformaCasa',
   'previdencia',
-  'leni',
-  'mae',
   'seguroCarro',
   'impostos',
   'manutencaoCarro',
