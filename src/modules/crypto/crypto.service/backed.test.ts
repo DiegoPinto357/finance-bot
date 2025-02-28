@@ -67,7 +67,7 @@ describe('crypto backed tokens service', () => {
       const balance = await backed.getBalance();
       expect(
         balance.balance.find(item => item.asset === 'IMOB02')?.priceBRL
-      ).toBe(133.91);
+      ).toBe(137.66);
     });
 
     it('fetches last price correctly', async () => {

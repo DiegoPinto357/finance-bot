@@ -6,7 +6,7 @@ import type { Ticker } from '../../../providers/mercadoBitcoin';
 
 const log = buildLogger('Crypto - Backed');
 
-const valueOverrides = [{ ticker: 'IMOB02', value: 133.91 }];
+const valueOverrides = [{ ticker: 'IMOB02', value: 137.66 }];
 
 const getPriceBRL = async (ticker: string, tickerData: Ticker) => {
   const valueOverride = valueOverrides.find(
