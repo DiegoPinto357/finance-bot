@@ -5,6 +5,7 @@ import { BalanceByPortfolio } from './types';
 import type { PortfolioHistoryEntry } from './types';
 import type { Portfolio } from '../../../schemas';
 
+// TODO remove when safe
 const portfoliosToExclude = ['mae', 'leni'];
 
 const getCurrentDate = () => {

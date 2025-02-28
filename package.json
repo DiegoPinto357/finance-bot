@@ -11,7 +11,8 @@
     "test:coverage": "NODE_ENV='test' jest --coverage",
     "cli": "tsx ./src/cli.ts",
     "server": "tsx watch ./src/server/index.ts",
-    "auto": "tsx ./src/autoLauncher.ts"
+    "auto": "tsx ./src/autoLauncher.ts",
+    "check-tsc": "npx tsc --noEmit"
   },
   "repository": {
     "type": "git",

@@ -7,7 +7,6 @@ import {
 import { formatTable } from '../../libs/cliFormat';
 
 import type { PortfolioTypes } from './crypto.service';
-import type { CryptoNetwork } from './types';
 
 const getBalanceFormatter = (type: PortfolioTypes) => {
   switch (type) {
@@ -48,24 +47,7 @@ const getBalanceFormatter = (type: PortfolioTypes) => {
   }
 };
 
-// TODO convert HODL module to TS and use proper types
-type BalanceItem = {
-  asset: string;
-  spot: number;
-  earn: number;
-  total: number;
-  portfolioScore: number;
-  priceBRL: number;
-  positionBRL: number;
-  positionTarget: number;
-  position: number;
-  positionDiff: number;
-  diffBRL: number;
-  diffTokens: number;
-  network?: CryptoNetwork;
-};
-
-export const formatBalance = (type: PortfolioTypes, balance: BalanceItem[]) => {
+export const formatBalance = (type: PortfolioTypes, balance: object[]) => {
   const formatter = getBalanceFormatter(type);
   return formatTable(
     balance.map(item => _.omit(item, 'network')),

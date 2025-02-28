@@ -14,7 +14,7 @@ import processScriptContext from './modules/processScript/processScript.cli';
   await core.init();
 
   try {
-    const argv = yargs(hideBin(process.argv)).argv;
+    const argv = yargs(hideBin(process.argv)).parseSync();
     const [context, command] = argv._;
 
     switch (context) {
