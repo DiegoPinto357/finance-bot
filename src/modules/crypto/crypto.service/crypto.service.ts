@@ -3,6 +3,7 @@ import defiService from './defi';
 import defi2Service from './defi2';
 import backedService from './backed';
 import binanceBufferService from './binanceBuffer';
+import { executeBot as executeHODLBot } from './hodl';
 import { getFlags } from '../../system/system.service';
 
 import type { CryptoAsset } from '../../../schemas';
@@ -137,6 +138,7 @@ const getHistory = async (portfolioType: PortfolioTypes) => {
 };
 
 export default {
+  executeHODLBot,
   getBalance,
   getAssetPosition,
   getTotalPosition,
