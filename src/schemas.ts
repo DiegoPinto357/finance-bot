@@ -11,7 +11,7 @@ export const positiveCurrencySchema = z
 const FIXED_ASSET = [
   'nubank',
   'nubankCashback',
-  'iti',
+  'iti', // deprecated
   'inco',
   'xpWesternAsset',
   'xpTrendInvestback',
