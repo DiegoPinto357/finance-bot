@@ -1,8 +1,8 @@
-import binance from '../../../providers/binance';
-import database from '../../../providers/database';
-import googleSheets from '../../../providers/googleSheets';
+import binance from '../../../../providers/binance';
+import database from '../../../../providers/database';
+import googleSheets from '../../../../providers/googleSheets';
 
-import type { AssetData } from '../types';
+import type { AssetData } from '../../types';
 
 const targetAsset = 'BRL';
 const bridgeAsset = 'USDT';

@@ -33,6 +33,10 @@ const execute = async () => {
   ]);
 
   switch (method) {
+    case 'executeHODLBot':
+      await cryptoService.executeHODLBot();
+      break;
+
     case 'getBalance':
       await getBalanceMenu();
       break;
