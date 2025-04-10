@@ -1,6 +1,5 @@
 import binance from '../../../../providers/binance';
 import database from '../../../../providers/database';
-import googleSheets from '../../../../providers/googleSheets';
 
 import type { AssetData } from '../../types';
 
@@ -173,34 +172,9 @@ const getTotalPosition = async () => {
   return getTotalFromPortfolio(portfolioWithPrices);
 };
 
-const getHistory = async () => {
-  const historyData = await googleSheets.loadSheet<HistoryEntry[]>(
-    'crypto-hodl-history'
-  );
-  const currentTotal = await getTotalPosition();
-
-  const current = historyData[historyData.length - 1];
-  const date = new Date();
-  current.date = date.toLocaleDateString('pt-BR');
-  current.value = currentTotal;
-
-  return historyData.map((item, index, array) => {
-    let lastValue = 0;
-
-    if (index > 0) lastValue = array[index - 1].value;
-
-    item.yieldBRL = item.value - lastValue - item.deposit;
-
-    if (index > 0) item.yieldPercentage = item.yieldBRL / lastValue;
-
-    return item;
-  });
-};
-
 export default {
   getBalance,
   getTotalPosition,
-  getHistory,
   deposit: (_value: number) => {
     throw new Error('Not implemented');
   },

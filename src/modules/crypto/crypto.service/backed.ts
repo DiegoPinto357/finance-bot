@@ -100,9 +100,6 @@ const getTotalPosition = async (asset?: string) => {
 export default {
   getBalance,
   getTotalPosition,
-  getHistory: () => {
-    throw new Error('Not implemented');
-  },
   deposit: (..._params: any) => {
     throw new Error('Not implemented');
   },

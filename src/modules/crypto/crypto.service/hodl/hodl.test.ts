@@ -1,9 +1,8 @@
 import hodl from '.';
 import expectedBalance from '../../../../../mockData/crypto/hodl/expectedBalance.json';
 
-jest.mock('../../../providers/googleSheets');
-jest.mock('../../../providers/database');
-jest.mock('../../../providers/binance');
+jest.mock('../../../../providers/database');
+jest.mock('../../../../providers/binance');
 
 describe('crypto hodl service', () => {
   describe('getBalance', () => {

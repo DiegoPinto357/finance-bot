@@ -132,11 +132,6 @@ const sell = async ({
   return await service.sell({ asset, amount, orderValue });
 };
 
-const getHistory = async (portfolioType: PortfolioTypes) => {
-  const service = services[portfolioType];
-  return service.getHistory();
-};
-
 export default {
   executeHODLBot,
   getBalance,
@@ -146,5 +141,4 @@ export default {
   setAssetValue,
   deposit,
   sell,
-  getHistory,
 };

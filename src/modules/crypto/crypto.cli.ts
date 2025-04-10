@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import cryptoService from './crypto.service';
 import { formatBalance } from './uiUtils';
-import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
-import { formatTable } from '../../libs/cliFormat';
 
 import type { Arguments } from 'yargs';
 import type { PortfolioTypes } from './crypto.service';
@@ -26,20 +24,6 @@ export default async (command: string | number, args: Arguments) => {
     case 'total':
       const totalPosition = await cryptoService.getTotalPosition();
       console.log({ totalPosition });
-      break;
-
-    case 'history':
-      const history = await cryptoService.getHistory(type);
-
-      const formattedHistory = formatTable(history, [
-        null,
-        formatCurrency,
-        formatCurrency,
-        formatCurrency,
-        formatPercentage,
-      ]);
-
-      console.table(formattedHistory);
       break;
 
     default:

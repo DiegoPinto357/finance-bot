@@ -86,9 +86,6 @@ export default {
   getBalance: () => {
     throw new Error('Not implemented');
   },
-  getHistory: () => {
-    throw new Error('Not implemented');
-  },
   getTotalPosition,
   setAssetValue,
   deposit,

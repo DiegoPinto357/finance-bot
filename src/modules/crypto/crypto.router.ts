@@ -17,10 +17,4 @@ router.get('/api/crypto/total', async (_req: Request, res: Response) =>
   res.json(await cryptoService.getTotalPosition())
 );
 
-router.get(
-  '/api/crypto/history/:type',
-  async (req: Request<{ type: PortfolioTypes }>, res: Response) =>
-    res.json(await cryptoService.getHistory(req.params.type))
-);
-
 export default router;
