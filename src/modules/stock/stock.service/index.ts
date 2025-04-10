@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import database from '../../../providers/database';
 import brapi from '../../../providers/brapi';
-import stockAnalyser from './stockAnalyser';
+// import stockAnalyser from './stockAnalyser';
 import { buildLogger } from '../../../libs/logger';
 import {
   STOCK_ASSET_TYPE,
@@ -299,5 +299,5 @@ export default {
   buy,
   sell,
 
-  analysePortfolio: stockAnalyser.analysePortfolio,
+  // analysePortfolio: stockAnalyser.analysePortfolio,
 };

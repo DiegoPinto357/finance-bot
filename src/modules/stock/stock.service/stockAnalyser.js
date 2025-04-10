@@ -1,7 +1,7 @@
-const _ = require('lodash');
-const fundamentus = require('../../../providers/fundamentus');
-const fundamentei = require('../../../providers/fundamentei');
-const { withCache } = require('../../../libs/cache');
+import _ from 'lodash';
+import fundamentus from '../../../providers/fundamentus.js';
+import fundamentei from '../../../providers/fundamentei.js';
+import { withCache } from '../../../libs/cache.js';
 
 const stocksList = [
   'MRVE3',
@@ -41,7 +41,6 @@ const calcPLMetric = value => {
 };
 
 const calcDivYieldMetric = value => {
-  // return range(saturate(value, { min: 0, max: 1 }), { min: 0, max: 0.1 });
   return range(value, { min: 0, optimal: 7, max: 10 });
 };
 
@@ -100,12 +99,6 @@ const getStockInfoCached = withCache(
   { timeToLive: 24 * 60 * 60 * 1000 }
 );
 
-// for (let i = 0; i < 100; i++) {
-//   const value = i / 100;
-//   const metric = calcGovernmentHoldingsMetric(value);
-//   console.log({ value, metric });
-// }
-
 const analysePortfolio = async () => {
   const partialStocksInfo = await getStocksInfoCached(stocksList);
   const stocksInfo = await Promise.all(
@@ -120,8 +113,6 @@ const analysePortfolio = async () => {
       }
     })
   );
-
-  // console.log(stocksInfo);
 
   const stocksMetrics = stocksInfo
     .map(stockInfo => {
@@ -164,6 +155,4 @@ const analysePortfolio = async () => {
   );
 };
 
-module.exports = {
-  analysePortfolio,
-};
+export default { analysePortfolio };

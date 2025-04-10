@@ -1,6 +1,6 @@
-const stockService = require('./stock.service');
-const { formatCurrency, formatPercentage } = require('../../libs/stringFormat');
-const { formatTable } = require('../../libs/cliFormat');
+import stockService from './stock.service.js';
+import { formatCurrency, formatPercentage } from '../../libs/stringFormat.js';
+import { formatTable } from '../../libs/cliFormat.js';
 
 const getBalance = async ({ type }) => {
   const { balance, total } = await stockService.getBalance(type);
@@ -35,7 +35,7 @@ const buy = async args => {
   console.log(result);
 };
 
-module.exports = async (command, args) => {
+export default async (command, args) => {
   switch (command) {
     case 'balance':
       await getBalance(args);

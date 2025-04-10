@@ -1,6 +1,6 @@
-const fixedService = require('./fixed.service');
-const { formatCurrency } = require('../../libs/stringFormat');
-const { formatTable } = require('../../libs/cliFormat');
+import fixedService from './fixed.service.js';
+import { formatCurrency } from '../../libs/stringFormat.js';
+import { formatTable } from '../../libs/cliFormat.js';
 
 const getBalance = async ({ asset }) => {
   const { balance, total } = await fixedService.getBalance(asset);
@@ -23,7 +23,7 @@ const setAssetValue = async ({ asset, value }) => {
   await getTotal({ asset });
 };
 
-module.exports = async (command, args) => {
+export default async (command, args) => {
   switch (command) {
     case 'balance':
       await getBalance(args);
