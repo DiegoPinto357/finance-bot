@@ -1,6 +1,6 @@
-import fixedService from './fixed.service.js';
-import { formatCurrency } from '../../libs/stringFormat.js';
-import { formatTable } from '../../libs/cliFormat.js';
+import fixedService from './fixed.service';
+import { formatCurrency } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 const getBalance = async ({ asset }) => {
   const { balance, total } = await fixedService.getBalance(asset);

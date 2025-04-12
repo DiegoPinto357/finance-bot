@@ -1,6 +1,6 @@
-import stockService from './stock.service.js';
-import { formatCurrency, formatPercentage } from '../../libs/stringFormat.js';
-import { formatTable } from '../../libs/cliFormat.js';
+import stockService from './stock.service';
+import { formatCurrency, formatPercentage } from '../../libs/stringFormat';
+import { formatTable } from '../../libs/cliFormat';
 
 const getBalance = async ({ type }) => {
   const { balance, total } = await stockService.getBalance(type);

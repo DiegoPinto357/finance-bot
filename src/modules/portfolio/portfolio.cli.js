@@ -1,5 +1,5 @@
-import portfolioService from './portfolio.service.js';
-import { printBalance } from './cliUtils.js';
+import portfolioService from './portfolio.service';
+import { printBalance } from './cliUtils';
 
 const proccessAssetInput = input => {
   if (!input) return;
