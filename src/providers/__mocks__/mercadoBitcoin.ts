@@ -31,7 +31,6 @@ const getTickers = jest.fn((symbols: string[]) => {
 
 const getCandles = jest.fn(async (symbol: string) => {
   const data = tickers.find(ticker => ticker.pair === `${symbol}-BRL`);
-  console.log(data);
   if (!data) {
     return {};
   }
