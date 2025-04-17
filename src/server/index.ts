@@ -1,21 +1,20 @@
 #!/usr/bin/env node
 import 'dotenv/config';
 import 'express-async-errors';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import core from '../core';
-import { buildLogger } from '../libs/logger';
+import core from '../core.js';
+import { buildLogger } from '../libs/logger.js';
 import systemRouter from '../modules/system/system.router';
 import fixedRouter from '../modules/fixed/fixed.router';
 import stockRouter from '../modules/stock/stock.router';
 import cryptoRouter from '../modules/crypto/crypto.router';
 import portfolioRouter from '../modules/portfolio/portfolio.router';
-import { initializeBackupScheduler } from './backupScheduler';
-
-import type { Request, Response, NextFunction } from 'express';
+import mcpRouter from './mcp/mcp.router.js';
+import { initializeBackupScheduler } from './backupScheduler.js';
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 
 const log = buildLogger('HTTP Server');
 
@@ -32,6 +31,7 @@ app.use(fixedRouter);
 app.use(stockRouter);
 app.use(cryptoRouter);
 app.use(portfolioRouter);
+app.use(mcpRouter);
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err);
@@ -39,7 +39,11 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 (async () => {
-  await core.init();
-  initializeBackupScheduler();
-  app.listen(port, () => log(`Finance Bot listening on port ${port}`));
+  try {
+    await core.init();
+    initializeBackupScheduler();
+    app.listen(port, () => log(`Finance Bot listening on port ${port}`));
+  } catch (error) {
+    console.error('Error initializing server:', error);
+  }
 })();
