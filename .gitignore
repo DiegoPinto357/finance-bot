@@ -1,6 +1,7 @@
 # User data
 userData/
 backup/
+scripts/
 
 # Logs
 logs
