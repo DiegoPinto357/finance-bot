@@ -101,14 +101,3 @@ This project is licensed under the ISC License.
 - Repository: https://github.com/DiegoPinto357/finance-bot
 - Issues: https://github.com/DiegoPinto357/finance-bot/issues
 
-```mermaid
-graph TD
-  A[User] -->|CLI Commands| B[finance-bot CLI]
-  A -->|HTTP Requests| C[finance-bot Server]
-  B --> D[Modules: Crypto, Stock, Fixed, Portfolio, ProcessScript]
-  C --> D
-  D --> E[Data Providers: Binance, CoinMarketCap, MercadoBitcoin, Google Sheets, etc.]
-  D --> F[Database (MongoDB)]
-  D --> G[Cache Layer]
-  C --> H[Backup Scheduler]
-```
