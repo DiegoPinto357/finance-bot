@@ -10,8 +10,9 @@ import fixedRouter from '../modules/fixed/fixed.router';
 import stockRouter from '../modules/stock/stock.router';
 import cryptoRouter from '../modules/crypto/crypto.router';
 import portfolioRouter from '../modules/portfolio/portfolio.router';
-import mcpRouter from './mcp/mcp.router.js';
-import { initializeBackupScheduler } from './backupScheduler.js';
+import plannedExpensesRouter from '../modules/plannedExpenses/plannedExpenses.router';
+import mcpRouter from './mcp/mcp.router';
+import { initializeBackupScheduler } from './backupScheduler';
 
 const app = express();
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
@@ -31,6 +32,7 @@ app.use(fixedRouter);
 app.use(stockRouter);
 app.use(cryptoRouter);
 app.use(portfolioRouter);
+app.use(plannedExpensesRouter);
 app.use(mcpRouter);
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

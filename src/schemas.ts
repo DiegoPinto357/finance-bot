@@ -126,7 +126,7 @@ export const portfolioSchema = z.enum(PORTFOLIO);
 
 export type Portfolio = z.infer<typeof portfolioSchema>;
 
-const MONTH = [
+export const MONTH = [
   'jan',
   'feb',
   'mar',

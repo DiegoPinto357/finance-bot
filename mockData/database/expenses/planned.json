@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "1",
+    "portfolio": "viagem",
+    "totalValue": 5000,
+    "installments": 12,
+    "startMonth": "jan",
+    "description": "Trip to Europe"
+  },
+  {
+    "_id": "2",
+    "portfolio": "financiamento",
+    "totalValue": 10000,
+    "installments": 24,
+    "startMonth": "mar",
+    "description": "Car financing"
+  }
+]

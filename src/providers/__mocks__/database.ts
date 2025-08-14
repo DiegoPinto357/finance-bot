@@ -58,7 +58,7 @@ const find = jest.fn(async (databaseName, collectionName, query, options) => {
     ...data.filter((item: StringIndexed) => processQuery(item, query)),
   ];
 
-  const { projection } = options;
+  const { projection = {} } = options || {};
 
   await delay(1);
   return filteredData.map(item => {

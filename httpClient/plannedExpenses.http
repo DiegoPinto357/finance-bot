@@ -1,0 +1,42 @@
+@host = localhost
+@port = 3001
+
+###
+POST http://{{host}}:{{port}}/api/plannedExpenses
+content-type: application/json
+
+{
+  "portfolio": "previdencia",
+  "totalValue": 3000,
+  "installments": 6,
+  "startMonth": "jun",
+  "description": "Investment Plan"
+}
+
+###
+POST http://{{host}}:{{port}}/api/plannedExpenses
+content-type: application/json
+
+{
+  "portfolio": "financiamento",
+  "totalValue": 15000,
+  "installments": 36,
+  "startMonth": "jan",
+  "description": "House financing"
+}
+
+###
+GET http://{{host}}:{{port}}/api/plannedExpenses
+
+###
+GET http://{{host}}:{{port}}/api/plannedExpenses?portfolio=viagem
+
+###
+GET http://{{host}}:{{port}}/api/plannedExpenses/monthly?year=2025&month=jan
+
+###
+GET http://{{host}}:{{port}}/api/plannedExpenses/monthly?year=2025&month=mar
+
+###
+GET http://{{host}}:{{port}}/api/plannedExpenses/monthly?year=2030&month=dec
+
