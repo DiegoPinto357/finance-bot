@@ -2,8 +2,7 @@ import googleSheets from '../../../providers/googleSheets';
 import deposit from './deposit';
 import { fromCurrencyToNumber } from '../../../libs/stringFormat';
 
-import type { Month } from '../../../types';
-import type { FixedAsset, Portfolio } from '../../../schemas';
+import type { FixedAsset, Portfolio, Month } from '../../../schemas';
 
 const debug = false;
 

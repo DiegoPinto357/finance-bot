@@ -125,3 +125,22 @@ const PORTFOLIO = [
 export const portfolioSchema = z.enum(PORTFOLIO);
 
 export type Portfolio = z.infer<typeof portfolioSchema>;
+
+const MONTH = [
+  'jan',
+  'feb',
+  'mar',
+  'apr',
+  'may',
+  'jun',
+  'jul',
+  'aug',
+  'sep',
+  'oct',
+  'nov',
+  'dec',
+] as const;
+
+export const monthSchema = z.enum(MONTH);
+
+export type Month = z.infer<typeof monthSchema>;

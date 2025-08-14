@@ -5,8 +5,7 @@ import { getPortfolioPositionOnAsset } from './common';
 import { fromCurrencyToNumber } from '../../../libs/stringFormat';
 import distributionData from '../../../../mockData/googleSheets/distribution.json';
 
-import type { Month } from '../../../types';
-import type { FixedAsset, Portfolio } from '../../../schemas';
+import type { FixedAsset, Portfolio, Month } from '../../../schemas';
 
 type MockDatabase = typeof database & { resetMockValues: () => void };
 

@@ -1,19 +1,5 @@
 import type { FixedAsset, StockAssetType, CryptoAsset } from './schemas';
 
-export type Month =
-  | 'jan'
-  | 'feb'
-  | 'mar'
-  | 'apr'
-  | 'may'
-  | 'jun'
-  | 'jul'
-  | 'aug'
-  | 'sep'
-  | 'oct'
-  | 'nov'
-  | 'dec';
-
 export type AssetClass = 'fixed' | 'stock' | 'crypto';
 
 export type FixedAssetBalance = {
