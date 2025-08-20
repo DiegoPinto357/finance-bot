@@ -134,6 +134,7 @@ describe('plannedExpensesService', () => {
         totalValue: 3000,
         installments: 6,
         startMonth: 'jun',
+        startYear: 2025,
         description: 'Investment Plan',
       } as const;
 
@@ -153,6 +154,7 @@ describe('plannedExpensesService', () => {
         totalValue: 15000,
         installments: 36,
         startMonth: 'jan',
+        startYear: 2024,
         description: 'House financing',
       } as const;
 

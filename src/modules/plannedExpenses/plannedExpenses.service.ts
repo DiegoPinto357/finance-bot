@@ -10,6 +10,7 @@ type PlannedExpense = {
   totalValue: number;
   installments: number;
   startMonth: Month;
+  startYear: number;
   description: string;
 };
 
@@ -43,6 +44,7 @@ export const addPlannedExpenseSchema = z.object({
   totalValue: z.number().positive(),
   installments: z.number().int().positive(),
   startMonth: monthSchema,
+  startYear: z.number().int().min(1900).max(2100),
   description: z.string(),
 });
 
@@ -75,7 +77,7 @@ const getMonthlyInstallments = async (
       const startMonthIndex = MONTH.indexOf(expense.startMonth);
       const monthIndex = (startMonthIndex + i) % 12;
       const installmentYear =
-        currentYear + Math.floor((startMonthIndex + i) / 12);
+        expense.startYear + Math.floor((startMonthIndex + i) / 12);
 
       return {
         expense,

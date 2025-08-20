@@ -5,6 +5,7 @@
     "totalValue": 5000,
     "installments": 12,
     "startMonth": "jan",
+    "startYear": 2025,
     "description": "Trip to Europe"
   },
   {
@@ -13,6 +14,7 @@
     "totalValue": 10000,
     "installments": 24,
     "startMonth": "mar",
+    "startYear": 2025,
     "description": "Car financing"
   }
 ]
