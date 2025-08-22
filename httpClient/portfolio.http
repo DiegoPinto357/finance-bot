@@ -49,3 +49,7 @@ content-type: application/json
 {
   "dryRun": true
 }
+
+###
+
+GET http://{{host}}:{{port}}/api/portfolio/list

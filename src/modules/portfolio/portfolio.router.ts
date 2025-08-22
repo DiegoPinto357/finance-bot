@@ -43,6 +43,10 @@ router.get('/api/portfolio/history', async (_req: Request, res: Response) =>
   res.json(await portfolioService.getHistory())
 );
 
+router.get('/api/portfolio/list', async (_req: Request, res: Response) =>
+  res.json(await portfolioService.getPortfolios())
+);
+
 router.post(
   '/api/portfolio/history',
   validateSchema(),
